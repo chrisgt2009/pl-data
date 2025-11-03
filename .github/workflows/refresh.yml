@@ -2,24 +2,31 @@ name: Refresh PL data
 
 on:
   schedule:
-    # Sat/Sun match windows (UTC): every 15 minutes 10:00–22:59
-    - cron: "*/15 10-22 * * 6,0"
-    # Weekdays hourly
-    - cron: "0 */1 * * 1-5"
+    # WEEKENDS (match-heavy): every 5 min 11:00–19:59 UTC
+    - cron: "*/5 11-19 * * 6,0"
+    # WEEKDAYS: hourly (keeps week fixtures + table fresh)
+    - cron: "0 * * * 1-5"
+    # OPTIONAL extra evening slot Mon–Fri 18:00–22:59 UTC (10-min cadence)
+    - cron: "*/10 18-22 * * 1-5"
   workflow_dispatch: {}
+
+permissions:
+  contents: write    # <— required to push commits
+
+concurrency:
+  group: refresh-pl
+  cancel-in-progress: true
 
 jobs:
   refresh:
     runs-on: ubuntu-latest
     env:
       FD_TOKEN: ${{ secrets.FD_API_TOKEN }}
+      UA: pl-bot/1.0 (+github.com/${{ github.repository }})
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Show runner time (UTC)
-        run: date -u
 
       - name: Compute date window (UTC)
         id: dates
@@ -27,37 +34,42 @@ jobs:
           echo "TODAY=$(date -u +%Y-%m-%d)" >> $GITHUB_OUTPUT
           echo "IN7=$(date -u -d '+7 days' +%Y-%m-%d)" >> $GITHUB_OUTPUT
 
-      # ---------- Fetch raw data ----------
+      # ---- Fetch raw data (resilient) ----
       - name: Fetch standings (PL)
         run: |
-          curl -sS -H "X-Auth-Token: $FD_TOKEN" \
+          curl --fail --retry 3 --retry-delay 2 --connect-timeout 15 -sS \
+            -H "User-Agent: $UA" -H "X-Auth-Token: $FD_TOKEN" \
             "https://api.football-data.org/v4/competitions/PL/standings" \
             -o standings.raw.json
 
       - name: Fetch fixtures this week (PL)
         run: |
-          curl -sS -H "X-Auth-Token: $FD_TOKEN" \
+          curl --fail --retry 3 --retry-delay 2 --connect-timeout 15 -sS \
+            -H "User-Agent: $UA" -H "X-Auth-Token: $FD_TOKEN" \
             "https://api.football-data.org/v4/competitions/PL/matches?dateFrom=${{ steps.dates.outputs.TODAY }}&dateTo=${{ steps.dates.outputs.IN7 }}" \
             -o fixtures_week.raw.json
 
       - name: Fetch today (PL)
         run: |
-          curl -sS -H "X-Auth-Token: $FD_TOKEN" \
+          curl --fail --retry 3 --retry-delay 2 --connect-timeout 15 -sS \
+            -H "User-Agent: $UA" -H "X-Auth-Token: $FD_TOKEN" \
             "https://api.football-data.org/v4/competitions/PL/matches?dateFrom=${{ steps.dates.outputs.TODAY }}&dateTo=${{ steps.dates.outputs.TODAY }}" \
             -o today.raw.json
 
-      # ---------- Process & slim ----------
+      # ---- Process & slim ----
       - name: Normalize / slim JSON
         run: |
           python - << 'PY'
           import json, datetime
           from datetime import timezone
 
+          now = datetime.datetime.now(timezone.utc)
+
           with open("standings.raw.json") as f: standings = json.load(f)
           with open("fixtures_week.raw.json") as f: fixtures_week = json.load(f)
           with open("today.raw.json") as f: today = json.load(f)
 
-          # Standings (slim)
+          # Standings
           standings_out = {
             "season": standings.get("season"),
             "standings": standings.get("standings"),
@@ -74,7 +86,7 @@ jobs:
               if tid is not None:
                 pos[tid] = row.get("position")
 
-          # Fixtures (week)
+          # Fixtures (7-day window)
           fw = []
           for m in fixtures_week.get("matches", []):
             fw.append({
@@ -98,14 +110,14 @@ jobs:
           with open("data/fixtures_week.new.json", "w") as f:
             json.dump(fixtures_week_out, f, separators=(",", ":"), sort_keys=True)
 
-          # Live today
-          def phase(status, utc_iso):
+          # Live today + serverNowUTC (for client ticker)
+          live = []
+          def phase(status, utc_iso, now_utc):
             try:
               kick = datetime.datetime.fromisoformat((utc_iso or "").replace("Z","+00:00"))
             except Exception:
               return None, ""
-            now = datetime.datetime.now(timezone.utc)
-            mins = int(max(0, (now - kick).total_seconds() // 60))
+            mins = int(max(0, (now_utc - kick).total_seconds() // 60))
             if status == "SCHEDULED": return mins, "Today"
             if status == "IN_PLAY":
               if mins < 90: return mins, f"{mins}’"
@@ -114,10 +126,9 @@ jobs:
             if status == "FINISHED": return 90, "FT"
             return mins, status or ""
 
-          live = []
           for m in today.get("matches", []):
             st = m.get("status"); utc = m.get("utcDate")
-            mins, label = phase(st, utc)
+            mins, label = phase(st, utc, now)
             ft = (m.get("score") or {}).get("fullTime") or {}
             h = (m.get("homeTeam") or {}); a = (m.get("awayTeam") or {})
             live.append({
@@ -131,18 +142,21 @@ jobs:
               "away": {"id": a.get("id"), "tla": a.get("tla"), "name": a.get("name"),
                        "score": ft.get("away"), "pos": pos.get(a.get("id"))}
             })
-          live_out = { "lastUpdatedUTC": datetime.datetime.now(timezone.utc).isoformat(),
-                       "matches": live }
+
+          live_out = {
+            "serverNowUTC": now.isoformat(),             # <— NEW for ticker
+            "lastUpdatedUTC": now.isoformat(),
+            "matches": live
+          }
           with open("data/live_today.new.json", "w") as f:
             json.dump(live_out, f, separators=(",", ":"), sort_keys=True)
 
-          # Meta
-          meta = {"lastUpdatedUTC": datetime.datetime.now(timezone.utc).isoformat()}
+          meta = {"lastUpdatedUTC": now.isoformat(), "serverNowUTC": now.isoformat()}
           with open("data/meta.new.json", "w") as f:
             json.dump(meta, f, separators=(",", ":"), sort_keys=True)
           PY
 
-      # ---------- Commit only if changed ----------
+      # ---- Commit only if changed ----
       - name: Commit if changed
         run: |
           set -e
