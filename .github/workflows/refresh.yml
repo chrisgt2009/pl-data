@@ -1,21 +1,22 @@
 name: Refresh PL data
 
+# 3) Let the current run complete before triggering the new (queue, don't cancel)
+concurrency:
+  group: refresh-pl-data
+  cancel-in-progress: false
+
 on:
   schedule:
-    # WEEKENDS (match-heavy): every 5 min 11:00–19:59 UTC
-    - cron: "*/5 11-19 * * 6,0"
-    # WEEKDAYS: hourly (keeps week fixtures + table fresh)
-    - cron: "0 * * * 1-5"
-    # OPTIONAL extra evening slot Mon–Fri 18:00–22:59 UTC (10-min cadence)
-    - cron: "*/10 18-22 * * 1-5"
-  workflow_dispatch: {}
+    # WEEKENDS (match-heavy): every 10 min, 11:00–20:59 UTC
+    - cron: "*/10 11-20 * * 6,0"
+    # WEEKDAYS baseline: every 2 hours
+    - cron: "0 */2 * * 1-5"
+    # WEEKDAYS evening window (more frequent but safe): every 20 min, 18:00–22:59
+    - cron: "*/20 18-22 * * 1-5"
+  workflow_dispatch: {}   # manual run
 
 permissions:
-  contents: write    # <— required to push commits
-
-concurrency:
-  group: refresh-pl
-  cancel-in-progress: true
+  contents: write
 
 jobs:
   refresh:
@@ -28,67 +29,144 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Ensure data dir exists
+        run: mkdir -p data
+
       - name: Compute date window (UTC)
         id: dates
         run: |
           echo "TODAY=$(date -u +%Y-%m-%d)" >> $GITHUB_OUTPUT
           echo "IN7=$(date -u -d '+7 days' +%Y-%m-%d)" >> $GITHUB_OUTPUT
 
-      # ---- Fetch raw data (resilient) ----
-      - name: Fetch standings (PL)
+      # 2) Only refresh when data changes
+      #    Use conditional GET with stored ETags. If server returns 304, skip processing.
+      - name: Fetch with Conditional GET (standings, fixtures_week, today)
+        id: fetch
+        shell: bash
         run: |
-          curl --fail --retry 3 --retry-delay 2 --connect-timeout 15 -sS \
-            -H "User-Agent: $UA" -H "X-Auth-Token: $FD_TOKEN" \
-            "https://api.football-data.org/v4/competitions/PL/standings" \
-            -o standings.raw.json
+          set -e
 
-      - name: Fetch fixtures this week (PL)
-        run: |
-          curl --fail --retry 3 --retry-delay 2 --connect-timeout 15 -sS \
-            -H "User-Agent: $UA" -H "X-Auth-Token: $FD_TOKEN" \
-            "https://api.football-data.org/v4/competitions/PL/matches?dateFrom=${{ steps.dates.outputs.TODAY }}&dateTo=${{ steps.dates.outputs.IN7 }}" \
-            -o fixtures_week.raw.json
+          # read previous ETags (committed file); tolerate missing file
+          old_etag_standings=""
+          old_etag_week=""
+          old_etag_today=""
+          if [ -f data/etags.json ]; then
+            old_etag_standings=$(python - <<'PY' 2>/dev/null || true
+import json,sys
+d=json.load(open('data/etags.json'))
+print(d.get('standings',''))
+PY
+)
+            old_etag_week=$(python - <<'PY' 2>/dev/null || true
+import json,sys
+d=json.load(open('data/etags.json'))
+print(d.get('fixtures_week',''))
+PY
+)
+            old_etag_today=$(python - <<'PY' 2>/dev/null || true
+import json,sys
+d=json.load(open('data/etags.json'))
+print(d.get('today',''))
+PY
+)
+          fi
 
-      - name: Fetch today (PL)
-        run: |
-          curl --fail --retry 3 --retry-delay 2 --connect-timeout 15 -sS \
-            -H "User-Agent: $UA" -H "X-Auth-Token: $FD_TOKEN" \
-            "https://api.football-data.org/v4/competitions/PL/matches?dateFrom=${{ steps.dates.outputs.TODAY }}&dateTo=${{ steps.dates.outputs.TODAY }}" \
-            -o today.raw.json
+          fetch() {
+            local url="$1"
+            local etag="$2"
+            local body="$3"
+            local headfile="$4"
+            local code
+            # -D writes headers; --write-out prints code to stdout
+            if [ -n "$etag" ]; then
+              code=$(curl --fail --retry 3 --retry-delay 2 --connect-timeout 15 -sS \
+                     -H "User-Agent: $UA" -H "X-Auth-Token: $FD_TOKEN" -H "If-None-Match: $etag" \
+                     -D "$headfile" -o "$body" --write-out "%{http_code}" "$url" || true)
+            else
+              code=$(curl --fail --retry 3 --retry-delay 2 --connect-timeout 15 -sS \
+                     -H "User-Agent: $UA" -H "X-Auth-Token: $FD_TOKEN" \
+                     -D "$headfile" -o "$body" --write-out "%{http_code}" "$url" || true)
+            fi
+            echo "$code"
+          }
 
-      # ---- Process & slim ----
+          ANY_CHANGED=false
+
+          # endpoints
+          URL_STANDINGS="https://api.football-data.org/v4/competitions/PL/standings"
+          URL_WEEK="https://api.football-data.org/v4/competitions/PL/matches?dateFrom=${{ steps.dates.outputs.TODAY }}&dateTo=${{ steps.dates.outputs.IN7 }}"
+          URL_TODAY="https://api.football-data.org/v4/competitions/PL/matches?dateFrom=${{ steps.dates.outputs.TODAY }}&dateTo=${{ steps.dates.outputs.TODAY }}"
+
+          code_s=$(fetch "$URL_STANDINGS" "$old_etag_standings" standings.raw.json headers_s.txt)
+          code_w=$(fetch "$URL_WEEK"      "$old_etag_week"      fixtures_week.raw.json headers_w.txt)
+          code_t=$(fetch "$URL_TODAY"     "$old_etag_today"     today.raw.json headers_t.txt)
+
+          echo "Standings HTTP $code_s"
+          echo "FixturesWeek HTTP $code_w"
+          echo "Today HTTP $code_t"
+
+          new_etag_standings=""
+          new_etag_week=""
+          new_etag_today=""
+          if [ "$code_s" = "200" ]; then ANY_CHANGED=true; new_etag_standings=$(grep -i '^etag:' headers_s.txt | awk '{print $2}' | tr -d '\r'); fi
+          if [ "$code_w" = "200" ]; then ANY_CHANGED=true; new_etag_week=$(grep -i '^etag:' headers_w.txt | awk '{print $2}' | tr -d '\r'); fi
+          if [ "$code_t" = "200" ]; then ANY_CHANGED=true; new_etag_today=$(grep -i '^etag:' headers_t.txt | awk '{print $2}' | tr -d '\r'); fi
+
+          echo "any_changed=$ANY_CHANGED" >> $GITHUB_OUTPUT
+
+          # write etags.new.json if we had any 200s
+          if [ "$ANY_CHANGED" = "true" ]; then
+            python - <<'PY'
+import json,sys
+import os
+etags={}
+if os.path.exists('data/etags.json'):
+  try:
+    etags=json.load(open('data/etags.json'))
+  except Exception:
+    etags={}
+# pull new values from shell via env
+import os
+ns=os.environ.get('NEW_S'); nw=os.environ.get('NEW_W'); nt=os.environ.get('NEW_T')
+if ns: etags['standings']=ns
+if nw: etags['fixtures_week']=nw
+if nt: etags['today']=nt
+json.dump(etags, open('data/etags.new.json','w'), separators=(',',':'), sort_keys=True)
+PY
+          fi
+        env:
+          NEW_S: ${{ steps.fetch.outputs.new_s }}  # (placeholders; not used but harmless)
+
+      # ---------- Process & slim only when something changed ----------
       - name: Normalize / slim JSON
+        if: steps.fetch.outputs.any_changed == 'true'
         run: |
           python - << 'PY'
           import json, datetime
           from datetime import timezone
-
           now = datetime.datetime.now(timezone.utc)
 
           with open("standings.raw.json") as f: standings = json.load(f)
           with open("fixtures_week.raw.json") as f: fixtures_week = json.load(f)
           with open("today.raw.json") as f: today = json.load(f)
 
-          # Standings
           standings_out = {
             "season": standings.get("season"),
             "standings": standings.get("standings"),
           }
-          with open("data/standings.new.json", "w") as f:
-            json.dump(standings_out, f, separators=(",", ":"), sort_keys=True)
+          with open("data/standings.new.json","w") as f:
+            json.dump(standings_out,f,separators=(",",":"),sort_keys=True)
 
-          # Map teamId -> position
-          pos = {}
-          for st in standings.get("standings", []):
-            for row in st.get("table", []):
-              t = (row.get("team") or {})
-              tid = t.get("id")
+          pos={}
+          for st in standings.get("standings",[]):
+            for row in st.get("table",[]):
+              t=(row.get("team") or {})
+              tid=t.get("id")
               if tid is not None:
-                pos[tid] = row.get("position")
+                pos[tid]=row.get("position")
 
-          # Fixtures (7-day window)
-          fw = []
-          for m in fixtures_week.get("matches", []):
+          fw=[]
+          for m in (fixtures_week.get("matches") or []):
             fw.append({
               "id": m.get("id"),
               "utcDate": m.get("utcDate"),
@@ -101,36 +179,31 @@ jobs:
                 "id": (m.get("competition") or {}).get("id"),
                 "code": (m.get("competition") or {}).get("code"),
                 "name": (m.get("competition") or {}).get("name"),
-              },
+              }
             })
-          fixtures_week_out = {
-            "range": {"from": "${{ steps.dates.outputs.TODAY }}", "to": "${{ steps.dates.outputs.IN7 }}"},
-            "matches": fw
-          }
-          with open("data/fixtures_week.new.json", "w") as f:
-            json.dump(fixtures_week_out, f, separators=(",", ":"), sort_keys=True)
+          with open("data/fixtures_week.new.json","w") as f:
+            json.dump({"range":{"from":"${{ steps.dates.outputs.TODAY }}","to":"${{ steps.dates.outputs.IN7 }}"},"matches":fw},f,separators=(",",":"),sort_keys=True)
 
-          # Live today + serverNowUTC (for client ticker)
-          live = []
           def phase(status, utc_iso, now_utc):
             try:
-              kick = datetime.datetime.fromisoformat((utc_iso or "").replace("Z","+00:00"))
+              fromiso=lambda s: datetime.datetime.fromisoformat((s or "").replace("Z","+00:00"))
+              kick=fromiso(utc_iso)
             except Exception:
-              return None, ""
-            mins = int(max(0, (now_utc - kick).total_seconds() // 60))
-            if status == "SCHEDULED": return mins, "Today"
-            if status == "IN_PLAY":
-              if mins < 90: return mins, f"{mins}’"
-              return mins, f"90+{mins-90}’"
-            if status == "PAUSED": return 45, "Half-Time"
-            if status == "FINISHED": return 90, "FT"
-            return mins, status or ""
+              return None,""
+            mins=int(max(0,(now_utc-kick).total_seconds()//60))
+            if status=="SCHEDULED": return mins,"Today"
+            if status=="IN_PLAY":
+              return (mins, f"{mins}’") if mins<90 else (mins, f"90+{mins-90}’")
+            if status=="PAUSED": return 45,"Half-Time"
+            if status=="FINISHED": return 90,"FT"
+            return mins,status or ""
 
-          for m in today.get("matches", []):
-            st = m.get("status"); utc = m.get("utcDate")
-            mins, label = phase(st, utc, now)
-            ft = (m.get("score") or {}).get("fullTime") or {}
-            h = (m.get("homeTeam") or {}); a = (m.get("awayTeam") or {})
+          live=[]
+          for m in (today.get("matches") or []):
+            st=m.get("status"); utc=m.get("utcDate")
+            mins,label=phase(st,utc,now)
+            ft=(m.get("score") or {}).get("fullTime") or {}
+            h=(m.get("homeTeam") or {}); a=(m.get("awayTeam") or {})
             live.append({
               "id": m.get("id"),
               "utcDate": utc,
@@ -143,39 +216,33 @@ jobs:
                        "score": ft.get("away"), "pos": pos.get(a.get("id"))}
             })
 
-          live_out = {
-            "serverNowUTC": now.isoformat(),             # <— NEW for ticker
-            "lastUpdatedUTC": now.isoformat(),
-            "matches": live
-          }
-          with open("data/live_today.new.json", "w") as f:
-            json.dump(live_out, f, separators=(",", ":"), sort_keys=True)
+          with open("data/live_today.new.json","w") as f:
+            json.dump({"serverNowUTC": now.isoformat(),
+                       "lastUpdatedUTC": now.isoformat(),
+                       "matches": live}, f, separators=(",",":"), sort_keys=True)
 
-          meta = {"lastUpdatedUTC": now.isoformat(), "serverNowUTC": now.isoformat()}
-          with open("data/meta.new.json", "w") as f:
-            json.dump(meta, f, separators=(",", ":"), sort_keys=True)
+          with open("data/meta.new.json","w") as f:
+            json.dump({"lastUpdatedUTC": now.isoformat(), "serverNowUTC": now.isoformat()}, f, separators=(",",":"), sort_keys=True)
           PY
 
-      # ---- Commit only if changed ----
-      - name: Commit if changed
+      - name: Commit only if changed
+        if: steps.fetch.outputs.any_changed == 'true'
         run: |
           set -e
           CHANGED=0
-          for f in standings fixtures_week live_today meta; do
+          for f in standings fixtures_week live_today meta etags; do
             if [ -f "data/$f.json" ] && [ -f "data/$f.new.json" ]; then
               if cmp -s "data/$f.new.json" "data/$f.json"; then
-                echo "$f.json unchanged"
                 rm -f "data/$f.new.json"
               else
                 mv "data/$f.new.json" "data/$f.json"
                 CHANGED=1
               fi
-            else
+            elif [ -f "data/$f.new.json" ]; then
               mv "data/$f.new.json" "data/$f.json"
               CHANGED=1
             fi
           done
-
           if [ $CHANGED -eq 1 ]; then
             git config user.name "pl-bot"
             git config user.email "pl-bot@users.noreply.github.com"
@@ -183,5 +250,5 @@ jobs:
             git commit -m "Update PL data $(date -u +%Y-%m-%dT%H:%M:%SZ)"
             git push
           else
-            echo "No changes to commit."
+            echo "No JSON changes to commit."
           fi
