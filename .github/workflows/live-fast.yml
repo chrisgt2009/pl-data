@@ -30,18 +30,23 @@ jobs:
 
       - name: Today (UTC)
         id: d
-        run: echo "TODAY=$(date -u +%Y-%m-%d)" >> $GITHUB_OUTPUT
+        shell: bash
+        run: echo "TODAY=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
 
-      # Conditional GET via ETag (reduces calls)
       - name: Fetch today with ETag
         id: fetch
+        shell: bash
         run: |
-          old_etag=""
-          [ -f data/etags.json ] && old_etag=$(python - <<'PY' 2>/dev/null || true
-import json,sys; print(json.load(open('data/etags.json')).get('today',''))
-PY
-)
+          set -e
+          # read previous ETag (if file exists)
+          if [ -f data/etags.json ]; then
+            old_etag=$(python -c 'import json,sys; print(json.load(open("data/etags.json")).get("today",""))' 2>/dev/null || true)
+          else
+            old_etag=""
+          fi
+
           URL="https://api.football-data.org/v4/competitions/PL/matches?dateFrom=${{ steps.d.outputs.TODAY }}&dateTo=${{ steps.d.outputs.TODAY }}"
+
           if [ -n "$old_etag" ]; then
             code=$(curl -sS --fail --retry 3 --retry-delay 2 --connect-timeout 15 \
                    -H "User-Agent: $UA" -H "X-Auth-Token: $FD_TOKEN" -H "If-None-Match: $old_etag" \
@@ -51,16 +56,19 @@ PY
                    -H "User-Agent: $UA" -H "X-Auth-Token: $FD_TOKEN" \
                    -D headers.txt -o today.raw.json --write-out "%{http_code}" "$URL" || true)
           fi
-          echo "code=$code" >> $GITHUB_OUTPUT
+
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+
           if [ "$code" = "200" ]; then
             etag=$(grep -i '^etag:' headers.txt | awk '{print $2}' | tr -d '\r')
-            echo "etag=$etag" >> $GITHUB_OUTPUT
+            echo "etag=$etag" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Build live_today.json
         if: steps.fetch.outputs.code == '200'
+        shell: bash
         run: |
-          python - << 'PY'
+          python - <<'PY'
           import json, datetime
           from datetime import timezone
 
@@ -97,14 +105,14 @@ PY
             "lastUpdatedUTC": now.isoformat(),
             "matches": live
           }, open("data/live_today.new.json","w"), separators=(",",":"), sort_keys=True)
-
           PY
 
       - name: Update ETag store
         if: steps.fetch.outputs.code == '200'
+        shell: bash
         run: |
-          python - << 'PY'
-          import json, os
+          python - <<'PY'
+          import json, os, sys
           etags = {}
           if os.path.exists('data/etags.json'):
             try: etags = json.load(open('data/etags.json'))
@@ -119,6 +127,7 @@ PY
 
       - name: Commit only if changed
         if: steps.fetch.outputs.code == '200'
+        shell: bash
         run: |
           set -e
           CHANGED=0
