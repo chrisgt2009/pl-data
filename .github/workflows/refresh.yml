@@ -1,16 +1,17 @@
 name: Refresh PL data
 
+# Let the current run finish; queue the next
 concurrency:
   group: refresh-pl-data
   cancel-in-progress: false
 
 on:
   schedule:
-    # Weekends: every 10 min 11:00–20:59 UTC
+    # WEEKENDS (match-heavy): every 10 min 11:00–20:59 UTC
     - cron: "*/10 11-20 * * 6,0"
-    # Weekdays baseline: every 2 hours
+    # WEEKDAYS baseline: every 2 hours
     - cron: "0 */2 * * 1-5"
-    # Weekday evenings: every 20 min 18:00–22:59 UTC
+    # WEEKDAYS evenings: every 20 min, 18:00–22:59
     - cron: "*/20 18-22 * * 1-5"
   workflow_dispatch: {}
 
@@ -35,8 +36,8 @@ jobs:
         id: dates
         shell: bash
         run: |
-          echo "today=$(date -u +%Y-%m-%d)"     >> "$GITHUB_OUTPUT"
-          echo "in7=$(date -u -d '+7 days' +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+          echo "TODAY=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+          echo "IN7=$(date -u -d '+7 days' +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
 
       - name: Fetch with ETag (standings, fixtures_week, today)
         id: fetch
@@ -44,16 +45,20 @@ jobs:
         run: |
           set -e
 
-          # Read prior ETags with python -c (no heredocs)
-          ETAG_S=$(python -c 'import json,os; p="data/etags.json"; print(json.load(open(p)).get("standings","") if os.path.exists(p) else "")' 2>/dev/null || true)
-          ETAG_W=$(python -c 'import json,os; p="data/etags.json"; print(json.load(open(p)).get("fixtures_week","") if os.path.exists(p) else "")' 2>/dev/null || true)
-          ETAG_T=$(python -c 'import json,os; p="data/etags.json"; print(json.load(open(p)).get("today","") if os.path.exists(p) else "")' 2>/dev/null || true)
+          # Read previous ETags (tolerate missing file)
+          if [ -f data/etags.json ]; then
+            ETAG_S=$(python -c 'import json;print(json.load(open("data/etags.json")).get("standings",""))' 2>/dev/null || true)
+            ETAG_W=$(python -c 'import json;print(json.load(open("data/etags.json")).get("fixtures_week",""))' 2>/dev/null || true)
+            ETAG_T=$(python -c 'import json;print(json.load(open("data/etags.json")).get("today",""))' 2>/dev/null || true)
+          else
+            ETAG_S=""; ETAG_W=""; ETAG_T=""
+          fi
 
           URL_S="https://api.football-data.org/v4/competitions/PL/standings"
-          URL_W="https://api.football-data.org/v4/competitions/PL/matches?dateFrom=${{ steps.dates.outputs.today }}&dateTo=${{ steps.dates.outputs.in7 }}"
-          URL_T="https://api.football-data.org/v4/competitions/PL/matches?dateFrom=${{ steps.dates.outputs.today }}&dateTo=${{ steps.dates.outputs.today }}"
+          URL_W="https://api.football-data.org/v4/competitions/PL/matches?dateFrom=${{ steps.dates.outputs.TODAY }}&dateTo=${{ steps.dates.outputs.IN7 }}"
+          URL_T="https://api.football-data.org/v4/competitions/PL/matches?dateFrom=${{ steps.dates.outputs.TODAY }}&dateTo=${{ steps.dates.outputs.TODAY }}"
 
-          fetch_one() {
+          fetch_one () {
             local url="$1" etag="$2" body="$3" head="$4"
             if [ -n "$etag" ]; then
               curl -sS --fail --retry 3 --retry-delay 2 --connect-timeout 15 \
@@ -74,12 +79,18 @@ jobs:
           echo "code_w=$CODE_W" >> "$GITHUB_OUTPUT"
           echo "code_t=$CODE_T" >> "$GITHUB_OUTPUT"
 
+          # Safe ETag extraction (never fails if header missing)
+          extract_etag () {
+            local file="$1"
+            awk 'BEGIN{IGNORECASE=1} /^etag:/{print $2; exit}' "$file" 2>/dev/null | tr -d '\r' || true
+          }
+
           ANY_CHANGED=false
           NEW_S=""; NEW_W=""; NEW_T=""
 
-          if [ "$CODE_S" = "200" ]; then ANY_CHANGED=true; NEW_S=$(grep -i '^etag:' headers_s.txt | awk '{print $2}' | tr -d '\r'); fi
-          if [ "$CODE_W" = "200" ]; then ANY_CHANGED=true; NEW_W=$(grep -i '^etag:' headers_w.txt | awk '{print $2}' | tr -d '\r'); fi
-          if [ "$CODE_T" = "200" ]; then ANY_CHANGED=true; NEW_T=$(grep -i '^etag:' headers_t.txt | awk '{print $2}' | tr -d '\r'); fi
+          if [ "$CODE_S" = "200" ]; then ANY_CHANGED=true; NEW_S="$(extract_etag headers_s.txt)"; fi
+          if [ "$CODE_W" = "200" ]; then ANY_CHANGED=true; NEW_W="$(extract_etag headers_w.txt)"; fi
+          if [ "$CODE_T" = "200" ]; then ANY_CHANGED=true; NEW_T="$(extract_etag headers_t.txt)"; fi
 
           echo "any_changed=$ANY_CHANGED" >> "$GITHUB_OUTPUT"
           echo "new_s=$NEW_S" >> "$GITHUB_OUTPUT"
@@ -99,71 +110,76 @@ jobs:
           with open("fixtures_week.raw.json") as f: fixtures_week = json.load(f)
           with open("today.raw.json") as f: today = json.load(f)
 
+          # Standings (slim)
           out_s = {"season": standings.get("season"), "standings": standings.get("standings")}
           json.dump(out_s, open("data/standings.new.json","w"), separators=(",",":"), sort_keys=True)
 
+          # teamId -> position
           pos={}
           for st in standings.get("standings", []):
-            for row in st.get("table", []):
-              t=(row.get("team") or {})
-              tid=t.get("id")
-              if tid is not None: pos[tid]=row.get("position")
+              for row in st.get("table", []):
+                  t=(row.get("team") or {})
+                  tid=t.get("id")
+                  if tid is not None: pos[tid]=row.get("position")
 
+          # Fixtures next 7 days
           fw=[]
           for m in (fixtures_week.get("matches") or []):
-            fw.append({
-              "id": m.get("id"),
-              "utcDate": m.get("utcDate"),
-              "status": m.get("status"),
-              "matchday": m.get("matchday"),
-              "homeTeam": m.get("homeTeam"),
-              "awayTeam": m.get("awayTeam"),
-              "score": (m.get("score") or {}).get("fullTime"),
-              "competition": {
-                "id": (m.get("competition") or {}).get("id"),
-                "code": (m.get("competition") or {}).get("code"),
-                "name": (m.get("competition") or {}).get("name"),
-              }
-            })
+              fw.append({
+                  "id": m.get("id"),
+                  "utcDate": m.get("utcDate"),
+                  "status": m.get("status"),
+                  "matchday": m.get("matchday"),
+                  "homeTeam": m.get("homeTeam"),
+                  "awayTeam": m.get("awayTeam"),
+                  "score": (m.get("score") or {}).get("fullTime"),
+                  "competition": {
+                      "id": (m.get("competition") or {}).get("id"),
+                      "code": (m.get("competition") or {}).get("code"),
+                      "name": (m.get("competition") or {}).get("name"),
+                  }
+              })
           json.dump({
-            "range": {"from": "${{ steps.dates.outputs.today }}", "to": "${{ steps.dates.outputs.in7 }}"},
-            "matches": fw
+              "range": {"from": "${{ steps.dates.outputs.TODAY }}", "to": "${{ steps.dates.outputs.IN7 }}"},
+              "matches": fw
           }, open("data/fixtures_week.new.json","w"), separators=(",",":"), sort_keys=True)
 
+          # Live today (with serverNowUTC)
           def phase(status, utc_iso, now_utc):
-            try:
-              kick = datetime.datetime.fromisoformat((utc_iso or "").replace("Z","+00:00"))
-            except Exception:
-              return None, ""
-            mins = int(max(0, (now_utc - kick).total_seconds() // 60))
-            if status == "SCHEDULED": return mins, "Today"
-            if status == "IN_PLAY":   return (mins, f"{mins}’") if mins < 90 else (mins, f"90+{mins-90}’")
-            if status == "PAUSED":    return 45, "Half-Time"
-            if status == "FINISHED":  return 90, "FT"
-            return mins, status or ""
+              try:
+                  kick = datetime.datetime.fromisoformat((utc_iso or "").replace("Z","+00:00"))
+              except Exception:
+                  return None, ""
+              mins = int(max(0, (now_utc - kick).total_seconds() // 60))
+              if status == "SCHEDULED": return mins, "Today"
+              if status == "IN_PLAY":   return (mins, f"{mins}’") if mins < 90 else (mins, f"90+{mins-90}’")
+              if status == "PAUSED":    return 45, "Half-Time"
+              if status == "FINISHED":  return 90, "FT"
+              return mins, status or ""
 
           live=[]
           for m in (today.get("matches") or []):
-            st=m.get("status"); utc=m.get("utcDate")
-            mins,label=phase(st,utc,now)
-            ft=(m.get("score") or {}).get("fullTime") or {}
-            h=(m.get("homeTeam") or {}); a=(m.get("awayTeam") or {})
-            live.append({
-              "id": m.get("id"),
-              "utcDate": utc,
-              "status": st,
-              "approxMinute": mins,
-              "phase": label,
-              "home": {"id": h.get("id"), "tla": h.get("tla"), "name": h.get("name"),
-                       "score": ft.get("home"), "pos": pos.get(h.get("id"))},
-              "away": {"id": a.get("id"), "tla": a.get("tla"), "name": a.get("name"),
-                       "score": ft.get("away"), "pos": pos.get(a.get("id"))}
-            })
+              st=m.get("status"); utc=m.get("utcDate")
+              mins,label=phase(st,utc,now)
+              ft=(m.get("score") or {}).get("fullTime") or {}
+              h=(m.get("homeTeam") or {}); a=(m.get("awayTeam") or {})
+              live.append({
+                  "id": m.get("id"),
+                  "utcDate": utc,
+                  "status": st,
+                  "approxMinute": mins,
+                  "phase": label,
+                  "home": {"id": h.get("id"), "tla": h.get("tla"), "name": h.get("name"),
+                           "score": ft.get("home"), "pos": pos.get(h.get("id"))},
+                  "away": {"id": a.get("id"), "tla": a.get("tla"), "name": a.get("name"),
+                           "score": ft.get("away"), "pos": pos.get(a.get("id"))}
+              })
 
-          json.dump({"serverNowUTC": now.isoformat(),
-                     "lastUpdatedUTC": now.isoformat(),
-                     "matches": live},
-                    open("data/live_today.new.json","w"), separators=(",",":"), sort_keys=True)
+          json.dump({
+              "serverNowUTC": now.isoformat(),
+              "lastUpdatedUTC": now.isoformat(),
+              "matches": live
+          }, open("data/live_today.new.json","w"), separators=(",",":"), sort_keys=True)
 
           json.dump({"lastUpdatedUTC": now.isoformat(), "serverNowUTC": now.isoformat()},
                     open("data/meta.new.json","w"), separators=(",",":"), sort_keys=True)
@@ -173,19 +189,20 @@ jobs:
         if: steps.fetch.outputs.any_changed == 'true'
         shell: bash
         run: |
-          python - <<PY
+          python - <<'PY'
           import json, os
-          et = {}
-          p = 'data/etags.json'
+          p='data/etags.json'
+          et={}
           if os.path.exists(p):
-            try: et = json.load(open(p))
-            except: et = {}
-          ns = os.environ.get('NEW_S') or et.get('standings')
-          nw = os.environ.get('NEW_W') or et.get('fixtures_week')
-          nt = os.environ.get('NEW_T') or et.get('today')
-          if ns: et['standings'] = ns
-          if nw: et['fixtures_week'] = nw
-          if nt: et['today'] = nt
+            try: et=json.load(open(p))
+            except: et={}
+          import os
+          ns=os.environ.get('NEW_S')
+          nw=os.environ.get('NEW_W')
+          nt=os.environ.get('NEW_T')
+          if ns: et['standings']=ns
+          if nw: et['fixtures_week']=nw
+          if nt: et['today']=nt
           json.dump(et, open('data/etags.new.json','w'), separators=(',',':'), sort_keys=True)
           PY
         env:
