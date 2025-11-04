@@ -1,8 +1,8 @@
 name: Refresh PL data
 
-# Let the current run finish; queue the next
+# Serialize any writer to main (must match live-fast.yml)
 concurrency:
-  group: refresh-pl-data
+  group: pl-data-commit
   cancel-in-progress: false
 
 on:
@@ -28,6 +28,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # needed so we can pull --rebase before pushing
+          fetch-depth: 0
 
       - name: Ensure data dir
         run: mkdir -p data
@@ -78,9 +81,9 @@ jobs:
           CODE_T=$(fetch_one "$URL_T" "$ETAG_T" today.raw.json headers_t.txt || true)
           CODE_SC=$(fetch_one "$URL_SC" "$ETAG_SC" scorers.raw.json headers_sc.txt || true)
 
-          echo "code_s=$CODE_S"  >> "$GITHUB_OUTPUT"
-          echo "code_w=$CODE_W"  >> "$GITHUB_OUTPUT"
-          echo "code_t=$CODE_T"  >> "$GITHUB_OUTPUT"
+          echo "code_s=$CODE_S"   >> "$GITHUB_OUTPUT"
+          echo "code_w=$CODE_W"   >> "$GITHUB_OUTPUT"
+          echo "code_t=$CODE_T"   >> "$GITHUB_OUTPUT"
           echo "code_sc=$CODE_SC" >> "$GITHUB_OUTPUT"
 
           # Safe ETag extraction (never fails if header missing)
@@ -264,12 +267,23 @@ jobs:
               CHANGED=1
             fi
           done
+
           if [ $CHANGED -eq 1 ]; then
             git config user.name "pl-bot"
             git config user.email "pl-bot@users.noreply.github.com"
+
             git add data/*.json
             git commit -m "Update PL data $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-            git push
+
+            # stay in sync with remote and push; retry once on conflict
+            git fetch origin main
+            git pull --rebase origin main || true
+
+            if ! git push origin HEAD:main; then
+              echo "Push failed; retrying after rebase..."
+              git pull --rebase origin main || true
+              git push origin HEAD:main
+            fi
           else
             echo "No JSON changes to commit."
           fi
