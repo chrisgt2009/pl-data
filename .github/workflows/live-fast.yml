@@ -1,7 +1,8 @@
 name: Live PL (fast)
 
+# Serialize any writer to main (both workflows should use the same group)
 concurrency:
-  group: live-pl-fast
+  group: pl-data-commit
   cancel-in-progress: false
 
 on:
@@ -23,7 +24,11 @@ jobs:
       UA: live-bot/1.0 (+github.com/${{ github.repository }})
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # needed so we can pull --rebase before pushing
+          fetch-depth: 0
 
       - name: Ensure data dir
         run: mkdir -p data
@@ -31,105 +36,129 @@ jobs:
       - name: Today (UTC)
         id: d
         shell: bash
-        run: echo "TODAY=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "TODAY=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
 
       - name: Fetch today with ETag
         id: fetch
         shell: bash
         run: |
           set -e
+
+          # read existing ETag (if any)
+          old_etag=""
           if [ -f data/etags.json ]; then
-            old_etag=$(python -c 'import json,sys; print(json.load(open("data/etags.json")).get("today",""))' 2>/dev/null || true)
-          else
-            old_etag=""
+            old_etag=$(python - <<'PY' 2>/dev/null || true
+import json,sys
+try:
+  print(json.load(open("data/etags.json")).get("today",""))
+except Exception:
+  pass
+PY
+)
           fi
 
           URL="https://api.football-data.org/v4/competitions/PL/matches?dateFrom=${{ steps.d.outputs.TODAY }}&dateTo=${{ steps.d.outputs.TODAY }}"
 
+          # conditional GET; tolerate missing ETag
           if [ -n "$old_etag" ]; then
             code=$(curl -sS --fail --retry 3 --retry-delay 2 --connect-timeout 15 \
-                   -H "User-Agent: $UA" -H "X-Auth-Token: $FD_TOKEN" -H "If-None-Match: $old_etag" \
-                   -D headers.txt -o today.raw.json --write-out "%{http_code}" "$URL" || true)
+                    -H "User-Agent: $UA" \
+                    -H "X-Auth-Token: $FD_TOKEN" \
+                    -H "If-None-Match: $old_etag" \
+                    -D headers.txt -o today.raw.json --write-out "%{http_code}" "$URL" || true)
           else
             code=$(curl -sS --fail --retry 3 --retry-delay 2 --connect-timeout 15 \
-                   -H "User-Agent: $UA" -H "X-Auth-Token: $FD_TOKEN" \
-                   -D headers.txt -o today.raw.json --write-out "%{http_code}" "$URL" || true)
+                    -H "User-Agent: $UA" \
+                    -H "X-Auth-Token: $FD_TOKEN" \
+                    -D headers.txt -o today.raw.json --write-out "%{http_code}" "$URL" || true)
           fi
 
           echo "code=$code" >> "$GITHUB_OUTPUT"
 
+          # extract new ETag if 200
+          new_etag=""
           if [ "$code" = "200" ]; then
-            # tolerate missing ETag header safely
-            etag=$( (grep -i '^etag:' headers.txt || true) | awk '{print $2}' | tr -d '\r' )
-            echo "etag=$etag" >> "$GITHUB_OUTPUT"
+            new_etag=$(awk 'BEGIN{IGNORECASE=1} /^etag:/{print $2; exit}' headers.txt 2>/dev/null | tr -d '\r' || true)
+            echo "any_changed=true" >> "$GITHUB_OUTPUT"
+            echo "new_t=$new_etag"  >> "$GITHUB_OUTPUT"
+          else
+            echo "any_changed=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Build live_today.json
-        if: steps.fetch.outputs.code == '200'
+        if: steps.fetch.outputs.any_changed == 'true'
         shell: bash
         run: |
           python - <<'PY'
-          import json, datetime
-          from datetime import timezone
+import json, datetime
+from datetime import timezone
 
-          now = datetime.datetime.now(timezone.utc)
-          today = json.load(open("today.raw.json"))
+now = datetime.datetime.now(timezone.utc)
 
-          def phase(status, utc_iso, now_utc):
-            try:
-              kick = datetime.datetime.fromisoformat((utc_iso or "").replace("Z","+00:00"))
-            except Exception:
-              return None, ""
-            mins = int(max(0, (now_utc - kick).total_seconds() // 60))
-            if status == "SCHEDULED": return mins, "Today"
-            if status == "IN_PLAY":   return (mins, f"{mins}’") if mins < 90 else (mins, f"90+{mins-90}’")
-            if status == "PAUSED":    return 45, "Half-Time"
-            if status == "FINISHED":  return 90, "FT"
-            return mins, status or ""
+with open("today.raw.json") as f:
+    today = json.load(f)
 
-          live=[]
-          for m in (today.get("matches") or []):
-            st=m.get("status"); utc=m.get("utcDate")
-            mins,label=phase(st,utc,now)
-            ft=(m.get("score") or {}).get("fullTime") or {}
-            h=(m.get("homeTeam") or {}); a=(m.get("awayTeam") or {})
-            live.append({
-              "id": m.get("id"), "utcDate": utc, "status": st,
-              "approxMinute": mins, "phase": label,
-              "home": {"id": h.get("id"), "tla": h.get("tla"), "name": h.get("name"), "score": ft.get("home")},
-              "away": {"id": a.get("id"), "tla": a.get("tla"), "name": a.get("name"), "score": ft.get("away")}
-            })
+def phase(status, utc_iso, now_utc):
+    try:
+        kick = datetime.datetime.fromisoformat((utc_iso or "").replace("Z","+00:00"))
+    except Exception:
+        return None, ""
+    mins = int(max(0, (now_utc - kick).total_seconds() // 60))
+    if status == "SCHEDULED": return mins, "Today"
+    if status == "IN_PLAY":
+        return (mins, f"{mins}’") if mins < 90 else (mins, f"90+{mins-90}’")
+    if status == "PAUSED": return 45, "Half-Time"
+    if status == "FINISHED": return 90, "FT"
+    return mins, status or ""
 
-          json.dump({
-            "serverNowUTC": now.isoformat(),
-            "lastUpdatedUTC": now.isoformat(),
-            "matches": live
-          }, open("data/live_today.new.json","w"), separators=(",",":"), sort_keys=True)
-          PY
+live=[]
+for m in (today.get("matches") or []):
+    st=m.get("status"); utc=m.get("utcDate")
+    mins,label=phase(st,utc,now)
+    ft=(m.get("score") or {}).get("fullTime") or {}
+    h=(m.get("homeTeam") or {}); a=(m.get("awayTeam") or {})
+    live.append({
+        "id": m.get("id"),
+        "utcDate": utc,
+        "status": st,
+        "approxMinute": mins,
+        "phase": label,
+        "home": {"id": h.get("id"), "tla": h.get("tla"), "name": h.get("name"),
+                 "score": ft.get("home")},
+        "away": {"id": a.get("id"), "tla": a.get("tla"), "name": a.get("name"),
+                 "score": ft.get("away")}
+    })
+
+out = {"serverNowUTC": now.isoformat(), "lastUpdatedUTC": now.isoformat(), "matches": live}
+with open("data/live_today.new.json","w") as f:
+    json.dump(out, f, separators=(",",":"), sort_keys=True)
+PY
 
       - name: Update ETag store
-        if: steps.fetch.outputs.code == '200'
+        if: steps.fetch.outputs.any_changed == 'true'
         shell: bash
         run: |
           python - <<'PY'
-          import json, os
-          etags = {}
-          if os.path.exists('data/etags.json'):
-            try: etags = json.load(open('data/etags.json'))
-            except: etags = {}
-          et = os.environ.get('NEW_ETAG')
-          if et:
-            etags['today'] = et
-            json.dump(etags, open('data/etags.new.json','w'), separators=(',',':'), sort_keys=True)
-          PY
+import json, os
+p='data/etags.json'
+et={}
+if os.path.exists(p):
+  try: et=json.load(open(p))
+  except: et={}
+new_t=os.environ.get('NEW_T')
+if new_t: et['today']=new_t
+json.dump(et, open('data/etags.new.json','w'), separators=(',',':'), sort_keys=True)
+PY
         env:
-          NEW_ETAG: ${{ steps.fetch.outputs.etag }}
+          NEW_T: ${{ steps.fetch.outputs.new_t }}
 
       - name: Commit only if changed
-        if: steps.fetch.outputs.code == '200'
+        if: steps.fetch.outputs.any_changed == 'true'
         shell: bash
         run: |
           set -e
+
           CHANGED=0
           for f in live_today etags; do
             if [ -f "data/$f.json" ] && [ -f "data/$f.new.json" ]; then
@@ -148,9 +177,19 @@ jobs:
           if [ $CHANGED -eq 1 ]; then
             git config user.name "pl-bot"
             git config user.email "pl-bot@users.noreply.github.com"
+
             git add data/*.json
             git commit -m "Update live_today $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-            git push
+
+            # make sure we're up to date, then push; retry once on conflict
+            git fetch origin main
+            git pull --rebase origin main || true
+
+            if ! git push origin HEAD:main; then
+              echo "Push failed; retrying after rebase..."
+              git pull --rebase origin main || true
+              git push origin HEAD:main
+            fi
           else
-            echo "No live changes to commit."
+            echo "No JSON changes to commit."
           fi
