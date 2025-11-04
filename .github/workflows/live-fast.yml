@@ -38,7 +38,6 @@ jobs:
         shell: bash
         run: |
           set -e
-          # read previous ETag (if file exists)
           if [ -f data/etags.json ]; then
             old_etag=$(python -c 'import json,sys; print(json.load(open("data/etags.json")).get("today",""))' 2>/dev/null || true)
           else
@@ -60,7 +59,8 @@ jobs:
           echo "code=$code" >> "$GITHUB_OUTPUT"
 
           if [ "$code" = "200" ]; then
-            etag=$(grep -i '^etag:' headers.txt | awk '{print $2}' | tr -d '\r')
+            # tolerate missing ETag header safely
+            etag=$( (grep -i '^etag:' headers.txt || true) | awk '{print $2}' | tr -d '\r' )
             echo "etag=$etag" >> "$GITHUB_OUTPUT"
           fi
 
@@ -112,7 +112,7 @@ jobs:
         shell: bash
         run: |
           python - <<'PY'
-          import json, os, sys
+          import json, os
           etags = {}
           if os.path.exists('data/etags.json'):
             try: etags = json.load(open('data/etags.json'))
