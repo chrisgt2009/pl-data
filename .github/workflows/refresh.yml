@@ -39,7 +39,7 @@ jobs:
           echo "TODAY=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
           echo "IN7=$(date -u -d '+7 days' +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
 
-      - name: Fetch with ETag (standings, fixtures_week, today)
+      - name: Fetch with ETag (standings, fixtures_week, today, scorers)
         id: fetch
         shell: bash
         run: |
@@ -50,13 +50,15 @@ jobs:
             ETAG_S=$(python -c 'import json;print(json.load(open("data/etags.json")).get("standings",""))' 2>/dev/null || true)
             ETAG_W=$(python -c 'import json;print(json.load(open("data/etags.json")).get("fixtures_week",""))' 2>/dev/null || true)
             ETAG_T=$(python -c 'import json;print(json.load(open("data/etags.json")).get("today",""))' 2>/dev/null || true)
+            ETAG_SC=$(python -c 'import json;print(json.load(open("data/etags.json")).get("scorers",""))' 2>/dev/null || true)
           else
-            ETAG_S=""; ETAG_W=""; ETAG_T=""
+            ETAG_S=""; ETAG_W=""; ETAG_T=""; ETAG_SC=""
           fi
 
           URL_S="https://api.football-data.org/v4/competitions/PL/standings"
           URL_W="https://api.football-data.org/v4/competitions/PL/matches?dateFrom=${{ steps.dates.outputs.TODAY }}&dateTo=${{ steps.dates.outputs.IN7 }}"
           URL_T="https://api.football-data.org/v4/competitions/PL/matches?dateFrom=${{ steps.dates.outputs.TODAY }}&dateTo=${{ steps.dates.outputs.TODAY }}"
+          URL_SC="https://api.football-data.org/v4/competitions/PL/scorers?limit=30"
 
           fetch_one () {
             local url="$1" etag="$2" body="$3" head="$4"
@@ -74,10 +76,12 @@ jobs:
           CODE_S=$(fetch_one "$URL_S" "$ETAG_S" standings.raw.json headers_s.txt || true)
           CODE_W=$(fetch_one "$URL_W" "$ETAG_W" fixtures_week.raw.json headers_w.txt || true)
           CODE_T=$(fetch_one "$URL_T" "$ETAG_T" today.raw.json headers_t.txt || true)
+          CODE_SC=$(fetch_one "$URL_SC" "$ETAG_SC" scorers.raw.json headers_sc.txt || true)
 
-          echo "code_s=$CODE_S" >> "$GITHUB_OUTPUT"
-          echo "code_w=$CODE_W" >> "$GITHUB_OUTPUT"
-          echo "code_t=$CODE_T" >> "$GITHUB_OUTPUT"
+          echo "code_s=$CODE_S"  >> "$GITHUB_OUTPUT"
+          echo "code_w=$CODE_W"  >> "$GITHUB_OUTPUT"
+          echo "code_t=$CODE_T"  >> "$GITHUB_OUTPUT"
+          echo "code_sc=$CODE_SC" >> "$GITHUB_OUTPUT"
 
           # Safe ETag extraction (never fails if header missing)
           extract_etag () {
@@ -86,23 +90,25 @@ jobs:
           }
 
           ANY_CHANGED=false
-          NEW_S=""; NEW_W=""; NEW_T=""
+          NEW_S=""; NEW_W=""; NEW_T=""; NEW_SC=""
 
           if [ "$CODE_S" = "200" ]; then ANY_CHANGED=true; NEW_S="$(extract_etag headers_s.txt)"; fi
           if [ "$CODE_W" = "200" ]; then ANY_CHANGED=true; NEW_W="$(extract_etag headers_w.txt)"; fi
           if [ "$CODE_T" = "200" ]; then ANY_CHANGED=true; NEW_T="$(extract_etag headers_t.txt)"; fi
+          if [ "$CODE_SC" = "200" ]; then ANY_CHANGED=true; NEW_SC="$(extract_etag headers_sc.txt)"; fi
 
           echo "any_changed=$ANY_CHANGED" >> "$GITHUB_OUTPUT"
-          echo "new_s=$NEW_S" >> "$GITHUB_OUTPUT"
-          echo "new_w=$NEW_W" >> "$GITHUB_OUTPUT"
-          echo "new_t=$NEW_T" >> "$GITHUB_OUTPUT"
+          echo "new_s=$NEW_S"   >> "$GITHUB_OUTPUT"
+          echo "new_w=$NEW_W"   >> "$GITHUB_OUTPUT"
+          echo "new_t=$NEW_T"   >> "$GITHUB_OUTPUT"
+          echo "new_sc=$NEW_SC" >> "$GITHUB_OUTPUT"
 
       - name: Normalize / slim (only when changed)
         if: steps.fetch.outputs.any_changed == 'true'
         shell: bash
         run: |
           python - <<'PY'
-          import json, datetime
+          import json, datetime, os
           from datetime import timezone
           now = datetime.datetime.now(timezone.utc)
 
@@ -181,6 +187,32 @@ jobs:
               "matches": live
           }, open("data/live_today.new.json","w"), separators=(",",":"), sort_keys=True)
 
+          # Top scorers (if fetched this run)
+          try:
+              with open("scorers.raw.json") as f:
+                  sc_raw = json.load(f)
+              top = []
+              for s in (sc_raw.get("scorers") or [])[:30]:
+                  p = s.get("player") or {}
+                  t = s.get("team") or {}
+                  top.append({
+                      "playerId": p.get("id"),
+                      "player": p.get("name"),
+                      "nationality": p.get("nationality"),
+                      "teamId": t.get("id"),
+                      "team": t.get("name"),
+                      "teamTLA": t.get("tla"),
+                      "teamCrest": t.get("crest"),
+                      "goals": s.get("goals"),
+                      "assists": s.get("assists"),
+                      "penalties": s.get("penalties")
+                  })
+              json.dump({"scorers": top}, open("data/scorers.new.json","w"),
+                        separators=(",",":"), sort_keys=True)
+          except FileNotFoundError:
+              pass
+
+          # Meta
           json.dump({"lastUpdatedUTC": now.isoformat(), "serverNowUTC": now.isoformat()},
                     open("data/meta.new.json","w"), separators=(",",":"), sort_keys=True)
           PY
@@ -200,15 +232,18 @@ jobs:
           ns=os.environ.get('NEW_S')
           nw=os.environ.get('NEW_W')
           nt=os.environ.get('NEW_T')
+          nsc=os.environ.get('NEW_SC')
           if ns: et['standings']=ns
           if nw: et['fixtures_week']=nw
           if nt: et['today']=nt
+          if nsc: et['scorers']=nsc
           json.dump(et, open('data/etags.new.json','w'), separators=(',',':'), sort_keys=True)
           PY
         env:
-          NEW_S: ${{ steps.fetch.outputs.new_s }}
-          NEW_W: ${{ steps.fetch.outputs.new_w }}
-          NEW_T: ${{ steps.fetch.outputs.new_t }}
+          NEW_S:  ${{ steps.fetch.outputs.new_s }}
+          NEW_W:  ${{ steps.fetch.outputs.new_w }}
+          NEW_T:  ${{ steps.fetch.outputs.new_t }}
+          NEW_SC: ${{ steps.fetch.outputs.new_sc }}
 
       - name: Commit only if changed
         if: steps.fetch.outputs.any_changed == 'true'
@@ -216,7 +251,7 @@ jobs:
         run: |
           set -e
           CHANGED=0
-          for f in standings fixtures_week live_today meta etags; do
+          for f in standings fixtures_week live_today scorers meta etags; do
             if [ -f "data/$f.json" ] && [ -f "data/$f.new.json" ]; then
               if cmp -s "data/$f.new.json" "data/$f.json"; then
                 rm -f "data/$f.new.json"
