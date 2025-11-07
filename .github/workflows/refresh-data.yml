@@ -3,7 +3,7 @@ name: Refresh PL data
 # Serialize any writer to main (must match live-fast.yml)
 concurrency:
   group: pl-data-commit
-  cancel-in-progress: false
+  cancel-in-progress: false   # queue long refreshes; live-fast cancels-in-progress
 
 on:
   schedule:
@@ -11,7 +11,7 @@ on:
     - cron: "*/10 11-20 * * 6,0"
     # WEEKDAYS baseline: every 2 hours
     - cron: "0 */2 * * 1-5"
-    # WEEKDAYS evenings: every 20 min, 18:00–22:59
+    # WEEKDAYS evenings: every 20 min, 18:00–22:59 UTC
     - cron: "*/20 18-22 * * 1-5"
   workflow_dispatch: {}
 
@@ -21,6 +21,7 @@ permissions:
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     env:
       FD_TOKEN: ${{ secrets.FD_API_TOKEN }}
       UA: pl-bot/1.0 (+github.com/${{ github.repository }})
@@ -29,8 +30,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          # needed so we can pull --rebase before pushing
-          fetch-depth: 0
+          fetch-depth: 0   # allow rebase/pull before push
 
       - name: Ensure data dir
         run: mkdir -p data
@@ -39,6 +39,7 @@ jobs:
         id: dates
         shell: bash
         run: |
+          set -euo pipefail
           echo "TODAY=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
           echo "IN7=$(date -u -d '+7 days' +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
 
@@ -46,14 +47,14 @@ jobs:
         id: fetch
         shell: bash
         run: |
-          set -e
+          set -euo pipefail
 
-          # Read previous ETags (tolerate missing file)
+          # Read previous ETags (tolerate missing file) — use filename keys
           if [ -f data/etags.json ]; then
-            ETAG_S=$(python -c 'import json;print(json.load(open("data/etags.json")).get("standings",""))' 2>/dev/null || true)
-            ETAG_W=$(python -c 'import json;print(json.load(open("data/etags.json")).get("fixtures_week",""))' 2>/dev/null || true)
-            ETAG_T=$(python -c 'import json;print(json.load(open("data/etags.json")).get("today",""))' 2>/dev/null || true)
-            ETAG_SC=$(python -c 'import json;print(json.load(open("data/etags.json")).get("scorers",""))' 2>/dev/null || true)
+            ETAG_S=$(python -c 'import json;print(json.load(open("data/etags.json")).get("standings.json",""))' 2>/dev/null || true)
+            ETAG_W=$(python -c 'import json;print(json.load(open("data/etags.json")).get("fixtures_week.json",""))' 2>/dev/null || true)
+            ETAG_T=$(python -c 'import json;print(json.load(open("data/etags.json")).get("live_today.json",""))' 2>/dev/null || true)
+            ETAG_SC=$(python -c 'import json;print(json.load(open("data/etags.json")).get("scorers.json",""))' 2>/dev/null || true)
           else
             ETAG_S=""; ETAG_W=""; ETAG_T=""; ETAG_SC=""
           fi
@@ -86,7 +87,7 @@ jobs:
           echo "code_t=$CODE_T"   >> "$GITHUB_OUTPUT"
           echo "code_sc=$CODE_SC" >> "$GITHUB_OUTPUT"
 
-          # Safe ETag extraction (never fails if header missing)
+          # ETag extraction
           extract_etag () {
             local file="$1"
             awk 'BEGIN{IGNORECASE=1} /^etag:/{print $2; exit}' "$file" 2>/dev/null | tr -d '\r' || true
@@ -110,6 +111,7 @@ jobs:
         if: steps.fetch.outputs.any_changed == 'true'
         shell: bash
         run: |
+          set -euo pipefail
           python - <<'PY'
           import json, datetime, os
           from datetime import timezone
@@ -223,7 +225,13 @@ jobs:
       - name: Write/merge ETags (only when changed)
         if: steps.fetch.outputs.any_changed == 'true'
         shell: bash
+        env:
+          NEW_S:  ${{ steps.fetch.outputs.new_s }}
+          NEW_W:  ${{ steps.fetch.outputs.new_w }}
+          NEW_T:  ${{ steps.fetch.outputs.new_t }}
+          NEW_SC: ${{ steps.fetch.outputs.new_sc }}
         run: |
+          set -euo pipefail
           python - <<'PY'
           import json, os
           p='data/etags.json'
@@ -231,28 +239,22 @@ jobs:
           if os.path.exists(p):
             try: et=json.load(open(p))
             except: et={}
-          import os
-          ns=os.environ.get('NEW_S')
-          nw=os.environ.get('NEW_W')
-          nt=os.environ.get('NEW_T')
-          nsc=os.environ.get('NEW_SC')
-          if ns: et['standings']=ns
-          if nw: et['fixtures_week']=nw
-          if nt: et['today']=nt
-          if nsc: et['scorers']=nsc
+          ns=os.environ.get('NEW_S','')
+          nw=os.environ.get('NEW_W','')
+          nt=os.environ.get('NEW_T','')
+          nsc=os.environ.get('NEW_SC','')
+          if ns:  et['standings.json']=ns
+          if nw:  et['fixtures_week.json']=nw
+          if nt:  et['live_today.json']=nt
+          if nsc: et['scorers.json']=nsc
           json.dump(et, open('data/etags.new.json','w'), separators=(',',':'), sort_keys=True)
           PY
-        env:
-          NEW_S:  ${{ steps.fetch.outputs.new_s }}
-          NEW_W:  ${{ steps.fetch.outputs.new_w }}
-          NEW_T:  ${{ steps.fetch.outputs.new_t }}
-          NEW_SC: ${{ steps.fetch.outputs.new_sc }}
 
       - name: Commit only if changed
         if: steps.fetch.outputs.any_changed == 'true'
         shell: bash
         run: |
-          set -e
+          set -euo pipefail
           CHANGED=0
           for f in standings fixtures_week live_today scorers meta etags; do
             if [ -f "data/$f.json" ] && [ -f "data/$f.new.json" ]; then
@@ -268,17 +270,16 @@ jobs:
             fi
           done
 
+          # clean temps
+          rm -f headers_*.txt *.raw.json || true
+
           if [ $CHANGED -eq 1 ]; then
             git config user.name "pl-bot"
             git config user.email "pl-bot@users.noreply.github.com"
-
             git add data/*.json
             git commit -m "Update PL data $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-
-            # stay in sync with remote and push; retry once on conflict
             git fetch origin main
             git pull --rebase origin main || true
-
             if ! git push origin HEAD:main; then
               echo "Push failed; retrying after rebase..."
               git pull --rebase origin main || true
