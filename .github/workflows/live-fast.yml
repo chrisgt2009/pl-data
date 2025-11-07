@@ -27,7 +27,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # so we can pull --rebase before pushing
+          fetch-depth: 0   # allow rebase/pull before push
 
       - name: Ensure data dir
         run: mkdir -p data
@@ -36,22 +36,34 @@ jobs:
         id: d
         shell: bash
         run: |
+          set -euo pipefail
           echo "TODAY=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
 
       - name: Fetch today with ETag
         id: fetch
         shell: bash
         run: |
-          set -e
+          set -euo pipefail
 
-          # read existing ETag (if any) via python -c (no heredoc here -> no YAML issues)
-          old_etag=""
-          if [ -f data/etags.json ]; then
-            old_etag="$(python -c 'import json,os; p="data/etags.json"; print(json.load(open(p)).get("today","") if os.path.exists(p) else "")' 2>/dev/null || true)"
-          fi
-
+          FNAME="live_today.json"        # <-- unify name for ETag key
+          ETAGS="data/etags.json"
           URL="https://api.football-data.org/v4/competitions/PL/matches?dateFrom=${{ steps.d.outputs.TODAY }}&dateTo=${{ steps.d.outputs.TODAY }}"
 
+          # read existing ETag for FNAME if present
+          old_etag=""
+          if [ -f "$ETAGS" ]; then
+            old_etag="$(python - <<'PY' "$ETAGS" "$FNAME" || true
+import json, sys
+p, k = sys.argv[1], sys.argv[2]
+try:
+    print(json.load(open(p)).get(k,""))
+except Exception:
+    pass
+PY
+)"
+          fi
+
+          # build curl command (conditional GET if we have an ETag)
           if [ -n "$old_etag" ]; then
             code=$(curl -sS --fail --retry 3 --retry-delay 2 --connect-timeout 15 \
                     -H "User-Agent: $UA" \
@@ -66,8 +78,9 @@ jobs:
           fi
 
           echo "code=$code" >> "$GITHUB_OUTPUT"
+          echo "fname=$FNAME" >> "$GITHUB_OUTPUT"
 
-          # extract new ETag if 200
+          # extract new ETag only when 200 OK
           if [ "$code" = "200" ]; then
             new_etag=$(awk 'BEGIN{IGNORECASE=1} /^etag:/{print $2; exit}' headers.txt 2>/dev/null | tr -d '\r' || true)
             echo "any_changed=true" >> "$GITHUB_OUTPUT"
@@ -80,6 +93,7 @@ jobs:
         if: steps.fetch.outputs.any_changed == 'true'
         shell: bash
         run: |
+          set -euo pipefail
           python - <<'PY'
           import json, datetime
           from datetime import timezone
@@ -128,26 +142,32 @@ jobs:
       - name: Update ETag store
         if: steps.fetch.outputs.any_changed == 'true'
         shell: bash
-        run: |
-          python - <<'PY'
-          import json, os
-          p='data/etags.json'
-          et={}
-          if os.path.exists(p):
-            try: et=json.load(open(p))
-            except: et={}
-          new_t=os.environ.get('NEW_T')
-          if new_t: et['today']=new_t
-          json.dump(et, open('data/etags.new.json','w'), separators=(',',':'), sort_keys=True)
-          PY
         env:
           NEW_T: ${{ steps.fetch.outputs.new_t }}
+          FNAME: ${{ steps.fetch.outputs.fname }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os
+          etags_path='data/etags.json'
+          out_path='data/etags.new.json'
+          et={}
+          if os.path.exists(etags_path):
+            try: et=json.load(open(etags_path))
+            except: et={}
+          new_t=os.environ.get('NEW_T','')
+          fname=os.environ.get('FNAME','live_today.json')
+          if new_t:
+              et[fname]=new_t
+          with open(out_path,'w') as f:
+              json.dump(et, f, separators=(',',':'), sort_keys=True)
+          PY
 
       - name: Commit only if changed
         if: steps.fetch.outputs.any_changed == 'true'
         shell: bash
         run: |
-          set -e
+          set -euo pipefail
 
           CHANGED=0
           for f in live_today etags; do
@@ -164,6 +184,9 @@ jobs:
             fi
           done
 
+          # tidy temp files
+          rm -f headers.txt today.raw.json || true
+
           if [ $CHANGED -eq 1 ]; then
             git config user.name "pl-bot"
             git config user.email "pl-bot@users.noreply.github.com"
@@ -171,7 +194,6 @@ jobs:
             git add data/*.json
             git commit -m "Update live_today $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
-            # make sure we're up to date, then push; retry once on conflict
             git fetch origin main
             git pull --rebase origin main || true
 
