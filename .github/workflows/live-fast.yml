@@ -119,29 +119,9 @@ jobs:
         if: ${{ steps.gate.outputs.should_fetch == 'yes' && steps.fetch.outputs.any_changed == 'true' }}
         shell: bash
         run: |
-          python -c "import json,datetime as d; now=d.datetime.utcnow().replace(tzinfo=d.timezone.utc); today=json.load(open('today.raw.json')); 
-from_iso=lambda s: d.datetime.fromisoformat(s.replace('Z','+00:00')); 
-def phase(status, utc):
-    try: kick=from_iso((utc or ''))
-    except Exception: return None,''
-    mins=int(max(0,(now-kick).total_seconds()//60))
-    if status in ('SCHEDULED','TIMED'): return mins,'Today'
-    if status=='IN_PLAY': return mins,(f\"{mins}'\" if mins<90 else f\"90+{mins-90}'\")
-    if status=='PAUSED': return 45,'Half-Time'
-    if status=='FINISHED': return 90,'FT'
-    return mins,status or ''
-out={'serverNowUTC': now.isoformat(), 'lastUpdatedUTC': now.isoformat(), 'matches':[]}
-for m in today.get('matches',[]):
-    st=m.get('status'); utc=m.get('utcDate'); mins,label=phase(st,utc)
-    ft=(m.get('score') or {}); h=m.get('homeTeam') or {}; a=m.get('awayTeam') or {}
-    home_score = ft.get('home') if 'home' in ft else (ft.get('fullTime') or {}).get('home')
-    away_score = ft.get('away') if 'away' in ft else (ft.get('fullTime') or {}).get('away')
-    out['matches'].append({
-        'id': m.get('id'), 'utcDate': utc, 'status': st, 'approxMinute': mins, 'phase': label,
-        'home': {'id': h.get('id'), 'tla': h.get('tla'), 'name': h.get('name'), 'crest': h.get('crest'), 'score': home_score},
-        'away': {'id': a.get('id'), 'tla': a.get('tla'), 'name': a.get('name'), 'crest': a.get('crest'), 'score': away_score}
-    })
-json.dump(out, open('data/live_today.new.json','w'), separators=(',',':'), sort_keys=True)"
+          python -c 'import json,datetime as d; now=d.datetime.utcnow().replace(tzinfo=d.timezone.utc); today=json.load(open("today.raw.json")); from_iso=lambda s: d.datetime.fromisoformat(s.replace("Z","+00:00")); out={"serverNowUTC": now.isoformat(), "lastUpdatedUTC": now.isoformat(), "matches":[]}; 
+for m in today.get("matches",[]): st=(m.get("status") or ""); utc=m.get("utcDate"); kick=from_iso(utc) if utc else None; mins=int(max(0,(now-kick).total_seconds()//60)) if kick else None; approx=(45 if st=="PAUSED" else (90 if st=="FINISHED" else mins)); label=("Today" if st in ("SCHEDULED","TIMED") else ((f"{mins}\047" if (mins is not None and mins<90) else (f"90+{mins-90}\047" if mins is not None else "")) if st=="IN_PLAY" else ("Half-Time" if st=="PAUSED" else ("FT" if st=="FINISHED" else (st or ""))))); ft=(m.get("score") or {}); h=m.get("homeTeam") or {}; a=m.get("awayTeam") or {}; home_score=(ft.get("home") if "home" in ft else (ft.get("fullTime") or {}).get("home")); away_score=(ft.get("away") if "away" in ft else (ft.get("fullTime") or {}).get("away")); out["matches"].append({"id": m.get("id"), "utcDate": utc, "status": st, "approxMinute": approx, "phase": label, "home": {"id": h.get("id"), "tla": h.get("tla"), "name": h.get("name"), "crest": h.get("crest"), "score": home_score}, "away": {"id": a.get("id"), "tla": a.get("tla"), "name": a.get("name"), "crest": a.get("crest"), "score": away_score}});
+json.dump(out, open("data/live_today.new.json","w"), separators=(",",":"), sort_keys=True)'
 
       - name: Update ETag store
         if: ${{ steps.gate.outputs.should_fetch == 'yes' && steps.fetch.outputs.any_changed == 'true' }}
@@ -149,7 +129,7 @@ json.dump(out, open('data/live_today.new.json','w'), separators=(',',':'), sort_
         env:
           NEW_ETAG: ${{ steps.fetch.outputs.new_etag }}
         run: |
-          python -c "import json,os,sys; p='data/etags_live.json'; 
+          python -c "import json,os; p='data/etags_live.json'; 
 try: et=json.load(open(p))
 except Exception: et={}
 ne=os.environ.get('NEW_ETAG')
