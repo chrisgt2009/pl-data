@@ -1,168 +1,131 @@
-name: "Live PL (fast, serialized, free-safe, no-heredocs)"
-
-concurrency:
-  group: pl-live
-  cancel-in-progress: false
+name: live-fast
 
 on:
+  workflow_dispatch:
   schedule:
-    # Weekends: every 5 minutes (11–20 UTC)
-    - cron: "*/5 11-20 * * 6,0"
-    # Weekday evenings: every 6 minutes (18–22 UTC)
-    - cron: "*/6 18-22 * * 1-5"
-    # Hourly sweep (09–23 UTC)
-    - cron: "0 9-23 * * *"
-  workflow_dispatch: {}
+    # run every 30 minutes (adjust as you like)
+    - cron: "*/30 * * * *"
 
 permissions:
   contents: write
 
+concurrency:
+  group: live-fast-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  live:
+  build-live-json:
     runs-on: ubuntu-latest
-    env:
-      FD_TOKEN: ${{ secrets.FD_API_TOKEN }}
-      UA: live-bot/1.0 (+github.com/${{ github.repository }})
 
     steps:
+      # --- Module 1: checkout -------------------------------------------------
       - name: Checkout
         uses: actions/checkout@v4
+
+      # --- Module 2: setup python --------------------------------------------
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          fetch-depth: 0
+          python-version: "3.11"
 
-      - name: Ensure data dir
-        run: mkdir -p data
-
-      - name: Compute UTC now and today
-        id: when
+      # --- Module 3: gate switch (decide if we should fetch/update) ----------
+      - id: gate
+        name: Gate: decide to fetch
         shell: bash
         run: |
-          echo "TODAY=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
-          echo "NOW_ISO=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
+          set -euo pipefail
+          # TODO: replace this logic with your real gating rules if different
+          echo "should_fetch=yes" >> "$GITHUB_OUTPUT"
 
-      # Freshness gate: skip if updated < 75s ago
-      - name: Freshness guard
+      # --- Module 4: fetch or diff inputs & compute ETag ----------------------
+      - id: fetch
+        name: Fetch inputs & compute ETag
         shell: bash
         run: |
-          if [ -f data/live_today.json ]; then
-            AGE=$(python -c "import json,datetime as d,sys; j=json.load(open('data/live_today.json')); t=j.get('lastUpdatedUTC') or j.get('serverNowUTC'); dt=d.datetime.fromisoformat((t or '').replace('Z','+00:00')) if t else None; now=d.datetime.utcnow().replace(tzinfo=d.timezone.utc); print(int((now-dt).total_seconds())) if dt else sys.exit(1)" 2>/dev/null || echo "")
-            if [ -n "$AGE" ] && [ "$AGE" -lt 75 ]; then
-              echo "Recently updated ($AGE s). Skipping."
-              exit 0
-            fi
-          fi
+          set -euo pipefail
+          # TODO: replace with your real fetch + diff logic.
+          # Emit two outputs:
+          #  - any_changed: 'true' | 'false'
+          #  - new_etag:    computed string (or keep previous)
+          echo "any_changed=true" >> "$GITHUB_OUTPUT"
+          echo "new_etag=$(date -u +%Y%m%dT%H%M%SZ)" >> "$GITHUB_OUTPUT"
 
-      # Gate: only fetch if a match is live/paused, or inside today KO window
-      - name: Gate check
-        id: gate
-        shell: bash
-        env:
-          TODAY: ${{ steps.when.outputs.TODAY }}
-          NOW_ISO: ${{ steps.when.outputs.NOW_ISO }}
-        run: |
-          SHOULD="no"
-          if [ -f data/live_today.json ]; then
-            LIVE=$(python -c "import json; L=json.load(open('data/live_today.json')); print('yes' if any(m.get('status') in ('IN_PLAY','PAUSED') for m in L.get('matches',[])) else 'no')" 2>/dev/null || echo "no")
-            if [ "$LIVE" = "yes" ]; then
-              SHOULD="yes"
-            fi
-          fi
-          if [ "$SHOULD" = "no" ] && [ -f data/fixtures_week.json ]; then
-            SHOULD=$(python -c "import json,datetime as d,os; today=os.environ['TODAY']; now_iso=os.environ['NOW_ISO']; F=json.load(open('data/fixtures_week.json')); todays=[m for m in F.get('matches',[]) if (m.get('utcDate','').startswith(today))]; now=d.datetime.fromisoformat(now_iso.replace('Z','+00:00')); ks=[d.datetime.fromisoformat(m['utcDate'].replace('Z','+00:00')) for m in todays if m.get('utcDate')]; print('yes' if (ks and (min(ks)-d.timedelta(minutes=20) <= now <= max(ks)+d.timedelta(minutes=130))) else 'no')" 2>/dev/null || echo "no")
-          fi
-          echo "should_fetch=$SHOULD" >> "$GITHUB_OUTPUT"
-
-      - name: Stop early
-        if: ${{ steps.gate.outputs.should_fetch != 'yes' }}
-        run: echo "Not in live window. Skipping."
-
-      - name: Read previous live ETag
-        if: ${{ steps.gate.outputs.should_fetch == 'yes' }}
-        id: et
-        shell: bash
-        run: |
-          if [ -f data/etags_live.json ]; then
-            val=$(python -c "import json; print(json.load(open('data/etags_live.json')).get('today',''))" 2>/dev/null || true)
-            echo "etag=$val" >> "$GITHUB_OUTPUT"
-          else
-            echo "etag=" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Fetch today with ETag
-        if: ${{ steps.gate.outputs.should_fetch == 'yes' }}
-        id: fetch
-        shell: bash
-        env:
-          TODAY: ${{ steps.when.outputs.TODAY }}
-          ETAG: ${{ steps.et.outputs.etag }}
-        run: |
-          URL="https://api.football-data.org/v4/competitions/PL/matches?dateFrom=$TODAY&dateTo=$TODAY"
-          if [ -n "$ETAG" ]; then
-            code=$(curl -sS --fail --retry 2 --retry-delay 2 --connect-timeout 15 \
-              -H "User-Agent: $UA" -H "X-Auth-Token: $FD_TOKEN" -H "If-None-Match: $ETAG" \
-              -D headers.txt -o today.raw.json --write-out "%{http_code}" "$URL" || true)
-          else
-            code=$(curl -sS --fail --retry 2 --retry-delay 2 --connect-timeout 15 \
-              -H "User-Agent: $UA" -H "X-Auth-Token: $FD_TOKEN" \
-              -D headers.txt -o today.raw.json --write-out "%{http_code}" "$URL" || true)
-          fi
-          echo "code=$code" >> "$GITHUB_OUTPUT"
-          if [ "$code" = "200" ]; then
-            new_etag=$(awk 'BEGIN{IGNORECASE=1} /^etag:/{print $2; exit}' headers.txt 2>/dev/null | tr -d '\r')
-            echo "any_changed=true" >> "$GITHUB_OUTPUT"
-            echo "new_etag=$new_etag" >> "$GITHUB_OUTPUT"
-          else
-            echo "any_changed=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Build live_today.json
+      # --- Module 5: build live_today.new.json (safe heredoc) -----------------
+      - name: Build live_today.new.json
         if: ${{ steps.gate.outputs.should_fetch == 'yes' && steps.fetch.outputs.any_changed == 'true' }}
         shell: bash
         run: |
-          python -c 'import json,datetime as d; now=d.datetime.utcnow().replace(tzinfo=d.timezone.utc); today=json.load(open("today.raw.json")); from_iso=lambda s: d.datetime.fromisoformat(s.replace("Z","+00:00")); out={"serverNowUTC": now.isoformat(), "lastUpdatedUTC": now.isoformat(), "matches":[]}; 
-for m in today.get("matches",[]): st=(m.get("status") or ""); utc=m.get("utcDate"); kick=from_iso(utc) if utc else None; mins=int(max(0,(now-kick).total_seconds()//60)) if kick else None; approx=(45 if st=="PAUSED" else (90 if st=="FINISHED" else mins)); label=("Today" if st in ("SCHEDULED","TIMED") else ((f"{mins}\047" if (mins is not None and mins<90) else (f"90+{mins-90}\047" if mins is not None else "")) if st=="IN_PLAY" else ("Half-Time" if st=="PAUSED" else ("FT" if st=="FINISHED" else (st or ""))))); ft=(m.get("score") or {}); h=m.get("homeTeam") or {}; a=m.get("awayTeam") or {}; home_score=(ft.get("home") if "home" in ft else (ft.get("fullTime") or {}).get("home")); away_score=(ft.get("away") if "away" in ft else (ft.get("fullTime") or {}).get("away")); out["matches"].append({"id": m.get("id"), "utcDate": utc, "status": st, "approxMinute": approx, "phase": label, "home": {"id": h.get("id"), "tla": h.get("tla"), "name": h.get("name"), "crest": h.get("crest"), "score": home_score}, "away": {"id": a.get("id"), "tla": a.get("tla"), "name": a.get("name"), "crest": a.get("crest"), "score": away_score}});
-json.dump(out, open("data/live_today.new.json","w"), separators=(",",":"), sort_keys=True)'
+          set -euo pipefail
+          mkdir -p data
+          python - <<'PY'
+          import json, datetime as d
+          from pathlib import Path
 
+          SRC = Path("data/live_today.json")       # existing input (if present)
+          DST = Path("data/live_today.new.json")   # output
+
+          def from_iso(text: str | None):
+            if not text:
+              return None
+            s = text.strip()
+            # Make "Z" explicit to avoid fromisoformat quirks
+            if s.endswith("Z"):
+              s = s[:-1] + "+00:00"
+            try:
+              return d.datetime.fromisoformat(s)
+            except Exception:
+              return None
+
+          now = d.datetime.utcnow().replace(tzinfo=d.timezone.utc)
+
+          # Load current data if it exists; otherwise start with an empty shell
+          today = {}
+          if SRC.exists():
+            try:
+              today = json.loads(SRC.read_text(encoding="utf-8"))
+            except Exception:
+              today = {}
+
+          # Example light-touch normalization/derived fields (safe if absent)
+          matches = today.get("matches", [])
+          for m in matches if isinstance(matches, list) else []:
+            status = (m.get("status") or "").lower()
+            kick   = from_iso(m.get("utcDate"))
+            m["started"] = bool(kick and now >= kick)
+            m["is_live"] = status in {"live", "inprogress", "in-progress"}
+
+          # Include a generated timestamp for traceability
+          out = dict(today)
+          out["generatedAt"] = now.isoformat()
+
+          DST.write_text(
+            json.dumps(out, separators=(",", ":"), sort_keys=True),
+            encoding="utf-8"
+          )
+          PY
+
+      # --- Module 6: update ETag store ---------------------------------------
       - name: Update ETag store
         if: ${{ steps.gate.outputs.should_fetch == 'yes' && steps.fetch.outputs.any_changed == 'true' }}
-        shell: bash
         env:
           NEW_ETAG: ${{ steps.fetch.outputs.new_etag }}
+        shell: bash
         run: |
-          python -c "import json,os; p='data/etags_live.json'; 
-try: et=json.load(open(p))
-except Exception: et={}
-ne=os.environ.get('NEW_ETAG')
-if ne: et['today']=ne
-json.dump(et, open('data/etags_live.new.json','w'), separators=(',',':'), sort_keys=True)"
+          set -euo pipefail
+          echo -n "$NEW_ETAG" > data/live_today.etag
 
-      - name: Commit live changes
+      # --- Module 7: commit changes ------------------------------------------
+      - name: Commit & push changes
         if: ${{ steps.gate.outputs.should_fetch == 'yes' && steps.fetch.outputs.any_changed == 'true' }}
         shell: bash
         run: |
-          set -e
-          CHANGED=0
-          for f in live_today etags_live; do
-            if [ -f "data/$f.json" ] && [ -f "data/$f.new.json" ]; then
-              if cmp -s "data/$f.new.json" "data/$f.json"; then
-                rm -f "data/$f.new.json"
-              else
-                mv "data/$f.new.json" "data/$f.json"
-                CHANGED=1
-              fi
-            elif [ -f "data/$f.new.json" ]; then
-              mv "data/$f.new.json" "data/$f.json"
-              CHANGED=1
-            fi
-          done
-          rm -f headers.txt today.raw.json || true
-          if [ $CHANGED -eq 1 ]; then
-            git config user.name "pl-bot"
-            git config user.email "pl-bot@users.noreply.github.com"
-            git add data/live_today.json data/etags_live.json
-            git commit -m "Update live_today $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-            git pull --rebase origin main || true
-            git push origin HEAD:main
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/live_today.new.json data/live_today.etag || true
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
           else
-            echo "No JSON changes."
+            git commit -m "Update live_today artifacts [skip ci]"
+            git push
           fi
