@@ -41,15 +41,23 @@ jobs:
 
       - name: Freshness check (<75s, skip if recent)
         id: freshness
+        shell: bash
         run: |
           if [ -f data/live_today.json ]; then
-            AGE=$(python -c 'import json, datetime
-j = json.load(open("data/live_today.json"))
-t = j.get("lastUpdatedUTC") or j.get("serverNowUTC")
-if not t: exit(1)
-dt = datetime.datetime.fromisoformat(t.replace("Z", "+00:00"))
-now = datetime.datetime.now(datetime.timezone.utc)
-print(int((now - dt).total_seconds()))' || echo "")
+            AGE=$(python - <<EOF
+import json, datetime, sys
+try:
+  j = json.load(open("data/live_today.json"))
+  t = j.get("lastUpdatedUTC") or j.get("serverNowUTC")
+  if not t:
+    sys.exit(1)
+  dt = datetime.datetime.fromisoformat(t.replace("Z", "+00:00"))
+  now = datetime.datetime.now(datetime.timezone.utc)
+  print(int((now - dt).total_seconds()))
+except Exception:
+  print("")
+EOF
+)
             if [ -n "$AGE" ] && [ "$AGE" -lt 75 ]; then
               echo "skip=true" >> "$GITHUB_OUTPUT"
               echo "Recently updated ($AGE s ago). Skipping."
@@ -64,43 +72,58 @@ print(int((now - dt).total_seconds()))' || echo "")
         env:
           TODAY: ${{ steps.when.outputs.TODAY }}
           NOW_ISO: ${{ steps.when.outputs.NOW_ISO }}
+        shell: bash
         run: |
           SHOULD="no"
           if [ -f data/live_today.json ]; then
-            LIVE=$(python -c 'import json
-L = json.load(open("data/live_today.json"))
-print("yes" if any(m.get("status") in ("IN_PLAY", "PAUSED") for m in L.get("matches", [])) else "no")' || echo "no")
+            LIVE=$(python - <<EOF
+import json
+try:
+  L = json.load(open("data/live_today.json"))
+  print("yes" if any(m.get("status") in ("IN_PLAY", "PAUSED") for m in L.get("matches", [])) else "no")
+except:
+  print("no")
+EOF
+)
             [ "$LIVE" = "yes" ] && SHOULD="yes"
           fi
 
           if [ "$SHOULD" = "no" ] && [ -f data/fixtures_week.json ]; then
-            SHOULD=$(python -c 'import os, json, datetime
-today = os.getenv("TODAY")
-now_iso = os.getenv("NOW_ISO")
-F = json.load(open("data/fixtures_week.json"))
-matches = [m for m in F.get("matches", []) if m.get("utcDate", "").startswith(today)]
-if not matches: print("no"); exit(0)
-now = datetime.datetime.fromisoformat(now_iso.replace("Z", "+00:00"))
-kicks = [datetime.datetime.fromisoformat(m["utcDate"].replace("Z", "+00:00")) for m in matches if m.get("utcDate")]
-if not kicks: print("no"); exit(0)
-start = min(kicks) - datetime.timedelta(minutes=20)
-end = max(kicks) + datetime.timedelta(minutes=130)
-print("yes" if start <= now <= end else "no")' || echo "no")
+            SHOULD=$(python - <<EOF
+import os, json, datetime as d
+today = os.getenv("TODAY", "")
+now_iso = os.getenv("NOW_ISO", "")
+try:
+  F = json.load(open("data/fixtures_week.json"))
+  todays = [m for m in F.get("matches", []) if m.get("utcDate", "").startswith(today)]
+  if not todays:
+    print("no"); exit()
+  now = d.datetime.fromisoformat(now_iso.replace("Z", "+00:00"))
+  ks = [d.datetime.fromisoformat(m["utcDate"].replace("Z", "+00:00")) for m in todays if m.get("utcDate")]
+  if not ks:
+    print("no"); exit()
+  start = min(ks) - d.timedelta(minutes=20)
+  end = max(ks) + d.timedelta(minutes=130)
+  print("yes" if start <= now <= end else "no")
+except:
+  print("no")
+EOF
+)
           fi
 
           echo "should_fetch=$SHOULD" >> "$GITHUB_OUTPUT"
 
       - name: Read existing ETag
         id: et
-        if: steps.freshness.outputs.skip != 'true' && steps.gate.outputs.should_fetch == 'yes'
+        if: steps.gate.outputs.should_fetch == 'yes'
+        shell: bash
         run: |
-          echo "etag=$(python -c 'import json
-try: print(json.load(open("data/etags_live.json")).get("today", ""))
-except: print("")' || true)" >> "$GITHUB_OUTPUT"
+          echo "etag=$(python -c 'import json; print(json.load(open("data/etags_live.json")).get("today", ""))' 2>/dev/null || true)" >> "$GITHUB_OUTPUT"
 
-      - name: Fetch today's matches with ETag
+      - name: Fetch today’s matches with ETag
         id: fetch
         if: steps.gate.outputs.should_fetch == 'yes'
+        shell: bash
         run: |
           URL="https://api.football-data.org/v4/competitions/PL/matches?dateFrom=${{ steps.when.outputs.TODAY }}&dateTo=${{ steps.when.outputs.TODAY }}"
           if [ -n "${{ steps.et.outputs.etag }}" ]; then
@@ -113,6 +136,7 @@ except: print("")' || true)" >> "$GITHUB_OUTPUT"
               -H "User-Agent: $UA" -H "X-Auth-Token: $FD_TOKEN" \
               -D headers.txt -o today.raw.json --write-out "%{http_code}" "$URL")
           fi
+
           echo "code=$code" >> "$GITHUB_OUTPUT"
           if [ "$code" = "200" ]; then
             new_etag=$(awk 'BEGIN{IGNORECASE=1} /^etag:/{print $2; exit}' headers.txt | tr -d '\r')
@@ -124,17 +148,20 @@ except: print("")' || true)" >> "$GITHUB_OUTPUT"
 
       - name: Build live_today.json from response
         if: steps.fetch.outputs.any_changed == 'true'
+        shell: bash
         run: |
-          python -c 'import json, datetime
+          python - <<EOF
+import json, datetime
 now = datetime.datetime.now(datetime.timezone.utc)
 today = json.load(open("today.raw.json"))
 def phase(status, utc):
   try:
     kick = datetime.datetime.fromisoformat(utc.replace("Z", "+00:00"))
     mins = int(max(0, (now - kick).total_seconds() // 60))
-  except: return 0, ""
+  except:
+    return 0, ""
   if status in ("SCHEDULED", "TIMED"): return mins, "Today"
-  if status == "IN_PLAY": return mins, f"{mins}\'" if mins < 90 else f"90+{mins-90}\'"
+  if status == "IN_PLAY": return mins, f"{mins}'" if mins < 90 else f"90+{mins - 90}'"
   if status == "PAUSED": return 45, "Half-Time"
   if status == "FINISHED": return 90, "FT"
   return mins, status or ""
@@ -148,24 +175,29 @@ for m in today.get("matches", []):
     "home": {**m.get("homeTeam", {}), "score": ft.get("home")},
     "away": {**m.get("awayTeam", {}), "score": ft.get("away")},
   })
-json.dump(out, open("data/live_today.new.json", "w"), separators=(",", ":"), sort_keys=True)'
+json.dump(out, open("data/live_today.new.json", "w"), separators=(",", ":"), sort_keys=True)
+EOF
 
-      - name: Update ETag JSON
+      - name: Update ETag file
         if: steps.fetch.outputs.any_changed == 'true'
         env:
           NEW_ETAG: ${{ steps.fetch.outputs.new_etag }}
+        shell: bash
         run: |
-          python -c 'import json, os
+          python - <<EOF
+import json, os
 path = "data/etags_live.json"
 et = {}
 try: et = json.load(open(path))
 except: pass
 new = os.getenv("NEW_ETAG", "").strip()
 if new: et["today"] = new
-json.dump(et, open("data/etags_live.new.json", "w"), separators=(",", ":"), sort_keys=True)'
+json.dump(et, open("data/etags_live.new.json", "w"), separators=(",", ":"), sort_keys=True)
+EOF
 
-      - name: Commit updated data files
+      - name: Commit updated files
         if: steps.fetch.outputs.any_changed == 'true'
+        shell: bash
         run: |
           set -e
           CHANGED=0
