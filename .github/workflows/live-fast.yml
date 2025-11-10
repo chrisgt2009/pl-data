@@ -65,42 +65,12 @@ jobs:
           SHOULD="no"
 
           if [ -f data/live_today.json ]; then
-            LIVE=$(python -c 'import json,sys
-try:
-  L=json.load(open("data/live_today.json"))
-  if any(m.get("status") in ("IN_PLAY","PAUSED") for m in L.get("matches",[])):
-    print("yes")
-  else:
-    print("no")
-except Exception:
-  print("no")' 2>/dev/null || echo "no")
+            LIVE=$(python -c 'import json,sys; L=json.load(open("data/live_today.json")); print("yes" if any(m.get("status") in ("IN_PLAY","PAUSED") for m in L.get("matches",[])) else "no")' 2>/dev/null || echo "no")
             [ "$LIVE" = "yes" ] && SHOULD="yes"
           fi
 
           if [ "$SHOULD" = "no" ] && [ -f data/fixtures_week.json ]; then
-            SHOULD=$(python -c 'import os,json,datetime,sys
-today=os.getenv("TODAY","")
-now_iso=os.getenv("NOW_ISO","")
-try:
-  F=json.load(open("data/fixtures_week.json"))
-  todays=[m for m in F.get("matches",[]) if (m.get("utcDate","").startswith(today))]
-  if not todays:
-    print("no")
-    sys.exit(0)
-  now=datetime.datetime.fromisoformat(now_iso.replace("Z","+00:00"))
-  ks=[]
-  for m in todays:
-    u=m.get("utcDate")
-    if u:
-      ks.append(datetime.datetime.fromisoformat(u.replace("Z","+00:00")))
-  if not ks:
-    print("no")
-    sys.exit(0)
-  start=min(ks)-datetime.timedelta(minutes=20)
-  end=max(ks)+datetime.timedelta(minutes=130)
-  print("yes" if (start <= now <= end) else "no")
-except Exception:
-  print("no")' 2>/dev/null || echo "no")
+            SHOULD=$(python -c 'import os,json,datetime,sys; today=os.getenv("TODAY",""); now_iso=os.getenv("NOW_ISO",""); F=json.load(open("data/fixtures_week.json")); todays=[m for m in F.get("matches",[]) if m.get("utcDate","").startswith(today)]; print("no") if not todays else None; now=datetime.datetime.fromisoformat(now_iso.replace("Z","+00:00")); ks=[datetime.datetime.fromisoformat(m.get("utcDate").replace("Z","+00:00")) for m in todays if m.get("utcDate")]; print("no") if not ks else None; start=min(ks)-datetime.timedelta(minutes=20); end=max(ks)+datetime.timedelta(minutes=130); print("yes" if start<=now<=end else "no")' 2>/dev/null || echo "no")
           fi
 
           echo "should_fetch=$SHOULD" >> "$GITHUB_OUTPUT"
