@@ -1,15 +1,18 @@
-name: Live PL (fast)
+name: Live PL (fast, serialized, FREE-safe)
 
+# Serialize live runs; never cancel mid-run
 concurrency:
-  group: pl-data-commit
-  cancel-in-progress: true   # cancel queued runs if a new one starts
+  group: pl-live
+  cancel-in-progress: false
 
 on:
   schedule:
-    # Weekends: every 5 min 11:00–21:59 UTC
-    - cron: "*/5 11-21 * * 6,0"
-    # Weekday evenings: every 10 min 18:00–22:59 UTC
-    - cron: "*/10 18-22 * * 1-5"
+    # Weekends: every 10 minutes in typical UK match window
+    - cron: "*/10 11-22 * * 6,0"
+    # Weekdays evenings: every 20 minutes
+    - cron: "*/20 18-22 * * 1-5"
+    # Light daily sweeps to catch rare midday fixtures (cheap + gated)
+    - cron: "0 12,15 * * 1-5"
   workflow_dispatch: {}
 
 permissions:
@@ -18,146 +21,265 @@ permissions:
 jobs:
   live:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
     env:
       FD_TOKEN: ${{ secrets.FD_API_TOKEN }}
       UA: live-bot/1.0 (+github.com/${{ github.repository }})
 
+      # ---------- FREE PLAN BUDGET ----------
+      # Keep a strict daily cap for live calls so total stays < 50/day.
+      # Leave ~15-20 for refresh workflow.
+      LIVE_DAILY_LIMIT: "30"      # tweak if needed
+      FRESHNESS_SECONDS: "720"    # 12 minutes; skip if we wrote recently
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+        with: { fetch-depth: 0 }
 
       - name: Ensure data dir
         run: mkdir -p data
 
-      - name: Today (UTC)
-        id: d
+      - name: Compute UTC now / today
+        id: when
+        run: |
+          echo "TODAY=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+          echo "NOW_ISO=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
+
+      # ---------- Hard daily quota guard (live) ----------
+      - name: Quota guard (live calls per day)
+        id: quota
         shell: bash
         run: |
-          set -euo pipefail
-          echo "TODAY=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+          set -e
+          FILE="data/quota_live.json"
+          TODAY="${{ steps.when.outputs.TODAY }}"
+          LIMIT=${LIVE_DAILY_LIMIT}
+
+          if [ -f "$FILE" ]; then
+            python - "$FILE" "$TODAY" "$LIMIT" <<'PY'
+import json, sys, datetime
+p, today, limit = sys.argv[1], sys.argv[2], int(sys.argv[3])
+try:
+    q = json.load(open(p))
+except Exception:
+    q = {}
+date = q.get("date")
+count = int(q.get("count", 0))
+if date != today:
+    count = 0
+q = {"date": today, "count": count, "limit": limit}
+open(p, "w").write(json.dumps(q, separators=(",",":"), sort_keys=True))
+print(f"{count}")
+PY
+          else
+            echo '{"date":"'"$TODAY"'","count":0,"limit":'"$LIMIT"'}' > "$FILE"
+          fi
+
+          CURR=$(python - <<'PY'
+import json
+print(json.load(open("data/quota_live.json")).get("count",0))
+PY
+)
+          echo "count=${CURR}" >> "$GITHUB_OUTPUT"
+          echo "limit=${LIVE_DAILY_LIMIT}" >> "$GITHUB_OUTPUT"
+
+      - name: Stop early (quota reached)
+        if: ${{ fromJSON(steps.quota.outputs.count) >= fromJSON(steps.quota.outputs.limit) }}
+        run: echo "Live quota reached for today. Skipping."
+
+      # ---------- Freshness guard: skip if we wrote recently ----------
+      - name: Freshness guard (skip if updated recently)
+        if: ${{ fromJSON(steps.quota.outputs.count) < fromJSON(steps.quota.outputs.limit) }}
+        shell: bash
+        run: |
+          if [ -f data/live_today.json ]; then
+            AGE=$(python - <<'PY'
+import json,datetime,sys
+try:
+  j=json.load(open("data/live_today.json"))
+  t=j.get("lastUpdatedUTC") or j.get("serverNowUTC")
+  if not t: sys.exit(1)
+  dt=datetime.datetime.fromisoformat(t.replace("Z","+00:00"))
+  now=datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc)
+  print(int((now-dt).total_seconds()))
+except Exception:
+  sys.exit(1)
+PY
+)
+            if [ -n "$AGE" ] && [ "$AGE" -lt $FRESHNESS_SECONDS ]; then
+              echo "Recently updated ($AGE s < $FRESHNESS_SECONDS s). Skipping."
+              exit 0
+            fi
+          fi
+
+      # ---------- Gate: only fetch if relevant (live or near KO today) ----------
+      - name: Gate (only if live now or within KO window)
+        if: ${{ fromJSON(steps.quota.outputs.count) < fromJSON(steps.quota.outputs.limit) }}
+        id: gate
+        shell: bash
+        run: |
+          set -e
+          SHOULD="no"
+
+          # If current live file shows IN_PLAY/PAUSED -> fetch
+          if [ -f data/live_today.json ]; then
+            LIVE=$(python - <<'PY'
+import json,sys
+try:
+  L=json.load(open("data/live_today.json"))
+  for m in L.get("matches",[]):
+    if m.get("status") in ("IN_PLAY","PAUSED"):
+      print("yes"); sys.exit(0)
+  print("no")
+except: print("no")
+PY
+)
+            [ "$LIVE" = "yes" ] && SHOULD="yes"
+          fi
+
+          # Otherwise, check fixtures_week for today's KOs and time window
+          if [ "$SHOULD" = "no" ] && [ -f data/fixtures_week.json ]; then
+            SHOULD=$(python - <<'PY'
+import json,datetime,sys
+try:
+  F=json.load(open("data/fixtures_week.json"))
+  today="${{ steps.when.outputs.TODAY }}"
+  now=datetime.datetime.fromisoformat("${{ steps.when.outputs.NOW_ISO }}".replace("Z","+00:00"))
+  todays=[m for m in F.get("matches",[]) if (m.get("utcDate","").startswith(today))]
+  if not todays: print("no"); sys.exit(0)
+  ks=[]
+  for m in todays:
+    try: ks.append(datetime.datetime.fromisoformat(m["utcDate"].replace("Z","+00:00")))
+    except: pass
+  if not ks: print("no"); sys.exit(0)
+  start=min(ks)-datetime.timedelta(minutes=20)
+  end  =max(ks)+datetime.timedelta(minutes=130)
+  print("yes" if (start <= now <= end) else "no")
+except: print("no")
+PY
+)
+          fi
+
+          echo "should_fetch=$SHOULD" >> "$GITHUB_OUTPUT"
+
+      - name: Stop early (no need to fetch right now)
+        if: steps.gate.outputs.should_fetch != 'yes'
+        run: echo "Not in live window. Skipping."
+
+      # -------------------- Live fetch (serialized) --------------------
+      - name: Read previous live ETag
+        if: steps.gate.outputs.should_fetch == 'yes'
+        id: et
+        shell: bash
+        run: |
+          if [ -f data/etags_live.json ]; then
+            echo "etag=$(python -c 'import json; print(json.load(open("data/etags_live.json")).get("today",""))' 2>/dev/null || true)" >> "$GITHUB_OUTPUT"
+          else
+            echo "etag=" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Fetch today with ETag
+        if: steps.gate.outputs.should_fetch == 'yes'
         id: fetch
         shell: bash
         run: |
-          set -euo pipefail
-
-          FNAME="live_today.json"
-          ETAGS="data/etags.json"
-          URL="https://api.football-data.org/v4/competitions/PL/matches?dateFrom=${{ steps.d.outputs.TODAY }}&dateTo=${{ steps.d.outputs.TODAY }}"
-
-          # read existing ETag for FNAME if present (single-line python to avoid YAML heredoc issues)
-          old_etag=""
-          if [ -f "$ETAGS" ]; then
-            old_etag="$(python -c 'import json,sys; p=sys.argv[1]; k=sys.argv[2]; print(json.load(open(p)).get(k,""))' "$ETAGS" "$FNAME" 2>/dev/null || true)"
-          fi
-
-          if [ -n "$old_etag" ]; then
-            code=$(curl -sS --fail --retry 3 --retry-delay 2 --connect-timeout 15 \
-                    -H "User-Agent: $UA" \
-                    -H "X-Auth-Token: $FD_TOKEN" \
-                    -H "If-None-Match: $old_etag" \
+          set -e
+          URL="https://api.football-data.org/v4/competitions/PL/matches?dateFrom=${{ steps.when.outputs.TODAY }}&dateTo=${{ steps.when.outputs.TODAY }}"
+          if [ -n "${{ steps.et.outputs.etag }}" ]; then
+            code=$(curl -sS --fail --retry 2 --retry-delay 2 --connect-timeout 15 \
+                    -H "User-Agent: $UA" -H "X-Auth-Token: $FD_TOKEN" \
+                    -H "If-None-Match: ${{ steps.et.outputs.etag }}" \
                     -D headers.txt -o today.raw.json --write-out "%{http_code}" "$URL" || true)
           else
-            code=$(curl -sS --fail --retry 3 --retry-delay 2 --connect-timeout 15 \
-                    -H "User-Agent: $UA" \
-                    -H "X-Auth-Token: $FD_TOKEN" \
+            code=$(curl -sS --fail --retry 2 --retry-delay 2 --connect-timeout 15 \
+                    -H "User-Agent: $UA" -H "X-Auth-Token: $FD_TOKEN" \
                     -D headers.txt -o today.raw.json --write-out "%{http_code}" "$URL" || true)
           fi
-
-          echo "code=$code"   >> "$GITHUB_OUTPUT"
-          echo "fname=$FNAME" >> "$GITHUB_OUTPUT"
-
+          echo "code=$code" >> "$GITHUB_OUTPUT"
           if [ "$code" = "200" ]; then
             new_etag=$(awk 'BEGIN{IGNORECASE=1} /^etag:/{print $2; exit}' headers.txt 2>/dev/null | tr -d '\r' || true)
             echo "any_changed=true" >> "$GITHUB_OUTPUT"
-            echo "new_t=$new_etag"  >> "$GITHUB_OUTPUT"
+            echo "new_etag=$new_etag" >> "$GITHUB_OUTPUT"
           else
             echo "any_changed=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Build live_today.json
-        if: steps.fetch.outputs.any_changed == 'true'
+        if: steps.gate.outputs.should_fetch == 'yes' && steps.fetch.outputs.any_changed == 'true'
         shell: bash
         run: |
-          set -euo pipefail
           python - <<'PY'
-          import json, datetime
-          from datetime import timezone
+import json, datetime
+from datetime import timezone
+now = datetime.datetime.now(timezone.utc)
+today = json.load(open("today.raw.json"))
 
-          now = datetime.datetime.now(timezone.utc)
-          with open("today.raw.json") as f:
-              today = json.load(f)
+def phase(status, utc_iso, now_utc):
+    try:
+        kick = datetime.datetime.fromisoformat((utc_iso or "").replace("Z","+00:00"))
+    except Exception:
+        return None, ""
+    mins = int(max(0, (now_utc - kick).total_seconds() // 60))
+    if status in ("SCHEDULED","TIMED"): return mins, "Today"
+    if status == "IN_PLAY":   return (mins, f"{mins}’") if mins < 90 else (mins, f"90+{mins-90}’")
+    if status == "PAUSED":    return 45, "Half-Time"
+    if status == "FINISHED":  return 90, "FT"
+    return mins, status or ""
 
-          def phase(status, utc_iso, now_utc):
-              try:
-                  kick = datetime.datetime.fromisoformat((utc_iso or "").replace("Z","+00:00"))
-              except Exception:
-                  return None, ""
-              mins = int(max(0, (now_utc - kick).total_seconds() // 60))
-              if status == "SCHEDULED": return mins, "Today"
-              if status == "IN_PLAY":
-                  return (mins, f"{mins}’") if mins < 90 else (mins, f"90+{mins-90}’")
-              if status == "PAUSED": return 45, "Half-Time"
-              if status == "FINISHED": return 90, "FT"
-              return mins, status or ""
+live=[]
+for m in (today.get("matches") or []):
+    st=m.get("status"); utc=m.get("utcDate")
+    mins,label=phase(st,utc,now)
+    ft=(m.get("score") or {})
+    h=(m.get("homeTeam") or {}); a=(m.get("awayTeam") or {})
+    live.append({
+        "id": m.get("id"),
+        "utcDate": utc,
+        "status": st,
+        "approxMinute": mins,
+        "phase": label,
+        "home": {"id": h.get("id"), "tla": h.get("tla"), "name": h.get("name"),
+                 "crest": h.get("crest"), "score": ft.get("home")},
+        "away": {"id": a.get("id"), "tla": a.get("tla"), "name": a.get("name"),
+                 "crest": a.get("crest"), "score": ft.get("away")}
+    })
 
-          live=[]
-          for m in (today.get("matches") or []):
-              st=m.get("status"); utc=m.get("utcDate")
-              mins,label=phase(st,utc,now)
-              ft=(m.get("score") or {}).get("fullTime") or {}
-              h=(m.get("homeTeam") or {}); a=(m.get("awayTeam") or {})
-              live.append({
-                  "id": m.get("id"),
-                  "utcDate": utc,
-                  "status": st,
-                  "approxMinute": mins,
-                  "phase": label,
-                  "home": {"id": h.get("id"), "tla": h.get("tla"), "name": h.get("name"), "score": ft.get("home")},
-                  "away": {"id": a.get("id"), "tla": a.get("tla"), "name": a.get("name"), "score": ft.get("away")}
-              })
+out = {"serverNowUTC": now.isoformat(), "lastUpdatedUTC": now.isoformat(), "matches": live}
+json.dump(out, open("data/live_today.new.json","w"), separators=(",",":"), sort_keys=True)
+PY
 
-          out = {"serverNowUTC": now.isoformat(), "lastUpdatedUTC": now.isoformat(), "matches": live}
-          with open("data/live_today.new.json","w") as f:
-              json.dump(out, f, separators=(",",":"), sort_keys=True)
-          PY
-
-      - name: Update ETag store
-        if: steps.fetch.outputs.any_changed == 'true'
-        shell: bash
-        env:
-          NEW_T: ${{ steps.fetch.outputs.new_t }}
-          FNAME: ${{ steps.fetch.outputs.fname }}
+      - name: Update ETag store (live)
+        if: steps.gate.outputs.should_fetch == 'true' && steps.fetch.outputs.any_changed == 'true'
         run: |
-          set -euo pipefail
           python - <<'PY'
-          import json, os
-          etags_path='data/etags.json'
-          out_path='data/etags.new.json'
-          et={}
-          if os.path.exists(etags_path):
-            try: et=json.load(open(etags_path))
-            except: et={}
-          new_t=os.environ.get('NEW_T','')
-          fname=os.environ.get('FNAME','live_today.json')
-          if new_t:
-              et[fname]=new_t
-          with open(out_path,'w') as f:
-              json.dump(et, f, separators=(',',':'), sort_keys=True)
-          PY
+import json, os
+p='data/etags_live.json'
+et={}
+if os.path.exists(p):
+  try: et=json.load(open(p))
+  except: et={}
+new_t=os.environ.get('NEW_LIVE_ETAG')
+if new_t: et['today']=new_t
+json.dump(et, open('data/etags_live.new.json','w'), separators=(',',':'), sort_keys=True)
+PY
+        env: { NEW_LIVE_ETAG: ${{ steps.fetch.outputs.new_etag }} }
 
-      - name: Commit only if changed
-        if: steps.fetch.outputs.any_changed == 'true'
+      - name: Increment quota and commit live-only files
+        if: steps.gate.outputs.should_fetch == 'yes' && steps.fetch.outputs.any_changed == 'true'
         shell: bash
         run: |
-          set -euo pipefail
+          set -e
+
+          # increment quota
+          python - <<'PY'
+import json,sys,datetime
+q=json.load(open("data/quota_live.json"))
+q["count"]=int(q.get("count",0))+1
+open("data/quota_live.new.json","w").write(json.dumps(q,separators=(",",":"),sort_keys=True))
+PY
 
           CHANGED=0
-          for f in live_today etags; do
+          for f in live_today etags_live quota_live; do
             if [ -f "data/$f.json" ] && [ -f "data/$f.new.json" ]; then
               if cmp -s "data/$f.new.json" "data/$f.json"; then
                 rm -f "data/$f.new.json"
@@ -171,21 +293,15 @@ jobs:
             fi
           done
 
-          # tidy temp files
-          rm -f headers.txt today.raw.json || true
-
           if [ $CHANGED -eq 1 ]; then
             git config user.name "pl-bot"
             git config user.email "pl-bot@users.noreply.github.com"
-            git add data/*.json
+            git add data/live_today.json data/etags_live.json data/quota_live.json
             git commit -m "Update live_today $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            # Pull only when we need to push; minimize time & conflicts
             git fetch origin main
             git pull --rebase origin main || true
-            if ! git push origin HEAD:main; then
-              echo "Push failed; retrying after rebase..."
-              git pull --rebase origin main || true
-              git push origin HEAD:main
-            fi
+            git push origin HEAD:main
           else
             echo "No JSON changes to commit."
           fi
