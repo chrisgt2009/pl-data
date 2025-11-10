@@ -11,7 +11,7 @@ on:
     # Weekday evenings: every 6 minutes (18–22 UTC)
     - cron: "*/6 18-22 * * 1-5"
     # Hourly sweep (09–23 UTC)
-    - cron: "0 09-23 * * *"
+    - cron: "0 9-23 * * *"
   workflow_dispatch: {}
 
 permissions:
@@ -45,7 +45,14 @@ jobs:
         shell: bash
         run: |
           if [ -f data/live_today.json ]; then
-            AGE=$(python -c 'import json,datetime,sys; j=json.load(open("data/live_today.json")); t=j.get("lastUpdatedUTC") or j.get("serverNowUTC"); sys.exit(1) if not t else None; dt=datetime.datetime.fromisoformat(t.replace("Z","+00:00")); now=datetime.datetime.now(datetime.timezone.utc); print(int((now-dt).total_seconds()))' 2>/dev/null || echo "")
+            AGE=$(python -c 'import json,datetime,sys
+j=json.load(open("data/live_today.json"))
+t=j.get("lastUpdatedUTC") or j.get("serverNowUTC")
+if not t:
+  sys.exit(1)
+dt=datetime.datetime.fromisoformat(t.replace("Z","+00:00"))
+now=datetime.datetime.now(datetime.timezone.utc)
+print(int((now-dt).total_seconds()))' 2>/dev/null || echo "")
             if [ -n "$AGE" ] && [ "$AGE" -lt 75 ]; then
               echo "skip=true" >> "$GITHUB_OUTPUT"
               echo "Recently updated ($AGE s). Skipping."
@@ -64,13 +71,37 @@ jobs:
         run: |
           SHOULD="no"
 
+          # If any current match is IN_PLAY or PAUSED -> fetch
           if [ -f data/live_today.json ]; then
-            LIVE=$(python -c 'import json,sys; L=json.load(open("data/live_today.json")); print("yes" if any(m.get("status") in ("IN_PLAY","PAUSED") for m in L.get("matches",[])) else "no")' 2>/dev/null || echo "no")
+            LIVE=$(python -c 'import json,sys
+L=json.load(open("data/live_today.json"))
+sys.stdout.write("yes" if any(m.get("status") in ("IN_PLAY","PAUSED") for m in L.get("matches",[])) else "no")' 2>/dev/null || echo "no")
             [ "$LIVE" = "yes" ] && SHOULD="yes"
           fi
 
+          # Otherwise, check we are within today’s KO window
           if [ "$SHOULD" = "no" ] && [ -f data/fixtures_week.json ]; then
-            SHOULD=$(python -c 'import os,json,datetime,sys; today=os.getenv("TODAY",""); now_iso=os.getenv("NOW_ISO",""); F=json.load(open("data/fixtures_week.json")); todays=[m for m in F.get("matches",[]) if m.get("utcDate","").startswith(today)]; print("no") if not todays else None; now=datetime.datetime.fromisoformat(now_iso.replace("Z","+00:00")); ks=[datetime.datetime.fromisoformat(m.get("utcDate").replace("Z","+00:00")) for m in todays if m.get("utcDate")]; print("no") if not ks else None; start=min(ks)-datetime.timedelta(minutes=20); end=max(ks)+datetime.timedelta(minutes=130); print("yes" if start<=now<=end else "no")' 2>/dev/null || echo "no")
+            SHOULD=$(python -c 'import os,json,datetime as d,sys
+today=os.getenv("TODAY","")
+now_iso=os.getenv("NOW_ISO","")
+try:
+  F=json.load(open("data/fixtures_week.json"))
+  todays=[m for m in F.get("matches",[]) if (m.get("utcDate","").startswith(today))]
+  if not todays:
+    sys.stdout.write("no"); sys.exit(0)
+  now=d.datetime.fromisoformat(now_iso.replace("Z","+00:00"))
+  ks=[]
+  for m in todays:
+    u=m.get("utcDate")
+    if u:
+      ks.append(d.datetime.fromisoformat(u.replace("Z","+00:00")))
+  if not ks:
+    sys.stdout.write("no"); sys.exit(0)
+  start=min(ks)-d.timedelta(minutes=20)
+  end=max(ks)+d.timedelta(minutes=130)
+  sys.stdout.write("yes" if (start <= now <= end) else "no")
+except Exception:
+  sys.stdout.write("no")' 2>/dev/null || echo "no")
           fi
 
           echo "should_fetch=$SHOULD" >> "$GITHUB_OUTPUT"
@@ -189,17 +220,13 @@ json.dump(et, open("data/etags_live.new.json","w"), separators=(",",":"), sort_k
             git config user.email "pl-bot@users.noreply.github.com"
             git add data/live_today.json data/etags_live.json
             git commit -m "Update live_today $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-            # Retry logic for concurrent pushes
             for i in {1..3}; do
               if git pull --rebase origin main && git push origin HEAD:main; then
-                echo "Push successful"
-                exit 0
+                echo "Push successful"; exit 0
               fi
-              echo "Push attempt $i failed, retrying..."
-              sleep $((i * 2))
+              echo "Push attempt $i failed, retrying..."; sleep $((i*2))
             done
-            echo "Failed to push after 3 attempts"
-            exit 1
+            echo "Failed to push after 3 attempts"; exit 1
           else
             echo "No JSON changes."
           fi
