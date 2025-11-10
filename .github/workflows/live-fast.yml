@@ -1,131 +1,119 @@
-name: live-fast
+name: live-data
 
 on:
   workflow_dispatch:
   schedule:
-    # run every 30 minutes (adjust as you like)
-    - cron: "*/30 * * * *"
+    # --- Live windows (UTC) ---
+    # Weekdays (Mon–Fri): every 10 minutes 18:00–22:59
+    - cron: "*/10 18-22 * * 1-5"
+    # Weekends (Sat–Sun): every 10 minutes 11:00–22:59
+    - cron: "*/10 11-22 * * 6,0"
+
+    # --- Outside live windows (light touch to save free minutes) ---
+    # Weekdays (Mon–Fri): 4x/day
+    - cron: "0 8,12,16,23 * * 1-5"
+    # Weekends (Sat–Sun): 5x/day
+    - cron: "0 9,12,15,18,21 * * 6,0"
 
 permissions:
   contents: write
 
+# Never cancel an in-progress run; new ones will queue if needed.
 concurrency:
-  group: live-fast-${{ github.ref }}
-  cancel-in-progress: true
+  group: live-data-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
-  build-live-json:
+  build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
-      # --- Module 1: checkout -------------------------------------------------
       - name: Checkout
         uses: actions/checkout@v4
 
-      # --- Module 2: setup python --------------------------------------------
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      # --- Module 3: gate switch (decide if we should fetch/update) ----------
-      - id: gate
-        name: Gate: decide to fetch
-        shell: bash
-        run: |
-          set -euo pipefail
-          # TODO: replace this logic with your real gating rules if different
-          echo "should_fetch=yes" >> "$GITHUB_OUTPUT"
-
-      # --- Module 4: fetch or diff inputs & compute ETag ----------------------
-      - id: fetch
-        name: Fetch inputs & compute ETag
-        shell: bash
-        run: |
-          set -euo pipefail
-          # TODO: replace with your real fetch + diff logic.
-          # Emit two outputs:
-          #  - any_changed: 'true' | 'false'
-          #  - new_etag:    computed string (or keep previous)
-          echo "any_changed=true" >> "$GITHUB_OUTPUT"
-          echo "new_etag=$(date -u +%Y%m%dT%H%M%SZ)" >> "$GITHUB_OUTPUT"
-
-      # --- Module 5: build live_today.new.json (safe heredoc) -----------------
-      - name: Build live_today.new.json
-        if: ${{ steps.gate.outputs.should_fetch == 'yes' && steps.fetch.outputs.any_changed == 'true' }}
+      - id: build
+        name: Build/normalize live data (no-op if unchanged)
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p data
+
+          # Reads existing data/live_today.json (if present), performs a small,
+          # deterministic normalization, and only writes if content actually changes.
           python - <<'PY'
-          import json, datetime as d
+          import json, datetime as dt
           from pathlib import Path
 
-          SRC = Path("data/live_today.json")       # existing input (if present)
-          DST = Path("data/live_today.new.json")   # output
+          dst = Path("data/live_today.json")
 
-          def from_iso(text: str | None):
-            if not text:
+          def load_json(p: Path):
+            if not p.exists():
               return None
-            s = text.strip()
-            # Make "Z" explicit to avoid fromisoformat quirks
+            try:
+              return json.loads(p.read_text(encoding="utf-8"))
+            except Exception:
+              return None
+
+          def from_iso(s: str | None):
+            if not s:
+              return None
+            s = s.strip()
             if s.endswith("Z"):
               s = s[:-1] + "+00:00"
             try:
-              return d.datetime.fromisoformat(s)
+              return dt.datetime.fromisoformat(s)
             except Exception:
               return None
 
-          now = d.datetime.utcnow().replace(tzinfo=d.timezone.utc)
+          current = load_json(dst) or {}
 
-          # Load current data if it exists; otherwise start with an empty shell
-          today = {}
-          if SRC.exists():
-            try:
-              today = json.loads(SRC.read_text(encoding="utf-8"))
-            except Exception:
-              today = {}
+          # Deterministic normalization (avoids adding changing timestamps).
+          normalized = dict(current)
+          matches = normalized.get("matches", [])
+          if isinstance(matches, list):
+            now = dt.datetime.utcnow().replace(tzinfo=dt.timezone.utc)
+            for m in matches:
+              if isinstance(m, dict):
+                status = str(m.get("status") or "").lower()
+                kick   = from_iso(m.get("utcDate"))
+                m["started"] = bool(kick and now >= kick)
+                m["is_live"] = status in {"live", "inprogress", "in-progress"}
 
-          # Example light-touch normalization/derived fields (safe if absent)
-          matches = today.get("matches", [])
-          for m in matches if isinstance(matches, list) else []:
-            status = (m.get("status") or "").lower()
-            kick   = from_iso(m.get("utcDate"))
-            m["started"] = bool(kick and now >= kick)
-            m["is_live"] = status in {"live", "inprogress", "in-progress"}
+          if current == {} and not dst.exists():
+            normalized = {"matches": []}
 
-          # Include a generated timestamp for traceability
-          out = dict(today)
-          out["generatedAt"] = now.isoformat()
+          new_text = json.dumps(normalized, separators=(",", ":"), sort_keys=True)
+          old_text = dst.read_text(encoding="utf-8") if dst.exists() else None
 
-          DST.write_text(
-            json.dumps(out, separators=(",", ":"), sort_keys=True),
-            encoding="utf-8"
-          )
+          if new_text != old_text:
+            dst.write_text(new_text, encoding="utf-8")
+            changed = True
+          else:
+            changed = False
+
+          # Signal to the workflow whether anything changed
+          Path("/tmp/changed").write_text("1" if changed else "0")
           PY
 
-      # --- Module 6: update ETag store ---------------------------------------
-      - name: Update ETag store
-        if: ${{ steps.gate.outputs.should_fetch == 'yes' && steps.fetch.outputs.any_changed == 'true' }}
-        env:
-          NEW_ETAG: ${{ steps.fetch.outputs.new_etag }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          echo -n "$NEW_ETAG" > data/live_today.etag
+          if [[ -f /tmp/changed && "$(cat /tmp/changed)" == "1" ]]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
 
-      # --- Module 7: commit changes ------------------------------------------
-      - name: Commit & push changes
-        if: ${{ steps.gate.outputs.should_fetch == 'yes' && steps.fetch.outputs.any_changed == 'true' }}
+      - name: Commit & push (only if changed)
+        if: steps.build.outputs.changed == 'true'
         shell: bash
         run: |
           set -euo pipefail
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/live_today.new.json data/live_today.etag || true
-          if git diff --cached --quiet; then
-            echo "No changes to commit."
-          else
-            git commit -m "Update live_today artifacts [skip ci]"
-            git push
-          fi
+          git add data/live_today.json
+          git commit -m "Update live_today.json"
+          git push
