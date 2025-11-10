@@ -45,17 +45,7 @@ jobs:
         shell: bash
         run: |
           if [ -f data/live_today.json ]; then
-            AGE=$(python -c 'import json,datetime,sys
-try:
-  j=json.load(open("data/live_today.json"))
-  t=j.get("lastUpdatedUTC") or j.get("serverNowUTC")
-  if not t:
-    sys.exit(1)
-  dt=datetime.datetime.fromisoformat(t.replace("Z","+00:00"))
-  now=datetime.datetime.now(datetime.timezone.utc)
-  print(int((now-dt).total_seconds()))
-except Exception:
-  sys.exit(1)' 2>/dev/null || echo "")
+            AGE=$(python -c 'import json,datetime,sys; j=json.load(open("data/live_today.json")); t=j.get("lastUpdatedUTC") or j.get("serverNowUTC"); sys.exit(1) if not t else None; dt=datetime.datetime.fromisoformat(t.replace("Z","+00:00")); now=datetime.datetime.now(datetime.timezone.utc); print(int((now-dt).total_seconds()))' 2>/dev/null || echo "")
             if [ -n "$AGE" ] && [ "$AGE" -lt 75 ]; then
               echo "skip=true" >> "$GITHUB_OUTPUT"
               echo "Recently updated ($AGE s). Skipping."
