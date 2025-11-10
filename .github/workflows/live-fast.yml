@@ -1,19 +1,22 @@
 name: Live PL (fast, serialized)
 
-# Serialize live runs; never cancel mid-run
+# Do not cancel a running live job; queue instead (free-tier friendly)
 concurrency:
   group: pl-live
   cancel-in-progress: false
 
 on:
-  schedule:
-    # Weekends every 1 min (11–21 UTC)
-    - cron: "*/1 11-21 * * 6,0"
-    # Weekday evenings every 2 min (18–22 UTC)
-    - cron: "*/2 18-22 * * 1-5"
-    # Light sweep every 20 min (09–23 UTC)
-    - cron: "*/20 09-23 * * *"
-  workflow_dispatch: {}
+schedule:
+  # Weekends live window: every 5 minutes (11–20 UTC)
+  - cron: "*/5 11-20 * * 6,0"
+
+  # Weekdays evenings: every 6 minutes (18–22 UTC)
+  - cron: "*/6 18-22 * * 1-5"
+
+  # Light sweep: every hour (09–23 UTC)
+  - cron: "0 09-23 * * *"
+
+workflow_dispatch: {}
 
 permissions:
   contents: write
@@ -40,6 +43,7 @@ jobs:
           echo "TODAY=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
           echo "NOW_ISO=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
 
+      # Avoid hammering the API: skip if the file was updated < 75 seconds ago
       - name: Freshness guard (<75s)
         shell: bash
         run: |
@@ -63,6 +67,7 @@ PY
             fi
           fi
 
+      # Gate: only fetch if there is a live match or we are within today's KO window
       - name: Gate: fetch only if needed
         id: gate
         shell: bash
@@ -70,7 +75,7 @@ PY
           set -e
           SHOULD="no"
 
-          # Check if current live file has IN_PLAY/PAUSED
+          # Check if existing live file shows play in progress
           if [ -f data/live_today.json ]; then
             LIVE=$(python - <<'PY'
 import json,sys
@@ -87,7 +92,7 @@ PY
             [ "$LIVE" = "yes" ] && SHOULD="yes"
           fi
 
-          # Otherwise check fixtures_week for today's KO window
+          # Else check fixtures_week for a KO window today
           if [ "$SHOULD" = "no" ] && [ -f data/fixtures_week.json ]; then
             SHOULD=$(python - <<'PY'
 import json,datetime,sys
@@ -97,14 +102,16 @@ try:
   today="${{ steps.when.outputs.TODAY }}"
   now=datetime.datetime.fromisoformat("${{ steps.when.outputs.NOW_ISO }}".replace("Z","+00:00"))
   todays=[m for m in F.get("matches",[]) if (m.get("utcDate","").startswith(today))]
-  if not todays: print("no"); sys.exit(0)
-  ks=[]
+  if not todays:
+    print("no"); sys.exit(0)
+  kicks=[]
   for m in todays:
-    try: ks.append(datetime.datetime.fromisoformat(m["utcDate"].replace("Z","+00:00")))
+    try: kicks.append(datetime.datetime.fromisoformat(m["utcDate"].replace("Z","+00:00")))
     except: pass
-  if not ks: print("no"); sys.exit(0)
-  start=min(ks)-datetime.timedelta(minutes=20)
-  end=max(ks)+datetime.timedelta(minutes=130)
+  if not kicks:
+    print("no"); sys.exit(0)
+  start=min(kicks)-datetime.timedelta(minutes=20)
+  end=max(kicks)+datetime.timedelta(minutes=130)
   print("yes" if (start <= now <= end) else "no")
 except:
   print("no")
@@ -118,6 +125,7 @@ PY
         if: steps.gate.outputs.should_fetch != 'yes'
         run: echo "Not in live window. Skipping."
 
+      # Read previous live ETag so we avoid downloading unchanged payloads
       - name: Read previous live ETag
         if: steps.gate.outputs.should_fetch == 'yes'
         id: et
@@ -129,7 +137,7 @@ PY
             echo "etag=" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Fetch Live with ETag
+      - name: Fetch today with ETag
         if: steps.gate.outputs.should_fetch == 'yes'
         id: fetch
         shell: bash
@@ -174,14 +182,14 @@ import json, datetime
 now = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc)
 today = json.load(open("today.raw.json"))
 
-def phase(status, utc_iso, now):
+def phase(status, utc_iso):
     try:
         kick = datetime.datetime.fromisoformat((utc_iso or "").replace("Z","+00:00"))
     except:
         return None, ""
     mins = int(max(0, (now - kick).total_seconds() // 60))
     if status in ("SCHEDULED","TIMED"): return mins, "Today"
-    if status == "IN_PLAY": return (mins, f"{mins}’") if mins < 90 else (mins, f"90+{mins-90}’")
+    if status == "IN_PLAY": return mins, (f"{mins}’" if mins < 90 else f"90+{mins-90}’")
     if status == "PAUSED": return 45, "Half-Time"
     if status == "FINISHED": return 90, "FT"
     return mins, status or ""
@@ -190,7 +198,7 @@ live=[]
 for m in today.get("matches",[]):
     st = m.get("status")
     utc = m.get("utcDate")
-    mins, label = phase(st, utc, now)
+    mins, label = phase(st, utc)
     ft = (m.get("score") or {})
     h = m.get("homeTeam") or {}
     a = m.get("awayTeam") or {}
@@ -213,7 +221,7 @@ out = {
 json.dump(out, open("data/live_today.new.json","w"), separators=(",",":"), sort_keys=True)
 PY
 
-      - name: Update ETag store
+      - name: Update ETag store (live)
         if: steps.gate.outputs.should_fetch == 'yes' && steps.fetch.outputs.any_changed == 'true'
         env:
           NEW_ETAG: ${{ steps.fetch.outputs.new_etag }}
@@ -230,8 +238,9 @@ if os.environ.get("NEW_ETAG"):
 json.dump(et, open("data/etags_live.new.json","w"), separators=(",",":"), sort_keys=True)
 PY
 
-      - name: Commit Live Changes
+      - name: Commit live-only files
         if: steps.gate.outputs.should_fetch == 'yes' && steps.fetch.outputs.any_changed == 'true'
+        shell: bash
         run: |
           set -e
           CHANGED=0
