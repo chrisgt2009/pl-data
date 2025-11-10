@@ -27,7 +27,7 @@ concurrency:
 env:
   # Shared daily run budget between ONLY these two workflows:
   #   - refresh-data
-  #   - fast-live
+  #   - live-fast
   DAILY_LIMIT: "300"
 
 jobs:
@@ -44,7 +44,7 @@ jobs:
         with:
           python-version: "3.11"
 
-      # -------- Daily budget: refresh-data + fast-live only --------
+      # -------- Daily budget: refresh-data + live-fast only --------
       - id: quota
         name: Daily budget gate
         shell: bash
@@ -59,7 +59,7 @@ jobs:
           jq_count_today='[.[] | select(.createdAt | startswith(env.TODAY))] | length'
 
           used_refresh=$(gh run list --workflow "refresh-data" --json createdAt,status --limit 200 | jq -r "$jq_count_today")
-          used_fast_live=$({ gh run list --workflow "fast-live" --json createdAt,status --limit 200 || echo "[]"; } | jq -r "$jq_count_today" 2>/dev/null || echo 0)
+          used_fast_live=$({ gh run list --workflow "live-fast" --json createdAt,status --limit 200 || echo "[]"; } | jq -r "$jq_count_today" 2>/dev/null || echo 0)
 
           total=$(( used_refresh + used_fast_live ))
           remaining=$(( DAILY_LIMIT - total ))
