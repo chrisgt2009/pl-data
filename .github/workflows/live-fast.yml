@@ -45,13 +45,7 @@ jobs:
         shell: bash
         run: |
           if [ -f data/live_today.json ]; then
-            AGE=$(python -c 'import json,datetime,sys;
-j=json.load(open("data/live_today.json"));
-t=j.get("lastUpdatedUTC") or j.get("serverNowUTC");
-import datetime as d;
-dt=d.datetime.fromisoformat((t or "").replace("Z","+00:00")) if t else None;
-now=d.datetime.utcnow().replace(tzinfo=d.timezone.utc);
-print(int((now-dt).total_seconds())) if dt else sys.exit(1)' 2>/dev/null || echo "")
+            AGE=$(python -c "import json,datetime as d,sys; j=json.load(open('data/live_today.json')); t=j.get('lastUpdatedUTC') or j.get('serverNowUTC'); dt=d.datetime.fromisoformat((t or '').replace('Z','+00:00')) if t else None; now=d.datetime.utcnow().replace(tzinfo=d.timezone.utc); print(int((now-dt).total_seconds())) if dt else sys.exit(1)" 2>/dev/null || echo "")
             if [ -n "$AGE" ] && [ "$AGE" -lt 75 ]; then
               echo "Recently updated ($AGE s). Skipping."
               exit 0
@@ -62,27 +56,19 @@ print(int((now-dt).total_seconds())) if dt else sys.exit(1)' 2>/dev/null || echo
       - name: Gate check
         id: gate
         shell: bash
+        env:
+          TODAY: ${{ steps.when.outputs.TODAY }}
+          NOW_ISO: ${{ steps.when.outputs.NOW_ISO }}
         run: |
           SHOULD="no"
           if [ -f data/live_today.json ]; then
-            LIVE=$(python -c 'import json,sys;
-L=json.load(open("data/live_today.json"));
-print("yes" if any(m.get("status") in ("IN_PLAY","PAUSED") for m in L.get("matches",[])) else "no")' 2>/dev/null || echo "no")
+            LIVE=$(python -c "import json; L=json.load(open('data/live_today.json')); print('yes' if any(m.get('status') in ('IN_PLAY','PAUSED') for m in L.get('matches',[])) else 'no')" 2>/dev/null || echo "no")
             if [ "$LIVE" = "yes" ]; then
               SHOULD="yes"
             fi
           fi
           if [ "$SHOULD" = "no" ] && [ -f data/fixtures_week.json ]; then
-            SHOULD=$(python -c 'import json,datetime,sys;
-today=sys.argv[1]; now_iso=sys.argv[2];
-F=json.load(open("data/fixtures_week.json"));
-todays=[m for m in F.get("matches",[]) if (m.get("utcDate","").startswith(today))];
-import datetime as d;
-now=d.datetime.fromisoformat(now_iso.replace("Z","+00:00"));
-ks=[];
-[ks.append(d.datetime.fromisoformat(m["utcDate"].replace("Z","+00:00"))) for m in todays if m.get("utcDate")];
-print("yes" if (ks and (min(ks)-d.timedelta(minutes=20) <= now <= max(ks)+d.timedelta(minutes=130))) else "no")' \
-"${{ steps.when.outputs.TODAY }}" "${{ steps.when.outputs.NOW_ISO }}" 2>/dev/null || echo "no")
+            SHOULD=$(python -c "import json,datetime as d,os; today=os.environ['TODAY']; now_iso=os.environ['NOW_ISO']; F=json.load(open('data/fixtures_week.json')); todays=[m for m in F.get('matches',[]) if (m.get('utcDate','').startswith(today))]; now=d.datetime.fromisoformat(now_iso.replace('Z','+00:00')); ks=[d.datetime.fromisoformat(m['utcDate'].replace('Z','+00:00')) for m in todays if m.get('utcDate')]; print('yes' if (ks and (min(ks)-d.timedelta(minutes=20) <= now <= max(ks)+d.timedelta(minutes=130))) else 'no')" 2>/dev/null || echo "no")
           fi
           echo "should_fetch=$SHOULD" >> "$GITHUB_OUTPUT"
 
@@ -96,7 +82,8 @@ print("yes" if (ks and (min(ks)-d.timedelta(minutes=20) <= now <= max(ks)+d.time
         shell: bash
         run: |
           if [ -f data/etags_live.json ]; then
-            echo "etag=$(python -c 'import json,sys; print(json.load(open("data/etags_live.json")).get("today",""))' 2>/dev/null || true)" >> "$GITHUB_OUTPUT"
+            val=$(python -c "import json; print(json.load(open('data/etags_live.json')).get('today',''))" 2>/dev/null || true)
+            echo "etag=$val" >> "$GITHUB_OUTPUT"
           else
             echo "etag=" >> "$GITHUB_OUTPUT"
           fi
@@ -105,11 +92,14 @@ print("yes" if (ks and (min(ks)-d.timedelta(minutes=20) <= now <= max(ks)+d.time
         if: ${{ steps.gate.outputs.should_fetch == 'yes' }}
         id: fetch
         shell: bash
+        env:
+          TODAY: ${{ steps.when.outputs.TODAY }}
+          ETAG: ${{ steps.et.outputs.etag }}
         run: |
-          URL="https://api.football-data.org/v4/competitions/PL/matches?dateFrom=${{ steps.when.outputs.TODAY }}&dateTo=${{ steps.when.outputs.TODAY }}"
-          if [ -n "${{ steps.et.outputs.etag }}" ]; then
+          URL="https://api.football-data.org/v4/competitions/PL/matches?dateFrom=$TODAY&dateTo=$TODAY"
+          if [ -n "$ETAG" ]; then
             code=$(curl -sS --fail --retry 2 --retry-delay 2 --connect-timeout 15 \
-              -H "User-Agent: $UA" -H "X-Auth-Token: $FD_TOKEN" -H "If-None-Match: ${{ steps.et.outputs.etag }}" \
+              -H "User-Agent: $UA" -H "X-Auth-Token: $FD_TOKEN" -H "If-None-Match: $ETAG" \
               -D headers.txt -o today.raw.json --write-out "%{http_code}" "$URL" || true)
           else
             code=$(curl -sS --fail --retry 2 --retry-delay 2 --connect-timeout 15 \
@@ -129,34 +119,29 @@ print("yes" if (ks and (min(ks)-d.timedelta(minutes=20) <= now <= max(ks)+d.time
         if: ${{ steps.gate.outputs.should_fetch == 'yes' && steps.fetch.outputs.any_changed == 'true' }}
         shell: bash
         run: |
-          python -c 'import json,datetime as d,sys;
-now=d.datetime.utcnow().replace(tzinfo=d.timezone.utc);
-today=json.load(open("today.raw.json"));
+          python -c "import json,datetime as d; now=d.datetime.utcnow().replace(tzinfo=d.timezone.utc); today=json.load(open('today.raw.json')); 
+from_iso=lambda s: d.datetime.fromisoformat(s.replace('Z','+00:00')); 
 def phase(status, utc):
-  try:
-    kick=d.datetime.fromisoformat((utc or "").replace("Z","+00:00"))
-  except:
-    return None,""
-  mins=int(max(0,(now-kick).total_seconds()//60))
-  if status in ("SCHEDULED","TIMED"):
-    return mins,"Today"
-  if status=="IN_PLAY":
-    return mins,(f"{mins}'" if mins<90 else f"90+{mins-90}'")
-  if status=="PAUSED":
-    return 45,"Half-Time"
-  if status=="FINISHED":
-    return 90,"FT"
-  return mins,status or ""
-out={"serverNowUTC": now.isoformat(), "lastUpdatedUTC": now.isoformat(), "matches":[]}
-for m in today.get("matches",[]):
-  st=m.get("status"); utc=m.get("utcDate"); mins,label=phase(st,utc);
-  ft=(m.get("score") or {}); h=m.get("homeTeam") or {}; a=m.get("awayTeam") or {}
-  out["matches"].append({
-    "id": m.get("id"), "utcDate": utc, "status": st, "approxMinute": mins, "phase": label,
-    "home": {"id": h.get("id"), "tla": h.get("tla"), "name": h.get("name"), "crest": h.get("crest"), "score": (ft.get("home") if "home" in ft else (ft.get("fullTime") or {}).get("home"))},
-    "away": {"id": a.get("id"), "tla": a.get("tla"), "name": a.get("name"), "crest": a.get("crest"), "score": (ft.get("away") if "away" in ft else (ft.get("fullTime") or {}).get("away"))}
-  })
-json.dump(out, open("data/live_today.new.json","w"), separators=(",",":"), sort_keys=True)'
+    try: kick=from_iso((utc or ''))
+    except Exception: return None,''
+    mins=int(max(0,(now-kick).total_seconds()//60))
+    if status in ('SCHEDULED','TIMED'): return mins,'Today'
+    if status=='IN_PLAY': return mins,(f\"{mins}'\" if mins<90 else f\"90+{mins-90}'\")
+    if status=='PAUSED': return 45,'Half-Time'
+    if status=='FINISHED': return 90,'FT'
+    return mins,status or ''
+out={'serverNowUTC': now.isoformat(), 'lastUpdatedUTC': now.isoformat(), 'matches':[]}
+for m in today.get('matches',[]):
+    st=m.get('status'); utc=m.get('utcDate'); mins,label=phase(st,utc)
+    ft=(m.get('score') or {}); h=m.get('homeTeam') or {}; a=m.get('awayTeam') or {}
+    home_score = ft.get('home') if 'home' in ft else (ft.get('fullTime') or {}).get('home')
+    away_score = ft.get('away') if 'away' in ft else (ft.get('fullTime') or {}).get('away')
+    out['matches'].append({
+        'id': m.get('id'), 'utcDate': utc, 'status': st, 'approxMinute': mins, 'phase': label,
+        'home': {'id': h.get('id'), 'tla': h.get('tla'), 'name': h.get('name'), 'crest': h.get('crest'), 'score': home_score},
+        'away': {'id': a.get('id'), 'tla': a.get('tla'), 'name': a.get('name'), 'crest': a.get('crest'), 'score': away_score}
+    })
+json.dump(out, open('data/live_today.new.json','w'), separators=(',',':'), sort_keys=True)"
 
       - name: Update ETag store
         if: ${{ steps.gate.outputs.should_fetch == 'yes' && steps.fetch.outputs.any_changed == 'true' }}
@@ -164,17 +149,12 @@ json.dump(out, open("data/live_today.new.json","w"), separators=(",",":"), sort_
         env:
           NEW_ETAG: ${{ steps.fetch.outputs.new_etag }}
         run: |
-          python -c 'import json,os;
-p="data/etags_live.json";
-et={}
-try:
-  et=json.load(open(p))
-except:
-  et={}
-ne=os.environ.get("NEW_ETAG")
-if ne:
-  et["today"]=ne
-json.dump(et, open("data/etags_live.new.json","w"), separators=(",",":"), sort_keys=True)'
+          python -c "import json,os,sys; p='data/etags_live.json'; 
+try: et=json.load(open(p))
+except Exception: et={}
+ne=os.environ.get('NEW_ETAG')
+if ne: et['today']=ne
+json.dump(et, open('data/etags_live.new.json','w'), separators=(',',':'), sort_keys=True)"
 
       - name: Commit live changes
         if: ${{ steps.gate.outputs.should_fetch == 'yes' && steps.fetch.outputs.any_changed == 'true' }}
