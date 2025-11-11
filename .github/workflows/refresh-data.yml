@@ -19,6 +19,7 @@ permissions:
   contents: write
   actions: read
 
+# Don't cancel in-progress runs.
 concurrency:
   group: refresh-data-${{ github.ref }}
   cancel-in-progress: false
@@ -36,11 +37,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
       # ---------- Daily budget gate ----------
       - id: quota
         name: Daily budget gate
@@ -52,12 +48,15 @@ jobs:
           set -euo pipefail
           TODAY="$(date -u +%Y-%m-%d)"
           jq_count_today='[.[] | select(.createdAt | startswith(env.TODAY))] | length'
+
           used_refresh=$(gh run list --workflow "refresh-data" --json createdAt,status --limit 200 | jq -r "$jq_count_today")
           used_fast_a=$({ gh run list --workflow "fast-live" --json createdAt,status --limit 200 || echo "[]"; } | jq -r "$jq_count_today" 2>/dev/null || echo 0)
           used_fast_b=$({ gh run list --workflow "live-fast" --json createdAt,status --limit 200 || echo "[]"; } | jq -r "$jq_count_today" 2>/dev/null || echo 0)
+
           total=$(( used_refresh + used_fast_a + used_fast_b ))
           remaining=$(( DAILY_LIMIT - total ))
           (( remaining < 0 )) && remaining=0
+
           echo "used=$total" >> "$GITHUB_OUTPUT"
           echo "remaining=$remaining" >> "$GITHUB_OUTPUT"
           if (( total < DAILY_LIMIT )); then
@@ -94,6 +93,7 @@ jobs:
           set -euo pipefail
           KEY="standings"
           TMPHDR="$(mktemp)"; TMPBODY="$(mktemp)"
+
           [[ -z "${URL:-}" ]] && { echo "URL_STANDINGS not set; skipping."; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
           IN_ETAG=$(jq -r --arg k "$KEY" '.[$k] // empty' data/etags.json)
@@ -109,19 +109,15 @@ jobs:
             echo "HTTP $CODE from $URL — skipping"; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
           fi
 
-          export BODY_PATH="$TMPBODY"
-          python <<'PY'
-import json, os, pathlib
-out = pathlib.Path("data/standings.json")
-body = pathlib.Path(os.environ["BODY_PATH"]).read_text(encoding="utf-8")
-try: parsed = json.loads(body)
-except Exception: raise SystemExit(0)
-new = json.dumps(parsed, separators=(",", ":"), sort_keys=True)
-old = out.read_text(encoding="utf-8") if out.exists() else None
-if new != old:
-    out.write_text(new, encoding="utf-8")
-    pathlib.Path("/tmp/changed-standings").write_text("1")
-PY
+          # normalize + write only if different
+          NORM="$(mktemp)"
+          jq -S -c '.' "$TMPBODY" > "$NORM" || { echo "Bad JSON"; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+          if ! cmp -s "$NORM" "data/standings.json"; then
+            mv "$NORM" "data/standings.json"
+            touch /tmp/changed-standings
+          else
+            rm -f "$NORM"
+          fi
 
           NEW_ETAG=$(sed -n 's/^etag:[[:space:]]*//Ip' "$TMPHDR" | tr -d '\r' | tail -n1)
           if [[ -n "$NEW_ETAG" && "$NEW_ETAG" != "$IN_ETAG" ]]; then
@@ -166,23 +162,17 @@ PY
             echo "HTTP $CODE from $URL — skipping"; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
           fi
 
-          export BODY_PATH="$TMPBODY"
-          python <<'PY'
-import json, os, pathlib
-out = pathlib.Path("data/fixtures_week.json")
-body = pathlib.Path(os.environ["BODY_PATH"]).read_text(encoding="utf-8")
-try: parsed = json.loads(body)
-except Exception: raise SystemExit(0)
-new = json.dumps(parsed, separators=(",", ":"), sort_keys=True)
-old = out.read_text(encoding="utf-8") if out.exists() else None
-if new != old:
-    out.write_text(new, encoding="utf-8")
-    pathlib.Path("/tmp/changed-fixtures_week").write_text("1")
-PY
+          NORM="$(mktemp)"
+          jq -S -c '.' "$TMPBODY" > "$NORM" || { echo "Bad JSON"; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+          if ! cmp -s "$NORM" "data/fixtures_week.json"; then
+            mv "$NORM" "data/fixtures_week.json"
+            touch /tmp/changed-fixtures_week
+          else
+            rm -f "$NORM"
+          fi
 
           NEW_ETAG=$(sed -n 's/^etag:[[:space:]]*//Ip' "$TMPHDR" | tr -d '\r' | tail -n1)
           if [[ -n "$NEW_ETAG" ]]; then
-            # Save under URL-specific key and mirror to plain key for meta.json
             tmp="$(mktemp)"; jq --arg k "$EKEY" --arg v "$NEW_ETAG" '.[$k]=$v' data/etags.json 2>/dev/null > "$tmp" || echo "{\"$EKEY\":\"$NEW_ETAG\"}" > "$tmp"; mv "$tmp" data/etags.json
             tmp2="$(mktemp)"; jq --arg v "$NEW_ETAG" '.["fixtures_week"]=$v' data/etags.json 2>/dev/null > "$tmp2" || echo "{\"fixtures_week\":\"$NEW_ETAG\"}" > "$tmp2"; mv "$tmp2" data/etags.json
           fi
@@ -201,6 +191,7 @@ PY
           set -euo pipefail
           KEY="scorers"
           TMPHDR="$(mktemp)"; TMPBODY="$(mktemp)"
+
           [[ -z "${URL:-}" ]] && { echo "URL_SCORERS not set; skipping."; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
           IN_ETAG=$(jq -r --arg k "$KEY" '.[$k] // empty' data/etags.json)
@@ -216,19 +207,14 @@ PY
             echo "HTTP $CODE from $URL — skipping"; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
           fi
 
-          export BODY_PATH="$TMPBODY"
-          python <<'PY'
-import json, os, pathlib
-out = pathlib.Path("data/scorers.json")
-body = pathlib.Path(os.environ["BODY_PATH"]).read_text(encoding="utf-8")
-try: parsed = json.loads(body)
-except Exception: raise SystemExit(0)
-new = json.dumps(parsed, separators=(",", ":"), sort_keys=True)
-old = out.read_text(encoding="utf-8") if out.exists() else None
-if new != old:
-    out.write_text(new, encoding="utf-8")
-    pathlib.Path("/tmp/changed-scorers").write_text("1")
-PY
+          NORM="$(mktemp)"
+          jq -S -c '.' "$TMPBODY" > "$NORM" || { echo "Bad JSON"; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+          if ! cmp -s "$NORM" "data/scorers.json"; then
+            mv "$NORM" "data/scorers.json"
+            touch /tmp/changed-scorers
+          else
+            rm -f "$NORM"
+          fi
 
           NEW_ETAG=$(sed -n 's/^etag:[[:space:]]*//Ip' "$TMPHDR" | tr -d '\r' | tail -n1)
           if [[ -n "$NEW_ETAG" && "$NEW_ETAG" != "$IN_ETAG" ]]; then
@@ -243,32 +229,24 @@ PY
         shell: bash
         run: |
           set -euo pipefail
-          python <<'PY'
-import json, datetime as dt
-from pathlib import Path
-def read_text(p):
-    try: return Path(p).read_text(encoding="utf-8")
-    except: return None
-try:
-    etags = json.loads(read_text("data/etags.json") or "{}")
-except Exception:
-    etags = {}
-meta_new = {
-    "lastUpdatedUTC": dt.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
-    "artifacts": {
-        "standings":     {"file":"data/standings.json",     "etag": etags.get("standings")},
-        "fixtures_week": {"file":"data/fixtures_week.json", "etag": etags.get("fixtures_week")},
-        "scorers":       {"file":"data/scorers.json",       "etag": etags.get("scorers")},
-    }
-}
-out = Path("data/meta.json")
-new = json.dumps(meta_new, separators=(",", ":"), sort_keys=True)
-old = out.read_text(encoding="utf-8") if out.exists() else None
-if new != old:
-    out.write_text(new, encoding="utf-8")
-    Path("/tmp/changed-meta").write_text("1")
-PY
-          echo "changed=$([[ -f /tmp/changed-meta ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          LAST="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          jq -S -c --arg t "$LAST" '
+            .lastUpdatedUTC = $t
+            | .artifacts = {
+                standings:     {file:"data/standings.json",     etag:(.standings      // "")},
+                fixtures_week: {file:"data/fixtures_week.json", etag:(."fixtures_week" // "")},
+                scorers:       {file:"data/scorers.json",       etag:(.scorers        // "")}
+              }
+          ' data/etags.json \
+          | jq -S -c '{lastUpdatedUTC, artifacts}' \
+          > meta.new.json
+
+          if ! cmp -s meta.new.json data/meta.json; then
+            mv meta.new.json data/meta.json
+            touch /tmp/changed-meta
+          else
+            rm -f meta.new.json
+          fi
 
       # ---------- Commit only when something changed ----------
       - name: Commit & push
