@@ -17,17 +17,14 @@ on:
 
 permissions:
   contents: write
-  actions: read   # needed for gh run list
+  actions: read
 
-# Don't cancel in-progress runs.
 concurrency:
   group: refresh-data-${{ github.ref }}
   cancel-in-progress: false
 
 env:
-  # Shared daily run budget between ONLY these two workflows:
-  #   - refresh-data
-  #   - live-fast
+  # Shared daily budget across refresh-data + fast-live/live-fast
   DAILY_LIMIT: "300"
 
 jobs:
@@ -44,7 +41,7 @@ jobs:
         with:
           python-version: "3.11"
 
-      # -------- Daily budget: refresh-data + live-fast only --------
+      # ---------- Daily budget gate ----------
       - id: quota
         name: Daily budget gate
         shell: bash
@@ -53,18 +50,14 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-
           TODAY="$(date -u +%Y-%m-%d)"
-          export TODAY
           jq_count_today='[.[] | select(.createdAt | startswith(env.TODAY))] | length'
-
           used_refresh=$(gh run list --workflow "refresh-data" --json createdAt,status --limit 200 | jq -r "$jq_count_today")
-          used_fast_live=$({ gh run list --workflow "live-fast" --json createdAt,status --limit 200 || echo "[]"; } | jq -r "$jq_count_today" 2>/dev/null || echo 0)
-
-          total=$(( used_refresh + used_fast_live ))
+          used_fast_a=$({ gh run list --workflow "fast-live" --json createdAt,status --limit 200 || echo "[]"; } | jq -r "$jq_count_today" 2>/dev/null || echo 0)
+          used_fast_b=$({ gh run list --workflow "live-fast" --json createdAt,status --limit 200 || echo "[]"; } | jq -r "$jq_count_today" 2>/dev/null || echo 0)
+          total=$(( used_refresh + used_fast_a + used_fast_b ))
           remaining=$(( DAILY_LIMIT - total ))
           (( remaining < 0 )) && remaining=0
-
           echo "used=$total" >> "$GITHUB_OUTPUT"
           echo "remaining=$remaining" >> "$GITHUB_OUTPUT"
           if (( total < DAILY_LIMIT )); then
@@ -77,7 +70,7 @@ jobs:
         if: steps.quota.outputs.allow == 'false'
         run: echo "Daily limit reached (used=${{ steps.quota.outputs.used }}). Skipping refresh."
 
-      # -------- Ensure paths / seed etags map --------
+      # ---------- Ensure repo paths ----------
       - name: Prepare data directory
         if: steps.quota.outputs.allow == 'true'
         shell: bash
@@ -86,8 +79,7 @@ jobs:
           mkdir -p data
           [[ -f data/etags.json ]] || echo '{}' > data/etags.json
 
-      # ================= ETag-aware fetch modules =================
-      # Repo layout: standings.json, fixtures_week.json, scorers.json, etags.json, meta.json
+      # ==================== FETCHERS ====================
 
       # ---- STANDINGS ----
       - id: standings
@@ -95,16 +87,13 @@ jobs:
         name: Refresh standings (ETag-aware)
         shell: bash
         env:
-          URL: ${{ vars.URL_STANDINGS }}        # ex: https://api.football-data.org/v4/competitions/PL/standings
+          URL: ${{ vars.URL_STANDINGS }}        # e.g. https://api.football-data.org/v4/competitions/PL/standings
           AUTH_HEADER: ${{ secrets.API_AUTH_HEADER }}
-          EXTRA_HEADER: ${{ secrets.API_EXTRA_HEADER }} # optional
+          EXTRA_HEADER: ${{ secrets.API_EXTRA_HEADER }}
         run: |
           set -euo pipefail
           KEY="standings"
-          OUT="data/standings.json"
-          TMPHDR="$(mktemp)"
-          TMPBODY="$(mktemp)"
-
+          TMPHDR="$(mktemp)"; TMPBODY="$(mktemp)"
           [[ -z "${URL:-}" ]] && { echo "URL_STANDINGS not set; skipping."; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
           IN_ETAG=$(jq -r --arg k "$KEY" '.[$k] // empty' data/etags.json)
@@ -117,24 +106,22 @@ jobs:
           if [[ "$CODE" == "304" ]]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
           elif [[ "$CODE" != "200" ]]; then
-            echo "HTTP $CODE from $URL — skipping write."
-            echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
+            echo "HTTP $CODE from $URL — skipping"; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
           fi
 
-          python - <<'PY'
-          import json, sys, pathlib
-          out = pathlib.Path("data/standings.json")
-          body = pathlib.Path(sys.argv[1]).read_text(encoding="utf-8")
-          try:
-              parsed = json.loads(body)
-          except Exception:
-              sys.exit(0)
-          new_text = json.dumps(parsed, separators=(",", ":"), sort_keys=True)
-          old_text = out.read_text(encoding="utf-8") if out.exists() else None
-          if new_text != old_text:
-              out.write_text(new_text, encoding="utf-8")
-              pathlib.Path("/tmp/changed-standings").write_text("1")
-          PY "$TMPBODY"
+          export BODY_PATH="$TMPBODY"
+          python <<'PY'
+import json, os, pathlib
+out = pathlib.Path("data/standings.json")
+body = pathlib.Path(os.environ["BODY_PATH"]).read_text(encoding="utf-8")
+try: parsed = json.loads(body)
+except Exception: raise SystemExit(0)
+new = json.dumps(parsed, separators=(",", ":"), sort_keys=True)
+old = out.read_text(encoding="utf-8") if out.exists() else None
+if new != old:
+    out.write_text(new, encoding="utf-8")
+    pathlib.Path("/tmp/changed-standings").write_text("1")
+PY
 
           NEW_ETAG=$(sed -n 's/^etag:[[:space:]]*//Ip' "$TMPHDR" | tr -d '\r' | tail -n1)
           if [[ -n "$NEW_ETAG" && "$NEW_ETAG" != "$IN_ETAG" ]]; then
@@ -142,92 +129,31 @@ jobs:
           fi
           echo "changed=$([[ -f /tmp/changed-standings ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
 
-        # ---- FIXTURES (NEXT 30 DAYS) ----
-      
-      # - id: fixtures_week
-      #   if: steps.quota.outputs.allow == 'true'
-      #   name: Refresh fixtures_week (ETag-aware)
-      #   shell: bash
-      #   env:
-      #     URL: ${{ vars.URL_FIXTURES_WEEK }}     # ex: https://api.football-data.org/v4/matches?dateFrom=...&dateTo=...
-      #     AUTH_HEADER: ${{ secrets.API_AUTH_HEADER }}
-      #     EXTRA_HEADER: ${{ secrets.API_EXTRA_HEADER }}
-      #   run: |
-      #     set -euo pipefail
-      #     KEY="fixtures_week"
-      #     OUT="data/fixtures_week.json"
-      #     TMPHDR="$(mktemp)"
-      #     TMPBODY="$(mktemp)"
-
-      #     [[ -z "${URL:-}" ]] && { echo "URL_FIXTURES_WEEK not set; skipping."; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
-
-      #     IN_ETAG=$(jq -r --arg k "$KEY" '.[$k] // empty' data/etags.json)
-      #     HDRS=()
-      #     [[ -n "${AUTH_HEADER:-}" ]]  && HDRS+=(-H "$AUTH_HEADER")
-      #     [[ -n "${EXTRA_HEADER:-}" ]] && HDRS+=(-H "$EXTRA_HEADER")
-      #     [[ -n "$IN_ETAG" ]] && HDRS+=(-H "If-None-Match: $IN_ETAG")
-
-      #     CODE=$(curl -sS -w "%{http_code}" -D "$TMPHDR" -o "$TMPBODY" "${HDRS[@]}" "$URL")
-      #     if [[ "$CODE" == "304" ]]; then
-      #       echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
-      #     elif [[ "$CODE" != "200" ]]; then
-      #       echo "HTTP $CODE from $URL — skipping write."
-      #       echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
-      #     fi
-
-      #     python - <<'PY'
-      #     import json, sys, pathlib
-      #     out = pathlib.Path("data/fixtures_week.json")
-      #     body = pathlib.Path(sys.argv[1]).read_text(encoding="utf-8")
-      #     try:
-      #         parsed = json.loads(body)
-      #     except Exception:
-      #         sys.exit(0)
-      #     new_text = json.dumps(parsed, separators=(",", ":"), sort_keys=True)
-      #     old_text = out.read_text(encoding="utf-8") if out.exists() else None
-      #     if new_text != old_text:
-      #         out.write_text(new_text, encoding="utf-8")
-      #         pathlib.Path("/tmp/changed-fixtures_week").write_text("1")
-      #     PY "$TMPBODY"
-
-      #     NEW_ETAG=$(sed -n 's/^etag:[[:space:]]*//Ip' "$TMPHDR" | tr -d '\r' | tail -n1)
-      #     if [[ -n "$NEW_ETAG" && "$NEW_ETAG" != "$IN_ETAG" ]]; then
-      #       tmp="$(mktemp)"; jq --arg k "$KEY" --arg v "$NEW_ETAG" '.[$k]=$v' data/etags.json > "$tmp" && mv "$tmp" data/etags.json
-      #     fi
-      #     echo "changed=$([[ -f /tmp/changed-fixtures_week ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
-
-#################
-# ---- FIXTURES (NEXT 30 DAYS) ----
+      # ---- FIXTURES (NEXT 30 DAYS, URL-keyed ETag) ----
       - id: fixtures_week
         if: steps.quota.outputs.allow == 'true'
         name: Refresh fixtures (next 30 days, ETag-aware)
         shell: bash
         env:
-          BASE: ${{ vars.URL_FIXTURES_WEEK }}   # base URL without dates (you set this)
+          BASE: ${{ vars.URL_FIXTURES_WEEK }}   # set to https://api.football-data.org/v4/competitions/PL/matches
           AUTH_HEADER: ${{ secrets.API_AUTH_HEADER }}
           EXTRA_HEADER: ${{ secrets.API_EXTRA_HEADER }}
         run: |
           set -euo pipefail
           KEY="fixtures_week"
-          OUT="data/fixtures_week.json"
-          TMPHDR="$(mktemp)"
-          TMPBODY="$(mktemp)"
-
+          TMPHDR="$(mktemp)"; TMPBODY="$(mktemp)"
           : "${BASE:=https://api.football-data.org/v4/competitions/PL/matches}"
 
           DATE_FROM="$(date -u +%Y-%m-%d)"
           DATE_TO="$(date -u -d '+30 days' +%Y-%m-%d)"
-
-
           SEP='?'; [[ "${BASE}" == *\?* ]] && SEP='&'
           URL="${BASE}${SEP}dateFrom=${DATE_FROM}&dateTo=${DATE_TO}"
-          echo "Fetching: ${URL}"
+          echo "Fetching: $URL"
 
           URLHASH="$(printf '%s' "$URL" | sha1sum | awk '{print $1}' | cut -c1-12)"
           EKEY="${KEY}|${URLHASH}"
 
           IN_ETAG=$(jq -r --arg k "$EKEY" '.[$k] // empty' data/etags.json 2>/dev/null || echo "")
-
           HDRS=()
           [[ -n "${AUTH_HEADER:-}" ]]  && HDRS+=(-H "$AUTH_HEADER")
           [[ -n "${EXTRA_HEADER:-}" ]] && HDRS+=(-H "$EXTRA_HEADER")
@@ -235,36 +161,32 @@ jobs:
 
           CODE=$(curl -sS -w "%{http_code}" -D "$TMPHDR" -o "$TMPBODY" "${HDRS[@]}" "$URL")
           if [[ "$CODE" == "304" ]]; then
-          echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
+            echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
           elif [[ "$CODE" != "200" ]]; then
-          echo "HTTP $CODE from $URL — skipping write."
-          echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
+            echo "HTTP $CODE from $URL — skipping"; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
           fi
 
+          export BODY_PATH="$TMPBODY"
+          python <<'PY'
+import json, os, pathlib
+out = pathlib.Path("data/fixtures_week.json")
+body = pathlib.Path(os.environ["BODY_PATH"]).read_text(encoding="utf-8")
+try: parsed = json.loads(body)
+except Exception: raise SystemExit(0)
+new = json.dumps(parsed, separators=(",", ":"), sort_keys=True)
+old = out.read_text(encoding="utf-8") if out.exists() else None
+if new != old:
+    out.write_text(new, encoding="utf-8")
+    pathlib.Path("/tmp/changed-fixtures_week").write_text("1")
+PY
 
-          python - <<'PY'
-          import json, sys, pathlib
-          out = pathlib.Path("data/fixtures_week.json")
-          body = pathlib.Path(sys.argv[1]).read_text(encoding="utf-8")
-          try:
-          parsed = json.loads(body)
-          except Exception:
-          sys.exit(0)
-          new_text = json.dumps(parsed, separators=(",", ":"), sort_keys=True)
-          old_text = out.read_text(encoding="utf-8") if out.exists() else None
-          if new_text != old_text:
-            out.write_text(new_text, encoding="utf-8")
-            pathlib.Path("/tmp/changed-fixtures_week").write_text("1")
-            PY "$TMPBODY"
-
-           NEW_ETAG=$(sed -n 's/^etag:[[:space:]]*//Ip' "$TMPHDR" | tr -d '\r' | tail -n1)
+          NEW_ETAG=$(sed -n 's/^etag:[[:space:]]*//Ip' "$TMPHDR" | tr -d '\r' | tail -n1)
           if [[ -n "$NEW_ETAG" ]]; then
-          tmp="$(mktemp)"; jq --arg k "$EKEY" --arg v "$NEW_ETAG" '.[$k]=$v' data/etags.json 2>/dev/null > "$tmp" || echo "{\"$EKEY\":\"$NEW_ETAG\"}" > "$tmp"; mv "$tmp" data/etags.json
-          tmp2="$(mktemp)"; jq --arg v "$NEW_ETAG" '.["fixtures_week"]=$v' data/etags.json 2>/dev/null > "$tmp2" || echo "{\"fixtures_week\":\"$NEW_ETAG\"}" > "$tmp2"; mv "$tmp2" data/etags.json
+            # Save under URL-specific key and mirror to plain key for meta.json
+            tmp="$(mktemp)"; jq --arg k "$EKEY" --arg v "$NEW_ETAG" '.[$k]=$v' data/etags.json 2>/dev/null > "$tmp" || echo "{\"$EKEY\":\"$NEW_ETAG\"}" > "$tmp"; mv "$tmp" data/etags.json
+            tmp2="$(mktemp)"; jq --arg v "$NEW_ETAG" '.["fixtures_week"]=$v' data/etags.json 2>/dev/null > "$tmp2" || echo "{\"fixtures_week\":\"$NEW_ETAG\"}" > "$tmp2"; mv "$tmp2" data/etags.json
           fi
-
           echo "changed=$([[ -f /tmp/changed-fixtures_week ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
-       
 
       # ---- SCORERS ----
       - id: scorers
@@ -272,16 +194,13 @@ jobs:
         name: Refresh scorers (ETag-aware)
         shell: bash
         env:
-          URL: ${{ vars.URL_SCORERS }}           # ex: https://api.football-data.org/v4/competitions/PL/scorers
+          URL: ${{ vars.URL_SCORERS }}           # e.g. https://api.football-data.org/v4/competitions/PL/scorers
           AUTH_HEADER: ${{ secrets.API_AUTH_HEADER }}
           EXTRA_HEADER: ${{ secrets.API_EXTRA_HEADER }}
         run: |
           set -euo pipefail
           KEY="scorers"
-          OUT="data/scorers.json"
-          TMPHDR="$(mktemp)"
-          TMPBODY="$(mktemp)"
-
+          TMPHDR="$(mktemp)"; TMPBODY="$(mktemp)"
           [[ -z "${URL:-}" ]] && { echo "URL_SCORERS not set; skipping."; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
           IN_ETAG=$(jq -r --arg k "$KEY" '.[$k] // empty' data/etags.json)
@@ -294,24 +213,22 @@ jobs:
           if [[ "$CODE" == "304" ]]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
           elif [[ "$CODE" != "200" ]]; then
-            echo "HTTP $CODE from $URL — skipping write."
-            echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
+            echo "HTTP $CODE from $URL — skipping"; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
           fi
 
-          python - <<'PY'
-          import json, sys, pathlib
-          out = pathlib.Path("data/scorers.json")
-          body = pathlib.Path(sys.argv[1]).read_text(encoding="utf-8")
-          try:
-              parsed = json.loads(body)
-          except Exception:
-              sys.exit(0)
-          new_text = json.dumps(parsed, separators=(",", ":"), sort_keys=True)
-          old_text = out.read_text(encoding="utf-8") if out.exists() else None
-          if new_text != old_text:
-              out.write_text(new_text, encoding="utf-8")
-              pathlib.Path("/tmp/changed-scorers").write_text("1")
-          PY "$TMPBODY"
+          export BODY_PATH="$TMPBODY"
+          python <<'PY'
+import json, os, pathlib
+out = pathlib.Path("data/scorers.json")
+body = pathlib.Path(os.environ["BODY_PATH"]).read_text(encoding="utf-8")
+try: parsed = json.loads(body)
+except Exception: raise SystemExit(0)
+new = json.dumps(parsed, separators=(",", ":"), sort_keys=True)
+old = out.read_text(encoding="utf-8") if out.exists() else None
+if new != old:
+    out.write_text(new, encoding="utf-8")
+    pathlib.Path("/tmp/changed-scorers").write_text("1")
+PY
 
           NEW_ETAG=$(sed -n 's/^etag:[[:space:]]*//Ip' "$TMPHDR" | tr -d '\r' | tail -n1)
           if [[ -n "$NEW_ETAG" && "$NEW_ETAG" != "$IN_ETAG" ]]; then
@@ -319,42 +236,41 @@ jobs:
           fi
           echo "changed=$([[ -f /tmp/changed-scorers ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
 
-      # -------- meta.json (only if something changed) --------
+      # ---------- meta.json ----------
       - id: meta
         if: steps.quota.outputs.allow == 'true' && (steps.standings.outputs.changed == 'true' || steps.fixtures_week.outputs.changed == 'true' || steps.scorers.outputs.changed == 'true')
         name: Update meta.json
         shell: bash
         run: |
           set -euo pipefail
-          python - <<'PY'
-          import json, datetime as dt
-          from pathlib import Path
-          def read_text(p):
-            try: return Path(p).read_text(encoding="utf-8")
-            except: return None
-          etags = {}
-          try:
-            etags = json.loads(read_text("data/etags.json") or "{}")
-          except Exception:
-            etags = {}
-          meta_new = {
-            "lastUpdatedUTC": dt.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "artifacts": {
-              "standings":     {"file":"data/standings.json",     "etag": etags.get("standings")},
-              "fixtures_week": {"file":"data/fixtures_week.json", "etag": etags.get("fixtures_week")},
-              "scorers":       {"file":"data/scorers.json",       "etag": etags.get("scorers")},
-            }
-          }
-          out = Path("data/meta.json")
-          new_text = json.dumps(meta_new, separators=(",", ":"), sort_keys=True)
-          old_text = out.read_text(encoding="utf-8") if out.exists() else None
-          if new_text != old_text:
-            out.write_text(new_text, encoding="utf-8")
-            Path("/tmp/changed-meta").write_text("1")
-          PY
+          python <<'PY'
+import json, datetime as dt
+from pathlib import Path
+def read_text(p):
+    try: return Path(p).read_text(encoding="utf-8")
+    except: return None
+try:
+    etags = json.loads(read_text("data/etags.json") or "{}")
+except Exception:
+    etags = {}
+meta_new = {
+    "lastUpdatedUTC": dt.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+    "artifacts": {
+        "standings":     {"file":"data/standings.json",     "etag": etags.get("standings")},
+        "fixtures_week": {"file":"data/fixtures_week.json", "etag": etags.get("fixtures_week")},
+        "scorers":       {"file":"data/scorers.json",       "etag": etags.get("scorers")},
+    }
+}
+out = Path("data/meta.json")
+new = json.dumps(meta_new, separators=(",", ":"), sort_keys=True)
+old = out.read_text(encoding="utf-8") if out.exists() else None
+if new != old:
+    out.write_text(new, encoding="utf-8")
+    Path("/tmp/changed-meta").write_text("1")
+PY
           echo "changed=$([[ -f /tmp/changed-meta ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
 
-      # -------- Commit only if something changed --------
+      # ---------- Commit only when something changed ----------
       - name: Commit & push
         if: steps.quota.outputs.allow == 'true'
         shell: bash
