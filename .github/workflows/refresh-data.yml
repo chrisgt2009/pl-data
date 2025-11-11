@@ -19,7 +19,7 @@ permissions:
   contents: write
   actions: read
 
-# Don't cancel in-progress runs.
+# Do NOT cancel in-progress runs.
 concurrency:
   group: refresh-data-${{ github.ref }}
   cancel-in-progress: false
@@ -37,7 +37,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # ---------- Daily budget gate ----------
+      # ---------- Daily budget gate (robust to missing fields) ----------
       - id: quota
         name: Daily budget gate
         shell: bash
@@ -46,12 +46,17 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          TODAY="$(date -u +%Y-%m-%d)"
-          jq_count_today='[.[] | select(.createdAt | startswith(env.TODAY))] | length'
 
-          used_refresh=$(gh run list --workflow "refresh-data" --json createdAt,status --limit 200 | jq -r "$jq_count_today")
-          used_fast_a=$({ gh run list --workflow "fast-live" --json createdAt,status --limit 200 || echo "[]"; } | jq -r "$jq_count_today" 2>/dev/null || echo 0)
-          used_fast_b=$({ gh run list --workflow "live-fast" --json createdAt,status --limit 200 || echo "[]"; } | jq -r "$jq_count_today" 2>/dev/null || echo 0)
+          TODAY="$(date -u +%Y-%m-%d)"
+          # Count runs created today; tolerate missing createdAt
+          jq_today='[ .[] | select(((.createdAt // "") | tostring) | startswith($TODAY)) ] | length'
+
+          used_refresh=$({ gh run list --workflow "refresh-data" --json createdAt,status --limit 200 || echo '[]'; } \
+                         | jq -r --arg TODAY "$TODAY" "$jq_today")
+          used_fast_a=$({ gh run list --workflow "fast-live"  --json createdAt,status --limit 200 || echo '[]'; } \
+                         | jq -r --arg TODAY "$TODAY" "$jq_today")
+          used_fast_b=$({ gh run list --workflow "live-fast"  --json createdAt,status --limit 200 || echo '[]'; } \
+                         | jq -r --arg TODAY "$TODAY" "$jq_today")
 
           total=$(( used_refresh + used_fast_a + used_fast_b ))
           remaining=$(( DAILY_LIMIT - total ))
@@ -59,11 +64,7 @@ jobs:
 
           echo "used=$total" >> "$GITHUB_OUTPUT"
           echo "remaining=$remaining" >> "$GITHUB_OUTPUT"
-          if (( total < DAILY_LIMIT )); then
-            echo "allow=true"  >> "$GITHUB_OUTPUT"
-          else
-            echo "allow=false" >> "$GITHUB_OUTPUT"
-          fi
+          echo "allow=$([ "$remaining" -gt 0 ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
 
       - name: Budget exhausted — skip run
         if: steps.quota.outputs.allow == 'false'
@@ -173,6 +174,7 @@ jobs:
 
           NEW_ETAG=$(sed -n 's/^etag:[[:space:]]*//Ip' "$TMPHDR" | tr -d '\r' | tail -n1)
           if [[ -n "$NEW_ETAG" ]]; then
+            # Save under URL-specific key and mirror to plain key for meta.json
             tmp="$(mktemp)"; jq --arg k "$EKEY" --arg v "$NEW_ETAG" '.[$k]=$v' data/etags.json 2>/dev/null > "$tmp" || echo "{\"$EKEY\":\"$NEW_ETAG\"}" > "$tmp"; mv "$tmp" data/etags.json
             tmp2="$(mktemp)"; jq --arg v "$NEW_ETAG" '.["fixtures_week"]=$v' data/etags.json 2>/dev/null > "$tmp2" || echo "{\"fixtures_week\":\"$NEW_ETAG\"}" > "$tmp2"; mv "$tmp2" data/etags.json
           fi
