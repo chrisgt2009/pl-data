@@ -145,10 +145,10 @@ jobs:
             echo "- Changed: **${{ steps.standings.outputs.changed || 'false' }}**"
           } >> "$GITHUB_STEP_SUMMARY"
 
-      # ---- FIXTURES (NEXT 30 DAYS, URL-keyed ETag) ----
+      # ---- FIXTURES (NEXT 10 DAYS, URL-keyed ETag) ----
       - id: fixtures_week
         if: steps.quota.outputs.allow == 'true'
-        name: Refresh fixtures (next 30 days, ETag-aware)
+        name: Refresh fixtures (next 10 days, ETag-aware)
         shell: bash
         env:
           BASE: ${{ vars.URL_FIXTURES }}   # https://api.football-data.org/v4/competitions/PL/matches
@@ -162,7 +162,7 @@ jobs:
           : "${BASE:=https://api.football-data.org/v4/competitions/PL/matches}"
 
           DATE_FROM="$(date -u +%Y-%m-%d)"
-          DATE_TO="$(date -u -d '+30 days' +%Y-%m-%d)"
+          DATE_TO="$(date -u -d '+10 days' +%Y-%m-%d)"
           SEP='?'; [[ "${BASE}" == *\?* ]] && SEP='&'
           URL="${BASE}${SEP}dateFrom=${DATE_FROM}&dateTo=${DATE_TO}"
 
@@ -203,7 +203,7 @@ jobs:
           fi
 
           {
-            echo "### Fixtures (30 days)"
+            echo "### Fixtures (10 days)"
             echo "- URL: \`$URL\`"
             echo "- HTTP: **$CODE**"
             echo "- If-None-Match sent: \`${IN_ETAG:-none}\` (force=${FORCE_REFRESH})"
