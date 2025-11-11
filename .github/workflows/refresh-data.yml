@@ -142,13 +142,68 @@ jobs:
           fi
           echo "changed=$([[ -f /tmp/changed-standings ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
 
-      # ---- FIXTURES (WEEK) ----
+        # ---- FIXTURES (NEXT 30 DAYS) ----
+      
+      # - id: fixtures_week
+      #   if: steps.quota.outputs.allow == 'true'
+      #   name: Refresh fixtures_week (ETag-aware)
+      #   shell: bash
+      #   env:
+      #     URL: ${{ vars.URL_FIXTURES_WEEK }}     # ex: https://api.football-data.org/v4/matches?dateFrom=...&dateTo=...
+      #     AUTH_HEADER: ${{ secrets.API_AUTH_HEADER }}
+      #     EXTRA_HEADER: ${{ secrets.API_EXTRA_HEADER }}
+      #   run: |
+      #     set -euo pipefail
+      #     KEY="fixtures_week"
+      #     OUT="data/fixtures_week.json"
+      #     TMPHDR="$(mktemp)"
+      #     TMPBODY="$(mktemp)"
+
+      #     [[ -z "${URL:-}" ]] && { echo "URL_FIXTURES_WEEK not set; skipping."; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+
+      #     IN_ETAG=$(jq -r --arg k "$KEY" '.[$k] // empty' data/etags.json)
+      #     HDRS=()
+      #     [[ -n "${AUTH_HEADER:-}" ]]  && HDRS+=(-H "$AUTH_HEADER")
+      #     [[ -n "${EXTRA_HEADER:-}" ]] && HDRS+=(-H "$EXTRA_HEADER")
+      #     [[ -n "$IN_ETAG" ]] && HDRS+=(-H "If-None-Match: $IN_ETAG")
+
+      #     CODE=$(curl -sS -w "%{http_code}" -D "$TMPHDR" -o "$TMPBODY" "${HDRS[@]}" "$URL")
+      #     if [[ "$CODE" == "304" ]]; then
+      #       echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
+      #     elif [[ "$CODE" != "200" ]]; then
+      #       echo "HTTP $CODE from $URL — skipping write."
+      #       echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
+      #     fi
+
+      #     python - <<'PY'
+      #     import json, sys, pathlib
+      #     out = pathlib.Path("data/fixtures_week.json")
+      #     body = pathlib.Path(sys.argv[1]).read_text(encoding="utf-8")
+      #     try:
+      #         parsed = json.loads(body)
+      #     except Exception:
+      #         sys.exit(0)
+      #     new_text = json.dumps(parsed, separators=(",", ":"), sort_keys=True)
+      #     old_text = out.read_text(encoding="utf-8") if out.exists() else None
+      #     if new_text != old_text:
+      #         out.write_text(new_text, encoding="utf-8")
+      #         pathlib.Path("/tmp/changed-fixtures_week").write_text("1")
+      #     PY "$TMPBODY"
+
+      #     NEW_ETAG=$(sed -n 's/^etag:[[:space:]]*//Ip' "$TMPHDR" | tr -d '\r' | tail -n1)
+      #     if [[ -n "$NEW_ETAG" && "$NEW_ETAG" != "$IN_ETAG" ]]; then
+      #       tmp="$(mktemp)"; jq --arg k "$KEY" --arg v "$NEW_ETAG" '.[$k]=$v' data/etags.json > "$tmp" && mv "$tmp" data/etags.json
+      #     fi
+      #     echo "changed=$([[ -f /tmp/changed-fixtures_week ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+#################
+# ---- FIXTURES (NEXT 30 DAYS) ----
       - id: fixtures_week
         if: steps.quota.outputs.allow == 'true'
-        name: Refresh fixtures_week (ETag-aware)
+        name: Refresh fixtures (next 30 days, ETag-aware)
         shell: bash
         env:
-          URL: ${{ vars.URL_FIXTURES_WEEK }}     # ex: https://api.football-data.org/v4/matches?dateFrom=...&dateTo=...
+          BASE: ${{ vars.URL_FIXTURES_WEEK }}   # base URL without dates (you set this)
           AUTH_HEADER: ${{ secrets.API_AUTH_HEADER }}
           EXTRA_HEADER: ${{ secrets.API_EXTRA_HEADER }}
         run: |
@@ -158,9 +213,21 @@ jobs:
           TMPHDR="$(mktemp)"
           TMPBODY="$(mktemp)"
 
-          [[ -z "${URL:-}" ]] && { echo "URL_FIXTURES_WEEK not set; skipping."; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+          : "${BASE:=https://api.football-data.org/v4/competitions/PL/matches}"
 
-          IN_ETAG=$(jq -r --arg k "$KEY" '.[$k] // empty' data/etags.json)
+          DATE_FROM="$(date -u +%Y-%m-%d)"
+          DATE_TO="$(date -u -d '+30 days' +%Y-%m-%d)"
+
+
+          SEP='?'; [[ "${BASE}" == *\?* ]] && SEP='&'
+          URL="${BASE}${SEP}dateFrom=${DATE_FROM}&dateTo=${DATE_TO}"
+          echo "Fetching: ${URL}"
+
+          URLHASH="$(printf '%s' "$URL" | sha1sum | awk '{print $1}' | cut -c1-12)"
+          EKEY="${KEY}|${URLHASH}"
+
+          IN_ETAG=$(jq -r --arg k "$EKEY" '.[$k] // empty' data/etags.json 2>/dev/null || echo "")
+
           HDRS=()
           [[ -n "${AUTH_HEADER:-}" ]]  && HDRS+=(-H "$AUTH_HEADER")
           [[ -n "${EXTRA_HEADER:-}" ]] && HDRS+=(-H "$EXTRA_HEADER")
@@ -168,32 +235,36 @@ jobs:
 
           CODE=$(curl -sS -w "%{http_code}" -D "$TMPHDR" -o "$TMPBODY" "${HDRS[@]}" "$URL")
           if [[ "$CODE" == "304" ]]; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
+          echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
           elif [[ "$CODE" != "200" ]]; then
-            echo "HTTP $CODE from $URL — skipping write."
-            echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
+          echo "HTTP $CODE from $URL — skipping write."
+          echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
           fi
+
 
           python - <<'PY'
           import json, sys, pathlib
           out = pathlib.Path("data/fixtures_week.json")
           body = pathlib.Path(sys.argv[1]).read_text(encoding="utf-8")
           try:
-              parsed = json.loads(body)
+          parsed = json.loads(body)
           except Exception:
-              sys.exit(0)
+          sys.exit(0)
           new_text = json.dumps(parsed, separators=(",", ":"), sort_keys=True)
           old_text = out.read_text(encoding="utf-8") if out.exists() else None
           if new_text != old_text:
-              out.write_text(new_text, encoding="utf-8")
-              pathlib.Path("/tmp/changed-fixtures_week").write_text("1")
-          PY "$TMPBODY"
+            out.write_text(new_text, encoding="utf-8")
+            pathlib.Path("/tmp/changed-fixtures_week").write_text("1")
+            PY "$TMPBODY"
 
-          NEW_ETAG=$(sed -n 's/^etag:[[:space:]]*//Ip' "$TMPHDR" | tr -d '\r' | tail -n1)
-          if [[ -n "$NEW_ETAG" && "$NEW_ETAG" != "$IN_ETAG" ]]; then
-            tmp="$(mktemp)"; jq --arg k "$KEY" --arg v "$NEW_ETAG" '.[$k]=$v' data/etags.json > "$tmp" && mv "$tmp" data/etags.json
+           NEW_ETAG=$(sed -n 's/^etag:[[:space:]]*//Ip' "$TMPHDR" | tr -d '\r' | tail -n1)
+          if [[ -n "$NEW_ETAG" ]]; then
+          tmp="$(mktemp)"; jq --arg k "$EKEY" --arg v "$NEW_ETAG" '.[$k]=$v' data/etags.json 2>/dev/null > "$tmp" || echo "{\"$EKEY\":\"$NEW_ETAG\"}" > "$tmp"; mv "$tmp" data/etags.json
+          tmp2="$(mktemp)"; jq --arg v "$NEW_ETAG" '.["fixtures_week"]=$v' data/etags.json 2>/dev/null > "$tmp2" || echo "{\"fixtures_week\":\"$NEW_ETAG\"}" > "$tmp2"; mv "$tmp2" data/etags.json
           fi
+
           echo "changed=$([[ -f /tmp/changed-fixtures_week ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+       
 
       # ---- SCORERS ----
       - id: scorers
