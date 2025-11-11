@@ -132,7 +132,7 @@ jobs:
         name: Refresh fixtures (next 30 days, ETag-aware)
         shell: bash
         env:
-          BASE: ${{ vars.URL_FIXTURES_WEEK }}   # set to https://api.football-data.org/v4/competitions/PL/matches
+          BASE: ${{ vars.URL_FIXTURES }}   # set to https://api.football-data.org/v4/competitions/PL/matches
           AUTH_HEADER: ${{ secrets.API_AUTH_HEADER }}
           EXTRA_HEADER: ${{ secrets.API_EXTRA_HEADER }}
         run: |
