@@ -210,15 +210,15 @@ jobs:
       #       echo "- Changed: **${{ steps.fixtures_week.outputs.changed || 'false' }}**"
       #     } >> "$GITHUB_STEP_SUMMARY"
 
-      # ---- FIXTURES (ROLLING 30 DAYS via 3×10-day chunks) ----
+      # ---- FIXTURES (30 days, chunked, safe write, with counts) ----
       - id: fixtures_week
         if: steps.quota.outputs.allow == 'true'
-        name: Refresh fixtures (30 days, chunked + merged)
+        name: Refresh fixtures (30 days, chunked + merged, safe write)
         shell: bash
         env:
           BASE: ${{ vars.URL_FIXTURES }}   # e.g. https://api.football-data.org/v4/matches?competitions=PL
-          AUTH_HEADER: ${{ secrets.API_AUTH_HEADER }}
-          EXTRA_HEADER: ${{ secrets.API_EXTRA_HEADER }}
+          AUTH_HEADER: ${{ secrets.API_AUTH_HEADER }}    # e.g. "X-Auth-Token: <token>"
+          EXTRA_HEADER: ${{ secrets.API_EXTRA_HEADER }}  # optional
           FORCE_REFRESH: ${{ env.FORCE_REFRESH }}
         run: |
           set -euo pipefail
@@ -227,59 +227,58 @@ jobs:
           TMP_COMBINED="$(mktemp)"
           echo '{"matches":[]}' > "$TMP_COMBINED"
 
-          # Fallback to global matches endpoint if BASE not set.
           : "${BASE:=https://api.football-data.org/v4/matches?competitions=PL}"
 
           START_FROM="$(date -u +%Y-%m-%d)"
           END_TO="$(date -u -d '+30 days' +%Y-%m-%d)"
 
-          echo "force=${FORCE_REFRESH:-false}" >> "$GITHUB_OUTPUT"
-
           slice_summary=""
+          total_count=0
+
           for OFF in 0 10 20; do
             FROM="$(date -u -d "+${OFF} days" +%Y-%m-%d)"
             TO="$(date -u -d "+$((OFF+10)) days" +%Y-%m-%d)"
 
             SEP='&'; [[ "${BASE}" == *\?* ]] || SEP='?'
-            URL="${BASE}${SEP}dateFrom=${FROM}&dateTo=${TO}"
+            # Force upcoming statuses to be included
+            URL="${BASE}${SEP}dateFrom=${FROM}&dateTo=${TO}&status=SCHEDULED,TIMED"
 
             HDRS=()
             [[ -n "${AUTH_HEADER:-}" ]]  && HDRS+=(-H "$AUTH_HEADER")
             [[ -n "${EXTRA_HEADER:-}" ]] && HDRS+=(-H "$EXTRA_HEADER")
 
-            TMP_HDR="$(mktemp)"
-            TMP_BODY="$(mktemp)"
+            TMP_HDR="$(mktemp)"; TMP_BODY="$(mktemp)"
             CODE=$(curl -sS -w "%{http_code}" -D "$TMP_HDR" -o "$TMP_BODY" "${HDRS[@]}" "$URL" || true)
 
-            slice_summary+="- ${FROM} → ${TO}: **${CODE}**  \n"
+            # Count matches returned by this slice (if JSON is valid)
+            slice_count=$(jq -r '(.matches // []) | length' "$TMP_BODY" 2>/dev/null || echo 0)
+            slice_summary+="- ${FROM} → ${TO}: **${CODE}**, matches: **${slice_count}**  \n"
 
-            if [[ "$CODE" == "200" ]]; then
-              # Merge: combined.matches + slice.matches -> unique by id, sorted by utcDate
+            if [[ "$CODE" == "200" && "$slice_count" -gt 0 ]]; then
               jq -s '{matches: (.[0].matches + (try .[1].matches // []) | unique_by(.id) | sort_by(.utcDate))}' \
                 "$TMP_COMBINED" "$TMP_BODY" > "${TMP_COMBINED}.new" && mv "${TMP_COMBINED}.new" "$TMP_COMBINED"
-            else
-              echo "Slice ${FROM}..${TO} returned HTTP ${CODE}; skipping merge."
             fi
           done
 
-          # Build a minimal envelope (filters + matches) for app consumption
+          # Build normalized envelope and get total
           NORM="$(mktemp)"
           jq -S --arg df "$START_FROM" --arg dt "$END_TO" \
              '{filters:{dateFrom:$df,dateTo:$dt},matches:.matches}' \
              "$TMP_COMBINED" > "$NORM"
 
-          # If we're not forcing and the file is identical, mark unchanged.
+          total_count=$(jq '.matches | length' "$NORM")
+
           changed="false"
-          if [[ "${FORCE_REFRESH:-false}" == "true" ]]; then
-            changed="true"
-            mv "$NORM" "$OUT"
-          else
-            if [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then
-              changed="true"
+          if [[ "$total_count" -gt 0 ]]; then
+            if [[ "${FORCE_REFRESH:-false}" == "true" ]] || [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then
               mv "$NORM" "$OUT"
+              changed="true"
             else
               rm -f "$NORM"
             fi
+          else
+            rm -f "$NORM"
+            echo "No matches returned across all slices; leaving ${OUT} unchanged."
           fi
 
           echo "changed=$changed" >> "$GITHUB_OUTPUT"
@@ -291,10 +290,10 @@ jobs:
             echo "- Combined window: \`${START_FROM}\` → \`${END_TO}\`"
             echo ""
             echo "${slice_summary}"
-            echo ""
+            echo "- Merged total matches: **${total_count}**"
             echo "- Changed: **${changed}**"
-            [[ -f "$OUT" ]] && echo "- Wrote: \`$OUT\`"
-          } >> "$GITHUB_STEP_SUMMARY"      
+            [[ -f "$OUT" ]] && echo "- Current file: \`${OUT}\`"
+          } >> "$GITHUB_STEP_SUMMARY"   
 
       # ---- SCORERS ----
       - id: scorers
