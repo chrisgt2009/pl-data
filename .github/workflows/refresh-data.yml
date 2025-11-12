@@ -148,7 +148,7 @@ jobs:
       # ---- FIXTURES (NEXT 10 DAYS, URL-keyed ETag) ----
       - id: fixtures_week
         if: steps.quota.outputs.allow == 'true'
-        name: Refresh fixtures (next 10 days, ETag-aware)
+        name: Refresh fixtures (next 20 days, ETag-aware)
         shell: bash
         env:
           BASE: ${{ vars.URL_FIXTURES }}   # https://api.football-data.org/v4/competitions/PL/matches
