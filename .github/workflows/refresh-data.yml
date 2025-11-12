@@ -210,66 +210,125 @@ jobs:
       #       echo "- Changed: **${{ steps.fixtures_week.outputs.changed || 'false' }}**"
       #     } >> "$GITHUB_STEP_SUMMARY"
 
-      # ---- FIXTURES (30 days, chunked, safe write, with counts) ----
+      # ---- FIXTURES (30 days; multi-endpoint fallback; safe write; rich diagnostics) ----
       - id: fixtures_week
         if: steps.quota.outputs.allow == 'true'
-        name: Refresh fixtures (30 days, chunked + merged, safe write)
+        name: Refresh fixtures (30 days, with fallbacks)
         shell: bash
         env:
           BASE: ${{ vars.URL_FIXTURES }}   # e.g. https://api.football-data.org/v4/matches?competitions=PL
-          AUTH_HEADER: ${{ secrets.API_AUTH_HEADER }}    # e.g. "X-Auth-Token: <token>"
+          AUTH_HEADER: ${{ secrets.API_AUTH_HEADER }}    # e.g. X-Auth-Token: <token>
           EXTRA_HEADER: ${{ secrets.API_EXTRA_HEADER }}  # optional
           FORCE_REFRESH: ${{ env.FORCE_REFRESH }}
         run: |
           set -euo pipefail
 
-          OUT="data/fixtures_week.json"
-          TMP_COMBINED="$(mktemp)"
-          echo '{"matches":[]}' > "$TMP_COMBINED"
+          # ---------- helpers ----------
+          hdrs() {
+            local a=()
+            [[ -n "${AUTH_HEADER:-}"  ]] && a+=(-H "$AUTH_HEADER")
+            [[ -n "${EXTRA_HEADER:-}" ]] && a+=(-H "$EXTRA_HEADER")
+            printf '%s\n' "${a[@]}"
+          }
 
+          fetch_slice() {
+            # $1 = base, $2 = from, $3 = to, $4 = tmp_hdr, $5 = tmp_body
+            local base="$1" from="$2" to="$3" tmp_hdr="$4" tmp_body="$5"
+            local sep url code
+            sep='&'; [[ "$base" == *\?* ]] || sep='?'
+            url="${base}${sep}dateFrom=${from}&dateTo=${to}&status=SCHEDULED,TIMED"
+            code=$(curl -sS -w "%{http_code}" -D "$tmp_hdr" -o "$tmp_body" $(hdrs) "$url" || true)
+            printf '%s\n' "$code|$url"
+          }
+
+          count_matches() {
+            # $1 = json file
+            jq -r '(.matches // []) | length' "$1" 2>/dev/null || echo 0
+          }
+
+          merge_into() {
+            # $1 = combined.json, $2 = slice.json
+            jq -s '{matches: (.[0].matches + (try .[1].matches // []) | unique_by(.id) | sort_by(.utcDate))}' \
+              "$1" "$2"
+          }
+
+          snippet() {
+            # $1 = file
+            head -c 220 "$1" | tr -d '\000'
+          }
+
+          # ---------- config ----------
           : "${BASE:=https://api.football-data.org/v4/matches?competitions=PL}"
+          ALT_BASE="https://api.football-data.org/v4/competitions/PL/matches"
 
           START_FROM="$(date -u +%Y-%m-%d)"
           END_TO="$(date -u -d '+30 days' +%Y-%m-%d)"
+          OUT="data/fixtures_week.json"
 
-          slice_summary=""
-          total_count=0
+          COMBINED="$(mktemp)"
+          echo '{"matches":[]}' > "$COMBINED"
+          total=0
+          summary=""
 
-          for OFF in 0 10 20; do
-            FROM="$(date -u -d "+${OFF} days" +%Y-%m-%d)"
-            TO="$(date -u -d "+$((OFF+10)) days" +%Y-%m-%d)"
+          attempt() {
+            # $1 = base url
+            local base="$1" slice_total=0
+            for off in 0 10 20; do
+              local from to tmp_hdr tmp_body
+              from="$(date -u -d "+${off} days" +%Y-%m-%d)"
+              to="$(date -u -d "+$((off+10)) days" +%Y-%m-%d)"
+              tmp_hdr="$(mktemp)"; tmp_body="$(mktemp)"
 
-            SEP='&'; [[ "${BASE}" == *\?* ]] || SEP='?'
-            # Force upcoming statuses to be included
-            URL="${BASE}${SEP}dateFrom=${FROM}&dateTo=${TO}&status=SCHEDULED,TIMED"
+              IFS='|' read -r code url <<<"$(fetch_slice "$base" "$from" "$to" "$tmp_hdr" "$tmp_body")"
+              cnt="$(count_matches "$tmp_body")"
+              slice_total=$((slice_total + cnt))
 
-            HDRS=()
-            [[ -n "${AUTH_HEADER:-}" ]]  && HDRS+=(-H "$AUTH_HEADER")
-            [[ -n "${EXTRA_HEADER:-}" ]] && HDRS+=(-H "$EXTRA_HEADER")
+              # Add diagnostics; if 200 but empty, show snippet (often an error payload)
+              if [[ "$code" == "200" && "$cnt" -gt 0 ]]; then
+                merge_into "$COMBINED" "$tmp_body" > "${COMBINED}.new" && mv "${COMBINED}.new" "$COMBINED"
+                summary+="- ${from} → ${to}: **${code}**, matches: **${cnt}**  \n"
+              else
+                short="$(snippet "$tmp_body" || true)"
+                summary+="- ${from} → ${to}: **${code}**, matches: **${cnt}**${short:+ — _${short}_}  \n"
+              fi
+            done
+            echo "$slice_total"
+          }
 
-            TMP_HDR="$(mktemp)"; TMP_BODY="$(mktemp)"
-            CODE=$(curl -sS -w "%{http_code}" -D "$TMP_HDR" -o "$TMP_BODY" "${HDRS[@]}" "$URL" || true)
+          # Attempt 1: global endpoint with competitions filter (best on free)
+          a1=$(attempt "$BASE")
+          total=$((total + a1))
 
-            # Count matches returned by this slice (if JSON is valid)
-            slice_count=$(jq -r '(.matches // []) | length' "$TMP_BODY" 2>/dev/null || echo 0)
-            slice_summary+="- ${FROM} → ${TO}: **${CODE}**, matches: **${slice_count}**  \n"
+          # Attempt 2: competition endpoint if still empty
+          if [[ "$total" -eq 0 ]]; then
+            summary+="\n_Fallback to competition endpoint_\n"
+            a2=$(attempt "$ALT_BASE")
+            total=$((total + a2))
+          fi
 
-            if [[ "$CODE" == "200" && "$slice_count" -gt 0 ]]; then
-              jq -s '{matches: (.[0].matches + (try .[1].matches // []) | unique_by(.id) | sort_by(.utcDate))}' \
-                "$TMP_COMBINED" "$TMP_BODY" > "${TMP_COMBINED}.new" && mv "${TMP_COMBINED}.new" "$TMP_COMBINED"
+          # Attempt 3: final fallback (no dates) to at least get "next" scheduled
+          if [[ "$total" -eq 0 ]]; then
+            summary+="\n_Final fallback (no dates, scheduled/timed only)_\n"
+            tmp_hdr="$(mktemp)"; tmp_body="$(mktemp)"
+            url="${ALT_BASE}?status=SCHEDULED,TIMED"
+            code=$(curl -sS -w "%{http_code}" -D "$tmp_hdr" -o "$tmp_body" $(hdrs) "$url" || true)
+            cnt="$(count_matches "$tmp_body")"
+            if [[ "$code" == "200" && "$cnt" -gt 0 ]]; then
+              jq -S '{matches:.matches}' "$tmp_body" > "${COMBINED}.new" && mv "${COMBINED}.new" "$COMBINED"
+              total=$((total + cnt))
             fi
-          done
+            short="$(snippet "$tmp_body" || true)"
+            summary+="- no-date call: **${code}**, matches: **${cnt}**${short:+ — _${short}_}  \n"
+          fi
 
-          # Build normalized envelope and get total
+          # Build envelope
           NORM="$(mktemp)"
           jq -S --arg df "$START_FROM" --arg dt "$END_TO" \
              '{filters:{dateFrom:$df,dateTo:$dt},matches:.matches}' \
-             "$TMP_COMBINED" > "$NORM"
-
-          total_count=$(jq '.matches | length' "$NORM")
+             "$COMBINED" > "$NORM"
 
           changed="false"
-          if [[ "$total_count" -gt 0 ]]; then
+          if [[ "$total" -gt 0 ]]; then
             if [[ "${FORCE_REFRESH:-false}" == "true" ]] || [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then
               mv "$NORM" "$OUT"
               changed="true"
@@ -278,7 +337,7 @@ jobs:
             fi
           else
             rm -f "$NORM"
-            echo "No matches returned across all slices; leaving ${OUT} unchanged."
+            echo "All attempts returned 0 matches; ${OUT} left unchanged."
           fi
 
           echo "changed=$changed" >> "$GITHUB_OUTPUT"
@@ -286,14 +345,13 @@ jobs:
           {
             echo "### Fixtures (30 days)"
             echo "- Force refresh: ${FORCE_REFRESH:-false}"
-            echo "- Base: \`${BASE}\`"
-            echo "- Combined window: \`${START_FROM}\` → \`${END_TO}\`"
+            echo "- Window: \`${START_FROM}\` → \`${END_TO}\`"
             echo ""
-            echo "${slice_summary}"
-            echo "- Merged total matches: **${total_count}**"
+            printf "%b" "$summary"
+            echo "- Merged total: **${total}**"
             echo "- Changed: **${changed}**"
-            [[ -f "$OUT" ]] && echo "- Current file: \`${OUT}\`"
-          } >> "$GITHUB_STEP_SUMMARY"   
+            [[ -f "$OUT" ]] && echo "- File: \`${OUT}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       # ---- SCORERS ----
       - id: scorers
