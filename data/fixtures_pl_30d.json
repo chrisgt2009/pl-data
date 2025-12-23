@@ -1,1 +1,7 @@
-{"matches":[]}
+{
+  "filters": {
+    "dateFrom": "2025-11-12",
+    "dateTo": "2025-12-12"
+  },
+  "matches": []
+}
