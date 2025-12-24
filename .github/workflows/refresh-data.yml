@@ -157,6 +157,22 @@ jobs:
           FORCE_REFRESH: ${{ env.FORCE_REFRESH }}
         run: |
           set -euo pipefail
+          
+          # CRITICAL FIXES: Initialize ALL flow variables at the start.
+          changed="false" 
+          total=0
+          summary=""
+          
+          : "${BASE:=https://api.football-data.org/v4/matches?competitions=PL}"
+          ALT_BASE="https://api.football-data.org/v4/competitions/PL/matches"
+
+          START_FROM="$(date -u +%Y-%m-%d)"
+          END_TO="$(date -u -d '+30 days' +%Y-%m-%d)"
+          OUT="data/fixtures_week.json"
+
+          COMBINED="$(mktemp)"
+          echo '{"matches":[]}' > "$COMBINED"
+          
 
           # ---------- helpers ----------
           hdrs() {
@@ -172,7 +188,8 @@ jobs:
             local sep url code
             sep='&'; [[ "$base" == *\?* ]] || sep='?'
             url="${base}${sep}dateFrom=${from}&dateTo=${to}&status=SCHEDULED,TIMED"
-            code=$(curl -sS -w "%{http_code}" -D "$tmp_hdr" -o "$tmp_body" $(hdrs) "$url" || true)
+            # Use '|| true' to ensure the command substitution doesn't fail on connection error
+            code=$(curl -sS -w "%{http_code}" -D "$tmp_hdr" -o "$tmp_body" $(hdrs) "$url" || true) 
             printf '%s\n' "$code|$url"
           }
 
@@ -191,19 +208,6 @@ jobs:
             # $1 = file
             head -c 220 "$1" | tr -d '\000'
           }
-
-          # ---------- config ----------
-          : "${BASE:=https://api.football-data.org/v4/matches?competitions=PL}"
-          ALT_BASE="https://api.football-data.org/v4/competitions/PL/matches"
-
-          START_FROM="$(date -u +%Y-%m-%d)"
-          END_TO="$(date -u -d '+30 days' +%Y-%m-%d)"
-          OUT="data/fixtures_week.json"
-
-          COMBINED="$(mktemp)"
-          echo '{"matches":[]}' > "$COMBINED"
-          total=0
-          summary=""
 
           attempt() {
             # $1 = base url
@@ -258,11 +262,12 @@ jobs:
 
           # Build envelope
           NORM="$(mktemp)"
-          jq -S --arg df "$START_FROM" --arg dt "$END_TO" \
+          # CRITICAL FIX: Ensure safe expansion of START_FROM and END_TO for jq
+          jq -S --arg df "${START_FROM}" --arg dt "${END_TO}" \
               '{filters:{dateFrom:$df,dateTo:$dt},matches:.matches}' \
               "$COMBINED" > "$NORM"
 
-          changed="false" # <--- CRITICAL FIX: Initialize 'changed' before the conditional
+          # 'changed' is already initialized to "false"
           if [[ "$total" -gt 0 ]]; then
             if [[ "${FORCE_REFRESH:-false}" == "true" ]] || [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then
               mv "$NORM" "$OUT"
@@ -273,7 +278,7 @@ jobs:
           else
             rm -f "$NORM"
             echo "All attempts returned 0 matches; ${OUT} left unchanged."
-            # The crash used to happen because 'changed' was only set in the 'if total > 0' block
+            # 'changed' remains "false" here, preventing the set -u crash on the next line
           fi
 
           echo "changed=$changed" >> "$GITHUB_OUTPUT"
