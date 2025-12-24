@@ -347,7 +347,7 @@ jobs:
             echo "- Force refresh: ${FORCE_REFRESH:-false}"
             echo "- Window: \`${START_FROM}\` → \`${END_TO}\`"
             echo ""
-            printf "%b" "$summary"
+            echo -e "${summary}" # <-- Use safe echo expansion instead of printf
             echo "- Merged total: **${total}**"
             echo "- Changed: **${changed}**"
             [[ -f "$OUT" ]] && echo "- File: \`${OUT}\`"
