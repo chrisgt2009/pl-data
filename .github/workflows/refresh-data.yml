@@ -188,7 +188,6 @@ jobs:
             local sep url code
             sep='&'; [[ "$base" == *\?* ]] || sep='?'
             url="${base}${sep}dateFrom=${from}&dateTo=${to}&status=SCHEDULED,TIMED"
-            # Use '|| true' to ensure the command substitution doesn't fail on connection error
             code=$(curl -sS -w "%{http_code}" -D "$tmp_hdr" -o "$tmp_body" $(hdrs) "$url" || true) 
             printf '%s\n' "$code|$url"
           }
@@ -262,12 +261,12 @@ jobs:
 
           # Build envelope
           NORM="$(mktemp)"
-          # CRITICAL FIX: Ensure safe expansion of START_FROM and END_TO for jq
           jq -S --arg df "${START_FROM}" --arg dt "${END_TO}" \
               '{filters:{dateFrom:$df,dateTo:$dt},matches:.matches}' \
               "$COMBINED" > "$NORM"
 
-          # 'changed' is already initialized to "false"
+          # 🚨 ISOLATION FIX: Only process and write the file if we have data.
+          # If total is 0, we skip file I/O and rely on changed="false" to exit cleanly.
           if [[ "$total" -gt 0 ]]; then
             if [[ "${FORCE_REFRESH:-false}" == "true" ]] || [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then
               mv "$NORM" "$OUT"
@@ -278,7 +277,8 @@ jobs:
           else
             rm -f "$NORM"
             echo "All attempts returned 0 matches; ${OUT} left unchanged."
-            # 'changed' remains "false" here, preventing the set -u crash on the next line
+            # Set changed to false just in case it was somehow unset (though it's initialized above)
+            changed="false" 
           fi
 
           echo "changed=$changed" >> "$GITHUB_OUTPUT"
