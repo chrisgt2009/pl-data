@@ -12,8 +12,8 @@ on:
     - cron: "*/10 18-22 * * 1-5"  # Weekdays (Mon–Fri): 18:00–22:59
     - cron: "*/10 11-22 * * 6,0"  # Weekends (Sat–Sun): 11:00–22:59
     # --- Outside live windows (lighter to save free minutes) ---
-    - cron: "0 8,12,16,23 * * 1-5"       # Weekdays: 4x/day
-    - cron: "0 9,12,15,18,21 * * 6,0"    # Weekends: 5x/day
+    - cron: "0 8,12,16,23 * * 1-5"        # Weekdays: 4x/day
+    - cron: "0 9,12,15,18,21 * * 6,0"     # Weekends: 5x/day
 
 permissions:
   contents: write
@@ -25,7 +25,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  DAILY_LIMIT: "300"                                   # refresh-data + fast-live/live-fast
+  DAILY_LIMIT: "300"                         # refresh-data + fast-live/live-fast
   FORCE_REFRESH: ${{ github.event.inputs.force || 'false' }}
 
 jobs:
@@ -145,78 +145,13 @@ jobs:
             echo "- Changed: **${{ steps.standings.outputs.changed || 'false' }}**"
           } >> "$GITHUB_STEP_SUMMARY"
 
-      # ---- FIXTURES (NEXT 10 DAYS, URL-keyed ETag) ----
-      # - id: fixtures_week
-      #   if: steps.quota.outputs.allow == 'true'
-      #   name: Refresh fixtures (next 20 days, ETag-aware)
-      #   shell: bash
-      #   env:
-      #     BASE: ${{ vars.URL_FIXTURES }}   # https://api.football-data.org/v4/competitions/PL/matches
-      #     AUTH_HEADER: ${{ secrets.API_AUTH_HEADER }}
-      #     EXTRA_HEADER: ${{ secrets.API_EXTRA_HEADER }}
-      #     FORCE_REFRESH: ${{ env.FORCE_REFRESH }}
-      #   run: |
-      #     set -euo pipefail
-      #     KEY="fixtures_week"
-      #     TMPHDR="$(mktemp)"; TMPBODY="$(mktemp)"
-      #     : "${BASE:=https://api.football-data.org/v4/competitions/PL/matches}"
-
-      #     DATE_FROM="$(date -u +%Y-%m-%d)"
-      #     DATE_TO="$(date -u -d '+10 days' +%Y-%m-%d)"
-      #     SEP='?'; [[ "${BASE}" == *\?* ]] && SEP='&'
-      #     URL="${BASE}${SEP}dateFrom=${DATE_FROM}&dateTo=${DATE_TO}"
-
-      #     URLHASH="$(printf '%s' "$URL" | sha1sum | awk '{print $1}' | cut -c1-12)"
-      #     EKEY="${KEY}|${URLHASH}"
-
-      #     IN_ETAG=""; [[ "$FORCE_REFRESH" != "true" ]] && IN_ETAG=$(jq -r --arg k "$EKEY" '.[$k] // empty' data/etags.json 2>/dev/null || echo "")
-      #     HDRS=()
-      #     [[ -n "${AUTH_HEADER:-}" ]]  && HDRS+=(-H "$AUTH_HEADER")
-      #     [[ -n "${EXTRA_HEADER:-}" ]] && HDRS+=(-H "$EXTRA_HEADER")
-      #     if [[ "$FORCE_REFRESH" != "true" && -n "$IN_ETAG" ]]; then
-      #       HDRS+=(-H "If-None-Match: $IN_ETAG")
-      #     fi
-
-      #     CODE=$(curl -sS -w "%{http_code}" -D "$TMPHDR" -o "$TMPBODY" "${HDRS[@]}" "$URL")
-      #     echo "url=$URL"   >> "$GITHUB_OUTPUT"
-      #     echo "code=$CODE" >> "$GITHUB_OUTPUT"
-
-      #     if [[ "$CODE" == "304" && "$FORCE_REFRESH" != "true" ]]; then
-      #       echo "changed=false" >> "$GITHUB_OUTPUT"
-      #     elif [[ "$CODE" != "200" ]]; then
-      #       echo "changed=false" >> "$GITHUB_OUTPUT"
-      #     else
-      #       NORM="$(mktemp)"; jq -S -c '.' "$TMPBODY" > "$NORM" || { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
-      #       if [[ "$FORCE_REFRESH" == "true" ]] || ! cmp -s "$NORM" "data/fixtures_week.json"; then
-      #         mv "$NORM" "data/fixtures_week.json"
-      #         echo "changed=true" >> "$GITHUB_OUTPUT"
-      #       else
-      #         rm -f "$NORM"; echo "changed=false" >> "$GITHUB_OUTPUT"
-      #       fi
-      #       NEW_ETAG=$(sed -n 's/^etag:[[:space:]]*//Ip' "$TMPHDR" | tr -d '\r' | tail -n1)
-      #       if [[ -n "$NEW_ETAG" ]]; then
-      #         tmp="$(mktemp)"; jq --arg k "$EKEY" --arg v "$NEW_ETAG" '.[$k]=$v' data/etags.json 2>/dev/null > "$tmp" || echo "{\"$EKEY\":\"$NEW_ETAG\"}" > "$tmp"; mv "$tmp" data/etags.json
-      #         tmp2="$(mktemp)"; jq --arg v "$NEW_ETAG" '.["fixtures_week"]=$v' data/etags.json 2>/dev/null > "$tmp2" || echo "{\"fixtures_week\":\"$NEW_ETAG\"}" > "$tmp2"; mv "$tmp2" data/etags.json
-      #       fi
-      #       echo "inEtag=${IN_ETAG:-}"  >> "$GITHUB_OUTPUT"
-      #       echo "outEtag=${NEW_ETAG:-}" >> "$GITHUB_OUTPUT"
-      #     fi
-
-      #     {
-      #       echo "### Fixtures (20 days)"
-      #       echo "- URL: \`$URL\`"
-      #       echo "- HTTP: **$CODE**"
-      #       echo "- If-None-Match sent: \`${IN_ETAG:-none}\` (force=${FORCE_REFRESH})"
-      #       echo "- Changed: **${{ steps.fixtures_week.outputs.changed || 'false' }}**"
-      #     } >> "$GITHUB_STEP_SUMMARY"
-
       # ---- FIXTURES (30 days; multi-endpoint fallback; safe write; rich diagnostics) ----
       - id: fixtures_week
         if: steps.quota.outputs.allow == 'true'
         name: Refresh fixtures (30 days, with fallbacks)
         shell: bash
         env:
-          BASE: ${{ vars.URL_FIXTURES }}   # e.g. https://api.football-data.org/v4/matches?competitions=PL
+          BASE: ${{ vars.URL_FIXTURES }}    # e.g. https://api.football-data.org/v4/matches?competitions=PL
           AUTH_HEADER: ${{ secrets.API_AUTH_HEADER }}    # e.g. X-Auth-Token: <token>
           EXTRA_HEADER: ${{ secrets.API_EXTRA_HEADER }}  # optional
           FORCE_REFRESH: ${{ env.FORCE_REFRESH }}
@@ -286,7 +221,7 @@ jobs:
               # Add diagnostics; if 200 but empty, show snippet (often an error payload)
               if [[ "$code" == "200" && "$cnt" -gt 0 ]]; then
                 merge_into "$COMBINED" "$tmp_body" > "${COMBINED}.new" && mv "${COMBINED}.new" "$COMBINED"
-                summary+="- ${from} → ${to}: **${code}**, matches: **${cnt}**  \n"
+                summary+="- ${from} → ${to}: **${code}**, matches: **${cnt}** \n"
               else
                 short="$(snippet "$tmp_body" || true)"
                 summary+="- ${from} → ${to}: **${code}**, matches: **${cnt}**${short:+ — _${short}_}  \n"
@@ -324,10 +259,10 @@ jobs:
           # Build envelope
           NORM="$(mktemp)"
           jq -S --arg df "$START_FROM" --arg dt "$END_TO" \
-             '{filters:{dateFrom:$df,dateTo:$dt},matches:.matches}' \
-             "$COMBINED" > "$NORM"
+              '{filters:{dateFrom:$df,dateTo:$dt},matches:.matches}' \
+              "$COMBINED" > "$NORM"
 
-          changed="false"
+          changed="false" # <--- CRITICAL FIX: Initialize 'changed' before the conditional
           if [[ "$total" -gt 0 ]]; then
             if [[ "${FORCE_REFRESH:-false}" == "true" ]] || [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then
               mv "$NORM" "$OUT"
@@ -338,6 +273,7 @@ jobs:
           else
             rm -f "$NORM"
             echo "All attempts returned 0 matches; ${OUT} left unchanged."
+            # The crash used to happen because 'changed' was only set in the 'if total > 0' block
           fi
 
           echo "changed=$changed" >> "$GITHUB_OUTPUT"
@@ -347,7 +283,7 @@ jobs:
             echo "- Force refresh: ${FORCE_REFRESH:-false}"
             echo "- Window: \`${START_FROM}\` → \`${END_TO}\`"
             echo ""
-            echo -e "${summary}" # <-- Use safe echo expansion instead of printf
+            echo -e "${summary}"
             echo "- Merged total: **${total}**"
             echo "- Changed: **${changed}**"
             [[ -f "$OUT" ]] && echo "- File: \`${OUT}\`"
@@ -359,7 +295,7 @@ jobs:
         name: Refresh scorers (ETag-aware)
         shell: bash
         env:
-          URL: ${{ vars.URL_SCORERS }}           # e.g. https://api.football-data.org/v4/competitions/PL/scorers
+          URL: ${{ vars.URL_SCORERS }}        # e.g. https://api.football-data.org/v4/competitions/PL/scorers
           AUTH_HEADER: ${{ secrets.API_AUTH_HEADER }}
           EXTRA_HEADER: ${{ secrets.API_EXTRA_HEADER }}
           FORCE_REFRESH: ${{ env.FORCE_REFRESH }}
@@ -417,9 +353,9 @@ jobs:
           jq -S -c --arg t "$LAST" '
             .lastUpdatedUTC = $t
             | .artifacts = {
-                standings:     {file:"data/standings.json",     etag:(.standings      // "")},
+                standings:      {file:"data/standings.json",      etag:(.standings      // "")},
                 fixtures_week: {file:"data/fixtures_week.json", etag:(."fixtures_week" // "")},
-                scorers:       {file:"data/scorers.json",       etag:(.scorers        // "")}
+                scorers:        {file:"data/scorers.json",        etag:(.scorers        // "")}
               }
           ' data/etags.json \
           | jq -S -c '{lastUpdatedUTC, artifacts}' \
