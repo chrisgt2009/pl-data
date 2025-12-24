@@ -280,6 +280,8 @@ jobs:
           fi
 
           echo "changed=$changed" >> "$GITHUB_OUTPUT"
+          # --- FIX FOR TIMESTAMP START ---
+          SUMMARY_TIME="$(date -u +%Y-%m-%d\ %H:%M:%S\ UTC)"
 
           {
             echo "### Fixtures (30 days)"
