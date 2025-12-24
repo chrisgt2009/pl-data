@@ -283,6 +283,7 @@ jobs:
 
           {
             echo "### Fixtures (30 days)"
+            echo "- Created: **${SUMMARY_TIME}**" # <--- NEW TIMESTAMP LINE
             echo "- Force refresh: ${FORCE_REFRESH:-false}"
             echo "- Window: \`${START_FROM}\` → \`${END_TO}\`"
             echo ""
