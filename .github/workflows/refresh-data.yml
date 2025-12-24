@@ -98,7 +98,7 @@ jobs:
         name: Refresh standings (ETag-aware)
         shell: bash
         env:
-          URL: ${{ vars.URL_STANDINGS }}        # e.g. https://api.football-data.org/v4/competitions/PL/standings
+          URL: ${{ vars.URL_STANDINGS }}
           AUTH_HEADER: ${{ secrets.API_AUTH_HEADER }}
           EXTRA_HEADER: ${{ secrets.API_EXTRA_HEADER }}
           FORCE_REFRESH: ${{ env.FORCE_REFRESH }}
@@ -151,9 +151,9 @@ jobs:
         name: Refresh fixtures (30 days, with fallbacks)
         shell: bash
         env:
-          BASE: ${{ vars.URL_FIXTURES }}    # e.g. https://api.football-data.org/v4/matches?competitions=PL
-          AUTH_HEADER: ${{ secrets.API_AUTH_HEADER }}    # e.g. X-Auth-Token: <token>
-          EXTRA_HEADER: ${{ secrets.API_EXTRA_HEADER }}  # optional
+          BASE: ${{ vars.URL_FIXTURES }}
+          AUTH_HEADER: ${{ secrets.API_AUTH_HEADER }}
+          EXTRA_HEADER: ${{ secrets.API_EXTRA_HEADER }}
           FORCE_REFRESH: ${{ env.FORCE_REFRESH }}
         run: |
           set -euo pipefail
@@ -173,7 +173,6 @@ jobs:
           COMBINED="$(mktemp)"
           echo '{"matches":[]}' > "$COMBINED"
           
-
           # ---------- helpers ----------
           hdrs() {
             local a=()
@@ -221,7 +220,7 @@ jobs:
               cnt="$(count_matches "$tmp_body")"
               slice_total=$((slice_total + cnt))
 
-              # Add diagnostics; if 200 but empty, show snippet (often an error payload)
+              # Add diagnostics
               if [[ "$code" == "200" && "$cnt" -gt 0 ]]; then
                 merge_into "$COMBINED" "$tmp_body" > "${COMBINED}.new" && mv "${COMBINED}.new" "$COMBINED"
                 summary+="- ${from} → ${to}: **${code}**, matches: **${cnt}** \n"
@@ -233,7 +232,7 @@ jobs:
             echo "$slice_total"
           }
 
-          # Attempt 1: global endpoint with competitions filter (best on free)
+          # Attempt 1: global endpoint
           a1=$(attempt "$BASE")
           total=$((total + a1))
 
@@ -244,7 +243,7 @@ jobs:
             total=$((total + a2))
           fi
 
-          # Attempt 3: final fallback (no dates) to at least get "next" scheduled
+          # Attempt 3: final fallback (no dates)
           if [[ "$total" -eq 0 ]]; then
             summary+="\n_Final fallback (no dates, scheduled/timed only)_\n"
             tmp_hdr="$(mktemp)"; tmp_body="$(mktemp)"
@@ -265,8 +264,7 @@ jobs:
               '{filters:{dateFrom:$df,dateTo:$dt},matches:.matches}' \
               "$COMBINED" > "$NORM"
 
-          # 🚨 ISOLATION FIX: Only process and write the file if we have data.
-          # If total is 0, we skip file I/O and rely on changed="false" to exit cleanly.
+          # Changed logic
           if [[ "$total" -gt 0 ]]; then
             if [[ "${FORCE_REFRESH:-false}" == "true" ]] || [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then
               mv "$NORM" "$OUT"
@@ -277,8 +275,8 @@ jobs:
           else
             rm -f "$NORM"
             echo "All attempts returned 0 matches; ${OUT} left unchanged."
-            # Set changed to false just in case it was somehow unset (though it's initialized above)
-            changed="false" 
+            changed="false"  # Re-assert change status in the failed path
+            true             # CRITICAL FIX: Ensure the exit code of this logical block is 0
           fi
 
           echo "changed=$changed" >> "$GITHUB_OUTPUT"
@@ -300,7 +298,7 @@ jobs:
         name: Refresh scorers (ETag-aware)
         shell: bash
         env:
-          URL: ${{ vars.URL_SCORERS }}        # e.g. https://api.football-data.org/v4/competitions/PL/scorers
+          URL: ${{ vars.URL_SCORERS }}
           AUTH_HEADER: ${{ secrets.API_AUTH_HEADER }}
           EXTRA_HEADER: ${{ secrets.API_EXTRA_HEADER }}
           FORCE_REFRESH: ${{ env.FORCE_REFRESH }}
