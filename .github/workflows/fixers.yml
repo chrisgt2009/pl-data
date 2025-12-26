@@ -44,8 +44,13 @@ jobs:
         run: |
           set -euo pipefail
           
-          # FIX: Ensure data directory exists
-          mkdir -p data/ 
+          # FIX: Ensure data directory exists and set timestamp
+          mkdir -p data/
+          TIMESTAMP="$(date '+%Y-%m-%d %H:%M:%S UTC')"
+          
+          # CRITICAL FIX: Export variables to ensure Bash reads secrets correctly
+          export RAPIDAPI_KEY="${RAPIDAPI_KEY}"
+          export RAPIDAPI_HOST="${RAPIDAPI_HOST}"
           
           OUT="data/fixtures_week.json"
           TMPBODY="$(mktemp)"
@@ -87,6 +92,7 @@ jobs:
 
           {
             echo "### Fixtures"
+            echo "- Timestamp: **$TIMESTAMP**"
             echo "- File Output: \`${OUT}\`"
             echo "- Season: **$FREE_SEASON**"
             echo "- HTTP: **$CODE**"
@@ -107,8 +113,13 @@ jobs:
         run: |
           set -euo pipefail
           
-          # FIX: Ensure data directory exists
-          mkdir -p data/ 
+          # FIX: Ensure data directory exists and set timestamp
+          mkdir -p data/
+          TIMESTAMP="$(date '+%Y-%m-%d %H:%M:%S UTC')"
+          
+          # CRITICAL FIX: Export variables to ensure Bash reads secrets correctly
+          export RAPIDAPI_KEY="${RAPIDAPI_KEY}"
+          export RAPIDAPI_HOST="${RAPIDAPI_HOST}"
           
           OUT="data/standings.json"
           TMPBODY="$(mktemp)"
@@ -150,6 +161,7 @@ jobs:
 
           {
             echo "### Standings"
+            echo "- Timestamp: **$TIMESTAMP**"
             echo "- File Output: \`${OUT}\`"
             echo "- Season: **$FREE_SEASON**"
             echo "- League: **$LEAGUE_ID**"
