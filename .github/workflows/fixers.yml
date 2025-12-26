@@ -5,6 +5,9 @@ on:
   schedule:
     - cron: '0 0 * * *'
 
+permissions:
+  contents: write
+
 jobs:
   fixtures:
     runs-on: ubuntu-latest
@@ -146,3 +149,12 @@ jobs:
             echo "- HTTP: **$CODE**"
             echo "- Fetched: **${{ steps.standings.outputs.changed || 'false' }}**"
           } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit and push changes
+        if: steps.fixtures_week.outputs.changed == 'true' || steps.standings.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/*.json
+          git commit -m "Update fixtures and standings data" || exit 0
+          git push
