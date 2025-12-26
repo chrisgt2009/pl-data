@@ -56,17 +56,15 @@ jobs:
           TMPBODY="$(mktemp)"
           [[ -z "${BASE_URL:-}" ]] && { echo "URL_FIXTURES not set; skipping."; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
-          hdrs() {
-            local a=()
-            [[ -n "${RAPIDAPI_HOST:-}" ]] && a+=(-H "x-rapidapi-host: ${RAPIDAPI_HOST}")
-            [[ -n "${RAPIDAPI_KEY:-}" ]] && a+=(-H "x-rapidapi-key: ${RAPIDAPI_KEY}")
-            printf '%s\n' "${a[@]}"
-          }
-
+          # Construct the full URL using the historical free-tier parameters
           FINAL_URL="${BASE_URL}&season=${FREE_SEASON}&from=${START_DATE}&to=${END_DATE}"
           echo "Fetching fixtures from $START_DATE to $END_DATE (Season $FREE_SEASON)"
 
-          CODE=$(curl -sS -w "%{http_code}" -o "$TMPBODY" $(hdrs) "$FINAL_URL" || true)
+          # Fetch data and capture HTTP code (Headers passed explicitly)
+          CODE=$(curl -sS -w "%{http_code}" -o "$TMPBODY" \
+            -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+            -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
+            "$FINAL_URL" || true)
           echo "code=$CODE" >> "$GITHUB_OUTPUT"
 
           if [[ "$CODE" == "200" ]]; then
@@ -91,6 +89,15 @@ jobs:
           fi
 
           {
+            echo "### Fixtures Debug"
+            echo "- Base URL: \`${BASE_URL}\`"
+            echo "- API Host: \`${RAPIDAPI_HOST}\`"
+            if [[ -n "${RAPIDAPI_KEY}" ]]; then
+              echo "- Key Status: **RECEIVED (LENGTH: ${#RAPIDAPI_KEY})**"
+            else
+              echo "- Key Status: **EMPTY/NOT RECEIVED**"
+            fi
+            echo "---"
             echo "### Fixtures"
             echo "- Timestamp: **$TIMESTAMP**"
             echo "- File Output: \`${OUT}\`"
@@ -125,17 +132,15 @@ jobs:
           TMPBODY="$(mktemp)"
           [[ -z "${BASE_URL:-}" ]] && { echo "URL_STANDINGS not set; skipping."; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
-          hdrs() {
-            local a=()
-            [[ -n "${RAPIDAPI_HOST:-}" ]] && a+=(-H "x-rapidapi-host: ${RAPIDAPI_HOST}")
-            [[ -n "${RAPIDAPI_KEY:-}" ]] && a+=(-H "x-rapidapi-key: ${RAPIDAPI_KEY}")
-            printf '%s\n' "${a[@]}"
-          }
-
+          # Construct the full URL for standings
           FINAL_URL="${BASE_URL}&season=${FREE_SEASON}&league=${LEAGUE_ID}"
           echo "Fetching standings for League $LEAGUE_ID (Season $FREE_SEASON)"
 
-          CODE=$(curl -sS -w "%{http_code}" -o "$TMPBODY" $(hdrs) "$FINAL_URL" || true)
+          # Fetch data and capture HTTP code (Headers passed explicitly)
+          CODE=$(curl -sS -w "%{http_code}" -o "$TMPBODY" \
+            -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+            -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
+            "$FINAL_URL" || true)
           echo "code=$CODE" >> "$GITHUB_OUTPUT"
 
           if [[ "$CODE" == "200" ]]; then
@@ -160,6 +165,15 @@ jobs:
           fi
 
           {
+            echo "### Standings Debug"
+            echo "- Base URL: \`${BASE_URL}\`"
+            echo "- API Host: \`${RAPIDAPI_HOST}\`"
+            if [[ -n "${RAPIDAPI_KEY}" ]]; then
+              echo "- Key Status: **RECEIVED (LENGTH: ${#RAPIDAPI_KEY})**"
+            else
+              echo "- Key Status: **EMPTY/NOT RECEIVED**"
+            fi
+            echo "---"
             echo "### Standings"
             echo "- Timestamp: **$TIMESTAMP**"
             echo "- File Output: \`${OUT}\`"
