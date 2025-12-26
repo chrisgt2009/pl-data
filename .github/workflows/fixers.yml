@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # --- 2. Install Dependencies (CRITICAL FIX: Install jq) ---
+      # --- 2. Install Dependencies (CRITICAL: Install jq) ---
       - name: Install dependencies (jq)
         run: sudo apt-get update && sudo apt-get install -y jq
 
@@ -24,7 +24,8 @@ jobs:
       - name: Debug environment
         run: |
           echo "Checking environment variables..."
-          echo "BASE_URL set: ${{ vars.URL_FIXTURES != '' }}"
+          echo "BASE_URL (Fixtures) set: ${{ vars.URL_FIXTURES != '' }}"
+          echo "BASE_URL (Standings) set: ${{ vars.URL_STANDINGS != '' }}"
           echo "RAPIDAPI_KEY set: ${{ secrets.RAPIDAPI_KEY != '' }}"
           echo "RAPIDAPI_HOST set: ${{ secrets.RAPIDAPI_HOST != '' }}"
           ls -la data/ || echo "data directory does not exist or is empty"
@@ -44,7 +45,7 @@ jobs:
         run: |
           set -euo pipefail
           
-          # FIX: Ensure data directory exists and set timestamp
+          # Setup
           mkdir -p data/
           TIMESTAMP="$(date '+%Y-%m-%d %H:%M:%S UTC')"
           
@@ -56,26 +57,28 @@ jobs:
           TMPBODY="$(mktemp)"
           [[ -z "${BASE_URL:-}" ]] && { echo "URL_FIXTURES not set; skipping."; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
-          # Construct the full URL using the historical free-tier parameters
+          # API Call
           FINAL_URL="${BASE_URL}&season=${FREE_SEASON}&from=${START_DATE}&to=${END_DATE}"
           echo "Fetching fixtures from $START_DATE to $END_DATE (Season $FREE_SEASON)"
 
-          # Fetch data and capture HTTP code (Headers passed explicitly)
           CODE=$(curl -sS -w "%{http_code}" -o "$TMPBODY" \
             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
             "$FINAL_URL" || true)
           echo "code=$CODE" >> "$GITHUB_OUTPUT"
 
+          # Processing
           if [[ "$CODE" == "200" ]]; then
               NORM="$(mktemp)"
               
-              # CRITICAL FIX: Robust check for response array length
+              # CRITICAL FIX: Robust check for response array length (returns 0 if key not found or array is empty)
               JQ_RESPONSE_LENGTH="$(jq -r '.response | length' "$TMPBODY" 2>/dev/null || echo 0)"
 
               if [[ "$JQ_RESPONSE_LENGTH" -gt 0 ]]; then
+                  # Extract the data array and save it to a normalized temp file
                   jq -S -c '.response' "$TMPBODY" > "$NORM" || { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 1; }
                   
+                  # Compare and save
                   if [[ "${FORCE_REFRESH:-false}" == "true" ]] || ! cmp -s "$NORM" "$OUT"; then
                     mv "$NORM" "$OUT"
                     echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -91,6 +94,7 @@ jobs:
             echo "Error: HTTP code $CODE received. Check Key/Subscription status." >> "$GITHUB_STEP_SUMMARY"
           fi
 
+          # Summary Output
           {
             echo "### Fixtures Debug"
             echo "- Base URL: \`${BASE_URL}\`"
@@ -123,7 +127,7 @@ jobs:
         run: |
           set -euo pipefail
           
-          # FIX: Ensure data directory exists and set timestamp
+          # Setup
           mkdir -p data/
           TIMESTAMP="$(date '+%Y-%m-%d %H:%M:%S UTC')"
           
@@ -135,26 +139,28 @@ jobs:
           TMPBODY="$(mktemp)"
           [[ -z "${BASE_URL:-}" ]] && { echo "URL_STANDINGS not set; skipping."; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
-          # Construct the full URL for standings
+          # API Call
           FINAL_URL="${BASE_URL}&season=${FREE_SEASON}&league=${LEAGUE_ID}"
           echo "Fetching standings for League $LEAGUE_ID (Season $FREE_SEASON)"
 
-          # Fetch data and capture HTTP code (Headers passed explicitly)
           CODE=$(curl -sS -w "%{http_code}" -o "$TMPBODY" \
             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
             "$FINAL_URL" || true)
           echo "code=$CODE" >> "$GITHUB_OUTPUT"
 
+          # Processing
           if [[ "$CODE" == "200" ]]; then
               NORM="$(mktemp)"
               
-              # CRITICAL FIX: Robust check for response array length
+              # CRITICAL FIX: Robust check for response array length (returns 0 if key not found or array is empty)
               JQ_RESPONSE_LENGTH="$(jq -r '.response | length' "$TMPBODY" 2>/dev/null || echo 0)"
 
               if [[ "$JQ_RESPONSE_LENGTH" -gt 0 ]]; then
+                  # Extract the data array and save it to a normalized temp file
                   jq -S -c '.response' "$TMPBODY" > "$NORM" || { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 1; }
                   
+                  # Compare and save
                   if [[ "${FORCE_REFRESH:-false}" == "true" ]] || ! cmp -s "$NORM" "$OUT"; then
                     mv "$NORM" "$OUT"
                     echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -170,6 +176,7 @@ jobs:
             echo "Error: HTTP code $CODE received. Check Key/Subscription status." >> "$GITHUB_STEP_SUMMARY"
           fi
 
+          # Summary Output
           {
             echo "### Standings Debug"
             echo "- Base URL: \`${BASE_URL}\`"
