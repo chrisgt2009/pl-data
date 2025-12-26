@@ -15,8 +15,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Debug environment
+        run: |
+          echo "Checking environment variables..."
+          echo "BASE_URL set: ${{ vars.URL_FIXTURES != '' }}"
+          echo "RAPIDAPI_KEY set: ${{ secrets.RAPIDAPI_KEY != '' }}"
+          echo "RAPIDAPI_HOST set: ${{ secrets.RAPIDAPI_HOST != '' }}"
+          ls -la data/ || echo "data directory does not exist"
+
       - id: fixtures_week
-        if: steps.quota.outputs.allow == 'true'
         name: Refresh historical fixtures (API-Football)
         shell: bash
         env:
@@ -84,7 +91,6 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       - id: standings
-        if: steps.quota.outputs.allow == 'true'
         name: Refresh standings (API-Football)
         shell: bash
         env:
