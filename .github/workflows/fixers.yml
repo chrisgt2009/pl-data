@@ -1,70 +1,81 @@
-# ---- FIXTURES (API-Football - Historical Data) ----
-- id: fixtures_week
-  # Only run if the previous quota check passes
-  if: steps.quota.outputs.allow == 'true'
-  name: Refresh historical fixtures (API-Football)
-  shell: bash
-  env:
-    BASE_URL: ${{ vars.URL_FIXTURES }} # e.g., .../fixtures?league=39
-    RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
-    RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
-    FORCE_REFRESH: ${{ env.FORCE_REFRESH }}
-    # Static parameters for the FREE PLAN (restricted to 2021-2023 seasons)
-    FREE_SEASON: '2023'
-    START_DATE: '2023-05-01' # Sample date range for 2023 season data
-    END_DATE: '2023-05-31'
-  run: |
-    set -euo pipefail
-    
-    # UPDATE: Output file name changed to meet user's requirement
-    OUT="data/fixtures_week.json"
-    TMPBODY="$(mktemp)"
-    [[ -z "${BASE_URL:-}" ]] && { echo "URL_FIXTURES not set; skipping."; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+name: Refresh Fixtures
 
-    # Function to build the correct RapidAPI headers
-    hdrs() {
-      local a=()
-      [[ -n "${RAPIDAPI_HOST:-}" ]] && a+=(-H "x-rapidapi-host: ${RAPIDAPI_HOST}")
-      [[ -n "${RAPIDAPI_KEY:-}" ]] && a+=(-H "x-rapidapi-key: ${RAPIDAPI_KEY}")
-      printf '%s\n' "${a[@]}"
-    }
-    
-    # Construct the full URL using the historical free-tier parameters
-    FINAL_URL="${BASE_URL}&season=${FREE_SEASON}&from=${START_DATE}&to=${END_DATE}"
-    
-    echo "Fetching fixtures from $START_DATE to $END_DATE (Season $FREE_SEASON)"
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
 
-    # Fetch data and capture HTTP code
-    CODE=$(curl -sS -w "%{http_code}" -o "$TMPBODY" $(hdrs) "$FINAL_URL" || true)
-    echo "code=$CODE" >> "$GITHUB_OUTPUT"
-    
-    # Check for success (200 OK)
-    if [[ "$CODE" == "200" ]]; then
-        NORM="$(mktemp)"; 
-        
-        # Extract and normalize the 'response' array which contains the fixtures
-        if [[ "$(jq -r '.response | length' "$TMPBODY" 2>/dev/null)" -gt 0 ]]; then
-            jq -S -c '.response' "$TMPBODY" > "$NORM" || { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
-            
-            if [[ "${FORCE_REFRESH:-false}" == "true" ]] || ! cmp -s "$NORM" "$OUT"; then
-              mv "$NORM" "$OUT"
-              echo "changed=true" >> "$GITHUB_OUTPUT"
-            else
-              rm -f "$NORM"; echo "changed=false" >> "$GITHUB_OUTPUT"
-            fi
-        else
+jobs:
+  fixtures:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - id: fixtures_week
+        if: steps.quota.outputs.allow == 'true'
+        name: Refresh historical fixtures (API-Football)
+        shell: bash
+        env:
+          BASE_URL: ${{ vars.URL_FIXTURES }}
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
+          FORCE_REFRESH: ${{ env.FORCE_REFRESH }}
+          FREE_SEASON: '2023'
+          START_DATE: '2023-05-01'
+          END_DATE: '2023-05-31'
+        run: |
+          set -euo pipefail
+
+          # UPDATE: Output file name changed to meet user's requirement
+          OUT="data/fixtures_week.json"
+          TMPBODY="$(mktemp)"
+          [[ -z "${BASE_URL:-}" ]] && { echo "URL_FIXTURES not set; skipping."; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+
+          # Function to build the correct RapidAPI headers
+          hdrs() {
+            local a=()
+            [[ -n "${RAPIDAPI_HOST:-}" ]] && a+=(-H "x-rapidapi-host: ${RAPIDAPI_HOST}")
+            [[ -n "${RAPIDAPI_KEY:-}" ]] && a+=(-H "x-rapidapi-key: ${RAPIDAPI_KEY}")
+            printf '%s\n' "${a[@]}"
+          }
+
+          # Construct the full URL using the historical free-tier parameters
+          FINAL_URL="${BASE_URL}&season=${FREE_SEASON}&from=${START_DATE}&to=${END_DATE}"
+
+          echo "Fetching fixtures from $START_DATE to $END_DATE (Season $FREE_SEASON)"
+
+          # Fetch data and capture HTTP code
+          CODE=$(curl -sS -w "%{http_code}" -o "$TMPBODY" $(hdrs) "$FINAL_URL" || true)
+          echo "code=$CODE" >> "$GITHUB_OUTPUT"
+
+          # Check for success (200 OK)
+          if [[ "$CODE" == "200" ]]; then
+              NORM="$(mktemp)"
+              
+              # Extract and normalize the 'response' array which contains the fixtures
+              if [[ "$(jq -r '.response | length' "$TMPBODY" 2>/dev/null)" -gt 0 ]]; then
+                  jq -S -c '.response' "$TMPBODY" > "$NORM" || { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+                  
+                  if [[ "${FORCE_REFRESH:-false}" == "true" ]] || ! cmp -s "$NORM" "$OUT"; then
+                    mv "$NORM" "$OUT"
+                    echo "changed=true" >> "$GITHUB_OUTPUT"
+                  else
+                    rm -f "$NORM"; echo "changed=false" >> "$GITHUB_OUTPUT"
+                  fi
+              else
+                  echo "changed=false" >> "$GITHUB_OUTPUT"
+                  echo "API returned no fixtures for the date range, but the call was successful." >> "$GITHUB_STEP_SUMMARY"
+              fi
+          else
             echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "API returned no fixtures for the date range, but the call was successful." >> "$GITHUB_STEP_SUMMARY"
-        fi
-    else
-      echo "changed=false" >> "$GITHUB_OUTPUT"
-      echo "Error: HTTP code $CODE received. Check Key/Subscription status." >> "$GITHUB_STEP_SUMMARY"
-    fi
+            echo "Error: HTTP code $CODE received. Check Key/Subscription status." >> "$GITHUB_STEP_SUMMARY"
+          fi
 
-    {
-      echo "### Fixtures"
-      echo "- File Output: \`${OUT}\`"
-      echo "- Season: **$FREE_SEASON**"
-      echo "- HTTP: **$CODE**"
-      echo "- Fetched: **${{ steps.fixtures_week.outputs.changed || 'false' }}**"
-    } >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "### Fixtures"
+            echo "- File Output: \`${OUT}\`"
+            echo "- Season: **$FREE_SEASON**"
+            echo "- HTTP: **$CODE**"
+            echo "- Fetched: **${{ steps.fixtures_week.outputs.changed || 'false' }}**"
+          } >> "$GITHUB_STEP_SUMMARY"
