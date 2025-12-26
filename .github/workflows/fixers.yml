@@ -70,8 +70,11 @@ jobs:
           if [[ "$CODE" == "200" ]]; then
               NORM="$(mktemp)"
               
-              if [[ "$(jq -r '.response | length' "$TMPBODY" 2>/dev/null)" -gt 0 ]]; then
-                  jq -S -c '.response' "$TMPBODY" > "$NORM" || { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+              # CRITICAL FIX: Robust check for response array length
+              JQ_RESPONSE_LENGTH="$(jq -r '.response | length' "$TMPBODY" 2>/dev/null || echo 0)"
+
+              if [[ "$JQ_RESPONSE_LENGTH" -gt 0 ]]; then
+                  jq -S -c '.response' "$TMPBODY" > "$NORM" || { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 1; }
                   
                   if [[ "${FORCE_REFRESH:-false}" == "true" ]] || ! cmp -s "$NORM" "$OUT"; then
                     mv "$NORM" "$OUT"
@@ -146,8 +149,11 @@ jobs:
           if [[ "$CODE" == "200" ]]; then
               NORM="$(mktemp)"
               
-              if [[ "$(jq -r '.response | length' "$TMPBODY" 2>/dev/null)" -gt 0 ]]; then
-                  jq -S -c '.response' "$TMPBODY" > "$NORM" || { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+              # CRITICAL FIX: Robust check for response array length
+              JQ_RESPONSE_LENGTH="$(jq -r '.response | length' "$TMPBODY" 2>/dev/null || echo 0)"
+
+              if [[ "$JQ_RESPONSE_LENGTH" -gt 0 ]]; then
+                  jq -S -c '.response' "$TMPBODY" > "$NORM" || { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 1; }
                   
                   if [[ "${FORCE_REFRESH:-false}" == "true" ]] || ! cmp -s "$NORM" "$OUT"; then
                     mv "$NORM" "$OUT"
