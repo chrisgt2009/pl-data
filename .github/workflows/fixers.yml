@@ -1,5 +1,9 @@
 name: Refresh Fixtures
 
+concurrency:
+  group: pl-data-commit
+  cancel-in-progress: false
+
 on:
   workflow_dispatch:
   schedule:
@@ -11,109 +15,77 @@ permissions:
 jobs:
   fixtures:
     runs-on: ubuntu-latest
+
     steps:
-      # --- 1. Checkout Code ---
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # --- 2. Install Dependencies (CRITICAL: Install jq) ---
-      - name: Install dependencies (jq)
+      - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      # --- 3. Debug Environment (Optional, for testing) ---
       - name: Debug environment
         run: |
-          echo "Checking environment variables..."
-          echo "BASE_URL (Fixtures) set: ${{ vars.URL_FIXTURES != '' }}"
-          echo "BASE_URL (Standings) set: ${{ vars.URL_STANDINGS != '' }}"
-          echo "RAPIDAPI_KEY set: ${{ secrets.RAPIDAPI_KEY != '' }}"
-          echo "RAPIDAPI_HOST set: ${{ secrets.RAPIDAPI_HOST != '' }}"
-          ls -la data/ || echo "data directory does not exist or is empty"
+          echo "BASE FIXTURES? => ${{ vars.URL_FIXTURES }}"
+          echo "BASE STANDINGS? => ${{ vars.URL_STANDINGS }}"
+          echo "RAPID KEY present? => ${{ secrets.RAPIDAPI_KEY != '' }}"
+          ls -la data/ || true
 
-      # --- 4. Refresh Fixtures Data (fixtures_week.json) ---
+      # ---------------- FIXTURES ----------------
       - id: fixtures_week
-        name: Refresh historical fixtures (API-Football)
+        name: Refresh fixtures (API-Football)
         shell: bash
         env:
           BASE_URL: ${{ vars.URL_FIXTURES }}
           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
           RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
-          FORCE_REFRESH: ${{ env.FORCE_REFRESH }}
           FREE_SEASON: '2023'
           START_DATE: '2023-05-01'
           END_DATE: '2023-05-31'
         run: |
           set -euo pipefail
-          
-          # Setup
           mkdir -p data/
-          TIMESTAMP="$(date '+%Y-%m-%d %H:%M:%S UTC')"
-          
-          # CRITICAL FIX: Export variables to ensure Bash reads secrets correctly
-          export RAPIDAPI_KEY="${RAPIDAPI_KEY}"
-          export RAPIDAPI_HOST="${RAPIDAPI_HOST}"
-          
+
           OUT="data/fixtures_week.json"
           TMPBODY="$(mktemp)"
-          [[ -z "${BASE_URL:-}" ]] && { echo "URL_FIXTURES not set; skipping."; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
-          # API Call
+          [[ -z "${BASE_URL:-}" ]] && {
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          }
+
           FINAL_URL="${BASE_URL}&season=${FREE_SEASON}&from=${START_DATE}&to=${END_DATE}"
-          echo "Fetching fixtures from $START_DATE to $END_DATE (Season $FREE_SEASON)"
 
           CODE=$(curl -sS -w "%{http_code}" -o "$TMPBODY" \
-            -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
+            -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
+
           echo "code=$CODE" >> "$GITHUB_OUTPUT"
 
-          # Processing
-          if [[ "$CODE" == "200" ]]; then
-              NORM="$(mktemp)"
-              
-              # CRITICAL FIX: Robust check for response array length (returns 0 if key not found or array is empty)
-              JQ_RESPONSE_LENGTH="$(jq -r '.response | length' "$TMPBODY" 2>/dev/null || echo 0)"
-
-              if [[ "$JQ_RESPONSE_LENGTH" -gt 0 ]]; then
-                  # Extract the data array and save it to a normalized temp file
-                  jq -S -c '.response' "$TMPBODY" > "$NORM" || { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 1; }
-                  
-                  # Compare and save
-                  if [[ "${FORCE_REFRESH:-false}" == "true" ]] || ! cmp -s "$NORM" "$OUT"; then
-                    mv "$NORM" "$OUT"
-                    echo "changed=true" >> "$GITHUB_OUTPUT"
-                  else
-                    rm -f "$NORM"; echo "changed=false" >> "$GITHUB_OUTPUT"
-                  fi
-              else
-                  echo "changed=false" >> "$GITHUB_OUTPUT"
-                  echo "API returned no fixtures for the date range, but the call was successful." >> "$GITHUB_STEP_SUMMARY"
-              fi
-          else
+          if [[ "$CODE" != "200" ]]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "Error: HTTP code $CODE received. Check Key/Subscription status." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
           fi
 
-          # Summary Output
-          {
-            echo "### Fixtures Debug"
-            echo "- Base URL: \`${BASE_URL}\`"
-            echo "- API Host: \`${RAPIDAPI_HOST}\`"
-            if [[ -n "${RAPIDAPI_KEY}" ]]; then
-              echo "- Key Status: **RECEIVED (LENGTH: ${#RAPIDAPI_KEY})**"
-            else
-              echo "- Key Status: **EMPTY/NOT RECEIVED**"
-            fi
-            echo "---"
-            echo "### Fixtures"
-            echo "- Timestamp: **$TIMESTAMP**"
-            echo "- File Output: \`${OUT}\`"
-            echo "- Season: **$FREE_SEASON**"
-            echo "- HTTP: **$CODE**"
-            echo "- Fetched: **${{ steps.fixtures_week.outputs.changed || 'false' }}**"
-          } >> "$GITHUB_STEP_SUMMARY"
+          # Must ensure response is an array
+          LEN=$(jq -r '(.response | type=="array")? // empty' "$TMPBODY")
+          if [[ "$LEN" != "true" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
 
-      # --- 5. Refresh Standings Data (standings.json) ---
+          # Wrap correctly for your Swift app
+          NORM=$(mktemp)
+          jq '{matches: .response}' "$TMPBODY" > "$NORM"
+
+          if ! cmp -s "$NORM" "$OUT"; then
+            mv "$NORM" "$OUT"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # ---------------- STANDINGS ----------------
       - id: standings
         name: Refresh standings (API-Football)
         shell: bash
@@ -121,87 +93,56 @@ jobs:
           BASE_URL: ${{ vars.URL_STANDINGS }}
           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
           RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
-          FORCE_REFRESH: ${{ env.FORCE_REFRESH }}
           FREE_SEASON: '2023'
           LEAGUE_ID: '39'
         run: |
           set -euo pipefail
-          
-          # Setup
           mkdir -p data/
-          TIMESTAMP="$(date '+%Y-%m-%d %H:%M:%S UTC')"
-          
-          # CRITICAL FIX: Export variables to ensure Bash reads secrets correctly
-          export RAPIDAPI_KEY="${RAPIDAPI_KEY}"
-          export RAPIDAPI_HOST="${RAPIDAPI_HOST}"
-          
+
           OUT="data/standings.json"
           TMPBODY="$(mktemp)"
-          [[ -z "${BASE_URL:-}" ]] && { echo "URL_STANDINGS not set; skipping."; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
-          # API Call
+          [[ -z "${BASE_URL:-}" ]] && {
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          }
+
           FINAL_URL="${BASE_URL}&season=${FREE_SEASON}&league=${LEAGUE_ID}"
-          echo "Fetching standings for League $LEAGUE_ID (Season $FREE_SEASON)"
 
           CODE=$(curl -sS -w "%{http_code}" -o "$TMPBODY" \
-            -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
+            -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
+
           echo "code=$CODE" >> "$GITHUB_OUTPUT"
 
-          # Processing
-          if [[ "$CODE" == "200" ]]; then
-              NORM="$(mktemp)"
-              
-              # CRITICAL FIX: Robust check for response array length (returns 0 if key not found or array is empty)
-              JQ_RESPONSE_LENGTH="$(jq -r '.response | length' "$TMPBODY" 2>/dev/null || echo 0)"
-
-              if [[ "$JQ_RESPONSE_LENGTH" -gt 0 ]]; then
-                  # Extract the data array and save it to a normalized temp file
-                  jq -S -c '.response' "$TMPBODY" > "$NORM" || { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 1; }
-                  
-                  # Compare and save
-                  if [[ "${FORCE_REFRESH:-false}" == "true" ]] || ! cmp -s "$NORM" "$OUT"; then
-                    mv "$NORM" "$OUT"
-                    echo "changed=true" >> "$GITHUB_OUTPUT"
-                  else
-                    rm -f "$NORM"; echo "changed=false" >> "$GITHUB_OUTPUT"
-                  fi
-              else
-                  echo "changed=false" >> "$GITHUB_OUTPUT"
-                  echo "API returned no standings data, but the call was successful." >> "$GITHUB_STEP_SUMMARY"
-              fi
-          else
+          if [[ "$CODE" != "200" ]]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "Error: HTTP code $CODE received. Check Key/Subscription status." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
           fi
 
-          # Summary Output
-          {
-            echo "### Standings Debug"
-            echo "- Base URL: \`${BASE_URL}\`"
-            echo "- API Host: \`${RAPIDAPI_HOST}\`"
-            if [[ -n "${RAPIDAPI_KEY}" ]]; then
-              echo "- Key Status: **RECEIVED (LENGTH: ${#RAPIDAPI_KEY})**"
-            else
-              echo "- Key Status: **EMPTY/NOT RECEIVED**"
-            fi
-            echo "---"
-            echo "### Standings"
-            echo "- Timestamp: **$TIMESTAMP**"
-            echo "- File Output: \`${OUT}\`"
-            echo "- Season: **$FREE_SEASON**"
-            echo "- League: **$LEAGUE_ID**"
-            echo "- HTTP: **$CODE**"
-            echo "- Fetched: **${{ steps.standings.outputs.changed || 'false' }}**"
-          } >> "$GITHUB_STEP_SUMMARY"
+          LEN=$(jq -r '(.response | type=="array")? // empty' "$TMPBODY")
+          if [[ "$LEN" != "true" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
 
-      # --- 6. Commit and Push ---
-      - name: Commit and push changes
+          NORM=$(mktemp)
+          jq '{standings: .response}' "$TMPBODY" > "$NORM"
+
+          if ! cmp -s "$NORM" "$OUT"; then
+            mv "$NORM" "$OUT"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # ---------------- COMMIT ----------------
+      - name: Commit & push
         if: steps.fixtures_week.outputs.changed == 'true' || steps.standings.outputs.changed == 'true'
         run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
+          git config user.name "pl-bot"
+          git config user.email "pl-bot@users.noreply.github.com"
           git add data/*.json
-          git commit -m "Update fixtures and standings data" || exit 0
+          git commit -m "Update fixtures & standings"
           git push
