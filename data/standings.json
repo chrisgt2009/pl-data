@@ -7,728 +7,728 @@
         "country": "England",
         "logo": "https://media.api-sports.io/football/leagues/39.png",
         "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-        "season": 2023,
+        "season": 2025,
         "standings": [
           [
             {
               "rank": 1,
               "team": {
-                "id": 50,
-                "name": "Manchester City",
-                "logo": "https://media.api-sports.io/football/teams/50.png"
-              },
-              "points": 91,
-              "goalsDiff": 62,
-              "group": "Premier League",
-              "form": "WWWWW",
-              "status": "same",
-              "description": "Promotion - Champions League (Group Stage: )",
-              "all": {
-                "played": 38,
-                "win": 28,
-                "draw": 7,
-                "lose": 3,
-                "goals": {
-                  "for": 96,
-                  "against": 34
-                }
-              },
-              "home": {
-                "played": 19,
-                "win": 14,
-                "draw": 5,
-                "lose": 0,
-                "goals": {
-                  "for": 51,
-                  "against": 16
-                }
-              },
-              "away": {
-                "played": 19,
-                "win": 14,
-                "draw": 2,
-                "lose": 3,
-                "goals": {
-                  "for": 45,
-                  "against": 18
-                }
-              },
-              "update": "2024-05-28T00:00:00+00:00"
-            },
-            {
-              "rank": 2,
-              "team": {
                 "id": 42,
                 "name": "Arsenal",
                 "logo": "https://media.api-sports.io/football/teams/42.png"
               },
-              "points": 89,
-              "goalsDiff": 62,
+              "points": 42,
+              "goalsDiff": 22,
               "group": "Premier League",
-              "form": "WWWWW",
+              "form": "WWWLW",
               "status": "same",
-              "description": "Promotion - Champions League (Group Stage: )",
+              "description": "Promotion - Champions League (League phase)",
               "all": {
-                "played": 38,
-                "win": 28,
-                "draw": 5,
-                "lose": 5,
+                "played": 18,
+                "win": 13,
+                "draw": 3,
+                "lose": 2,
                 "goals": {
-                  "for": 91,
-                  "against": 29
+                  "for": 33,
+                  "against": 11
                 }
               },
               "home": {
-                "played": 19,
-                "win": 15,
+                "played": 9,
+                "win": 8,
+                "draw": 1,
+                "lose": 0,
+                "goals": {
+                  "for": 22,
+                  "against": 4
+                }
+              },
+              "away": {
+                "played": 9,
+                "win": 5,
                 "draw": 2,
                 "lose": 2,
                 "goals": {
-                  "for": 48,
-                  "against": 16
+                  "for": 11,
+                  "against": 7
                 }
               },
-              "away": {
-                "played": 19,
-                "win": 13,
-                "draw": 3,
-                "lose": 3,
-                "goals": {
-                  "for": 43,
-                  "against": 13
-                }
-              },
-              "update": "2024-05-28T00:00:00+00:00"
+              "update": "2025-12-28T00:00:00+00:00"
             },
             {
-              "rank": 3,
+              "rank": 2,
               "team": {
-                "id": 40,
-                "name": "Liverpool",
-                "logo": "https://media.api-sports.io/football/teams/40.png"
+                "id": 50,
+                "name": "Manchester City",
+                "logo": "https://media.api-sports.io/football/teams/50.png"
               },
-              "points": 82,
-              "goalsDiff": 45,
+              "points": 40,
+              "goalsDiff": 26,
               "group": "Premier League",
-              "form": "WDWDL",
+              "form": "WWWWW",
               "status": "same",
-              "description": "Promotion - Champions League (Group Stage: )",
+              "description": "Promotion - Champions League (League phase)",
               "all": {
-                "played": 38,
-                "win": 24,
-                "draw": 10,
+                "played": 18,
+                "win": 13,
+                "draw": 1,
                 "lose": 4,
                 "goals": {
-                  "for": 86,
-                  "against": 41
-                }
-              },
-              "home": {
-                "played": 19,
-                "win": 15,
-                "draw": 3,
-                "lose": 1,
-                "goals": {
-                  "for": 49,
+                  "for": 43,
                   "against": 17
                 }
               },
-              "away": {
-                "played": 19,
-                "win": 9,
-                "draw": 7,
-                "lose": 3,
+              "home": {
+                "played": 9,
+                "win": 8,
+                "draw": 0,
+                "lose": 1,
                 "goals": {
-                  "for": 37,
-                  "against": 24
+                  "for": 25,
+                  "against": 6
                 }
               },
-              "update": "2024-05-28T00:00:00+00:00"
+              "away": {
+                "played": 9,
+                "win": 5,
+                "draw": 1,
+                "lose": 3,
+                "goals": {
+                  "for": 18,
+                  "against": 11
+                }
+              },
+              "update": "2025-12-28T00:00:00+00:00"
             },
             {
-              "rank": 4,
+              "rank": 3,
               "team": {
                 "id": 66,
                 "name": "Aston Villa",
                 "logo": "https://media.api-sports.io/football/teams/66.png"
               },
-              "points": 68,
-              "goalsDiff": 15,
+              "points": 39,
+              "goalsDiff": 10,
               "group": "Premier League",
-              "form": "LDLDW",
+              "form": "WWWWW",
               "status": "same",
-              "description": "Promotion - Champions League (Group Stage: )",
+              "description": "Promotion - Champions League (League phase)",
               "all": {
-                "played": 38,
-                "win": 20,
-                "draw": 8,
-                "lose": 10,
+                "played": 18,
+                "win": 12,
+                "draw": 3,
+                "lose": 3,
                 "goals": {
-                  "for": 76,
-                  "against": 61
+                  "for": 29,
+                  "against": 19
                 }
               },
               "home": {
-                "played": 19,
-                "win": 12,
-                "draw": 4,
-                "lose": 3,
+                "played": 9,
+                "win": 7,
+                "draw": 1,
+                "lose": 1,
                 "goals": {
-                  "for": 48,
-                  "against": 28
+                  "for": 15,
+                  "against": 7
                 }
               },
               "away": {
-                "played": 19,
-                "win": 8,
-                "draw": 4,
-                "lose": 7,
+                "played": 9,
+                "win": 5,
+                "draw": 2,
+                "lose": 2,
                 "goals": {
-                  "for": 28,
-                  "against": 33
+                  "for": 14,
+                  "against": 12
                 }
               },
-              "update": "2024-05-28T00:00:00+00:00"
+              "update": "2025-12-28T00:00:00+00:00"
+            },
+            {
+              "rank": 4,
+              "team": {
+                "id": 40,
+                "name": "Liverpool",
+                "logo": "https://media.api-sports.io/football/teams/40.png"
+              },
+              "points": 32,
+              "goalsDiff": 4,
+              "group": "Premier League",
+              "form": "WWWDD",
+              "status": "same",
+              "description": "Promotion - Champions League (League phase)",
+              "all": {
+                "played": 18,
+                "win": 10,
+                "draw": 2,
+                "lose": 6,
+                "goals": {
+                  "for": 30,
+                  "against": 26
+                }
+              },
+              "home": {
+                "played": 9,
+                "win": 6,
+                "draw": 1,
+                "lose": 2,
+                "goals": {
+                  "for": 15,
+                  "against": 10
+                }
+              },
+              "away": {
+                "played": 9,
+                "win": 4,
+                "draw": 1,
+                "lose": 4,
+                "goals": {
+                  "for": 15,
+                  "against": 16
+                }
+              },
+              "update": "2025-12-28T00:00:00+00:00"
             },
             {
               "rank": 5,
-              "team": {
-                "id": 47,
-                "name": "Tottenham",
-                "logo": "https://media.api-sports.io/football/teams/47.png"
-              },
-              "points": 66,
-              "goalsDiff": 13,
-              "group": "Premier League",
-              "form": "WLWLL",
-              "status": "same",
-              "description": "Promotion - Europa League (Group Stage: )",
-              "all": {
-                "played": 38,
-                "win": 20,
-                "draw": 6,
-                "lose": 12,
-                "goals": {
-                  "for": 74,
-                  "against": 61
-                }
-              },
-              "home": {
-                "played": 19,
-                "win": 13,
-                "draw": 0,
-                "lose": 6,
-                "goals": {
-                  "for": 38,
-                  "against": 27
-                }
-              },
-              "away": {
-                "played": 19,
-                "win": 7,
-                "draw": 6,
-                "lose": 6,
-                "goals": {
-                  "for": 36,
-                  "against": 34
-                }
-              },
-              "update": "2024-05-28T00:00:00+00:00"
-            },
-            {
-              "rank": 6,
               "team": {
                 "id": 49,
                 "name": "Chelsea",
                 "logo": "https://media.api-sports.io/football/teams/49.png"
               },
-              "points": 63,
-              "goalsDiff": 14,
+              "points": 29,
+              "goalsDiff": 11,
               "group": "Premier League",
-              "form": "WWWWW",
+              "form": "LDWDL",
               "status": "same",
-              "description": "Promotion - Europa Conference League (Qualification: )",
+              "description": "Promotion - Europa League (League phase)",
               "all": {
-                "played": 38,
-                "win": 18,
-                "draw": 9,
-                "lose": 11,
-                "goals": {
-                  "for": 77,
-                  "against": 63
-                }
-              },
-              "home": {
-                "played": 19,
-                "win": 11,
-                "draw": 4,
-                "lose": 4,
-                "goals": {
-                  "for": 44,
-                  "against": 26
-                }
-              },
-              "away": {
-                "played": 19,
-                "win": 7,
+                "played": 18,
+                "win": 8,
                 "draw": 5,
-                "lose": 7,
+                "lose": 5,
                 "goals": {
-                  "for": 33,
-                  "against": 37
-                }
-              },
-              "update": "2024-05-28T00:00:00+00:00"
-            },
-            {
-              "rank": 7,
-              "team": {
-                "id": 34,
-                "name": "Newcastle",
-                "logo": "https://media.api-sports.io/football/teams/34.png"
-              },
-              "points": 60,
-              "goalsDiff": 23,
-              "group": "Premier League",
-              "form": "WLDWW",
-              "status": "same",
-              "description": null,
-              "all": {
-                "played": 38,
-                "win": 18,
-                "draw": 6,
-                "lose": 14,
-                "goals": {
-                  "for": 85,
-                  "against": 62
+                  "for": 30,
+                  "against": 19
                 }
               },
               "home": {
-                "played": 19,
-                "win": 12,
-                "draw": 4,
+                "played": 9,
+                "win": 4,
+                "draw": 2,
                 "lose": 3,
                 "goals": {
-                  "for": 49,
-                  "against": 22
+                  "for": 13,
+                  "against": 9
                 }
               },
               "away": {
-                "played": 19,
-                "win": 6,
-                "draw": 2,
-                "lose": 11,
+                "played": 9,
+                "win": 4,
+                "draw": 3,
+                "lose": 2,
                 "goals": {
-                  "for": 36,
-                  "against": 40
+                  "for": 17,
+                  "against": 10
                 }
               },
-              "update": "2024-05-28T00:00:00+00:00"
+              "update": "2025-12-28T00:00:00+00:00"
             },
             {
-              "rank": 8,
+              "rank": 6,
               "team": {
                 "id": 33,
                 "name": "Manchester United",
                 "logo": "https://media.api-sports.io/football/teams/33.png"
               },
-              "points": 60,
-              "goalsDiff": -1,
+              "points": 29,
+              "goalsDiff": 4,
               "group": "Premier League",
-              "form": "WWLLD",
-              "status": "same",
-              "description": "Promotion - Europa League (Group Stage: )",
-              "all": {
-                "played": 38,
-                "win": 18,
-                "draw": 6,
-                "lose": 14,
-                "goals": {
-                  "for": 57,
-                  "against": 58
-                }
-              },
-              "home": {
-                "played": 19,
-                "win": 10,
-                "draw": 3,
-                "lose": 6,
-                "goals": {
-                  "for": 31,
-                  "against": 28
-                }
-              },
-              "away": {
-                "played": 19,
-                "win": 8,
-                "draw": 3,
-                "lose": 8,
-                "goals": {
-                  "for": 26,
-                  "against": 30
-                }
-              },
-              "update": "2024-05-28T00:00:00+00:00"
-            },
-            {
-              "rank": 9,
-              "team": {
-                "id": 48,
-                "name": "West Ham",
-                "logo": "https://media.api-sports.io/football/teams/48.png"
-              },
-              "points": 52,
-              "goalsDiff": -14,
-              "group": "Premier League",
-              "form": "LWLDL",
+              "form": "WLDWD",
               "status": "same",
               "description": null,
               "all": {
-                "played": 38,
-                "win": 14,
-                "draw": 10,
-                "lose": 14,
-                "goals": {
-                  "for": 60,
-                  "against": 74
-                }
-              },
-              "home": {
-                "played": 19,
-                "win": 7,
-                "draw": 8,
-                "lose": 4,
-                "goals": {
-                  "for": 31,
-                  "against": 28
-                }
-              },
-              "away": {
-                "played": 19,
-                "win": 7,
-                "draw": 2,
-                "lose": 10,
-                "goals": {
-                  "for": 29,
-                  "against": 46
-                }
-              },
-              "update": "2024-05-28T00:00:00+00:00"
-            },
-            {
-              "rank": 10,
-              "team": {
-                "id": 52,
-                "name": "Crystal Palace",
-                "logo": "https://media.api-sports.io/football/teams/52.png"
-              },
-              "points": 49,
-              "goalsDiff": -1,
-              "group": "Premier League",
-              "form": "WWWDW",
-              "status": "same",
-              "description": null,
-              "all": {
-                "played": 38,
-                "win": 13,
-                "draw": 10,
-                "lose": 15,
-                "goals": {
-                  "for": 57,
-                  "against": 58
-                }
-              },
-              "home": {
-                "played": 19,
+                "played": 18,
                 "win": 8,
-                "draw": 4,
-                "lose": 7,
-                "goals": {
-                  "for": 37,
-                  "against": 26
-                }
-              },
-              "away": {
-                "played": 19,
-                "win": 5,
-                "draw": 6,
-                "lose": 8,
-                "goals": {
-                  "for": 20,
-                  "against": 32
-                }
-              },
-              "update": "2024-05-28T00:00:00+00:00"
-            },
-            {
-              "rank": 11,
-              "team": {
-                "id": 51,
-                "name": "Brighton",
-                "logo": "https://media.api-sports.io/football/teams/51.png"
-              },
-              "points": 48,
-              "goalsDiff": -7,
-              "group": "Premier League",
-              "form": "LLDWL",
-              "status": "same",
-              "description": null,
-              "all": {
-                "played": 38,
-                "win": 12,
-                "draw": 12,
-                "lose": 14,
-                "goals": {
-                  "for": 55,
-                  "against": 62
-                }
-              },
-              "home": {
-                "played": 19,
-                "win": 8,
-                "draw": 6,
+                "draw": 5,
                 "lose": 5,
                 "goals": {
-                  "for": 30,
-                  "against": 27
-                }
-              },
-              "away": {
-                "played": 19,
-                "win": 4,
-                "draw": 6,
-                "lose": 9,
-                "goals": {
-                  "for": 25,
-                  "against": 35
-                }
-              },
-              "update": "2024-05-28T00:00:00+00:00"
-            },
-            {
-              "rank": 12,
-              "team": {
-                "id": 35,
-                "name": "Bournemouth",
-                "logo": "https://media.api-sports.io/football/teams/35.png"
-              },
-              "points": 48,
-              "goalsDiff": -13,
-              "group": "Premier League",
-              "form": "LLLWW",
-              "status": "same",
-              "description": null,
-              "all": {
-                "played": 38,
-                "win": 13,
-                "draw": 9,
-                "lose": 16,
-                "goals": {
-                  "for": 54,
-                  "against": 67
-                }
-              },
-              "home": {
-                "played": 19,
-                "win": 7,
-                "draw": 6,
-                "lose": 6,
-                "goals": {
-                  "for": 27,
+                  "for": 32,
                   "against": 28
                 }
               },
-              "away": {
-                "played": 19,
-                "win": 6,
-                "draw": 3,
-                "lose": 10,
-                "goals": {
-                  "for": 27,
-                  "against": 39
-                }
-              },
-              "update": "2024-05-28T00:00:00+00:00"
-            },
-            {
-              "rank": 13,
-              "team": {
-                "id": 36,
-                "name": "Fulham",
-                "logo": "https://media.api-sports.io/football/teams/36.png"
-              },
-              "points": 47,
-              "goalsDiff": -6,
-              "group": "Premier League",
-              "form": "WLDDL",
-              "status": "same",
-              "description": null,
-              "all": {
-                "played": 38,
-                "win": 13,
-                "draw": 8,
-                "lose": 17,
-                "goals": {
-                  "for": 55,
-                  "against": 61
-                }
-              },
               "home": {
-                "played": 19,
-                "win": 9,
-                "draw": 2,
-                "lose": 8,
-                "goals": {
-                  "for": 31,
-                  "against": 24
-                }
-              },
-              "away": {
-                "played": 19,
-                "win": 4,
-                "draw": 6,
-                "lose": 9,
-                "goals": {
-                  "for": 24,
-                  "against": 37
-                }
-              },
-              "update": "2024-05-28T00:00:00+00:00"
-            },
-            {
-              "rank": 14,
-              "team": {
-                "id": 39,
-                "name": "Wolves",
-                "logo": "https://media.api-sports.io/football/teams/39.png"
-              },
-              "points": 46,
-              "goalsDiff": -15,
-              "group": "Premier League",
-              "form": "LLLWL",
-              "status": "same",
-              "description": null,
-              "all": {
-                "played": 38,
-                "win": 13,
-                "draw": 7,
-                "lose": 18,
-                "goals": {
-                  "for": 50,
-                  "against": 65
-                }
-              },
-              "home": {
-                "played": 19,
-                "win": 8,
-                "draw": 3,
-                "lose": 8,
-                "goals": {
-                  "for": 26,
-                  "against": 30
-                }
-              },
-              "away": {
-                "played": 19,
+                "played": 9,
                 "win": 5,
-                "draw": 4,
-                "lose": 10,
+                "draw": 2,
+                "lose": 2,
                 "goals": {
-                  "for": 24,
-                  "against": 35
+                  "for": 17,
+                  "against": 12
                 }
               },
-              "update": "2024-05-28T00:00:00+00:00"
+              "away": {
+                "played": 9,
+                "win": 3,
+                "draw": 3,
+                "lose": 3,
+                "goals": {
+                  "for": 15,
+                  "against": 16
+                }
+              },
+              "update": "2025-12-28T00:00:00+00:00"
             },
             {
-              "rank": 15,
+              "rank": 7,
               "team": {
-                "id": 45,
-                "name": "Everton",
-                "logo": "https://media.api-sports.io/football/teams/45.png"
+                "id": 746,
+                "name": "Sunderland",
+                "logo": "https://media.api-sports.io/football/teams/746.png"
               },
-              "points": 40,
-              "goalsDiff": -11,
+              "points": 28,
+              "goalsDiff": 2,
               "group": "Premier League",
-              "form": "LWDWW",
+              "form": "DDWLD",
               "status": "same",
               "description": null,
               "all": {
-                "played": 38,
-                "win": 13,
-                "draw": 9,
-                "lose": 16,
+                "played": 18,
+                "win": 7,
+                "draw": 7,
+                "lose": 4,
                 "goals": {
-                  "for": 40,
-                  "against": 51
-                }
-              },
-              "home": {
-                "played": 19,
-                "win": 8,
-                "draw": 4,
-                "lose": 7,
-                "goals": {
-                  "for": 22,
+                  "for": 20,
                   "against": 18
                 }
               },
-              "away": {
-                "played": 19,
+              "home": {
+                "played": 9,
                 "win": 5,
-                "draw": 5,
-                "lose": 9,
+                "draw": 4,
+                "lose": 0,
                 "goals": {
-                  "for": 18,
-                  "against": 33
+                  "for": 16,
+                  "against": 8
                 }
               },
-              "update": "2024-05-28T00:00:00+00:00"
+              "away": {
+                "played": 9,
+                "win": 2,
+                "draw": 3,
+                "lose": 4,
+                "goals": {
+                  "for": 4,
+                  "against": 10
+                }
+              },
+              "update": "2025-12-28T00:00:00+00:00"
             },
             {
-              "rank": 16,
+              "rank": 8,
               "team": {
                 "id": 55,
                 "name": "Brentford",
                 "logo": "https://media.api-sports.io/football/teams/55.png"
               },
-              "points": 39,
-              "goalsDiff": -9,
+              "points": 26,
+              "goalsDiff": 2,
               "group": "Premier League",
-              "form": "LWDLW",
+              "form": "WWDLL",
               "status": "same",
               "description": null,
               "all": {
-                "played": 38,
-                "win": 10,
-                "draw": 9,
-                "lose": 19,
+                "played": 18,
+                "win": 8,
+                "draw": 2,
+                "lose": 8,
                 "goals": {
-                  "for": 56,
-                  "against": 65
+                  "for": 28,
+                  "against": 26
                 }
               },
               "home": {
-                "played": 19,
-                "win": 5,
-                "draw": 7,
-                "lose": 7,
+                "played": 9,
+                "win": 6,
+                "draw": 2,
+                "lose": 1,
                 "goals": {
-                  "for": 29,
-                  "against": 34
+                  "for": 20,
+                  "against": 10
                 }
               },
               "away": {
-                "played": 19,
-                "win": 5,
-                "draw": 2,
-                "lose": 12,
+                "played": 9,
+                "win": 2,
+                "draw": 0,
+                "lose": 7,
                 "goals": {
-                  "for": 27,
-                  "against": 31
+                  "for": 8,
+                  "against": 16
                 }
               },
-              "update": "2024-05-28T00:00:00+00:00"
+              "update": "2025-12-28T00:00:00+00:00"
+            },
+            {
+              "rank": 9,
+              "team": {
+                "id": 52,
+                "name": "Crystal Palace",
+                "logo": "https://media.api-sports.io/football/teams/52.png"
+              },
+              "points": 26,
+              "goalsDiff": 1,
+              "group": "Premier League",
+              "form": "LLLWW",
+              "status": "same",
+              "description": null,
+              "all": {
+                "played": 18,
+                "win": 7,
+                "draw": 5,
+                "lose": 6,
+                "goals": {
+                  "for": 21,
+                  "against": 20
+                }
+              },
+              "home": {
+                "played": 9,
+                "win": 2,
+                "draw": 4,
+                "lose": 3,
+                "goals": {
+                  "for": 9,
+                  "against": 11
+                }
+              },
+              "away": {
+                "played": 9,
+                "win": 5,
+                "draw": 1,
+                "lose": 3,
+                "goals": {
+                  "for": 12,
+                  "against": 9
+                }
+              },
+              "update": "2025-12-28T00:00:00+00:00"
+            },
+            {
+              "rank": 10,
+              "team": {
+                "id": 36,
+                "name": "Fulham",
+                "logo": "https://media.api-sports.io/football/teams/36.png"
+              },
+              "points": 26,
+              "goalsDiff": -1,
+              "group": "Premier League",
+              "form": "WWWLL",
+              "status": "same",
+              "description": null,
+              "all": {
+                "played": 18,
+                "win": 8,
+                "draw": 2,
+                "lose": 8,
+                "goals": {
+                  "for": 25,
+                  "against": 26
+                }
+              },
+              "home": {
+                "played": 9,
+                "win": 5,
+                "draw": 1,
+                "lose": 3,
+                "goals": {
+                  "for": 15,
+                  "against": 10
+                }
+              },
+              "away": {
+                "played": 9,
+                "win": 3,
+                "draw": 1,
+                "lose": 5,
+                "goals": {
+                  "for": 10,
+                  "against": 16
+                }
+              },
+              "update": "2025-12-28T00:00:00+00:00"
+            },
+            {
+              "rank": 11,
+              "team": {
+                "id": 47,
+                "name": "Tottenham",
+                "logo": "https://media.api-sports.io/football/teams/47.png"
+              },
+              "points": 25,
+              "goalsDiff": 4,
+              "group": "Premier League",
+              "form": "WLLWD",
+              "status": "same",
+              "description": null,
+              "all": {
+                "played": 18,
+                "win": 7,
+                "draw": 4,
+                "lose": 7,
+                "goals": {
+                  "for": 27,
+                  "against": 23
+                }
+              },
+              "home": {
+                "played": 9,
+                "win": 2,
+                "draw": 2,
+                "lose": 5,
+                "goals": {
+                  "for": 11,
+                  "against": 11
+                }
+              },
+              "away": {
+                "played": 9,
+                "win": 5,
+                "draw": 2,
+                "lose": 2,
+                "goals": {
+                  "for": 16,
+                  "against": 12
+                }
+              },
+              "update": "2025-12-28T00:00:00+00:00"
+            },
+            {
+              "rank": 12,
+              "team": {
+                "id": 45,
+                "name": "Everton",
+                "logo": "https://media.api-sports.io/football/teams/45.png"
+              },
+              "points": 25,
+              "goalsDiff": -2,
+              "group": "Premier League",
+              "form": "DLLWW",
+              "status": "same",
+              "description": null,
+              "all": {
+                "played": 18,
+                "win": 7,
+                "draw": 4,
+                "lose": 7,
+                "goals": {
+                  "for": 18,
+                  "against": 20
+                }
+              },
+              "home": {
+                "played": 9,
+                "win": 4,
+                "draw": 2,
+                "lose": 3,
+                "goals": {
+                  "for": 11,
+                  "against": 10
+                }
+              },
+              "away": {
+                "played": 9,
+                "win": 3,
+                "draw": 2,
+                "lose": 4,
+                "goals": {
+                  "for": 7,
+                  "against": 10
+                }
+              },
+              "update": "2025-12-28T00:00:00+00:00"
+            },
+            {
+              "rank": 13,
+              "team": {
+                "id": 51,
+                "name": "Brighton",
+                "logo": "https://media.api-sports.io/football/teams/51.png"
+              },
+              "points": 24,
+              "goalsDiff": 1,
+              "group": "Premier League",
+              "form": "LDLDL",
+              "status": "same",
+              "description": null,
+              "all": {
+                "played": 18,
+                "win": 6,
+                "draw": 6,
+                "lose": 6,
+                "goals": {
+                  "for": 26,
+                  "against": 25
+                }
+              },
+              "home": {
+                "played": 9,
+                "win": 4,
+                "draw": 4,
+                "lose": 1,
+                "goals": {
+                  "for": 16,
+                  "against": 11
+                }
+              },
+              "away": {
+                "played": 9,
+                "win": 2,
+                "draw": 2,
+                "lose": 5,
+                "goals": {
+                  "for": 10,
+                  "against": 14
+                }
+              },
+              "update": "2025-12-28T00:00:00+00:00"
+            },
+            {
+              "rank": 14,
+              "team": {
+                "id": 34,
+                "name": "Newcastle",
+                "logo": "https://media.api-sports.io/football/teams/34.png"
+              },
+              "points": 23,
+              "goalsDiff": 0,
+              "group": "Premier League",
+              "form": "LDLWD",
+              "status": "same",
+              "description": null,
+              "all": {
+                "played": 18,
+                "win": 6,
+                "draw": 5,
+                "lose": 7,
+                "goals": {
+                  "for": 23,
+                  "against": 23
+                }
+              },
+              "home": {
+                "played": 9,
+                "win": 5,
+                "draw": 2,
+                "lose": 2,
+                "goals": {
+                  "for": 16,
+                  "against": 12
+                }
+              },
+              "away": {
+                "played": 9,
+                "win": 1,
+                "draw": 3,
+                "lose": 5,
+                "goals": {
+                  "for": 7,
+                  "against": 11
+                }
+              },
+              "update": "2025-12-28T00:00:00+00:00"
+            },
+            {
+              "rank": 15,
+              "team": {
+                "id": 35,
+                "name": "Bournemouth",
+                "logo": "https://media.api-sports.io/football/teams/35.png"
+              },
+              "points": 22,
+              "goalsDiff": -6,
+              "group": "Premier League",
+              "form": "LDDDL",
+              "status": "same",
+              "description": null,
+              "all": {
+                "played": 18,
+                "win": 5,
+                "draw": 7,
+                "lose": 6,
+                "goals": {
+                  "for": 27,
+                  "against": 33
+                }
+              },
+              "home": {
+                "played": 9,
+                "win": 4,
+                "draw": 4,
+                "lose": 1,
+                "goals": {
+                  "for": 11,
+                  "against": 6
+                }
+              },
+              "away": {
+                "played": 9,
+                "win": 1,
+                "draw": 3,
+                "lose": 5,
+                "goals": {
+                  "for": 16,
+                  "against": 27
+                }
+              },
+              "update": "2025-12-28T00:00:00+00:00"
+            },
+            {
+              "rank": 16,
+              "team": {
+                "id": 63,
+                "name": "Leeds",
+                "logo": "https://media.api-sports.io/football/teams/63.png"
+              },
+              "points": 20,
+              "goalsDiff": -7,
+              "group": "Premier League",
+              "form": "DWDDW",
+              "status": "same",
+              "description": null,
+              "all": {
+                "played": 18,
+                "win": 5,
+                "draw": 5,
+                "lose": 8,
+                "goals": {
+                  "for": 25,
+                  "against": 32
+                }
+              },
+              "home": {
+                "played": 9,
+                "win": 4,
+                "draw": 3,
+                "lose": 2,
+                "goals": {
+                  "for": 17,
+                  "against": 12
+                }
+              },
+              "away": {
+                "played": 9,
+                "win": 1,
+                "draw": 2,
+                "lose": 6,
+                "goals": {
+                  "for": 8,
+                  "against": 20
+                }
+              },
+              "update": "2025-12-28T00:00:00+00:00"
             },
             {
               "rank": 17,
@@ -737,88 +737,88 @@
                 "name": "Nottingham Forest",
                 "logo": "https://media.api-sports.io/football/teams/65.png"
               },
-              "points": 32,
-              "goalsDiff": -18,
+              "points": 18,
+              "goalsDiff": -10,
               "group": "Premier League",
-              "form": "WLWLL",
+              "form": "LLWLW",
               "status": "same",
               "description": null,
               "all": {
-                "played": 38,
-                "win": 9,
-                "draw": 9,
-                "lose": 20,
+                "played": 18,
+                "win": 5,
+                "draw": 3,
+                "lose": 10,
                 "goals": {
-                  "for": 49,
-                  "against": 67
+                  "for": 18,
+                  "against": 28
                 }
               },
               "home": {
-                "played": 19,
-                "win": 5,
-                "draw": 5,
-                "lose": 9,
+                "played": 9,
+                "win": 3,
+                "draw": 1,
+                "lose": 5,
                 "goals": {
-                  "for": 27,
-                  "against": 30
+                  "for": 12,
+                  "against": 15
                 }
               },
               "away": {
-                "played": 19,
-                "win": 4,
-                "draw": 4,
-                "lose": 11,
+                "played": 9,
+                "win": 2,
+                "draw": 2,
+                "lose": 5,
                 "goals": {
-                  "for": 22,
-                  "against": 37
+                  "for": 6,
+                  "against": 13
                 }
               },
-              "update": "2024-05-28T00:00:00+00:00"
+              "update": "2025-12-28T00:00:00+00:00"
             },
             {
               "rank": 18,
               "team": {
-                "id": 1359,
-                "name": "Luton",
-                "logo": "https://media.api-sports.io/football/teams/1359.png"
+                "id": 48,
+                "name": "West Ham",
+                "logo": "https://media.api-sports.io/football/teams/48.png"
               },
-              "points": 26,
-              "goalsDiff": -33,
+              "points": 13,
+              "goalsDiff": -17,
               "group": "Premier League",
-              "form": "LLDLL",
+              "form": "LLLDD",
               "status": "same",
               "description": "Relegation - Championship",
               "all": {
-                "played": 38,
-                "win": 6,
-                "draw": 8,
-                "lose": 24,
-                "goals": {
-                  "for": 52,
-                  "against": 85
-                }
-              },
-              "home": {
-                "played": 19,
-                "win": 4,
+                "played": 18,
+                "win": 3,
                 "draw": 4,
                 "lose": 11,
                 "goals": {
-                  "for": 28,
-                  "against": 37
+                  "for": 19,
+                  "against": 36
+                }
+              },
+              "home": {
+                "played": 9,
+                "win": 2,
+                "draw": 0,
+                "lose": 7,
+                "goals": {
+                  "for": 10,
+                  "against": 21
                 }
               },
               "away": {
-                "played": 19,
-                "win": 2,
+                "played": 9,
+                "win": 1,
                 "draw": 4,
-                "lose": 13,
+                "lose": 4,
                 "goals": {
-                  "for": 24,
-                  "against": 48
+                  "for": 9,
+                  "against": 15
                 }
               },
-              "update": "2024-05-28T00:00:00+00:00"
+              "update": "2025-12-28T00:00:00+00:00"
             },
             {
               "rank": 19,
@@ -827,88 +827,88 @@
                 "name": "Burnley",
                 "logo": "https://media.api-sports.io/football/teams/44.png"
               },
-              "points": 24,
-              "goalsDiff": -37,
+              "points": 12,
+              "goalsDiff": -15,
               "group": "Premier League",
-              "form": "LLLDW",
+              "form": "DDLLL",
               "status": "same",
               "description": "Relegation - Championship",
               "all": {
-                "played": 38,
-                "win": 5,
-                "draw": 9,
-                "lose": 24,
+                "played": 18,
+                "win": 3,
+                "draw": 3,
+                "lose": 12,
                 "goals": {
-                  "for": 41,
-                  "against": 78
+                  "for": 19,
+                  "against": 34
                 }
               },
               "home": {
-                "played": 19,
+                "played": 9,
                 "win": 2,
-                "draw": 4,
-                "lose": 13,
+                "draw": 2,
+                "lose": 5,
                 "goals": {
-                  "for": 19,
-                  "against": 43
+                  "for": 7,
+                  "against": 10
                 }
               },
               "away": {
-                "played": 19,
-                "win": 3,
-                "draw": 5,
-                "lose": 11,
+                "played": 9,
+                "win": 1,
+                "draw": 1,
+                "lose": 7,
                 "goals": {
-                  "for": 22,
-                  "against": 35
+                  "for": 12,
+                  "against": 24
                 }
               },
-              "update": "2024-05-28T00:00:00+00:00"
+              "update": "2025-12-28T00:00:00+00:00"
             },
             {
               "rank": 20,
               "team": {
-                "id": 62,
-                "name": "Sheffield Utd",
-                "logo": "https://media.api-sports.io/football/teams/62.png"
+                "id": 39,
+                "name": "Wolves",
+                "logo": "https://media.api-sports.io/football/teams/39.png"
               },
-              "points": 16,
-              "goalsDiff": -69,
+              "points": 2,
+              "goalsDiff": -29,
               "group": "Premier League",
               "form": "LLLLL",
               "status": "same",
               "description": "Relegation - Championship",
               "all": {
-                "played": 38,
-                "win": 3,
-                "draw": 7,
-                "lose": 28,
+                "played": 18,
+                "win": 0,
+                "draw": 2,
+                "lose": 16,
                 "goals": {
-                  "for": 35,
-                  "against": 104
+                  "for": 10,
+                  "against": 39
                 }
               },
               "home": {
-                "played": 19,
-                "win": 2,
-                "draw": 4,
-                "lose": 13,
+                "played": 9,
+                "win": 0,
+                "draw": 1,
+                "lose": 8,
                 "goals": {
-                  "for": 19,
-                  "against": 57
+                  "for": 7,
+                  "against": 23
                 }
               },
               "away": {
-                "played": 19,
-                "win": 1,
-                "draw": 3,
-                "lose": 15,
+                "played": 9,
+                "win": 0,
+                "draw": 1,
+                "lose": 8,
                 "goals": {
-                  "for": 16,
-                  "against": 47
+                  "for": 3,
+                  "against": 16
                 }
               },
-              "update": "2024-05-28T00:00:00+00:00"
+              "update": "2025-12-28T00:00:00+00:00"
             }
           ]
         ]
