@@ -1,0 +1,87 @@
+name: Refresh Live (PL)
+
+concurrency:
+  group: pl-data-commit
+  cancel-in-progress: false
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Match-heavy windows (UK time-ish; adjust if you want)
+    - cron: "*/5 11-22 * * 6,0"     # Sat/Sun every 5 mins
+    - cron: "*/10 17-22 * * 1-5"    # Weekday evenings every 10 mins
+    # Light refresh otherwise
+    - cron: "*/15 7-10 * * *"       # mornings
+    - cron: "0 * 0-6,23 * *"        # overnight hourly
+
+permissions:
+  contents: write
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - id: live_today
+        name: Refresh live fixtures (API-Football)
+        shell: bash
+        env:
+          BASE_URL: ${{ vars.URL_LIVE }}          # e.g. https://v3.football.api-sports.io/fixtures?live=all
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
+          LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}     # 39
+          SEASON: ${{ vars.SEASON_PL }}           # 2025
+        run: |
+          set -euo pipefail
+          mkdir -p data/
+
+          OUT="data/live_today.json"
+          TMPBODY="$(mktemp)"
+
+          [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+
+          # If your live endpoint doesn't support league filtering, remove &league=...
+          FINAL_URL="${BASE_URL}&league=${LEAGUE_ID}&season=${SEASON}"
+
+          CODE=$(curl -sS -w "%{http_code}" -o "$TMPBODY" \
+            -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
+            -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+            "$FINAL_URL" || true)
+
+          echo "code=$CODE" >> "$GITHUB_OUTPUT"
+          if [[ "$CODE" != "200" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Ensure .response is array
+          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
+          if [[ "$OK" != "true" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          NORM=$(mktemp)
+          # Wrap in your Swift envelope shape
+          jq '{matches: .response}' "$TMPBODY" > "$NORM"
+
+          if ! cmp -s "$NORM" "$OUT"; then
+            mv "$NORM" "$OUT"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit & push
+        if: steps.live_today.outputs.changed == 'true'
+        run: |
+          git config user.name "pl-bot"
+          git config user.email "pl-bot@users.noreply.github.com"
+          git add data/live_today.json
+          git commit -m "Update live (PL)"
+          git push
