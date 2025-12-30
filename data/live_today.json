@@ -19,7 +19,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 73,
+          "elapsed": 81,
           "extra": null
         }
       },
@@ -48,7 +48,7 @@
         }
       },
       "goals": {
-        "home": 3,
+        "home": 4,
         "away": 0
       },
       "score": {
@@ -239,12 +239,122 @@
             "name": "L. Trossard"
           },
           "assist": {
-            "id": null,
-            "name": null
+            "id": 38746,
+            "name": "J. Timber"
           },
           "type": "Goal",
           "detail": "Normal Goal",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 73,
+            "extra": null
+          },
+          "team": {
+            "id": 42,
+            "name": "Arsenal",
+            "logo": "https://media.api-sports.io/football/teams/42.png"
+          },
+          "player": {
+            "id": 47311,
+            "name": "M. Merino"
+          },
+          "assist": {
+            "id": 30407,
+            "name": "C. Norgaard"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 77,
+            "extra": null
+          },
+          "team": {
+            "id": 42,
+            "name": "Arsenal",
+            "logo": "https://media.api-sports.io/football/teams/42.png"
+          },
+          "player": {
+            "id": 18979,
+            "name": "V. Gyokeres"
+          },
+          "assist": {
+            "id": 643,
+            "name": "Gabriel Jesus"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 77,
+            "extra": null
+          },
+          "team": {
+            "id": 42,
+            "name": "Arsenal",
+            "logo": "https://media.api-sports.io/football/teams/42.png"
+          },
+          "player": {
+            "id": 22224,
+            "name": "Gabriel"
+          },
+          "assist": {
+            "id": 313245,
+            "name": "M. Lewis-Skelly"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 78,
+            "extra": null
+          },
+          "team": {
+            "id": 42,
+            "name": "Arsenal",
+            "logo": "https://media.api-sports.io/football/teams/42.png"
+          },
+          "player": {
+            "id": 643,
+            "name": "Gabriel Jesus"
+          },
+          "assist": {
+            "id": 1946,
+            "name": "L. Trossard"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 80,
+            "extra": null
+          },
+          "team": {
+            "id": 42,
+            "name": "Arsenal",
+            "logo": "https://media.api-sports.io/football/teams/42.png"
+          },
+          "player": {
+            "id": 643,
+            "name": "Gabriel Jesus"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Unsportsmanlike conduct"
         }
       ]
     },
@@ -267,7 +377,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 75,
+          "elapsed": 84,
           "extra": null
         }
       },
