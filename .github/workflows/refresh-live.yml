@@ -1,7 +1,7 @@
 name: Refresh Live (PL)
 
 concurrency:
-  group: pl-data-commit
+  group: pl-live-commit
   cancel-in-progress: false
 
 on:
