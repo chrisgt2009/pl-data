@@ -9,7 +9,7 @@
         "timestamp": 1767123000,
         "periods": {
           "first": 1767123000,
-          "second": null
+          "second": 1767126600
         },
         "venue": {
           "id": 512,
@@ -17,10 +17,10 @@
           "city": "Burnley"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 6
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 90,
+          "extra": 1
         }
       },
       "league": {
@@ -79,7 +79,7 @@
         "timestamp": 1767123000,
         "periods": {
           "first": 1767123000,
-          "second": null
+          "second": 1767126600
         },
         "venue": {
           "id": 598,
@@ -87,10 +87,10 @@
           "city": "London"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 9
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 90,
+          "extra": null
         }
       },
       "league": {
@@ -108,18 +108,18 @@
           "id": 48,
           "name": "West Ham",
           "logo": "https://media.api-sports.io/football/teams/48.png",
-          "winner": true
+          "winner": null
         },
         "away": {
           "id": 51,
           "name": "Brighton",
           "logo": "https://media.api-sports.io/football/teams/51.png",
-          "winner": false
+          "winner": null
         }
       },
       "goals": {
         "home": 2,
-        "away": 1
+        "away": 2
       },
       "score": {
         "halftime": {
@@ -149,7 +149,7 @@
         "timestamp": 1767123000,
         "periods": {
           "first": 1767123000,
-          "second": null
+          "second": 1767126600
         },
         "venue": {
           "id": 519,
@@ -157,10 +157,10 @@
           "city": "London"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 8
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 89,
+          "extra": null
         }
       },
       "league": {
@@ -212,76 +212,6 @@
     },
     {
       "fixture": {
-        "id": 1379156,
-        "referee": "Michael Oliver, England",
-        "timezone": "UTC",
-        "date": "2025-12-30T19:30:00+00:00",
-        "timestamp": 1767123000,
-        "periods": {
-          "first": 1767123000,
-          "second": null
-        },
-        "venue": {
-          "id": 566,
-          "name": "City Ground",
-          "city": "Nottingham"
-        },
-        "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 2
-        }
-      },
-      "league": {
-        "id": 39,
-        "name": "Premier League",
-        "country": "England",
-        "logo": "https://media.api-sports.io/football/leagues/39.png",
-        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-        "season": 2025,
-        "round": "Regular Season - 19",
-        "standings": true
-      },
-      "teams": {
-        "home": {
-          "id": 65,
-          "name": "Nottingham Forest",
-          "logo": "https://media.api-sports.io/football/teams/65.png",
-          "winner": false
-        },
-        "away": {
-          "id": 45,
-          "name": "Everton",
-          "logo": "https://media.api-sports.io/football/teams/45.png",
-          "winner": true
-        }
-      },
-      "goals": {
-        "home": 0,
-        "away": 1
-      },
-      "score": {
-        "halftime": {
-          "home": 0,
-          "away": 1
-        },
-        "fulltime": {
-          "home": null,
-          "away": null
-        },
-        "extratime": {
-          "home": null,
-          "away": null
-        },
-        "penalty": {
-          "home": null,
-          "away": null
-        }
-      }
-    },
-    {
-      "fixture": {
         "id": 1379155,
         "referee": "Thomas Bramall, England",
         "timezone": "UTC",
@@ -289,7 +219,7 @@
         "timestamp": 1767125700,
         "periods": {
           "first": 1767125700,
-          "second": null
+          "second": 1767129300
         },
         "venue": {
           "id": 556,
@@ -297,9 +227,9 @@
           "city": "Manchester"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 13,
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 52,
           "extra": null
         }
       },
@@ -328,13 +258,13 @@
         }
       },
       "goals": {
-        "home": 0,
-        "away": 0
+        "home": 1,
+        "away": 1
       },
       "score": {
         "halftime": {
-          "home": 0,
-          "away": 0
+          "home": 1,
+          "away": 1
         },
         "fulltime": {
           "home": null,
@@ -359,7 +289,7 @@
         "timestamp": 1767125700,
         "periods": {
           "first": 1767125700,
-          "second": null
+          "second": 1767129300
         },
         "venue": {
           "id": 494,
@@ -367,9 +297,9 @@
           "city": "London"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 13,
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 49,
           "extra": null
         }
       },
@@ -388,17 +318,17 @@
           "id": 42,
           "name": "Arsenal",
           "logo": "https://media.api-sports.io/football/teams/42.png",
-          "winner": null
+          "winner": true
         },
         "away": {
           "id": 66,
           "name": "Aston Villa",
           "logo": "https://media.api-sports.io/football/teams/66.png",
-          "winner": null
+          "winner": false
         }
       },
       "goals": {
-        "home": 0,
+        "home": 1,
         "away": 0
       },
       "score": {
@@ -409,6 +339,76 @@
         "fulltime": {
           "home": null,
           "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1379156,
+        "referee": "Michael Oliver, England",
+        "timezone": "UTC",
+        "date": "2025-12-30T19:30:00+00:00",
+        "timestamp": 1767123000,
+        "periods": {
+          "first": 1767123000,
+          "second": 1767126600
+        },
+        "venue": {
+          "id": 566,
+          "name": "City Ground",
+          "city": "Nottingham"
+        },
+        "status": {
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
+          "extra": 5
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 19",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 65,
+          "name": "Nottingham Forest",
+          "logo": "https://media.api-sports.io/football/teams/65.png",
+          "winner": false
+        },
+        "away": {
+          "id": 45,
+          "name": "Everton",
+          "logo": "https://media.api-sports.io/football/teams/45.png",
+          "winner": true
+        }
+      },
+      "goals": {
+        "home": 0,
+        "away": 2
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 1
+        },
+        "fulltime": {
+          "home": 0,
+          "away": 2
         },
         "extratime": {
           "home": null,
