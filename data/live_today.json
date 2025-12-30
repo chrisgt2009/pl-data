@@ -19,7 +19,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 10,
+          "elapsed": 28,
           "extra": null
         }
       },
@@ -90,7 +90,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 10,
+          "elapsed": 28,
           "extra": null
         }
       },
@@ -109,22 +109,22 @@
           "id": 33,
           "name": "Manchester United",
           "logo": "https://media.api-sports.io/football/teams/33.png",
-          "winner": null
+          "winner": true
         },
         "away": {
           "id": 39,
           "name": "Wolves",
           "logo": "https://media.api-sports.io/football/teams/39.png",
-          "winner": null
+          "winner": false
         }
       },
       "goals": {
-        "home": 0,
+        "home": 1,
         "away": 0
       },
       "score": {
         "halftime": {
-          "home": 0,
+          "home": 1,
           "away": 0
         },
         "fulltime": {
@@ -140,7 +140,30 @@
           "away": null
         }
       },
-      "events": []
+      "events": [
+        {
+          "time": {
+            "elapsed": 27,
+            "extra": null
+          },
+          "team": {
+            "id": 33,
+            "name": "Manchester United",
+            "logo": "https://media.api-sports.io/football/teams/33.png"
+          },
+          "player": {
+            "id": 70100,
+            "name": "J. Zirkzee"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        }
+      ]
     },
     {
       "fixture": {
@@ -151,7 +174,7 @@
         "timestamp": 1767123000,
         "periods": {
           "first": 1767123000,
-          "second": null
+          "second": 1767126600
         },
         "venue": {
           "id": 512,
@@ -159,10 +182,10 @@
           "city": "Burnley"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 6
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 50,
+          "extra": null
         }
       },
       "league": {
@@ -377,7 +400,7 @@
         "timestamp": 1767123000,
         "periods": {
           "first": 1767123000,
-          "second": null
+          "second": 1767126600
         },
         "venue": {
           "id": 519,
@@ -385,10 +408,10 @@
           "city": "London"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 8
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 48,
+          "extra": null
         }
       },
       "league": {
@@ -547,6 +570,50 @@
           "type": "Goal",
           "detail": "Normal Goal",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 49,
+            "name": "Chelsea",
+            "logo": "https://media.api-sports.io/football/teams/49.png"
+          },
+          "player": {
+            "id": 284324,
+            "name": "A. Garnacho"
+          },
+          "assist": {
+            "id": 1864,
+            "name": "P. Neto"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 49,
+            "name": "Chelsea",
+            "logo": "https://media.api-sports.io/football/teams/49.png"
+          },
+          "player": {
+            "id": 366735,
+            "name": "J. Acheampong"
+          },
+          "assist": {
+            "id": 19545,
+            "name": "R. James"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
         }
       ]
     },
@@ -559,7 +626,7 @@
         "timestamp": 1767123000,
         "periods": {
           "first": 1767123000,
-          "second": null
+          "second": 1767126600
         },
         "venue": {
           "id": 566,
@@ -567,10 +634,10 @@
           "city": "Nottingham"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 2
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 56,
+          "extra": null
         }
       },
       "league": {
@@ -641,6 +708,28 @@
           "type": "Goal",
           "detail": "Normal Goal",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 65,
+            "name": "Nottingham Forest",
+            "logo": "https://media.api-sports.io/football/teams/65.png"
+          },
+          "player": {
+            "id": 6056,
+            "name": "N. Dominguez"
+          },
+          "assist": {
+            "id": 47522,
+            "name": "Douglas Luiz"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
         }
       ]
     },
@@ -653,7 +742,7 @@
         "timestamp": 1767123000,
         "periods": {
           "first": 1767123000,
-          "second": null
+          "second": 1767126600
         },
         "venue": {
           "id": 598,
@@ -661,10 +750,10 @@
           "city": "London"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 9
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 49,
+          "extra": null
         }
       },
       "league": {
@@ -782,7 +871,7 @@
         },
         {
           "time": {
-            "elapsed": 35,
+            "elapsed": 36,
             "extra": null
           },
           "team": {
