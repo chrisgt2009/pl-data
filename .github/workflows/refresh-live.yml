@@ -7,12 +7,14 @@ concurrency:
 on:
   workflow_dispatch:
   schedule:
-    # Match-heavy windows (UK time-ish; adjust if you want)
-    - cron: "*/5 11-22 * * 6,0"     # Sat/Sun every 5 mins
-    - cron: "*/10 17-22 * * 1-5"    # Weekday evenings every 10 mins
-    # Light refresh otherwise
-    - cron: "*/15 7-10 * * *"       # mornings
-    - cron: "0 * 0-6,23 * *"        # overnight hourly
+    - cron: "*/5 11-22 * * 6,0"
+    - cron: "*/10 17-22 * * 1-5"
+    - cron: "*/15 7-10 * * *"
+
+    # overnight hourly (split, because "0-6,23" is invalid)
+    - cron: "0 * 0-6 * *"
+    - cron: "0 * 23 * *"
+    
 
 permissions:
   contents: write
