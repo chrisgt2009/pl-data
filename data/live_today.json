@@ -19,7 +19,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 60,
+          "elapsed": 73,
           "extra": null
         }
       },
@@ -48,7 +48,7 @@
         }
       },
       "goals": {
-        "home": 2,
+        "home": 3,
         "away": 0
       },
       "score": {
@@ -179,6 +179,72 @@
           "type": "Goal",
           "detail": "Normal Goal",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 61,
+            "extra": null
+          },
+          "team": {
+            "id": 66,
+            "name": "Aston Villa",
+            "logo": "https://media.api-sports.io/football/teams/66.png"
+          },
+          "player": {
+            "id": 18,
+            "name": "J. Sancho"
+          },
+          "assist": {
+            "id": 249,
+            "name": "D. Malen"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 61,
+            "extra": null
+          },
+          "team": {
+            "id": 66,
+            "name": "Aston Villa",
+            "logo": "https://media.api-sports.io/football/teams/66.png"
+          },
+          "player": {
+            "id": 19071,
+            "name": "E. Buendia"
+          },
+          "assist": {
+            "id": 388013,
+            "name": "A. Garcia"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 69,
+            "extra": null
+          },
+          "team": {
+            "id": 42,
+            "name": "Arsenal",
+            "logo": "https://media.api-sports.io/football/teams/42.png"
+          },
+          "player": {
+            "id": 1946,
+            "name": "L. Trossard"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
         }
       ]
     },
@@ -201,7 +267,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 63,
+          "elapsed": 75,
           "extra": null
         }
       },
@@ -316,6 +382,94 @@
           },
           "type": "subst",
           "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 63,
+            "extra": null
+          },
+          "team": {
+            "id": 39,
+            "name": "Wolves",
+            "logo": "https://media.api-sports.io/football/teams/39.png"
+          },
+          "player": {
+            "id": 296560,
+            "name": "J. Tchatchoua"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Unsportsmanlike conduct"
+        },
+        {
+          "time": {
+            "elapsed": 65,
+            "extra": null
+          },
+          "team": {
+            "id": 39,
+            "name": "Wolves",
+            "logo": "https://media.api-sports.io/football/teams/39.png"
+          },
+          "player": {
+            "id": 110153,
+            "name": "T. Arokodare"
+          },
+          "assist": {
+            "id": 2032,
+            "name": "J. S. Larsen"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 75,
+            "extra": null
+          },
+          "team": {
+            "id": 33,
+            "name": "Manchester United",
+            "logo": "https://media.api-sports.io/football/teams/33.png"
+          },
+          "player": {
+            "id": 402329,
+            "name": "A. Heaven"
+          },
+          "assist": {
+            "id": 342970,
+            "name": "L. Yoro"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 75,
+            "extra": null
+          },
+          "team": {
+            "id": 33,
+            "name": "Manchester United",
+            "logo": "https://media.api-sports.io/football/teams/33.png"
+          },
+          "player": {
+            "id": 51494,
+            "name": "M. Ugarte"
+          },
+          "assist": {
+            "id": 404769,
+            "name": "B. Mantato"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
           "comments": null
         }
       ]
