@@ -17,30 +17,30 @@
                 "name": "Arsenal",
                 "logo": "https://media.api-sports.io/football/teams/42.png"
               },
-              "points": 42,
-              "goalsDiff": 22,
+              "points": 45,
+              "goalsDiff": 25,
               "group": "Premier League",
-              "form": "WWWLW",
+              "form": "WWWWL",
               "status": "same",
               "description": "Promotion - Champions League (League phase)",
               "all": {
-                "played": 18,
-                "win": 13,
+                "played": 19,
+                "win": 14,
                 "draw": 3,
                 "lose": 2,
                 "goals": {
-                  "for": 33,
-                  "against": 11
+                  "for": 37,
+                  "against": 12
                 }
               },
               "home": {
-                "played": 9,
-                "win": 8,
+                "played": 10,
+                "win": 9,
                 "draw": 1,
                 "lose": 0,
                 "goals": {
-                  "for": 22,
-                  "against": 4
+                  "for": 26,
+                  "against": 5
                 }
               },
               "away": {
@@ -108,19 +108,19 @@
                 "logo": "https://media.api-sports.io/football/teams/66.png"
               },
               "points": 39,
-              "goalsDiff": 10,
+              "goalsDiff": 7,
               "group": "Premier League",
-              "form": "WWWWW",
+              "form": "LWWWW",
               "status": "same",
               "description": "Promotion - Champions League (League phase)",
               "all": {
-                "played": 18,
+                "played": 19,
                 "win": 12,
                 "draw": 3,
-                "lose": 3,
+                "lose": 4,
                 "goals": {
-                  "for": 29,
-                  "against": 19
+                  "for": 30,
+                  "against": 23
                 }
               },
               "home": {
@@ -134,13 +134,13 @@
                 }
               },
               "away": {
-                "played": 9,
+                "played": 10,
                 "win": 5,
                 "draw": 2,
-                "lose": 2,
+                "lose": 3,
                 "goals": {
-                  "for": 14,
-                  "against": 12
+                  "for": 15,
+                  "against": 16
                 }
               },
               "update": "2025-12-30T00:00:00+00:00"
@@ -242,30 +242,30 @@
                 "name": "Manchester United",
                 "logo": "https://media.api-sports.io/football/teams/33.png"
               },
-              "points": 29,
+              "points": 30,
               "goalsDiff": 4,
               "group": "Premier League",
-              "form": "WLDWD",
+              "form": "DWLDW",
               "status": "same",
               "description": null,
               "all": {
-                "played": 18,
+                "played": 19,
                 "win": 8,
-                "draw": 5,
+                "draw": 6,
                 "lose": 5,
                 "goals": {
-                  "for": 32,
-                  "against": 28
+                  "for": 33,
+                  "against": 29
                 }
               },
               "home": {
-                "played": 9,
+                "played": 10,
                 "win": 5,
-                "draw": 2,
+                "draw": 3,
                 "lose": 2,
                 "goals": {
-                  "for": 17,
-                  "against": 12
+                  "for": 18,
+                  "against": 13
                 }
               },
               "away": {
@@ -872,20 +872,20 @@
                 "name": "Wolves",
                 "logo": "https://media.api-sports.io/football/teams/39.png"
               },
-              "points": 2,
+              "points": 3,
               "goalsDiff": -29,
               "group": "Premier League",
-              "form": "LLLLL",
+              "form": "DLLLL",
               "status": "same",
               "description": "Relegation - Championship",
               "all": {
-                "played": 18,
+                "played": 19,
                 "win": 0,
-                "draw": 2,
+                "draw": 3,
                 "lose": 16,
                 "goals": {
-                  "for": 10,
-                  "against": 39
+                  "for": 11,
+                  "against": 40
                 }
               },
               "home": {
@@ -899,13 +899,13 @@
                 }
               },
               "away": {
-                "played": 9,
+                "played": 10,
                 "win": 0,
-                "draw": 1,
+                "draw": 2,
                 "lose": 8,
                 "goals": {
-                  "for": 3,
-                  "against": 16
+                  "for": 4,
+                  "against": 17
                 }
               },
               "update": "2025-12-30T00:00:00+00:00"
