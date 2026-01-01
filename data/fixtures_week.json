@@ -9,7 +9,7 @@
         "timestamp": 1767297600,
         "periods": {
           "first": 1767297600,
-          "second": null
+          "second": 1767301200
         },
         "venue": {
           "id": 10503,
@@ -17,9 +17,9 @@
           "city": "London"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 26,
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 66,
           "extra": null
         }
       },
@@ -79,7 +79,7 @@
         "timestamp": 1767297600,
         "periods": {
           "first": 1767297600,
-          "second": null
+          "second": 1767301200
         },
         "venue": {
           "id": 589,
@@ -87,9 +87,9 @@
           "city": "Sunderland"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 27,
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 62,
           "extra": null
         }
       },
