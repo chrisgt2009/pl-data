@@ -9,7 +9,7 @@
         "timestamp": 1767288600,
         "periods": {
           "first": 1767288600,
-          "second": null
+          "second": 1767292200
         },
         "venue": {
           "id": 525,
@@ -17,10 +17,10 @@
           "city": "London"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 5
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 61,
+          "extra": null
         }
       },
       "league": {
@@ -113,6 +113,94 @@
           "type": "Goal",
           "detail": "Normal Goal",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 36,
+            "name": "Fulham",
+            "logo": "https://media.api-sports.io/football/teams/36.png"
+          },
+          "player": {
+            "id": 2729,
+            "name": "J. Andersen"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Unsportsmanlike conduct"
+        },
+        {
+          "time": {
+            "elapsed": 51,
+            "extra": null
+          },
+          "team": {
+            "id": 36,
+            "name": "Fulham",
+            "logo": "https://media.api-sports.io/football/teams/36.png"
+          },
+          "player": {
+            "id": 657,
+            "name": "K. Tete"
+          },
+          "assist": {
+            "id": 2920,
+            "name": "T. Castagne"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 57,
+            "extra": null
+          },
+          "team": {
+            "id": 52,
+            "name": "Crystal Palace",
+            "logo": "https://media.api-sports.io/football/teams/52.png"
+          },
+          "player": {
+            "id": 18806,
+            "name": "W. Hughes"
+          },
+          "assist": {
+            "id": 412759,
+            "name": "J. Canvot"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 61,
+            "extra": null
+          },
+          "team": {
+            "id": 36,
+            "name": "Fulham",
+            "logo": "https://media.api-sports.io/football/teams/36.png"
+          },
+          "player": {
+            "id": 1161,
+            "name": "E. Smith Rowe"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Roughing"
         }
       ]
     },
@@ -125,7 +213,7 @@
         "timestamp": 1767288600,
         "periods": {
           "first": 1767288600,
-          "second": null
+          "second": 1767292200
         },
         "venue": {
           "id": 550,
@@ -133,10 +221,10 @@
           "city": "Liverpool"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 3
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 65,
+          "extra": null
         }
       },
       "league": {
@@ -185,7 +273,52 @@
           "away": null
         }
       },
-      "events": []
+      "events": [
+        {
+          "time": {
+            "elapsed": 61,
+            "extra": null
+          },
+          "team": {
+            "id": 63,
+            "name": "Leeds",
+            "logo": "https://media.api-sports.io/football/teams/63.png"
+          },
+          "player": {
+            "id": 2279,
+            "name": "E. Ampadu"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Handling"
+        },
+        {
+          "time": {
+            "elapsed": 62,
+            "extra": null
+          },
+          "team": {
+            "id": 63,
+            "name": "Leeds",
+            "logo": "https://media.api-sports.io/football/teams/63.png"
+          },
+          "player": {
+            "id": 833,
+            "name": "J. Bijol"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Unsportsmanlike conduct"
+        }
+      ]
     }
   ]
 }
