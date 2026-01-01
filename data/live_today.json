@@ -19,7 +19,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 16,
+          "elapsed": 22,
           "extra": null
         }
       },
@@ -69,7 +69,30 @@
           "away": null
         }
       },
-      "events": []
+      "events": [
+        {
+          "time": {
+            "elapsed": 19,
+            "extra": null
+          },
+          "team": {
+            "id": 36,
+            "name": "Fulham",
+            "logo": "https://media.api-sports.io/football/teams/36.png"
+          },
+          "player": {
+            "id": 131,
+            "name": "J. Cuenca"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Roughing"
+        }
+      ]
     },
     {
       "fixture": {
@@ -90,7 +113,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 18,
+          "elapsed": 24,
           "extra": null
         }
       },
