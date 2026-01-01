@@ -19,8 +19,8 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 48,
-          "extra": null
+          "elapsed": 90,
+          "extra": 2
         }
       },
       "league": {
@@ -79,7 +79,7 @@
         "timestamp": 1767288600,
         "periods": {
           "first": 1767288600,
-          "second": null
+          "second": 1767292200
         },
         "venue": {
           "id": 525,
@@ -87,10 +87,10 @@
           "city": "London"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 5
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 89,
+          "extra": null
         }
       },
       "league": {
@@ -108,18 +108,18 @@
           "id": 52,
           "name": "Crystal Palace",
           "logo": "https://media.api-sports.io/football/teams/52.png",
-          "winner": true
+          "winner": null
         },
         "away": {
           "id": 36,
           "name": "Fulham",
           "logo": "https://media.api-sports.io/football/teams/36.png",
-          "winner": false
+          "winner": null
         }
       },
       "goals": {
         "home": 1,
-        "away": 0
+        "away": 1
       },
       "score": {
         "halftime": {
@@ -143,7 +143,7 @@
     {
       "fixture": {
         "id": 1379150,
-        "referee": null,
+        "referee": "Andy Madley, England",
         "timezone": "UTC",
         "date": "2026-01-01T20:00:00+00:00",
         "timestamp": 1767297600,
@@ -213,7 +213,7 @@
     {
       "fixture": {
         "id": 1379157,
-        "referee": null,
+        "referee": "Jarred Gillett, Australia",
         "timezone": "UTC",
         "date": "2026-01-01T20:00:00+00:00",
         "timestamp": 1767297600,
