@@ -19,7 +19,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 76,
+          "elapsed": 79,
           "extra": null
         }
       },
@@ -179,7 +179,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 72,
+          "elapsed": 75,
           "extra": null
         }
       },
@@ -338,6 +338,28 @@
           },
           "type": "subst",
           "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 72,
+            "extra": null
+          },
+          "team": {
+            "id": 746,
+            "name": "Sunderland",
+            "logo": "https://media.api-sports.io/football/teams/746.png"
+          },
+          "player": {
+            "id": 301771,
+            "name": "S. Adingra"
+          },
+          "assist": {
+            "id": 284414,
+            "name": "R. Mundle"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
           "comments": null
         }
       ]
