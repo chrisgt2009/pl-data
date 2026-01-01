@@ -9,7 +9,7 @@
         "timestamp": 1767297600,
         "periods": {
           "first": 1767297600,
-          "second": null
+          "second": 1767301200
         },
         "venue": {
           "id": 10503,
@@ -17,10 +17,10 @@
           "city": "London"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 2
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 59,
+          "extra": null
         }
       },
       "league": {
@@ -80,7 +80,7 @@
         "timestamp": 1767297600,
         "periods": {
           "first": 1767297600,
-          "second": null
+          "second": 1767301200
         },
         "venue": {
           "id": 589,
@@ -88,10 +88,10 @@
           "city": "Sunderland"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 6
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 55,
+          "extra": null
         }
       },
       "league": {
@@ -144,7 +144,7 @@
         {
           "time": {
             "elapsed": 45,
-            "extra": 6
+            "extra": 5
           },
           "team": {
             "id": 746,
@@ -162,6 +162,50 @@
           "type": "Card",
           "detail": "Yellow Card",
           "comments": "Roughing"
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 50,
+            "name": "Manchester City",
+            "logo": "https://media.api-sports.io/football/teams/50.png"
+          },
+          "player": {
+            "id": 161933,
+            "name": "Nico"
+          },
+          "assist": {
+            "id": 44,
+            "name": "Rodri"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 52,
+            "extra": null
+          },
+          "team": {
+            "id": 50,
+            "name": "Manchester City",
+            "logo": "https://media.api-sports.io/football/teams/50.png"
+          },
+          "player": {
+            "id": 266657,
+            "name": "Savinho"
+          },
+          "assist": {
+            "id": 1422,
+            "name": "J. Doku"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
         }
       ]
     }
