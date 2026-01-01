@@ -8,8 +8,8 @@
         "date": "2026-01-01T17:30:00+00:00",
         "timestamp": 1767288600,
         "periods": {
-          "first": null,
-          "second": null
+          "first": 1767288600,
+          "second": 1767292200
         },
         "venue": {
           "id": 550,
@@ -17,9 +17,9 @@
           "city": "Liverpool"
         },
         "status": {
-          "long": "Not Started",
-          "short": "NS",
-          "elapsed": null,
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 48,
           "extra": null
         }
       },
@@ -48,13 +48,13 @@
         }
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       },
       "score": {
         "halftime": {
-          "home": null,
-          "away": null
+          "home": 0,
+          "away": 0
         },
         "fulltime": {
           "home": null,
@@ -78,7 +78,7 @@
         "date": "2026-01-01T17:30:00+00:00",
         "timestamp": 1767288600,
         "periods": {
-          "first": null,
+          "first": 1767288600,
           "second": null
         },
         "venue": {
@@ -87,10 +87,10 @@
           "city": "London"
         },
         "status": {
-          "long": "Not Started",
-          "short": "NS",
-          "elapsed": null,
-          "extra": null
+          "long": "Halftime",
+          "short": "HT",
+          "elapsed": 45,
+          "extra": 5
         }
       },
       "league": {
@@ -108,23 +108,23 @@
           "id": 52,
           "name": "Crystal Palace",
           "logo": "https://media.api-sports.io/football/teams/52.png",
-          "winner": null
+          "winner": true
         },
         "away": {
           "id": 36,
           "name": "Fulham",
           "logo": "https://media.api-sports.io/football/teams/36.png",
-          "winner": null
+          "winner": false
         }
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 1,
+        "away": 0
       },
       "score": {
         "halftime": {
-          "home": null,
-          "away": null
+          "home": 1,
+          "away": 0
         },
         "fulltime": {
           "home": null,
