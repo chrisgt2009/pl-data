@@ -34,12 +34,12 @@
             "season": 2025
           },
           "games": {
-            "appearences": 18,
-            "lineups": 18,
-            "minutes": 1556,
+            "appearences": 19,
+            "lineups": 19,
+            "minutes": 1650,
             "number": 9,
             "position": "Attacker",
-            "rating": "7.71",
+            "rating": "7.63",
             "captain": false
           },
           "substitutes": {
@@ -48,8 +48,8 @@
             "bench": 0
           },
           "shots": {
-            "total": 62,
-            "on": 37
+            "total": 64,
+            "on": 38
           },
           "goals": {
             "total": 19,
@@ -58,27 +58,27 @@
             "saves": null
           },
           "passes": {
-            "total": 196,
-            "key": 10,
+            "total": 203,
+            "key": 11,
             "accuracy": null
           },
           "tackles": {
-            "total": 7,
+            "total": 10,
             "blocks": 1,
             "interceptions": 2
           },
           "duels": {
-            "total": 123,
-            "won": 67
+            "total": 133,
+            "won": 72
           },
           "dribbles": {
-            "attempts": 15,
+            "attempts": 16,
             "success": 6,
             "past": null
           },
           "fouls": {
-            "drawn": 11,
-            "committed": 12
+            "drawn": 12,
+            "committed": 13
           },
           "cards": {
             "yellow": 0,
@@ -129,12 +129,12 @@
             "season": 2025
           },
           "games": {
-            "appearences": 18,
-            "lineups": 17,
-            "minutes": 1493,
+            "appearences": 19,
+            "lineups": 18,
+            "minutes": 1583,
             "number": 9,
             "position": "Attacker",
-            "rating": "6.99",
+            "rating": "6.92",
             "captain": false
           },
           "substitutes": {
@@ -143,7 +143,7 @@
             "bench": 1
           },
           "shots": {
-            "total": 31,
+            "total": 32,
             "on": 21
           },
           "goals": {
@@ -153,26 +153,26 @@
             "saves": null
           },
           "passes": {
-            "total": 279,
+            "total": 304,
             "key": 9,
             "accuracy": null
           },
           "tackles": {
-            "total": 17,
+            "total": 18,
             "blocks": 1,
             "interceptions": 4
           },
           "duels": {
-            "total": 227,
-            "won": 88
+            "total": 238,
+            "won": 91
           },
           "dribbles": {
-            "attempts": 25,
+            "attempts": 26,
             "success": 14,
             "past": null
           },
           "fouls": {
-            "drawn": 10,
+            "drawn": 12,
             "committed": 32
           },
           "cards": {
@@ -226,7 +226,7 @@
           "games": {
             "appearences": 18,
             "lineups": 18,
-            "minutes": 1624,
+            "minutes": 1619,
             "number": 24,
             "position": "Midfielder",
             "rating": "7.19",
@@ -248,7 +248,7 @@
             "saves": null
           },
           "passes": {
-            "total": 465,
+            "total": 466,
             "key": 24,
             "accuracy": null
           },
@@ -258,11 +258,11 @@
             "interceptions": 5
           },
           "duels": {
-            "total": 267,
-            "won": 111
+            "total": 268,
+            "won": 112
           },
           "dribbles": {
-            "attempts": 66,
+            "attempts": 67,
             "success": 30,
             "past": null
           },
@@ -319,12 +319,12 @@
             "season": 2025
           },
           "games": {
-            "appearences": 17,
-            "lineups": 12,
-            "minutes": 1047,
+            "appearences": 18,
+            "lineups": 13,
+            "minutes": 1137,
             "number": 22,
             "position": "Attacker",
-            "rating": "6.94",
+            "rating": "6.92",
             "captain": false
           },
           "substitutes": {
@@ -333,8 +333,8 @@
             "bench": 5
           },
           "shots": {
-            "total": 26,
-            "on": 10
+            "total": 30,
+            "on": 11
           },
           "goals": {
             "total": 8,
@@ -343,27 +343,27 @@
             "saves": null
           },
           "passes": {
-            "total": 238,
-            "key": 10,
+            "total": 255,
+            "key": 11,
             "accuracy": null
           },
           "tackles": {
             "total": 7,
             "blocks": 2,
-            "interceptions": 1
+            "interceptions": 2
           },
           "duels": {
-            "total": 133,
-            "won": 52
+            "total": 151,
+            "won": 58
           },
           "dribbles": {
-            "attempts": 35,
-            "success": 19,
+            "attempts": 39,
+            "success": 22,
             "past": null
           },
           "fouls": {
             "drawn": 7,
-            "committed": 20
+            "committed": 21
           },
           "cards": {
             "yellow": 0,
@@ -438,7 +438,7 @@
             "saves": null
           },
           "passes": {
-            "total": 245,
+            "total": 246,
             "key": 10,
             "accuracy": null
           },
@@ -509,18 +509,18 @@
             "season": 2025
           },
           "games": {
-            "appearences": 16,
+            "appearences": 17,
             "lineups": 12,
-            "minutes": 1117,
+            "minutes": 1137,
             "number": 9,
             "position": "Attacker",
-            "rating": "6.81",
+            "rating": "6.78",
             "captain": false
           },
           "substitutes": {
-            "in": 4,
+            "in": 5,
             "out": 8,
-            "bench": 4
+            "bench": 5
           },
           "shots": {
             "total": 32,
@@ -533,18 +533,18 @@
             "saves": null
           },
           "passes": {
-            "total": 170,
+            "total": 171,
             "key": 12,
             "accuracy": null
           },
           "tackles": {
-            "total": 7,
+            "total": 8,
             "blocks": null,
             "interceptions": 2
           },
           "duels": {
-            "total": 204,
-            "won": 80
+            "total": 209,
+            "won": 81
           },
           "dribbles": {
             "attempts": 18,
@@ -553,7 +553,7 @@
           },
           "fouls": {
             "drawn": 18,
-            "committed": 18
+            "committed": 19
           },
           "cards": {
             "yellow": 0,
@@ -564,6 +564,196 @@
             "won": 1,
             "commited": null,
             "scored": 1,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 25927,
+        "name": "J. Mateta",
+        "firstname": "Jean-Philippe",
+        "lastname": "Mateta",
+        "age": 28,
+        "birth": {
+          "date": "1997-06-28",
+          "place": "Sevran",
+          "country": "France"
+        },
+        "nationality": "France",
+        "height": "192",
+        "weight": "88",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/25927.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 52,
+            "name": "Crystal Palace",
+            "logo": "https://media.api-sports.io/football/teams/52.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 19,
+            "lineups": 19,
+            "minutes": 1562,
+            "number": 14,
+            "position": "Attacker",
+            "rating": "6.74",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 0,
+            "out": 9,
+            "bench": 0
+          },
+          "shots": {
+            "total": 44,
+            "on": 24
+          },
+          "goals": {
+            "total": 8,
+            "conceded": 0,
+            "assists": 0,
+            "saves": null
+          },
+          "passes": {
+            "total": 229,
+            "key": 5,
+            "accuracy": null
+          },
+          "tackles": {
+            "total": 7,
+            "blocks": 3,
+            "interceptions": 5
+          },
+          "duels": {
+            "total": 202,
+            "won": 76
+          },
+          "dribbles": {
+            "attempts": 27,
+            "success": 12,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 11,
+            "committed": 12
+          },
+          "cards": {
+            "yellow": 2,
+            "yellowred": 0,
+            "red": 0
+          },
+          "penalty": {
+            "won": 1,
+            "commited": null,
+            "scored": 3,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 2413,
+        "name": "Richarlison",
+        "firstname": "Richarlison",
+        "lastname": "de Andrade",
+        "age": 28,
+        "birth": {
+          "date": "1997-05-10",
+          "place": "Nova Venécia",
+          "country": "Brazil"
+        },
+        "nationality": "Brazil",
+        "height": "184",
+        "weight": "83",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/2413.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 47,
+            "name": "Tottenham",
+            "logo": "https://media.api-sports.io/football/teams/47.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 19,
+            "lineups": 12,
+            "minutes": 1165,
+            "number": 9,
+            "position": "Attacker",
+            "rating": "6.91",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 7,
+            "out": 3,
+            "bench": 7
+          },
+          "shots": {
+            "total": 21,
+            "on": 12
+          },
+          "goals": {
+            "total": 7,
+            "conceded": 0,
+            "assists": 3,
+            "saves": null
+          },
+          "passes": {
+            "total": 188,
+            "key": 14,
+            "accuracy": null
+          },
+          "tackles": {
+            "total": 15,
+            "blocks": 1,
+            "interceptions": 4
+          },
+          "duels": {
+            "total": 174,
+            "won": 78
+          },
+          "dribbles": {
+            "attempts": 12,
+            "success": 6,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 19,
+            "committed": 13
+          },
+          "cards": {
+            "yellow": 4,
+            "yellowred": 0,
+            "red": 0
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 0,
             "missed": 0,
             "saved": null
           }
@@ -628,7 +818,7 @@
             "saves": null
           },
           "passes": {
-            "total": 481,
+            "total": 480,
             "key": 19,
             "accuracy": null
           },
@@ -658,101 +848,6 @@
           "penalty": {
             "won": null,
             "commited": 1,
-            "scored": 0,
-            "missed": 0,
-            "saved": null
-          }
-        }
-      ]
-    },
-    {
-      "player": {
-        "id": 2413,
-        "name": "Richarlison",
-        "firstname": "Richarlison",
-        "lastname": "de Andrade",
-        "age": 28,
-        "birth": {
-          "date": "1997-05-10",
-          "place": "Nova Venécia",
-          "country": "Brazil"
-        },
-        "nationality": "Brazil",
-        "height": "184",
-        "weight": "83",
-        "injured": false,
-        "photo": "https://media.api-sports.io/football/players/2413.png"
-      },
-      "statistics": [
-        {
-          "team": {
-            "id": 47,
-            "name": "Tottenham",
-            "logo": "https://media.api-sports.io/football/teams/47.png"
-          },
-          "league": {
-            "id": 39,
-            "name": "Premier League",
-            "country": "England",
-            "logo": "https://media.api-sports.io/football/leagues/39.png",
-            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-            "season": 2025
-          },
-          "games": {
-            "appearences": 18,
-            "lineups": 11,
-            "minutes": 1075,
-            "number": 9,
-            "position": "Attacker",
-            "rating": "6.89",
-            "captain": false
-          },
-          "substitutes": {
-            "in": 7,
-            "out": 3,
-            "bench": 7
-          },
-          "shots": {
-            "total": 19,
-            "on": 11
-          },
-          "goals": {
-            "total": 7,
-            "conceded": 0,
-            "assists": 3,
-            "saves": null
-          },
-          "passes": {
-            "total": 171,
-            "key": 12,
-            "accuracy": null
-          },
-          "tackles": {
-            "total": 14,
-            "blocks": 1,
-            "interceptions": 2
-          },
-          "duels": {
-            "total": 162,
-            "won": 69
-          },
-          "dribbles": {
-            "attempts": 12,
-            "success": 6,
-            "past": null
-          },
-          "fouls": {
-            "drawn": 16,
-            "committed": 13
-          },
-          "cards": {
-            "yellow": 4,
-            "yellowred": 0,
-            "red": 0
-          },
-          "penalty": {
-            "won": null,
-            "commited": null,
             "scored": 0,
             "missed": 0,
             "saved": null
@@ -794,12 +889,12 @@
             "season": 2025
           },
           "games": {
-            "appearences": 16,
-            "lineups": 15,
-            "minutes": 1317,
+            "appearences": 17,
+            "lineups": 16,
+            "minutes": 1411,
             "number": 47,
             "position": "Midfielder",
-            "rating": "7.22",
+            "rating": "7.19",
             "captain": false
           },
           "substitutes": {
@@ -808,7 +903,7 @@
             "bench": 1
           },
           "shots": {
-            "total": 24,
+            "total": 25,
             "on": 13
           },
           "goals": {
@@ -818,9 +913,9 @@
             "saves": null
           },
           "passes": {
-            "total": 754,
-            "key": 31,
-            "accuracy": 41
+            "total": 807,
+            "key": 34,
+            "accuracy": 42
           },
           "tackles": {
             "total": 20,
@@ -828,16 +923,16 @@
             "interceptions": 5
           },
           "duels": {
-            "total": 115,
-            "won": 56
+            "total": 120,
+            "won": 58
           },
           "dribbles": {
-            "attempts": 22,
-            "success": 13,
+            "attempts": 23,
+            "success": 14,
             "past": null
           },
           "fouls": {
-            "drawn": 18,
+            "drawn": 19,
             "committed": 13
           },
           "cards": {
@@ -891,7 +986,7 @@
           "games": {
             "appearences": 16,
             "lineups": 15,
-            "minutes": 1187,
+            "minutes": 1180,
             "number": 27,
             "position": "Attacker",
             "rating": "6.68",
@@ -913,7 +1008,7 @@
             "saves": null
           },
           "passes": {
-            "total": 200,
+            "total": 201,
             "key": 9,
             "accuracy": null
           },
@@ -944,101 +1039,6 @@
             "won": null,
             "commited": null,
             "scored": 1,
-            "missed": 0,
-            "saved": null
-          }
-        }
-      ]
-    },
-    {
-      "player": {
-        "id": 25927,
-        "name": "J. Mateta",
-        "firstname": "Jean-Philippe",
-        "lastname": "Mateta",
-        "age": 28,
-        "birth": {
-          "date": "1997-06-28",
-          "place": "Sevran",
-          "country": "France"
-        },
-        "nationality": "France",
-        "height": "192",
-        "weight": "88",
-        "injured": false,
-        "photo": "https://media.api-sports.io/football/players/25927.png"
-      },
-      "statistics": [
-        {
-          "team": {
-            "id": 52,
-            "name": "Crystal Palace",
-            "logo": "https://media.api-sports.io/football/teams/52.png"
-          },
-          "league": {
-            "id": 39,
-            "name": "Premier League",
-            "country": "England",
-            "logo": "https://media.api-sports.io/football/leagues/39.png",
-            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-            "season": 2025
-          },
-          "games": {
-            "appearences": 18,
-            "lineups": 18,
-            "minutes": 1472,
-            "number": 14,
-            "position": "Attacker",
-            "rating": "6.71",
-            "captain": false
-          },
-          "substitutes": {
-            "in": 0,
-            "out": 9,
-            "bench": 0
-          },
-          "shots": {
-            "total": 43,
-            "on": 23
-          },
-          "goals": {
-            "total": 7,
-            "conceded": 0,
-            "assists": 0,
-            "saves": null
-          },
-          "passes": {
-            "total": 219,
-            "key": 5,
-            "accuracy": null
-          },
-          "tackles": {
-            "total": 6,
-            "blocks": 3,
-            "interceptions": 5
-          },
-          "duels": {
-            "total": 189,
-            "won": 72
-          },
-          "dribbles": {
-            "attempts": 24,
-            "success": 12,
-            "past": null
-          },
-          "fouls": {
-            "drawn": 11,
-            "committed": 11
-          },
-          "cards": {
-            "yellow": 2,
-            "yellowred": 0,
-            "red": 0
-          },
-          "penalty": {
-            "won": 1,
-            "commited": null,
-            "scored": 3,
             "missed": 0,
             "saved": null
           }
@@ -1081,7 +1081,7 @@
           "games": {
             "appearences": 19,
             "lineups": 17,
-            "minutes": 1459,
+            "minutes": 1454,
             "number": 20,
             "position": "Attacker",
             "rating": "6.97",
@@ -1103,7 +1103,7 @@
             "saves": null
           },
           "passes": {
-            "total": 420,
+            "total": 419,
             "key": 21,
             "accuracy": null
           },
@@ -1176,7 +1176,7 @@
           "games": {
             "appearences": 18,
             "lineups": 17,
-            "minutes": 1576,
+            "minutes": 1569,
             "number": 39,
             "position": "Midfielder",
             "rating": "7.41",
@@ -1198,7 +1198,7 @@
             "saves": null
           },
           "passes": {
-            "total": 897,
+            "total": 898,
             "key": 24,
             "accuracy": 43
           },
@@ -1208,7 +1208,7 @@
             "interceptions": 8
           },
           "duels": {
-            "total": 203,
+            "total": 202,
             "won": 98
           },
           "dribbles": {
@@ -1271,7 +1271,7 @@
           "games": {
             "appearences": 19,
             "lineups": 16,
-            "minutes": 1407,
+            "minutes": 1398,
             "number": 11,
             "position": "Attacker",
             "rating": "6.75",
@@ -1293,7 +1293,7 @@
             "saves": null
           },
           "passes": {
-            "total": 230,
+            "total": 231,
             "key": 11,
             "accuracy": null
           },
@@ -1307,8 +1307,8 @@
             "won": 62
           },
           "dribbles": {
-            "attempts": 32,
-            "success": 16,
+            "attempts": 31,
+            "success": 15,
             "past": null
           },
           "fouls": {
@@ -1459,17 +1459,17 @@
             "season": 2025
           },
           "games": {
-            "appearences": 17,
-            "lineups": 16,
-            "minutes": 1417,
+            "appearences": 18,
+            "lineups": 17,
+            "minutes": 1497,
             "number": 7,
             "position": "Midfielder",
-            "rating": "6.98",
+            "rating": "6.97",
             "captain": false
           },
           "substitutes": {
             "in": 1,
-            "out": 5,
+            "out": 6,
             "bench": 1
           },
           "shots": {
@@ -1483,18 +1483,18 @@
             "saves": null
           },
           "passes": {
-            "total": 248,
+            "total": 271,
             "key": 17,
             "accuracy": null
           },
           "tackles": {
-            "total": 23,
+            "total": 24,
             "blocks": 3,
-            "interceptions": 11
+            "interceptions": 12
           },
           "duels": {
-            "total": 232,
-            "won": 106
+            "total": 240,
+            "won": 111
           },
           "dribbles": {
             "attempts": 42,
@@ -1502,7 +1502,7 @@
             "past": null
           },
           "fouls": {
-            "drawn": 23,
+            "drawn": 24,
             "committed": 27
           },
           "cards": {
@@ -1649,22 +1649,22 @@
             "season": 2025
           },
           "games": {
-            "appearences": 17,
-            "lineups": 15,
-            "minutes": 1250,
+            "appearences": 18,
+            "lineups": 16,
+            "minutes": 1335,
             "number": 8,
             "position": "Midfielder",
-            "rating": "7.16",
+            "rating": "7.12",
             "captain": false
           },
           "substitutes": {
             "in": 2,
-            "out": 13,
+            "out": 14,
             "bench": 2
           },
           "shots": {
-            "total": 22,
-            "on": 11
+            "total": 23,
+            "on": 12
           },
           "goals": {
             "total": 5,
@@ -1673,27 +1673,27 @@
             "saves": null
           },
           "passes": {
-            "total": 363,
+            "total": 389,
             "key": 18,
             "accuracy": null
           },
           "tackles": {
-            "total": 17,
+            "total": 18,
             "blocks": 1,
             "interceptions": 6
           },
           "duels": {
-            "total": 86,
-            "won": 47
+            "total": 93,
+            "won": 48
           },
           "dribbles": {
-            "attempts": 15,
+            "attempts": 16,
             "success": 8,
             "past": null
           },
           "fouls": {
             "drawn": 21,
-            "committed": 6
+            "committed": 7
           },
           "cards": {
             "yellow": 4,
@@ -1746,10 +1746,10 @@
           "games": {
             "appearences": 15,
             "lineups": 11,
-            "minutes": 1058,
+            "minutes": 1049,
             "number": 19,
             "position": "Attacker",
-            "rating": "7.13",
+            "rating": "7.11",
             "captain": false
           },
           "substitutes": {
@@ -1768,7 +1768,7 @@
             "saves": null
           },
           "passes": {
-            "total": 396,
+            "total": 397,
             "key": 21,
             "accuracy": null
           },
@@ -1778,7 +1778,7 @@
             "interceptions": 4
           },
           "duels": {
-            "total": 90,
+            "total": 89,
             "won": 40
           },
           "dribbles": {
@@ -1841,10 +1841,10 @@
           "games": {
             "appearences": 19,
             "lineups": 17,
-            "minutes": 1472,
+            "minutes": 1467,
             "number": 7,
             "position": "Midfielder",
-            "rating": "7.14",
+            "rating": "7.15",
             "captain": false
           },
           "substitutes": {
@@ -1863,7 +1863,7 @@
             "saves": null
           },
           "passes": {
-            "total": 509,
+            "total": 507,
             "key": 33,
             "accuracy": null
           },
