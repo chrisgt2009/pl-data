@@ -19,8 +19,8 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 79,
-          "extra": null
+          "elapsed": 90,
+          "extra": 6
         }
       },
       "league": {
@@ -377,6 +377,72 @@
           "type": "Goal",
           "detail": "Normal Goal",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 80,
+            "extra": null
+          },
+          "team": {
+            "id": 35,
+            "name": "Bournemouth",
+            "logo": "https://media.api-sports.io/football/teams/35.png"
+          },
+          "player": {
+            "id": 368030,
+            "name": "E. J. Kroupi"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Tripping"
+        },
+        {
+          "time": {
+            "elapsed": 80,
+            "extra": null
+          },
+          "team": {
+            "id": 42,
+            "name": "Arsenal",
+            "logo": "https://media.api-sports.io/football/teams/42.png"
+          },
+          "player": {
+            "id": 37127,
+            "name": "M. Odegaard"
+          },
+          "assist": {
+            "id": 47311,
+            "name": "M. Merino"
+          },
+          "type": "subst",
+          "detail": "Substitution 4",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 90,
+            "extra": 1
+          },
+          "team": {
+            "id": 35,
+            "name": "Bournemouth",
+            "logo": "https://media.api-sports.io/football/teams/35.png"
+          },
+          "player": {
+            "id": 129682,
+            "name": "A. Adli"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Roughing"
         }
       ]
     }
