@@ -19,7 +19,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 55,
+          "elapsed": 67,
           "extra": null
         }
       },
@@ -156,6 +156,72 @@
           },
           "type": "Goal",
           "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 67,
+            "extra": null
+          },
+          "team": {
+            "id": 42,
+            "name": "Arsenal",
+            "logo": "https://media.api-sports.io/football/teams/42.png"
+          },
+          "player": {
+            "id": 127769,
+            "name": "G. Martinelli"
+          },
+          "assist": {
+            "id": 1946,
+            "name": "L. Trossard"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 67,
+            "extra": null
+          },
+          "team": {
+            "id": 42,
+            "name": "Arsenal",
+            "logo": "https://media.api-sports.io/football/teams/42.png"
+          },
+          "player": {
+            "id": 18979,
+            "name": "V. Gyokeres"
+          },
+          "assist": {
+            "id": 643,
+            "name": "Gabriel Jesus"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 67,
+            "extra": null
+          },
+          "team": {
+            "id": 42,
+            "name": "Arsenal",
+            "logo": "https://media.api-sports.io/football/teams/42.png"
+          },
+          "player": {
+            "id": 136723,
+            "name": "N. Madueke"
+          },
+          "assist": {
+            "id": 1460,
+            "name": "B. Saka"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
           "comments": null
         }
       ]
