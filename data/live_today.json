@@ -19,7 +19,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 32,
+          "elapsed": 41,
           "extra": null
         }
       },
@@ -113,6 +113,28 @@
           "type": "Goal",
           "detail": "Normal Goal",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 39,
+            "extra": null
+          },
+          "team": {
+            "id": 44,
+            "name": "Burnley",
+            "logo": "https://media.api-sports.io/football/teams/44.png"
+          },
+          "player": {
+            "id": 575,
+            "name": "Florentino"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Roughing"
         }
       ]
     },
@@ -135,7 +157,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 32,
+          "elapsed": 41,
           "extra": null
         }
       },
@@ -164,12 +186,12 @@
         }
       },
       "goals": {
-        "home": 2,
+        "home": 3,
         "away": 0
       },
       "score": {
         "halftime": {
-          "home": 2,
+          "home": 3,
           "away": 0
         },
         "fulltime": {
@@ -228,6 +250,28 @@
           },
           "type": "Goal",
           "detail": "Penalty",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 41,
+            "extra": null
+          },
+          "team": {
+            "id": 39,
+            "name": "Wolves",
+            "logo": "https://media.api-sports.io/football/teams/39.png"
+          },
+          "player": {
+            "id": 456206,
+            "name": "M. Mane"
+          },
+          "assist": {
+            "id": 280687,
+            "name": "H. Bueno"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
           "comments": null
         }
       ]
