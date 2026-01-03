@@ -19,7 +19,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 66,
+          "elapsed": 86,
           "extra": null
         }
       },
@@ -245,6 +245,116 @@
           "type": "subst",
           "detail": "Substitution 3",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 71,
+            "extra": null
+          },
+          "team": {
+            "id": 51,
+            "name": "Brighton",
+            "logo": "https://media.api-sports.io/football/teams/51.png"
+          },
+          "player": {
+            "id": 106835,
+            "name": "K. Mitoma"
+          },
+          "assist": {
+            "id": 162007,
+            "name": "M. De Cuyper"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 71,
+            "extra": null
+          },
+          "team": {
+            "id": 51,
+            "name": "Brighton",
+            "logo": "https://media.api-sports.io/football/teams/51.png"
+          },
+          "player": {
+            "id": 90590,
+            "name": "G. Rutter"
+          },
+          "assist": {
+            "id": 1469,
+            "name": "D. Welbeck"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 71,
+            "extra": null
+          },
+          "team": {
+            "id": 51,
+            "name": "Brighton",
+            "logo": "https://media.api-sports.io/football/teams/51.png"
+          },
+          "player": {
+            "id": 392482,
+            "name": "C. Kostoulas"
+          },
+          "assist": {
+            "id": 18970,
+            "name": "P. Gross"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 80,
+            "extra": null
+          },
+          "team": {
+            "id": 51,
+            "name": "Brighton",
+            "logo": "https://media.api-sports.io/football/teams/51.png"
+          },
+          "player": {
+            "id": 278370,
+            "name": "D. Gomez"
+          },
+          "assist": {
+            "id": 296,
+            "name": "J. Milner"
+          },
+          "type": "subst",
+          "detail": "Substitution 4",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 81,
+            "extra": null
+          },
+          "team": {
+            "id": 44,
+            "name": "Burnley",
+            "logo": "https://media.api-sports.io/football/teams/44.png"
+          },
+          "player": {
+            "id": 196855,
+            "name": "J. Anthony"
+          },
+          "assist": {
+            "id": 336578,
+            "name": "J. Banel"
+          },
+          "type": "subst",
+          "detail": "Substitution 4",
+          "comments": null
         }
       ]
     },
@@ -267,7 +377,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 63,
+          "elapsed": 82,
           "extra": null
         }
       },
