@@ -58,6 +58,51 @@
             {
               "rank": 2,
               "team": {
+                "id": 66,
+                "name": "Aston Villa",
+                "logo": "https://media.api-sports.io/football/teams/66.png"
+              },
+              "points": 42,
+              "goalsDiff": 9,
+              "group": "Premier League",
+              "form": "WLWWW",
+              "status": "same",
+              "description": "Promotion - Champions League (League phase)",
+              "all": {
+                "played": 20,
+                "win": 13,
+                "draw": 3,
+                "lose": 4,
+                "goals": {
+                  "for": 33,
+                  "against": 24
+                }
+              },
+              "home": {
+                "played": 10,
+                "win": 8,
+                "draw": 1,
+                "lose": 1,
+                "goals": {
+                  "for": 18,
+                  "against": 8
+                }
+              },
+              "away": {
+                "played": 10,
+                "win": 5,
+                "draw": 2,
+                "lose": 3,
+                "goals": {
+                  "for": 15,
+                  "against": 16
+                }
+              },
+              "update": "2026-01-03T00:00:00+00:00"
+            },
+            {
+              "rank": 3,
+              "team": {
                 "id": 50,
                 "name": "Manchester City",
                 "logo": "https://media.api-sports.io/football/teams/50.png"
@@ -96,51 +141,6 @@
                 "goals": {
                   "for": 18,
                   "against": 11
-                }
-              },
-              "update": "2026-01-03T00:00:00+00:00"
-            },
-            {
-              "rank": 3,
-              "team": {
-                "id": 66,
-                "name": "Aston Villa",
-                "logo": "https://media.api-sports.io/football/teams/66.png"
-              },
-              "points": 39,
-              "goalsDiff": 7,
-              "group": "Premier League",
-              "form": "LWWWW",
-              "status": "same",
-              "description": "Promotion - Champions League (League phase)",
-              "all": {
-                "played": 19,
-                "win": 12,
-                "draw": 3,
-                "lose": 4,
-                "goals": {
-                  "for": 30,
-                  "against": 23
-                }
-              },
-              "home": {
-                "played": 9,
-                "win": 7,
-                "draw": 1,
-                "lose": 1,
-                "goals": {
-                  "for": 15,
-                  "against": 7
-                }
-              },
-              "away": {
-                "played": 10,
-                "win": 5,
-                "draw": 2,
-                "lose": 3,
-                "goals": {
-                  "for": 15,
-                  "against": 16
                 }
               },
               "update": "2026-01-03T00:00:00+00:00"
@@ -738,19 +738,19 @@
                 "logo": "https://media.api-sports.io/football/teams/65.png"
               },
               "points": 18,
-              "goalsDiff": -12,
+              "goalsDiff": -14,
               "group": "Premier League",
-              "form": "LLLWL",
+              "form": "LLLLW",
               "status": "same",
               "description": null,
               "all": {
-                "played": 19,
+                "played": 20,
                 "win": 5,
                 "draw": 3,
-                "lose": 11,
+                "lose": 12,
                 "goals": {
-                  "for": 18,
-                  "against": 30
+                  "for": 19,
+                  "against": 33
                 }
               },
               "home": {
@@ -764,13 +764,13 @@
                 }
               },
               "away": {
-                "played": 9,
+                "played": 10,
                 "win": 2,
                 "draw": 2,
-                "lose": 5,
+                "lose": 6,
                 "goals": {
-                  "for": 6,
-                  "against": 13
+                  "for": 7,
+                  "against": 16
                 }
               },
               "update": "2026-01-03T00:00:00+00:00"

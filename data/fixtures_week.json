@@ -9,7 +9,7 @@
         "timestamp": 1767452400,
         "periods": {
           "first": 1767452400,
-          "second": null
+          "second": 1767456000
         },
         "venue": {
           "id": 600,
@@ -17,9 +17,9 @@
           "city": "Wolverhampton"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 23,
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 67,
           "extra": null
         }
       },
@@ -48,12 +48,12 @@
         }
       },
       "goals": {
-        "home": 1,
+        "home": 3,
         "away": 0
       },
       "score": {
         "halftime": {
-          "home": 1,
+          "home": 3,
           "away": 0
         },
         "fulltime": {
@@ -79,7 +79,7 @@
         "timestamp": 1767452400,
         "periods": {
           "first": 1767452400,
-          "second": null
+          "second": 1767456000
         },
         "venue": {
           "id": 508,
@@ -87,9 +87,9 @@
           "city": "Brighton"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 24,
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 70,
           "extra": null
         }
       },
@@ -108,22 +108,22 @@
           "id": 51,
           "name": "Brighton",
           "logo": "https://media.api-sports.io/football/teams/51.png",
-          "winner": null
+          "winner": true
         },
         "away": {
           "id": 44,
           "name": "Burnley",
           "logo": "https://media.api-sports.io/football/teams/44.png",
-          "winner": null
+          "winner": false
         }
       },
       "goals": {
-        "home": 0,
+        "home": 2,
         "away": 0
       },
       "score": {
         "halftime": {
-          "home": 0,
+          "home": 1,
           "away": 0
         },
         "fulltime": {
