@@ -19,8 +19,8 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 86,
-          "extra": null
+          "elapsed": 90,
+          "extra": 3
         }
       },
       "league": {
@@ -355,6 +355,28 @@
           "type": "subst",
           "detail": "Substitution 4",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 87,
+            "extra": null
+          },
+          "team": {
+            "id": 51,
+            "name": "Brighton",
+            "logo": "https://media.api-sports.io/football/teams/51.png"
+          },
+          "player": {
+            "id": 328225,
+            "name": "B. Gruda"
+          },
+          "assist": {
+            "id": 329369,
+            "name": "T. Watson"
+          },
+          "type": "subst",
+          "detail": "Substitution 5",
+          "comments": null
         }
       ]
     },
@@ -377,7 +399,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 82,
+          "elapsed": 89,
           "extra": null
         }
       },
@@ -580,6 +602,72 @@
           },
           "type": "subst",
           "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 85,
+            "extra": null
+          },
+          "team": {
+            "id": 39,
+            "name": "Wolves",
+            "logo": "https://media.api-sports.io/football/teams/39.png"
+          },
+          "player": {
+            "id": 296560,
+            "name": "J. Tchatchoua"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Tripping"
+        },
+        {
+          "time": {
+            "elapsed": 86,
+            "extra": null
+          },
+          "team": {
+            "id": 39,
+            "name": "Wolves",
+            "logo": "https://media.api-sports.io/football/teams/39.png"
+          },
+          "player": {
+            "id": 456206,
+            "name": "M. Mane"
+          },
+          "assist": {
+            "id": 171035,
+            "name": "T. Chirewa"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 88,
+            "extra": null
+          },
+          "team": {
+            "id": 39,
+            "name": "Wolves",
+            "logo": "https://media.api-sports.io/football/teams/39.png"
+          },
+          "player": {
+            "id": 110153,
+            "name": "T. Arokodare"
+          },
+          "assist": {
+            "id": 265782,
+            "name": "D. M. Wolfe"
+          },
+          "type": "subst",
+          "detail": "Substitution 4",
           "comments": null
         }
       ]
