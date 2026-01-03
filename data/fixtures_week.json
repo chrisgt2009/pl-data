@@ -2,6 +2,76 @@
   "matches": [
     {
       "fixture": {
+        "id": 1379160,
+        "referee": "Chris Kavanagh, England",
+        "timezone": "UTC",
+        "date": "2026-01-03T17:30:00+00:00",
+        "timestamp": 1767461400,
+        "periods": {
+          "first": 1767461400,
+          "second": null
+        },
+        "venue": {
+          "id": 504,
+          "name": "Vitality Stadium",
+          "city": "Bournemouth"
+        },
+        "status": {
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 30,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 20",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 35,
+          "name": "Bournemouth",
+          "logo": "https://media.api-sports.io/football/teams/35.png",
+          "winner": null
+        },
+        "away": {
+          "id": 42,
+          "name": "Arsenal",
+          "logo": "https://media.api-sports.io/football/teams/42.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": 1,
+        "away": 1
+      },
+      "score": {
+        "halftime": {
+          "home": 1,
+          "away": 1
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1379159,
         "referee": "Simon Hooper, England",
         "timezone": "UTC",
@@ -199,76 +269,6 @@
         "fulltime": {
           "home": 2,
           "away": 0
-        },
-        "extratime": {
-          "home": null,
-          "away": null
-        },
-        "penalty": {
-          "home": null,
-          "away": null
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1379160,
-        "referee": "Chris Kavanagh, England",
-        "timezone": "UTC",
-        "date": "2026-01-03T17:30:00+00:00",
-        "timestamp": 1767461400,
-        "periods": {
-          "first": null,
-          "second": null
-        },
-        "venue": {
-          "id": 504,
-          "name": "Vitality Stadium",
-          "city": "Bournemouth"
-        },
-        "status": {
-          "long": "Not Started",
-          "short": "NS",
-          "elapsed": null,
-          "extra": null
-        }
-      },
-      "league": {
-        "id": 39,
-        "name": "Premier League",
-        "country": "England",
-        "logo": "https://media.api-sports.io/football/leagues/39.png",
-        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-        "season": 2025,
-        "round": "Regular Season - 20",
-        "standings": true
-      },
-      "teams": {
-        "home": {
-          "id": 35,
-          "name": "Bournemouth",
-          "logo": "https://media.api-sports.io/football/teams/35.png",
-          "winner": null
-        },
-        "away": {
-          "id": 42,
-          "name": "Arsenal",
-          "logo": "https://media.api-sports.io/football/teams/42.png",
-          "winner": null
-        }
-      },
-      "goals": {
-        "home": null,
-        "away": null
-      },
-      "score": {
-        "halftime": {
-          "home": null,
-          "away": null
-        },
-        "fulltime": {
-          "home": null,
-          "away": null
         },
         "extratime": {
           "home": null,
