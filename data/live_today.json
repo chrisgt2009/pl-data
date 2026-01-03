@@ -9,7 +9,7 @@
         "timestamp": 1767452400,
         "periods": {
           "first": 1767452400,
-          "second": null
+          "second": 1767456000
         },
         "venue": {
           "id": 508,
@@ -17,10 +17,10 @@
           "city": "Brighton"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 3
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 51,
+          "extra": null
         }
       },
       "league": {
@@ -48,7 +48,7 @@
         }
       },
       "goals": {
-        "home": 1,
+        "home": 2,
         "away": 0
       },
       "score": {
@@ -72,7 +72,7 @@
       "events": [
         {
           "time": {
-            "elapsed": 23,
+            "elapsed": 22,
             "extra": null
           },
           "team": {
@@ -157,6 +157,28 @@
           "type": "Card",
           "detail": "Yellow Card",
           "comments": "Holding"
+        },
+        {
+          "time": {
+            "elapsed": 47,
+            "extra": null
+          },
+          "team": {
+            "id": 51,
+            "name": "Brighton",
+            "logo": "https://media.api-sports.io/football/teams/51.png"
+          },
+          "player": {
+            "id": 265820,
+            "name": "Y. Ayari"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
         }
       ]
     },
@@ -169,7 +191,7 @@
         "timestamp": 1767452400,
         "periods": {
           "first": 1767452400,
-          "second": null
+          "second": 1767456000
         },
         "venue": {
           "id": 600,
@@ -177,10 +199,10 @@
           "city": "Wolverhampton"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 7
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 47,
+          "extra": null
         }
       },
       "league": {
@@ -294,6 +316,72 @@
           },
           "type": "Goal",
           "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 48,
+            "name": "West Ham",
+            "logo": "https://media.api-sports.io/football/teams/48.png"
+          },
+          "player": {
+            "id": 326176,
+            "name": "S. Magassa"
+          },
+          "assist": {
+            "id": 553065,
+            "name": "E. Mayers"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 48,
+            "name": "West Ham",
+            "logo": "https://media.api-sports.io/football/teams/48.png"
+          },
+          "player": {
+            "id": 284446,
+            "name": "F. Potts"
+          },
+          "assist": {
+            "id": 1243,
+            "name": "T. Soucek"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 39,
+            "name": "Wolves",
+            "logo": "https://media.api-sports.io/football/teams/39.png"
+          },
+          "player": {
+            "id": 195103,
+            "name": "Joao Gomes"
+          },
+          "assist": {
+            "id": 265784,
+            "name": "Andre"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
           "comments": null
         }
       ]
