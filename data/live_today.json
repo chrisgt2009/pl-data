@@ -19,7 +19,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 72,
+          "elapsed": 90,
           "extra": null
         }
       },
@@ -48,7 +48,7 @@
         }
       },
       "goals": {
-        "home": 2,
+        "home": 3,
         "away": 1
       },
       "score": {
@@ -222,6 +222,160 @@
           },
           "type": "subst",
           "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 69,
+            "extra": null
+          },
+          "team": {
+            "id": 65,
+            "name": "Nottingham Forest",
+            "logo": "https://media.api-sports.io/football/teams/65.png"
+          },
+          "player": {
+            "id": 129695,
+            "name": "D. Bakwa"
+          },
+          "assist": {
+            "id": 158697,
+            "name": "J. McAtee"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 73,
+            "extra": null
+          },
+          "team": {
+            "id": 66,
+            "name": "Aston Villa",
+            "logo": "https://media.api-sports.io/football/teams/66.png"
+          },
+          "player": {
+            "id": 19191,
+            "name": "J. McGinn"
+          },
+          "assist": {
+            "id": 2926,
+            "name": "Y. Tielemans"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 78,
+            "extra": null
+          },
+          "team": {
+            "id": 65,
+            "name": "Nottingham Forest",
+            "logo": "https://media.api-sports.io/football/teams/65.png"
+          },
+          "player": {
+            "id": 70366,
+            "name": "John Victor"
+          },
+          "assist": {
+            "id": 2919,
+            "name": "M. Sels"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 83,
+            "extra": null
+          },
+          "team": {
+            "id": 66,
+            "name": "Aston Villa",
+            "logo": "https://media.api-sports.io/football/teams/66.png"
+          },
+          "player": {
+            "id": 19191,
+            "name": "J. McGinn"
+          },
+          "assist": {
+            "id": 284457,
+            "name": "L. Bogarde"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 83,
+            "extra": null
+          },
+          "team": {
+            "id": 66,
+            "name": "Aston Villa",
+            "logo": "https://media.api-sports.io/football/teams/66.png"
+          },
+          "player": {
+            "id": 19366,
+            "name": "O. Watkins"
+          },
+          "assist": {
+            "id": 249,
+            "name": "D. Malen"
+          },
+          "type": "subst",
+          "detail": "Substitution 4",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 84,
+            "extra": null
+          },
+          "team": {
+            "id": 65,
+            "name": "Nottingham Forest",
+            "logo": "https://media.api-sports.io/football/teams/65.png"
+          },
+          "player": {
+            "id": 6056,
+            "name": "N. Dominguez"
+          },
+          "assist": {
+            "id": 47522,
+            "name": "Douglas Luiz"
+          },
+          "type": "subst",
+          "detail": "Substitution 4",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 84,
+            "extra": null
+          },
+          "team": {
+            "id": 65,
+            "name": "Nottingham Forest",
+            "logo": "https://media.api-sports.io/football/teams/65.png"
+          },
+          "player": {
+            "id": 9366,
+            "name": "Igor Jesus"
+          },
+          "assist": {
+            "id": 147831,
+            "name": "A. Kalimuendo"
+          },
+          "type": "subst",
+          "detail": "Substitution 5",
           "comments": null
         }
       ]
