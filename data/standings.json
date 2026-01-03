@@ -17,20 +17,20 @@
                 "name": "Arsenal",
                 "logo": "https://media.api-sports.io/football/teams/42.png"
               },
-              "points": 45,
-              "goalsDiff": 25,
+              "points": 48,
+              "goalsDiff": 26,
               "group": "Premier League",
-              "form": "WWWWL",
+              "form": "WWWWW",
               "status": "same",
               "description": "Promotion - Champions League (League phase)",
               "all": {
-                "played": 19,
-                "win": 14,
+                "played": 20,
+                "win": 15,
                 "draw": 3,
                 "lose": 2,
                 "goals": {
-                  "for": 37,
-                  "against": 12
+                  "for": 40,
+                  "against": 14
                 }
               },
               "home": {
@@ -44,13 +44,13 @@
                 }
               },
               "away": {
-                "played": 9,
-                "win": 5,
+                "played": 10,
+                "win": 6,
                 "draw": 2,
                 "lose": 2,
                 "goals": {
-                  "for": 11,
-                  "against": 7
+                  "for": 14,
+                  "against": 9
                 }
               },
               "update": "2026-01-03T00:00:00+00:00"
@@ -648,29 +648,29 @@
                 "logo": "https://media.api-sports.io/football/teams/35.png"
               },
               "points": 23,
-              "goalsDiff": -6,
+              "goalsDiff": -7,
               "group": "Premier League",
-              "form": "DLDDD",
+              "form": "LDLDD",
               "status": "same",
               "description": null,
               "all": {
-                "played": 19,
+                "played": 20,
                 "win": 5,
                 "draw": 8,
-                "lose": 6,
+                "lose": 7,
                 "goals": {
-                  "for": 29,
-                  "against": 35
+                  "for": 31,
+                  "against": 38
                 }
               },
               "home": {
-                "played": 9,
+                "played": 10,
                 "win": 4,
                 "draw": 4,
-                "lose": 1,
+                "lose": 2,
                 "goals": {
-                  "for": 11,
-                  "against": 6
+                  "for": 13,
+                  "against": 9
                 }
               },
               "away": {
