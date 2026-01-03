@@ -19,7 +19,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 67,
+          "elapsed": 79,
           "extra": null
         }
       },
@@ -48,8 +48,8 @@
         }
       },
       "goals": {
-        "home": 1,
-        "away": 2
+        "home": 2,
+        "away": 3
       },
       "score": {
         "halftime": {
@@ -160,7 +160,7 @@
         },
         {
           "time": {
-            "elapsed": 67,
+            "elapsed": 66,
             "extra": null
           },
           "team": {
@@ -169,12 +169,12 @@
             "logo": "https://media.api-sports.io/football/teams/42.png"
           },
           "player": {
-            "id": 127769,
-            "name": "G. Martinelli"
+            "id": 18979,
+            "name": "V. Gyokeres"
           },
           "assist": {
-            "id": 1946,
-            "name": "L. Trossard"
+            "id": 643,
+            "name": "Gabriel Jesus"
           },
           "type": "subst",
           "detail": "Substitution 1",
@@ -191,12 +191,12 @@
             "logo": "https://media.api-sports.io/football/teams/42.png"
           },
           "player": {
-            "id": 18979,
-            "name": "V. Gyokeres"
+            "id": 127769,
+            "name": "G. Martinelli"
           },
           "assist": {
-            "id": 643,
-            "name": "Gabriel Jesus"
+            "id": 1946,
+            "name": "L. Trossard"
           },
           "type": "subst",
           "detail": "Substitution 2",
@@ -222,6 +222,160 @@
           },
           "type": "subst",
           "detail": "Substitution 3",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 67,
+            "extra": null
+          },
+          "team": {
+            "id": 35,
+            "name": "Bournemouth",
+            "logo": "https://media.api-sports.io/football/teams/35.png"
+          },
+          "player": {
+            "id": 18870,
+            "name": "D. Brooks"
+          },
+          "assist": {
+            "id": 129682,
+            "name": "A. Adli"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 70,
+            "extra": null
+          },
+          "team": {
+            "id": 42,
+            "name": "Arsenal",
+            "logo": "https://media.api-sports.io/football/teams/42.png"
+          },
+          "player": {
+            "id": 47315,
+            "name": "M. Zubimendi"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Delay of game"
+        },
+        {
+          "time": {
+            "elapsed": 71,
+            "extra": null
+          },
+          "team": {
+            "id": 42,
+            "name": "Arsenal",
+            "logo": "https://media.api-sports.io/football/teams/42.png"
+          },
+          "player": {
+            "id": 2937,
+            "name": "D. Rice"
+          },
+          "assist": {
+            "id": 1460,
+            "name": "B. Saka"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 74,
+            "extra": null
+          },
+          "team": {
+            "id": 35,
+            "name": "Bournemouth",
+            "logo": "https://media.api-sports.io/football/teams/35.png"
+          },
+          "player": {
+            "id": 152856,
+            "name": "Evanilson"
+          },
+          "assist": {
+            "id": 47499,
+            "name": "E. Unal"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 74,
+            "extra": null
+          },
+          "team": {
+            "id": 35,
+            "name": "Bournemouth",
+            "logo": "https://media.api-sports.io/football/teams/35.png"
+          },
+          "player": {
+            "id": 792,
+            "name": "J. Kluivert"
+          },
+          "assist": {
+            "id": 18872,
+            "name": "L. Cook"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 74,
+            "extra": null
+          },
+          "team": {
+            "id": 35,
+            "name": "Bournemouth",
+            "logo": "https://media.api-sports.io/football/teams/35.png"
+          },
+          "player": {
+            "id": 304853,
+            "name": "A. Scott"
+          },
+          "assist": {
+            "id": 368030,
+            "name": "E. J. Kroupi"
+          },
+          "type": "subst",
+          "detail": "Substitution 4",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 77,
+            "extra": null
+          },
+          "team": {
+            "id": 35,
+            "name": "Bournemouth",
+            "logo": "https://media.api-sports.io/football/teams/35.png"
+          },
+          "player": {
+            "id": 368030,
+            "name": "E. J. Kroupi"
+          },
+          "assist": {
+            "id": 18872,
+            "name": "L. Cook"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
           "comments": null
         }
       ]
