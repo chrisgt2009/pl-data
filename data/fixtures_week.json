@@ -3,12 +3,12 @@
     {
       "fixture": {
         "id": 1379159,
-        "referee": null,
+        "referee": "Simon Hooper, England",
         "timezone": "UTC",
         "date": "2026-01-03T12:30:00+00:00",
         "timestamp": 1767443400,
         "periods": {
-          "first": null,
+          "first": 1767443400,
           "second": null
         },
         "venue": {
@@ -17,9 +17,9 @@
           "city": "Birmingham"
         },
         "status": {
-          "long": "Not Started",
-          "short": "NS",
-          "elapsed": null,
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 17,
           "extra": null
         }
       },
@@ -48,13 +48,13 @@
         }
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       },
       "score": {
         "halftime": {
-          "home": null,
-          "away": null
+          "home": 0,
+          "away": 0
         },
         "fulltime": {
           "home": null,
