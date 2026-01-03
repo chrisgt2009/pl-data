@@ -9,7 +9,7 @@
         "timestamp": 1767461400,
         "periods": {
           "first": 1767461400,
-          "second": null
+          "second": 1767465000
         },
         "venue": {
           "id": 504,
@@ -17,9 +17,9 @@
           "city": "Bournemouth"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 43,
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 55,
           "extra": null
         }
       },
@@ -38,18 +38,18 @@
           "id": 35,
           "name": "Bournemouth",
           "logo": "https://media.api-sports.io/football/teams/35.png",
-          "winner": null
+          "winner": false
         },
         "away": {
           "id": 42,
           "name": "Arsenal",
           "logo": "https://media.api-sports.io/football/teams/42.png",
-          "winner": null
+          "winner": true
         }
       },
       "goals": {
         "home": 1,
-        "away": 1
+        "away": 2
       },
       "score": {
         "halftime": {
@@ -116,7 +116,7 @@
         },
         {
           "time": {
-            "elapsed": 27,
+            "elapsed": 26,
             "extra": null
           },
           "team": {
@@ -135,6 +135,28 @@
           "type": "Card",
           "detail": "Yellow Card",
           "comments": "Tripping"
+        },
+        {
+          "time": {
+            "elapsed": 54,
+            "extra": null
+          },
+          "team": {
+            "id": 42,
+            "name": "Arsenal",
+            "logo": "https://media.api-sports.io/football/teams/42.png"
+          },
+          "player": {
+            "id": 2937,
+            "name": "D. Rice"
+          },
+          "assist": {
+            "id": 37127,
+            "name": "M. Odegaard"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
         }
       ]
     }
