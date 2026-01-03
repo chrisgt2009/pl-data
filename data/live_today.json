@@ -9,7 +9,7 @@
         "timestamp": 1767443400,
         "periods": {
           "first": 1767443400,
-          "second": null
+          "second": 1767447000
         },
         "venue": {
           "id": 495,
@@ -17,10 +17,10 @@
           "city": "Birmingham"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 2
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 46,
+          "extra": null
         }
       },
       "league": {
