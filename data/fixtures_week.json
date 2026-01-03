@@ -9,7 +9,7 @@
         "timestamp": 1767461400,
         "periods": {
           "first": 1767461400,
-          "second": null
+          "second": 1767465000
         },
         "venue": {
           "id": 504,
@@ -17,10 +17,10 @@
           "city": "Bournemouth"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 2
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 90,
+          "extra": null
         }
       },
       "league": {
@@ -38,18 +38,18 @@
           "id": 35,
           "name": "Bournemouth",
           "logo": "https://media.api-sports.io/football/teams/35.png",
-          "winner": null
+          "winner": false
         },
         "away": {
           "id": 42,
           "name": "Arsenal",
           "logo": "https://media.api-sports.io/football/teams/42.png",
-          "winner": null
+          "winner": true
         }
       },
       "goals": {
-        "home": 1,
-        "away": 1
+        "home": 2,
+        "away": 3
       },
       "score": {
         "halftime": {
