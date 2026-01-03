@@ -19,8 +19,8 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 43,
-          "extra": null
+          "elapsed": 45,
+          "extra": 1
         }
       },
       "league": {
@@ -135,6 +135,28 @@
           "type": "Card",
           "detail": "Yellow Card",
           "comments": "Roughing"
+        },
+        {
+          "time": {
+            "elapsed": 44,
+            "extra": null
+          },
+          "team": {
+            "id": 44,
+            "name": "Burnley",
+            "logo": "https://media.api-sports.io/football/teams/44.png"
+          },
+          "player": {
+            "id": 181797,
+            "name": "B. Humphreys"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Holding"
         }
       ]
     },
@@ -157,8 +179,8 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 43,
-          "extra": null
+          "elapsed": 45,
+          "extra": 1
         }
       },
       "league": {
