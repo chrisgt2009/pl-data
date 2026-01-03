@@ -19,7 +19,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 46,
+          "elapsed": 59,
           "extra": null
         }
       },
@@ -48,7 +48,7 @@
         }
       },
       "goals": {
-        "home": 1,
+        "home": 2,
         "away": 0
       },
       "score": {
@@ -87,6 +87,28 @@
           "assist": {
             "id": 19170,
             "name": "M. Rogers"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 49,
+            "extra": null
+          },
+          "team": {
+            "id": 66,
+            "name": "Aston Villa",
+            "logo": "https://media.api-sports.io/football/teams/66.png"
+          },
+          "player": {
+            "id": 19191,
+            "name": "J. McGinn"
+          },
+          "assist": {
+            "id": 19298,
+            "name": "M. Cash"
           },
           "type": "Goal",
           "detail": "Normal Goal",
