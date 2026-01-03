@@ -17,10 +17,10 @@
           "city": "Bournemouth"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 30,
-          "extra": null
+          "long": "Halftime",
+          "short": "HT",
+          "elapsed": 45,
+          "extra": 2
         }
       },
       "league": {
