@@ -19,7 +19,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 29,
+          "elapsed": 39,
           "extra": null
         }
       },
@@ -91,6 +91,28 @@
           "type": "Goal",
           "detail": "Normal Goal",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 31,
+            "extra": null
+          },
+          "team": {
+            "id": 55,
+            "name": "Brentford",
+            "logo": "https://media.api-sports.io/football/teams/55.png"
+          },
+          "player": {
+            "id": 263538,
+            "name": "Y. Yarmolyuk"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Roughing"
         }
       ]
     },
@@ -113,7 +135,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 15,
+          "elapsed": 25,
           "extra": null
         }
       },
@@ -132,22 +154,22 @@
           "id": 36,
           "name": "Fulham",
           "logo": "https://media.api-sports.io/football/teams/36.png",
-          "winner": null
+          "winner": true
         },
         "away": {
           "id": 40,
           "name": "Liverpool",
           "logo": "https://media.api-sports.io/football/teams/40.png",
-          "winner": null
+          "winner": false
         }
       },
       "goals": {
-        "home": 0,
+        "home": 1,
         "away": 0
       },
       "score": {
         "halftime": {
-          "home": 0,
+          "home": 1,
           "away": 0
         },
         "fulltime": {
@@ -163,7 +185,30 @@
           "away": null
         }
       },
-      "events": []
+      "events": [
+        {
+          "time": {
+            "elapsed": 17,
+            "extra": null
+          },
+          "team": {
+            "id": 36,
+            "name": "Fulham",
+            "logo": "https://media.api-sports.io/football/teams/36.png"
+          },
+          "player": {
+            "id": 19221,
+            "name": "H. Wilson"
+          },
+          "assist": {
+            "id": 2887,
+            "name": "R. Jimenez"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        }
+      ]
     },
     {
       "fixture": {
@@ -184,7 +229,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 30,
+          "elapsed": 40,
           "extra": null
         }
       },
@@ -250,11 +295,55 @@
             "name": "A. Gordon"
           },
           "assist": {
-            "id": 20649,
-            "name": "Y. Wissa"
+            "id": null,
+            "name": null
           },
-          "type": "Goal",
-          "detail": "Normal Goal",
+          "type": "Var",
+          "detail": "Goal Disallowed - offside",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 33,
+            "extra": null
+          },
+          "team": {
+            "id": 52,
+            "name": "Crystal Palace",
+            "logo": "https://media.api-sports.io/football/teams/52.png"
+          },
+          "player": {
+            "id": 129711,
+            "name": "B. Johnson"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Roughing"
+        },
+        {
+          "time": {
+            "elapsed": 38,
+            "extra": null
+          },
+          "team": {
+            "id": 52,
+            "name": "Crystal Palace",
+            "logo": "https://media.api-sports.io/football/teams/52.png"
+          },
+          "player": {
+            "id": 2490,
+            "name": "J. Lerma"
+          },
+          "assist": {
+            "id": 412759,
+            "name": "J. Canvot"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
           "comments": null
         }
       ]
@@ -278,7 +367,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 30,
+          "elapsed": 41,
           "extra": null
         }
       },
@@ -297,22 +386,22 @@
           "id": 47,
           "name": "Tottenham",
           "logo": "https://media.api-sports.io/football/teams/47.png",
-          "winner": null
+          "winner": true
         },
         "away": {
           "id": 746,
           "name": "Sunderland",
           "logo": "https://media.api-sports.io/football/teams/746.png",
-          "winner": null
+          "winner": false
         }
       },
       "goals": {
-        "home": 0,
+        "home": 1,
         "away": 0
       },
       "score": {
         "halftime": {
-          "home": 0,
+          "home": 1,
           "away": 0
         },
         "fulltime": {
@@ -349,6 +438,28 @@
           },
           "type": "subst",
           "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 30,
+            "extra": null
+          },
+          "team": {
+            "id": 47,
+            "name": "Tottenham",
+            "logo": "https://media.api-sports.io/football/teams/47.png"
+          },
+          "player": {
+            "id": 164,
+            "name": "B. Davies"
+          },
+          "assist": {
+            "id": 152849,
+            "name": "M. van de Ven"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
           "comments": null
         }
       ]
