@@ -193,6 +193,51 @@
             {
               "rank": 5,
               "team": {
+                "id": 33,
+                "name": "Manchester United",
+                "logo": "https://media.api-sports.io/football/teams/33.png"
+              },
+              "points": 31,
+              "goalsDiff": 4,
+              "group": "Premier League",
+              "form": "DDWLD",
+              "status": "same",
+              "description": "Promotion - Europa League (League phase)",
+              "all": {
+                "played": 20,
+                "win": 8,
+                "draw": 7,
+                "lose": 5,
+                "goals": {
+                  "for": 34,
+                  "against": 30
+                }
+              },
+              "home": {
+                "played": 10,
+                "win": 5,
+                "draw": 3,
+                "lose": 2,
+                "goals": {
+                  "for": 18,
+                  "against": 13
+                }
+              },
+              "away": {
+                "played": 10,
+                "win": 3,
+                "draw": 4,
+                "lose": 3,
+                "goals": {
+                  "for": 16,
+                  "against": 17
+                }
+              },
+              "update": "2026-01-04T00:00:00+00:00"
+            },
+            {
+              "rank": 6,
+              "team": {
                 "id": 49,
                 "name": "Chelsea",
                 "logo": "https://media.api-sports.io/football/teams/49.png"
@@ -202,7 +247,7 @@
               "group": "Premier League",
               "form": "DLDWD",
               "status": "same",
-              "description": "Promotion - Europa League (League phase)",
+              "description": null,
               "all": {
                 "played": 19,
                 "win": 8,
@@ -231,51 +276,6 @@
                 "goals": {
                   "for": 17,
                   "against": 10
-                }
-              },
-              "update": "2026-01-04T00:00:00+00:00"
-            },
-            {
-              "rank": 6,
-              "team": {
-                "id": 33,
-                "name": "Manchester United",
-                "logo": "https://media.api-sports.io/football/teams/33.png"
-              },
-              "points": 30,
-              "goalsDiff": 4,
-              "group": "Premier League",
-              "form": "DWLDW",
-              "status": "same",
-              "description": null,
-              "all": {
-                "played": 19,
-                "win": 8,
-                "draw": 6,
-                "lose": 5,
-                "goals": {
-                  "for": 33,
-                  "against": 29
-                }
-              },
-              "home": {
-                "played": 10,
-                "win": 5,
-                "draw": 3,
-                "lose": 2,
-                "goals": {
-                  "for": 18,
-                  "against": 13
-                }
-              },
-              "away": {
-                "played": 9,
-                "win": 3,
-                "draw": 3,
-                "lose": 3,
-                "goals": {
-                  "for": 15,
-                  "against": 16
                 }
               },
               "update": "2026-01-04T00:00:00+00:00"
@@ -692,30 +692,30 @@
                 "name": "Leeds",
                 "logo": "https://media.api-sports.io/football/teams/63.png"
               },
-              "points": 21,
+              "points": 22,
               "goalsDiff": -7,
               "group": "Premier League",
-              "form": "DDWDD",
+              "form": "DDDWD",
               "status": "same",
               "description": null,
               "all": {
-                "played": 19,
+                "played": 20,
                 "win": 5,
-                "draw": 6,
+                "draw": 7,
                 "lose": 8,
                 "goals": {
-                  "for": 25,
-                  "against": 32
+                  "for": 26,
+                  "against": 33
                 }
               },
               "home": {
-                "played": 9,
+                "played": 10,
                 "win": 4,
-                "draw": 3,
+                "draw": 4,
                 "lose": 2,
                 "goals": {
-                  "for": 17,
-                  "against": 12
+                  "for": 18,
+                  "against": 13
                 }
               },
               "away": {

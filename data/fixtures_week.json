@@ -9,7 +9,7 @@
         "timestamp": 1767538800,
         "periods": {
           "first": 1767538800,
-          "second": null
+          "second": 1767542400
         },
         "venue": {
           "id": 562,
@@ -17,9 +17,9 @@
           "city": "Newcastle"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 23,
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 67,
           "extra": null
         }
       },
@@ -79,7 +79,7 @@
         "timestamp": 1767538800,
         "periods": {
           "first": 1767538800,
-          "second": null
+          "second": 1767542400
         },
         "venue": {
           "id": 22033,
@@ -87,9 +87,9 @@
           "city": "Liverpool"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 21,
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 65,
           "extra": null
         }
       },
@@ -119,7 +119,7 @@
       },
       "goals": {
         "home": 0,
-        "away": 1
+        "away": 3
       },
       "score": {
         "halftime": {
@@ -149,7 +149,7 @@
         "timestamp": 1767538800,
         "periods": {
           "first": 1767538800,
-          "second": null
+          "second": 1767542400
         },
         "venue": {
           "id": 593,
@@ -157,9 +157,9 @@
           "city": "London"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 23,
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 69,
           "extra": null
         }
       },
@@ -178,22 +178,22 @@
           "id": 47,
           "name": "Tottenham",
           "logo": "https://media.api-sports.io/football/teams/47.png",
-          "winner": null
+          "winner": true
         },
         "away": {
           "id": 746,
           "name": "Sunderland",
           "logo": "https://media.api-sports.io/football/teams/746.png",
-          "winner": null
+          "winner": false
         }
       },
       "goals": {
-        "home": 0,
+        "home": 1,
         "away": 0
       },
       "score": {
         "halftime": {
-          "home": 0,
+          "home": 1,
           "away": 0
         },
         "fulltime": {
@@ -219,7 +219,7 @@
         "timestamp": 1767539700,
         "periods": {
           "first": 1767539700,
-          "second": null
+          "second": 1767543300
         },
         "venue": {
           "id": 535,
@@ -227,9 +227,9 @@
           "city": "London"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 8,
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 55,
           "extra": null
         }
       },
@@ -248,22 +248,22 @@
           "id": 36,
           "name": "Fulham",
           "logo": "https://media.api-sports.io/football/teams/36.png",
-          "winner": null
+          "winner": true
         },
         "away": {
           "id": 40,
           "name": "Liverpool",
           "logo": "https://media.api-sports.io/football/teams/40.png",
-          "winner": null
+          "winner": false
         }
       },
       "goals": {
-        "home": 0,
+        "home": 1,
         "away": 0
       },
       "score": {
         "halftime": {
-          "home": 0,
+          "home": 1,
           "away": 0
         },
         "fulltime": {
