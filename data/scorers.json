@@ -36,7 +36,7 @@
           "games": {
             "appearences": 19,
             "lineups": 19,
-            "minutes": 1650,
+            "minutes": 1646,
             "number": 9,
             "position": "Attacker",
             "rating": "7.63",
@@ -224,12 +224,12 @@
             "season": 2025
           },
           "games": {
-            "appearences": 18,
-            "lineups": 18,
-            "minutes": 1619,
+            "appearences": 19,
+            "lineups": 19,
+            "minutes": 1709,
             "number": 24,
             "position": "Midfielder",
-            "rating": "7.19",
+            "rating": "7.14",
             "captain": false
           },
           "substitutes": {
@@ -238,7 +238,7 @@
             "bench": 0
           },
           "shots": {
-            "total": 40,
+            "total": 41,
             "on": 26
           },
           "goals": {
@@ -248,30 +248,30 @@
             "saves": null
           },
           "passes": {
-            "total": 466,
-            "key": 24,
+            "total": 489,
+            "key": 25,
             "accuracy": null
           },
           "tackles": {
-            "total": 26,
+            "total": 28,
             "blocks": 3,
             "interceptions": 5
           },
           "duels": {
-            "total": 268,
-            "won": 112
+            "total": 283,
+            "won": 118
           },
           "dribbles": {
-            "attempts": 67,
-            "success": 30,
+            "attempts": 70,
+            "success": 32,
             "past": null
           },
           "fouls": {
-            "drawn": 12,
-            "committed": 34
+            "drawn": 13,
+            "committed": 36
           },
           "cards": {
-            "yellow": 4,
+            "yellow": 5,
             "yellowred": 0,
             "red": 0
           },
@@ -324,7 +324,7 @@
             "minutes": 1137,
             "number": 22,
             "position": "Attacker",
-            "rating": "6.92",
+            "rating": "6.91",
             "captain": false
           },
           "substitutes": {
@@ -343,22 +343,22 @@
             "saves": null
           },
           "passes": {
-            "total": 255,
+            "total": 254,
             "key": 11,
             "accuracy": null
           },
           "tackles": {
             "total": 7,
             "blocks": 2,
-            "interceptions": 2
+            "interceptions": 1
           },
           "duels": {
-            "total": 151,
+            "total": 152,
             "won": 58
           },
           "dribbles": {
-            "attempts": 39,
-            "success": 22,
+            "attempts": 41,
+            "success": 23,
             "past": null
           },
           "fouls": {
@@ -414,18 +414,18 @@
             "season": 2025
           },
           "games": {
-            "appearences": 18,
+            "appearences": 19,
             "lineups": 12,
-            "minutes": 1086,
+            "minutes": 1109,
             "number": 18,
             "position": "Attacker",
-            "rating": "6.73",
+            "rating": "6.71",
             "captain": false
           },
           "substitutes": {
-            "in": 6,
+            "in": 7,
             "out": 7,
-            "bench": 6
+            "bench": 7
           },
           "shots": {
             "total": 24,
@@ -438,7 +438,7 @@
             "saves": null
           },
           "passes": {
-            "total": 246,
+            "total": 255,
             "key": 10,
             "accuracy": null
           },
@@ -609,7 +609,7 @@
             "minutes": 1562,
             "number": 14,
             "position": "Attacker",
-            "rating": "6.74",
+            "rating": "6.73",
             "captain": false
           },
           "substitutes": {
@@ -638,8 +638,8 @@
             "interceptions": 5
           },
           "duels": {
-            "total": 202,
-            "won": 76
+            "total": 203,
+            "won": 75
           },
           "dribbles": {
             "attempts": 27,
@@ -659,6 +659,101 @@
             "won": 1,
             "commited": null,
             "scored": 3,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 19170,
+        "name": "M. Rogers",
+        "firstname": "Morgan Elliot",
+        "lastname": "Rogers",
+        "age": 23,
+        "birth": {
+          "date": "2002-07-26",
+          "place": "Halesowen",
+          "country": "England"
+        },
+        "nationality": "England",
+        "height": "187",
+        "weight": "80",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/19170.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 66,
+            "name": "Aston Villa",
+            "logo": "https://media.api-sports.io/football/teams/66.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 20,
+            "lineups": 20,
+            "minutes": 1788,
+            "number": 27,
+            "position": "Midfielder",
+            "rating": "6.94",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 0,
+            "out": 3,
+            "bench": 0
+          },
+          "shots": {
+            "total": 25,
+            "on": 15
+          },
+          "goals": {
+            "total": 7,
+            "conceded": 0,
+            "assists": 4,
+            "saves": null
+          },
+          "passes": {
+            "total": 522,
+            "key": 21,
+            "accuracy": null
+          },
+          "tackles": {
+            "total": 19,
+            "blocks": 1,
+            "interceptions": 9
+          },
+          "duels": {
+            "total": 231,
+            "won": 82
+          },
+          "dribbles": {
+            "attempts": 65,
+            "success": 23,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 27,
+            "committed": 24
+          },
+          "cards": {
+            "yellow": 4,
+            "yellowred": 0,
+            "red": 0
+          },
+          "penalty": {
+            "won": null,
+            "commited": 1,
+            "scored": 0,
             "missed": 0,
             "saved": null
           }
@@ -723,7 +818,7 @@
             "saves": null
           },
           "passes": {
-            "total": 188,
+            "total": 187,
             "key": 14,
             "accuracy": null
           },
@@ -734,7 +829,7 @@
           },
           "duels": {
             "total": 174,
-            "won": 78
+            "won": 77
           },
           "dribbles": {
             "attempts": 12,
@@ -753,101 +848,6 @@
           "penalty": {
             "won": null,
             "commited": null,
-            "scored": 0,
-            "missed": 0,
-            "saved": null
-          }
-        }
-      ]
-    },
-    {
-      "player": {
-        "id": 19170,
-        "name": "M. Rogers",
-        "firstname": "Morgan Elliot",
-        "lastname": "Rogers",
-        "age": 23,
-        "birth": {
-          "date": "2002-07-26",
-          "place": "Halesowen",
-          "country": "England"
-        },
-        "nationality": "England",
-        "height": "187",
-        "weight": "80",
-        "injured": false,
-        "photo": "https://media.api-sports.io/football/players/19170.png"
-      },
-      "statistics": [
-        {
-          "team": {
-            "id": 66,
-            "name": "Aston Villa",
-            "logo": "https://media.api-sports.io/football/teams/66.png"
-          },
-          "league": {
-            "id": 39,
-            "name": "Premier League",
-            "country": "England",
-            "logo": "https://media.api-sports.io/football/leagues/39.png",
-            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-            "season": 2025
-          },
-          "games": {
-            "appearences": 19,
-            "lineups": 19,
-            "minutes": 1690,
-            "number": 27,
-            "position": "Midfielder",
-            "rating": "6.93",
-            "captain": false
-          },
-          "substitutes": {
-            "in": 0,
-            "out": 3,
-            "bench": 0
-          },
-          "shots": {
-            "total": 25,
-            "on": 15
-          },
-          "goals": {
-            "total": 7,
-            "conceded": 0,
-            "assists": 3,
-            "saves": null
-          },
-          "passes": {
-            "total": 480,
-            "key": 19,
-            "accuracy": null
-          },
-          "tackles": {
-            "total": 19,
-            "blocks": 1,
-            "interceptions": 9
-          },
-          "duels": {
-            "total": 220,
-            "won": 79
-          },
-          "dribbles": {
-            "attempts": 63,
-            "success": 23,
-            "past": null
-          },
-          "fouls": {
-            "drawn": 24,
-            "committed": 22
-          },
-          "cards": {
-            "yellow": 4,
-            "yellowred": 0,
-            "red": 0
-          },
-          "penalty": {
-            "won": null,
-            "commited": 1,
             "scored": 0,
             "missed": 0,
             "saved": null
@@ -891,10 +891,10 @@
           "games": {
             "appearences": 17,
             "lineups": 16,
-            "minutes": 1411,
+            "minutes": 1407,
             "number": 47,
             "position": "Midfielder",
-            "rating": "7.19",
+            "rating": "7.2",
             "captain": false
           },
           "substitutes": {
@@ -913,7 +913,7 @@
             "saves": null
           },
           "passes": {
-            "total": 807,
+            "total": 808,
             "key": 34,
             "accuracy": 42
           },
@@ -924,11 +924,11 @@
           },
           "duels": {
             "total": 120,
-            "won": 58
+            "won": 59
           },
           "dribbles": {
-            "attempts": 23,
-            "success": 14,
+            "attempts": 24,
+            "success": 15,
             "past": null
           },
           "fouls": {
@@ -937,6 +937,101 @@
           },
           "cards": {
             "yellow": 3,
+            "yellowred": 0,
+            "red": 0
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 0,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 19366,
+        "name": "O. Watkins",
+        "firstname": "Oliver George Arthur",
+        "lastname": "Watkins",
+        "age": 30,
+        "birth": {
+          "date": "1995-12-30",
+          "place": "Torbay",
+          "country": "England"
+        },
+        "nationality": "England",
+        "height": "180",
+        "weight": "75",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/19366.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 66,
+            "name": "Aston Villa",
+            "logo": "https://media.api-sports.io/football/teams/66.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 20,
+            "lineups": 17,
+            "minutes": 1481,
+            "number": 11,
+            "position": "Attacker",
+            "rating": "6.81",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 3,
+            "out": 11,
+            "bench": 3
+          },
+          "shots": {
+            "total": 27,
+            "on": 17
+          },
+          "goals": {
+            "total": 7,
+            "conceded": 0,
+            "assists": 1,
+            "saves": null
+          },
+          "passes": {
+            "total": 244,
+            "key": 11,
+            "accuracy": null
+          },
+          "tackles": {
+            "total": 10,
+            "blocks": null,
+            "interceptions": 3
+          },
+          "duels": {
+            "total": 149,
+            "won": 65
+          },
+          "dribbles": {
+            "attempts": 31,
+            "success": 15,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 18,
+            "committed": 13
+          },
+          "cards": {
+            "yellow": 1,
             "yellowred": 0,
             "red": 0
           },
@@ -1237,101 +1332,6 @@
     },
     {
       "player": {
-        "id": 19366,
-        "name": "O. Watkins",
-        "firstname": "Oliver George Arthur",
-        "lastname": "Watkins",
-        "age": 30,
-        "birth": {
-          "date": "1995-12-30",
-          "place": "Torbay",
-          "country": "England"
-        },
-        "nationality": "England",
-        "height": "180",
-        "weight": "75",
-        "injured": false,
-        "photo": "https://media.api-sports.io/football/players/19366.png"
-      },
-      "statistics": [
-        {
-          "team": {
-            "id": 66,
-            "name": "Aston Villa",
-            "logo": "https://media.api-sports.io/football/teams/66.png"
-          },
-          "league": {
-            "id": 39,
-            "name": "Premier League",
-            "country": "England",
-            "logo": "https://media.api-sports.io/football/leagues/39.png",
-            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-            "season": 2025
-          },
-          "games": {
-            "appearences": 19,
-            "lineups": 16,
-            "minutes": 1398,
-            "number": 11,
-            "position": "Attacker",
-            "rating": "6.75",
-            "captain": false
-          },
-          "substitutes": {
-            "in": 3,
-            "out": 10,
-            "bench": 3
-          },
-          "shots": {
-            "total": 25,
-            "on": 15
-          },
-          "goals": {
-            "total": 6,
-            "conceded": 0,
-            "assists": 1,
-            "saves": null
-          },
-          "passes": {
-            "total": 231,
-            "key": 11,
-            "accuracy": null
-          },
-          "tackles": {
-            "total": 8,
-            "blocks": null,
-            "interceptions": 3
-          },
-          "duels": {
-            "total": 144,
-            "won": 62
-          },
-          "dribbles": {
-            "attempts": 31,
-            "success": 15,
-            "past": null
-          },
-          "fouls": {
-            "drawn": 18,
-            "committed": 11
-          },
-          "cards": {
-            "yellow": 1,
-            "yellowred": 0,
-            "red": 0
-          },
-          "penalty": {
-            "won": null,
-            "commited": null,
-            "scored": 0,
-            "missed": 0,
-            "saved": null
-          }
-        }
-      ]
-    },
-    {
-      "player": {
         "id": 19428,
         "name": "J. Bowen",
         "firstname": "Jarrod",
@@ -1364,12 +1364,12 @@
             "season": 2025
           },
           "games": {
-            "appearences": 19,
-            "lineups": 19,
-            "minutes": 1710,
+            "appearences": 20,
+            "lineups": 20,
+            "minutes": 1800,
             "number": 20,
             "position": "Attacker",
-            "rating": "6.93",
+            "rating": "6.88",
             "captain": false
           },
           "substitutes": {
@@ -1378,7 +1378,7 @@
             "bench": 0
           },
           "shots": {
-            "total": 31,
+            "total": 32,
             "on": 20
           },
           "goals": {
@@ -1388,21 +1388,21 @@
             "saves": null
           },
           "passes": {
-            "total": 370,
+            "total": 404,
             "key": 13,
             "accuracy": null
           },
           "tackles": {
-            "total": 20,
+            "total": 22,
             "blocks": 1,
-            "interceptions": 9
+            "interceptions": 11
           },
           "duels": {
-            "total": 201,
-            "won": 88
+            "total": 209,
+            "won": 90
           },
           "dribbles": {
-            "attempts": 61,
+            "attempts": 65,
             "success": 29,
             "past": null
           },
@@ -1464,7 +1464,7 @@
             "minutes": 1497,
             "number": 7,
             "position": "Midfielder",
-            "rating": "6.97",
+            "rating": "6.96",
             "captain": false
           },
           "substitutes": {
@@ -1488,13 +1488,13 @@
             "accuracy": null
           },
           "tackles": {
-            "total": 24,
+            "total": 23,
             "blocks": 3,
             "interceptions": 12
           },
           "duels": {
-            "total": 240,
-            "won": 111
+            "total": 239,
+            "won": 110
           },
           "dribbles": {
             "attempts": 42,
@@ -1617,6 +1617,101 @@
     },
     {
       "player": {
+        "id": 368030,
+        "name": "E. Kroupi",
+        "firstname": "Eli Junior",
+        "lastname": "Kroupi",
+        "age": 19,
+        "birth": {
+          "date": "2006-06-23",
+          "place": "Lorient",
+          "country": "France"
+        },
+        "nationality": "France",
+        "height": "179",
+        "weight": "70",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/368030.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 35,
+            "name": "Bournemouth",
+            "logo": "https://media.api-sports.io/football/teams/35.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 15,
+            "lineups": 6,
+            "minutes": 517,
+            "number": 22,
+            "position": "Attacker",
+            "rating": "6.91",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 9,
+            "out": 6,
+            "bench": 14
+          },
+          "shots": {
+            "total": 14,
+            "on": 10
+          },
+          "goals": {
+            "total": 6,
+            "conceded": 0,
+            "assists": 0,
+            "saves": null
+          },
+          "passes": {
+            "total": 128,
+            "key": 5,
+            "accuracy": null
+          },
+          "tackles": {
+            "total": 5,
+            "blocks": null,
+            "interceptions": 3
+          },
+          "duels": {
+            "total": 39,
+            "won": 17
+          },
+          "dribbles": {
+            "attempts": 6,
+            "success": 5,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 4,
+            "committed": 6
+          },
+          "cards": {
+            "yellow": 2,
+            "yellowred": 0,
+            "red": 0
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 0,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
         "id": 19221,
         "name": "H. Wilson",
         "firstname": "Harry",
@@ -1654,7 +1749,7 @@
             "minutes": 1335,
             "number": 8,
             "position": "Midfielder",
-            "rating": "7.12",
+            "rating": "7.11",
             "captain": false
           },
           "substitutes": {
@@ -1683,8 +1778,8 @@
             "interceptions": 6
           },
           "duels": {
-            "total": 93,
-            "won": 48
+            "total": 94,
+            "won": 49
           },
           "dribbles": {
             "attempts": 16,
@@ -1744,18 +1839,18 @@
             "season": 2025
           },
           "games": {
-            "appearences": 15,
+            "appearences": 16,
             "lineups": 11,
-            "minutes": 1049,
+            "minutes": 1072,
             "number": 19,
             "position": "Attacker",
-            "rating": "7.11",
+            "rating": "7.06",
             "captain": false
           },
           "substitutes": {
-            "in": 4,
+            "in": 5,
             "out": 8,
-            "bench": 6
+            "bench": 7
           },
           "shots": {
             "total": 21,
@@ -1768,125 +1863,30 @@
             "saves": null
           },
           "passes": {
-            "total": 397,
+            "total": 404,
             "key": 21,
             "accuracy": null
           },
           "tackles": {
-            "total": 11,
-            "blocks": null,
+            "total": 12,
+            "blocks": 1,
             "interceptions": 4
           },
           "duels": {
-            "total": 89,
-            "won": 40
+            "total": 97,
+            "won": 43
           },
           "dribbles": {
-            "attempts": 23,
+            "attempts": 24,
             "success": 9,
             "past": null
           },
           "fouls": {
-            "drawn": 16,
+            "drawn": 18,
             "committed": 8
           },
           "cards": {
             "yellow": 0,
-            "yellowred": 0,
-            "red": 0
-          },
-          "penalty": {
-            "won": null,
-            "commited": null,
-            "scored": 0,
-            "missed": 0,
-            "saved": null
-          }
-        }
-      ]
-    },
-    {
-      "player": {
-        "id": 1864,
-        "name": "Pedro Neto",
-        "firstname": "Pedro",
-        "lastname": "Lomba Neto",
-        "age": 25,
-        "birth": {
-          "date": "2000-03-09",
-          "place": "Viana do Castelo",
-          "country": "Portugal"
-        },
-        "nationality": "Portugal",
-        "height": "174",
-        "weight": "62",
-        "injured": false,
-        "photo": "https://media.api-sports.io/football/players/1864.png"
-      },
-      "statistics": [
-        {
-          "team": {
-            "id": 49,
-            "name": "Chelsea",
-            "logo": "https://media.api-sports.io/football/teams/49.png"
-          },
-          "league": {
-            "id": 39,
-            "name": "Premier League",
-            "country": "England",
-            "logo": "https://media.api-sports.io/football/leagues/39.png",
-            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-            "season": 2025
-          },
-          "games": {
-            "appearences": 19,
-            "lineups": 17,
-            "minutes": 1467,
-            "number": 7,
-            "position": "Midfielder",
-            "rating": "7.15",
-            "captain": false
-          },
-          "substitutes": {
-            "in": 2,
-            "out": 8,
-            "bench": 2
-          },
-          "shots": {
-            "total": 18,
-            "on": 11
-          },
-          "goals": {
-            "total": 5,
-            "conceded": 0,
-            "assists": 3,
-            "saves": null
-          },
-          "passes": {
-            "total": 507,
-            "key": 33,
-            "accuracy": null
-          },
-          "tackles": {
-            "total": 11,
-            "blocks": null,
-            "interceptions": 5
-          },
-          "duels": {
-            "total": 135,
-            "won": 58
-          },
-          "dribbles": {
-            "attempts": 57,
-            "success": 26,
-            "past": null
-          },
-          "fouls": {
-            "drawn": 16,
-            "committed": 7
-          },
-          "cards": {
-            "yellow": 2,
             "yellowred": 0,
             "red": 0
           },
