@@ -2,100 +2,6 @@
   "matches": [
     {
       "fixture": {
-        "id": 1379163,
-        "referee": "Craig Pawson, England",
-        "timezone": "UTC",
-        "date": "2026-01-04T15:15:00+00:00",
-        "timestamp": 1767539700,
-        "periods": {
-          "first": 1767539700,
-          "second": null
-        },
-        "venue": {
-          "id": 535,
-          "name": "Craven Cottage",
-          "city": "London"
-        },
-        "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 44,
-          "extra": null
-        }
-      },
-      "league": {
-        "id": 39,
-        "name": "Premier League",
-        "country": "England",
-        "logo": "https://media.api-sports.io/football/leagues/39.png",
-        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-        "season": 2025,
-        "round": "Regular Season - 20",
-        "standings": true
-      },
-      "teams": {
-        "home": {
-          "id": 36,
-          "name": "Fulham",
-          "logo": "https://media.api-sports.io/football/teams/36.png",
-          "winner": true
-        },
-        "away": {
-          "id": 40,
-          "name": "Liverpool",
-          "logo": "https://media.api-sports.io/football/teams/40.png",
-          "winner": false
-        }
-      },
-      "goals": {
-        "home": 1,
-        "away": 0
-      },
-      "score": {
-        "halftime": {
-          "home": 1,
-          "away": 0
-        },
-        "fulltime": {
-          "home": null,
-          "away": null
-        },
-        "extratime": {
-          "home": null,
-          "away": null
-        },
-        "penalty": {
-          "home": null,
-          "away": null
-        }
-      },
-      "events": [
-        {
-          "time": {
-            "elapsed": 17,
-            "extra": null
-          },
-          "team": {
-            "id": 36,
-            "name": "Fulham",
-            "logo": "https://media.api-sports.io/football/teams/36.png"
-          },
-          "player": {
-            "id": 19221,
-            "name": "H. Wilson"
-          },
-          "assist": {
-            "id": 2887,
-            "name": "R. Jimenez"
-          },
-          "type": "Goal",
-          "detail": "Normal Goal",
-          "comments": null
-        }
-      ]
-    },
-    {
-      "fixture": {
         "id": 1379162,
         "referee": "Anthony Taylor, England",
         "timezone": "UTC",
@@ -103,7 +9,7 @@
         "timestamp": 1767538800,
         "periods": {
           "first": 1767538800,
-          "second": null
+          "second": 1767542400
         },
         "venue": {
           "id": 22033,
@@ -111,10 +17,10 @@
           "city": "Liverpool"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 6
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 60,
+          "extra": null
         }
       },
       "league": {
@@ -143,7 +49,7 @@
       },
       "goals": {
         "home": 0,
-        "away": 1
+        "away": 3
       },
       "score": {
         "halftime": {
@@ -229,6 +135,188 @@
           "type": "Card",
           "detail": "Yellow Card",
           "comments": "Tripping"
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 45,
+            "name": "Everton",
+            "logo": "https://media.api-sports.io/football/teams/45.png"
+          },
+          "player": {
+            "id": 304317,
+            "name": "T. Dibling"
+          },
+          "assist": {
+            "id": 125743,
+            "name": "Beto"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 45,
+            "name": "Everton",
+            "logo": "https://media.api-sports.io/football/teams/45.png"
+          },
+          "player": {
+            "id": 18929,
+            "name": "D. McNeil"
+          },
+          "assist": {
+            "id": 202854,
+            "name": "M. Rohl"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 50,
+            "extra": null
+          },
+          "team": {
+            "id": 55,
+            "name": "Brentford",
+            "logo": "https://media.api-sports.io/football/teams/55.png"
+          },
+          "player": {
+            "id": 19495,
+            "name": "N. Collins"
+          },
+          "assist": {
+            "id": 25073,
+            "name": "V. Janelt"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 51,
+            "extra": null
+          },
+          "team": {
+            "id": 55,
+            "name": "Brentford",
+            "logo": "https://media.api-sports.io/football/teams/55.png"
+          },
+          "player": {
+            "id": 196156,
+            "name": "I. Thiago"
+          },
+          "assist": {
+            "id": 178077,
+            "name": "K. Schade"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        }
+      ]
+    },
+    {
+      "fixture": {
+        "id": 1379163,
+        "referee": "Craig Pawson, England",
+        "timezone": "UTC",
+        "date": "2026-01-04T15:15:00+00:00",
+        "timestamp": 1767539700,
+        "periods": {
+          "first": 1767539700,
+          "second": 1767543300
+        },
+        "venue": {
+          "id": 535,
+          "name": "Craven Cottage",
+          "city": "London"
+        },
+        "status": {
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 50,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 20",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 36,
+          "name": "Fulham",
+          "logo": "https://media.api-sports.io/football/teams/36.png",
+          "winner": true
+        },
+        "away": {
+          "id": 40,
+          "name": "Liverpool",
+          "logo": "https://media.api-sports.io/football/teams/40.png",
+          "winner": false
+        }
+      },
+      "goals": {
+        "home": 1,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 1,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      },
+      "events": [
+        {
+          "time": {
+            "elapsed": 17,
+            "extra": null
+          },
+          "team": {
+            "id": 36,
+            "name": "Fulham",
+            "logo": "https://media.api-sports.io/football/teams/36.png"
+          },
+          "player": {
+            "id": 19221,
+            "name": "H. Wilson"
+          },
+          "assist": {
+            "id": 2887,
+            "name": "R. Jimenez"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
         }
       ]
     },
@@ -241,7 +329,7 @@
         "timestamp": 1767538800,
         "periods": {
           "first": 1767538800,
-          "second": null
+          "second": 1767542400
         },
         "venue": {
           "id": 562,
@@ -249,10 +337,10 @@
           "city": "Newcastle"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 6
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 62,
+          "extra": null
         }
       },
       "league": {
@@ -367,6 +455,72 @@
           "type": "subst",
           "detail": "Substitution 1",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 49,
+            "extra": null
+          },
+          "team": {
+            "id": 52,
+            "name": "Crystal Palace",
+            "logo": "https://media.api-sports.io/football/teams/52.png"
+          },
+          "player": {
+            "id": 182201,
+            "name": "T. Mitchell"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Delay of game"
+        },
+        {
+          "time": {
+            "elapsed": 52,
+            "extra": null
+          },
+          "team": {
+            "id": 52,
+            "name": "Crystal Palace",
+            "logo": "https://media.api-sports.io/football/teams/52.png"
+          },
+          "player": {
+            "id": 18862,
+            "name": "N. Clyne"
+          },
+          "assist": {
+            "id": 286458,
+            "name": "J. Devenny"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 55,
+            "extra": null
+          },
+          "team": {
+            "id": 52,
+            "name": "Crystal Palace",
+            "logo": "https://media.api-sports.io/football/teams/52.png"
+          },
+          "player": {
+            "id": 67971,
+            "name": "M. Guehi"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Tripping"
         }
       ]
     },
@@ -379,7 +533,7 @@
         "timestamp": 1767538800,
         "periods": {
           "first": 1767538800,
-          "second": null
+          "second": 1767542400
         },
         "venue": {
           "id": 593,
@@ -387,10 +541,10 @@
           "city": "London"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 3
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 64,
+          "extra": null
         }
       },
       "league": {
@@ -483,6 +637,94 @@
           "type": "Goal",
           "detail": "Normal Goal",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 47,
+            "extra": null
+          },
+          "team": {
+            "id": 746,
+            "name": "Sunderland",
+            "logo": "https://media.api-sports.io/football/teams/746.png"
+          },
+          "player": {
+            "id": 162076,
+            "name": "D. Cirkin"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Holding"
+        },
+        {
+          "time": {
+            "elapsed": 50,
+            "extra": null
+          },
+          "team": {
+            "id": 746,
+            "name": "Sunderland",
+            "logo": "https://media.api-sports.io/football/teams/746.png"
+          },
+          "player": {
+            "id": 6168,
+            "name": "O. Alderete"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Holding"
+        },
+        {
+          "time": {
+            "elapsed": 59,
+            "extra": null
+          },
+          "team": {
+            "id": 746,
+            "name": "Sunderland",
+            "logo": "https://media.api-sports.io/football/teams/746.png"
+          },
+          "player": {
+            "id": 162076,
+            "name": "D. Cirkin"
+          },
+          "assist": {
+            "id": 284414,
+            "name": "R. Mundle"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 60,
+            "extra": null
+          },
+          "team": {
+            "id": 746,
+            "name": "Sunderland",
+            "logo": "https://media.api-sports.io/football/teams/746.png"
+          },
+          "player": {
+            "id": 20638,
+            "name": "E. Le Fee"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Tripping"
         }
       ]
     }
