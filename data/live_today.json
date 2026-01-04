@@ -19,7 +19,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 9,
+          "elapsed": 29,
           "extra": null
         }
       },
@@ -38,12 +38,106 @@
           "id": 45,
           "name": "Everton",
           "logo": "https://media.api-sports.io/football/teams/45.png",
-          "winner": null
+          "winner": false
         },
         "away": {
           "id": 55,
           "name": "Brentford",
           "logo": "https://media.api-sports.io/football/teams/55.png",
+          "winner": true
+        }
+      },
+      "goals": {
+        "home": 0,
+        "away": 1
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 1
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      },
+      "events": [
+        {
+          "time": {
+            "elapsed": 11,
+            "extra": null
+          },
+          "team": {
+            "id": 55,
+            "name": "Brentford",
+            "logo": "https://media.api-sports.io/football/teams/55.png"
+          },
+          "player": {
+            "id": 196156,
+            "name": "I. Thiago"
+          },
+          "assist": {
+            "id": 25073,
+            "name": "V. Janelt"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        }
+      ]
+    },
+    {
+      "fixture": {
+        "id": 1379163,
+        "referee": "Craig Pawson, England",
+        "timezone": "UTC",
+        "date": "2026-01-04T15:15:00+00:00",
+        "timestamp": 1767539700,
+        "periods": {
+          "first": 1767539700,
+          "second": null
+        },
+        "venue": {
+          "id": 535,
+          "name": "Craven Cottage",
+          "city": "London"
+        },
+        "status": {
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 15,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 20",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 36,
+          "name": "Fulham",
+          "logo": "https://media.api-sports.io/football/teams/36.png",
+          "winner": null
+        },
+        "away": {
+          "id": 40,
+          "name": "Liverpool",
+          "logo": "https://media.api-sports.io/football/teams/40.png",
           "winner": null
         }
       },
@@ -90,7 +184,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 11,
+          "elapsed": 30,
           "extra": null
         }
       },
@@ -140,7 +234,30 @@
           "away": null
         }
       },
-      "events": []
+      "events": [
+        {
+          "time": {
+            "elapsed": 19,
+            "extra": null
+          },
+          "team": {
+            "id": 34,
+            "name": "Newcastle",
+            "logo": "https://media.api-sports.io/football/teams/34.png"
+          },
+          "player": {
+            "id": 138787,
+            "name": "A. Gordon"
+          },
+          "assist": {
+            "id": 20649,
+            "name": "Y. Wissa"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        }
+      ]
     },
     {
       "fixture": {
@@ -161,7 +278,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 11,
+          "elapsed": 30,
           "extra": null
         }
       },
@@ -211,7 +328,30 @@
           "away": null
         }
       },
-      "events": []
+      "events": [
+        {
+          "time": {
+            "elapsed": 19,
+            "extra": null
+          },
+          "team": {
+            "id": 47,
+            "name": "Tottenham",
+            "logo": "https://media.api-sports.io/football/teams/47.png"
+          },
+          "player": {
+            "id": 15911,
+            "name": "M. Kudus"
+          },
+          "assist": {
+            "id": 21104,
+            "name": "R. Kolo Muani"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        }
+      ]
     }
   ]
 }
