@@ -9,7 +9,7 @@
         "timestamp": 1767529800,
         "periods": {
           "first": 1767529800,
-          "second": null
+          "second": 1767533400
         },
         "venue": {
           "id": 546,
@@ -17,9 +17,9 @@
           "city": "Leeds"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 33,
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 48,
           "extra": null
         }
       },
@@ -69,7 +69,30 @@
           "away": null
         }
       },
-      "events": []
+      "events": [
+        {
+          "time": {
+            "elapsed": 34,
+            "extra": null
+          },
+          "team": {
+            "id": 33,
+            "name": "Manchester United",
+            "logo": "https://media.api-sports.io/football/teams/33.png"
+          },
+          "player": {
+            "id": 382452,
+            "name": "P. Dorgu"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Tripping"
+        }
+      ]
     }
   ]
 }
