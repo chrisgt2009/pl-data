@@ -1,3 +1,75 @@
 {
-  "matches": []
+  "matches": [
+    {
+      "fixture": {
+        "id": 1379164,
+        "referee": "Jarred Gillett, Australia",
+        "timezone": "UTC",
+        "date": "2026-01-04T12:30:00+00:00",
+        "timestamp": 1767529800,
+        "periods": {
+          "first": 1767529800,
+          "second": null
+        },
+        "venue": {
+          "id": 546,
+          "name": "Elland Road",
+          "city": "Leeds"
+        },
+        "status": {
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 33,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 20",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 63,
+          "name": "Leeds",
+          "logo": "https://media.api-sports.io/football/teams/63.png",
+          "winner": null
+        },
+        "away": {
+          "id": 33,
+          "name": "Manchester United",
+          "logo": "https://media.api-sports.io/football/teams/33.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": 0,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      },
+      "events": []
+    }
+  ]
 }
