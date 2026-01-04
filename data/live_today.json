@@ -19,7 +19,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 60,
+          "elapsed": 80,
           "extra": null
         }
       },
@@ -48,7 +48,7 @@
         }
       },
       "goals": {
-        "home": 0,
+        "home": 1,
         "away": 3
       },
       "score": {
@@ -223,6 +223,116 @@
           "type": "Goal",
           "detail": "Normal Goal",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 64,
+            "extra": null
+          },
+          "team": {
+            "id": 55,
+            "name": "Brentford",
+            "logo": "https://media.api-sports.io/football/teams/55.png"
+          },
+          "player": {
+            "id": 47438,
+            "name": "M. Jensen"
+          },
+          "assist": {
+            "id": 292,
+            "name": "J. Henderson"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 64,
+            "extra": null
+          },
+          "team": {
+            "id": 55,
+            "name": "Brentford",
+            "logo": "https://media.api-sports.io/football/teams/55.png"
+          },
+          "player": {
+            "id": 178077,
+            "name": "K. Schade"
+          },
+          "assist": {
+            "id": 106725,
+            "name": "K. Lewis-Potter"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 66,
+            "extra": null
+          },
+          "team": {
+            "id": 45,
+            "name": "Everton",
+            "logo": "https://media.api-sports.io/football/teams/45.png"
+          },
+          "player": {
+            "id": 125743,
+            "name": "Beto"
+          },
+          "assist": {
+            "id": 19187,
+            "name": "J. Grealish"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 76,
+            "extra": null
+          },
+          "team": {
+            "id": 55,
+            "name": "Brentford",
+            "logo": "https://media.api-sports.io/football/teams/55.png"
+          },
+          "player": {
+            "id": 44871,
+            "name": "A. Hickey"
+          },
+          "assist": {
+            "id": 19346,
+            "name": "R. Henry"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 77,
+            "extra": null
+          },
+          "team": {
+            "id": 45,
+            "name": "Everton",
+            "logo": "https://media.api-sports.io/football/teams/45.png"
+          },
+          "player": {
+            "id": 284500,
+            "name": "T. Iroegbunam"
+          },
+          "assist": {
+            "id": 405360,
+            "name": "H. Armstrong"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
         }
       ]
     },
@@ -245,7 +355,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 50,
+          "elapsed": 70,
           "extra": null
         }
       },
@@ -264,18 +374,18 @@
           "id": 36,
           "name": "Fulham",
           "logo": "https://media.api-sports.io/football/teams/36.png",
-          "winner": true
+          "winner": null
         },
         "away": {
           "id": 40,
           "name": "Liverpool",
           "logo": "https://media.api-sports.io/football/teams/40.png",
-          "winner": false
+          "winner": null
         }
       },
       "goals": {
         "home": 1,
-        "away": 0
+        "away": 1
       },
       "score": {
         "halftime": {
@@ -317,6 +427,28 @@
           "type": "Goal",
           "detail": "Normal Goal",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 57,
+            "extra": null
+          },
+          "team": {
+            "id": 40,
+            "name": "Liverpool",
+            "logo": "https://media.api-sports.io/football/teams/40.png"
+          },
+          "player": {
+            "id": 203224,
+            "name": "F. Wirtz"
+          },
+          "assist": {
+            "id": 180317,
+            "name": "C. Bradley"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
         }
       ]
     },
@@ -339,7 +471,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 62,
+          "elapsed": 82,
           "extra": null
         }
       },
@@ -358,17 +490,17 @@
           "id": 34,
           "name": "Newcastle",
           "logo": "https://media.api-sports.io/football/teams/34.png",
-          "winner": null
+          "winner": true
         },
         "away": {
           "id": 52,
           "name": "Crystal Palace",
           "logo": "https://media.api-sports.io/football/teams/52.png",
-          "winner": null
+          "winner": false
         }
       },
       "goals": {
-        "home": 0,
+        "home": 2,
         "away": 0
       },
       "score": {
@@ -521,6 +653,182 @@
           "type": "Card",
           "detail": "Yellow Card",
           "comments": "Tripping"
+        },
+        {
+          "time": {
+            "elapsed": 62,
+            "extra": null
+          },
+          "team": {
+            "id": 34,
+            "name": "Newcastle",
+            "logo": "https://media.api-sports.io/football/teams/34.png"
+          },
+          "player": {
+            "id": 138787,
+            "name": "A. Gordon"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Tripping"
+        },
+        {
+          "time": {
+            "elapsed": 63,
+            "extra": null
+          },
+          "team": {
+            "id": 34,
+            "name": "Newcastle",
+            "logo": "https://media.api-sports.io/football/teams/34.png"
+          },
+          "player": {
+            "id": 31146,
+            "name": "S. Tonali"
+          },
+          "assist": {
+            "id": 19192,
+            "name": "J. Ramsey"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 63,
+            "extra": null
+          },
+          "team": {
+            "id": 34,
+            "name": "Newcastle",
+            "logo": "https://media.api-sports.io/football/teams/34.png"
+          },
+          "player": {
+            "id": 284492,
+            "name": "L. Hall"
+          },
+          "assist": {
+            "id": 158694,
+            "name": "V. Livramento"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 63,
+            "extra": null
+          },
+          "team": {
+            "id": 34,
+            "name": "Newcastle",
+            "logo": "https://media.api-sports.io/football/teams/34.png"
+          },
+          "player": {
+            "id": 138787,
+            "name": "A. Gordon"
+          },
+          "assist": {
+            "id": 18778,
+            "name": "H. Barnes"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 71,
+            "extra": null
+          },
+          "team": {
+            "id": 34,
+            "name": "Newcastle",
+            "logo": "https://media.api-sports.io/football/teams/34.png"
+          },
+          "player": {
+            "id": 10135,
+            "name": "Bruno Guimaraes"
+          },
+          "assist": {
+            "id": 328105,
+            "name": "L. Miley"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 72,
+            "extra": null
+          },
+          "team": {
+            "id": 52,
+            "name": "Crystal Palace",
+            "logo": "https://media.api-sports.io/football/teams/52.png"
+          },
+          "player": {
+            "id": 129711,
+            "name": "B. Johnson"
+          },
+          "assist": {
+            "id": 403554,
+            "name": "C. Uche"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 78,
+            "extra": null
+          },
+          "team": {
+            "id": 34,
+            "name": "Newcastle",
+            "logo": "https://media.api-sports.io/football/teams/34.png"
+          },
+          "player": {
+            "id": 20649,
+            "name": "Y. Wissa"
+          },
+          "assist": {
+            "id": 158054,
+            "name": "N. Woltemade"
+          },
+          "type": "subst",
+          "detail": "Substitution 4",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 78,
+            "extra": null
+          },
+          "team": {
+            "id": 34,
+            "name": "Newcastle",
+            "logo": "https://media.api-sports.io/football/teams/34.png"
+          },
+          "player": {
+            "id": 163189,
+            "name": "M. Thiaw"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
         }
       ]
     },
@@ -543,7 +851,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 64,
+          "elapsed": 84,
           "extra": null
         }
       },
@@ -562,18 +870,18 @@
           "id": 47,
           "name": "Tottenham",
           "logo": "https://media.api-sports.io/football/teams/47.png",
-          "winner": true
+          "winner": null
         },
         "away": {
           "id": 746,
           "name": "Sunderland",
           "logo": "https://media.api-sports.io/football/teams/746.png",
-          "winner": false
+          "winner": null
         }
       },
       "goals": {
         "home": 1,
-        "away": 0
+        "away": 1
       },
       "score": {
         "halftime": {
@@ -725,6 +1033,138 @@
           "type": "Card",
           "detail": "Yellow Card",
           "comments": "Tripping"
+        },
+        {
+          "time": {
+            "elapsed": 66,
+            "extra": null
+          },
+          "team": {
+            "id": 746,
+            "name": "Sunderland",
+            "logo": "https://media.api-sports.io/football/teams/746.png"
+          },
+          "player": {
+            "id": 301771,
+            "name": "S. Adingra"
+          },
+          "assist": {
+            "id": 55904,
+            "name": "D. Ballard"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 72,
+            "extra": null
+          },
+          "team": {
+            "id": 47,
+            "name": "Tottenham",
+            "logo": "https://media.api-sports.io/football/teams/47.png"
+          },
+          "player": {
+            "id": 328089,
+            "name": "A. Gray"
+          },
+          "assist": {
+            "id": 41104,
+            "name": "J. Palhinha"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 72,
+            "extra": null
+          },
+          "team": {
+            "id": 47,
+            "name": "Tottenham",
+            "logo": "https://media.api-sports.io/football/teams/47.png"
+          },
+          "player": {
+            "id": 336564,
+            "name": "W. Odobert"
+          },
+          "assist": {
+            "id": 347316,
+            "name": "L. Bergvall"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 80,
+            "extra": null
+          },
+          "team": {
+            "id": 746,
+            "name": "Sunderland",
+            "logo": "https://media.api-sports.io/football/teams/746.png"
+          },
+          "player": {
+            "id": 38750,
+            "name": "B. Brobbey"
+          },
+          "assist": {
+            "id": 20638,
+            "name": "E. Le Fee"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 82,
+            "extra": null
+          },
+          "team": {
+            "id": 746,
+            "name": "Sunderland",
+            "logo": "https://media.api-sports.io/football/teams/746.png"
+          },
+          "player": {
+            "id": 349799,
+            "name": "E. Mayenda"
+          },
+          "assist": {
+            "id": 339201,
+            "name": "C. Rigg"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 83,
+            "extra": null
+          },
+          "team": {
+            "id": 47,
+            "name": "Tottenham",
+            "logo": "https://media.api-sports.io/football/teams/47.png"
+          },
+          "player": {
+            "id": 863,
+            "name": "R. Bentancur"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Roughing"
         }
       ]
     }
