@@ -9,7 +9,7 @@
         "timestamp": 1767529800,
         "periods": {
           "first": 1767529800,
-          "second": null
+          "second": 1767533400
         },
         "venue": {
           "id": 546,
@@ -17,10 +17,10 @@
           "city": "Leeds"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 1
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 90,
+          "extra": 5
         }
       },
       "league": {
@@ -48,8 +48,8 @@
         }
       },
       "goals": {
-        "home": 0,
-        "away": 0
+        "home": 1,
+        "away": 1
       },
       "score": {
         "halftime": {
@@ -73,7 +73,7 @@
     {
       "fixture": {
         "id": 1379166,
-        "referee": null,
+        "referee": "John Brooks, England",
         "timezone": "UTC",
         "date": "2026-01-04T15:00:00+00:00",
         "timestamp": 1767538800,
@@ -143,7 +143,7 @@
     {
       "fixture": {
         "id": 1379163,
-        "referee": null,
+        "referee": "Craig Pawson, England",
         "timezone": "UTC",
         "date": "2026-01-04T15:00:00+00:00",
         "timestamp": 1767538800,
@@ -213,7 +213,7 @@
     {
       "fixture": {
         "id": 1379162,
-        "referee": null,
+        "referee": "Anthony Taylor, England",
         "timezone": "UTC",
         "date": "2026-01-04T15:00:00+00:00",
         "timestamp": 1767538800,
@@ -283,7 +283,7 @@
     {
       "fixture": {
         "id": 1379167,
-        "referee": null,
+        "referee": "Stuart Attwell, England",
         "timezone": "UTC",
         "date": "2026-01-04T15:00:00+00:00",
         "timestamp": 1767538800,
