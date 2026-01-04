@@ -58,6 +58,51 @@
             {
               "rank": 2,
               "team": {
+                "id": 50,
+                "name": "Manchester City",
+                "logo": "https://media.api-sports.io/football/teams/50.png"
+              },
+              "points": 42,
+              "goalsDiff": 26,
+              "group": "Premier League",
+              "form": "DDWWW",
+              "status": "same",
+              "description": "Promotion - Champions League (League phase)",
+              "all": {
+                "played": 20,
+                "win": 13,
+                "draw": 3,
+                "lose": 4,
+                "goals": {
+                  "for": 44,
+                  "against": 18
+                }
+              },
+              "home": {
+                "played": 10,
+                "win": 8,
+                "draw": 1,
+                "lose": 1,
+                "goals": {
+                  "for": 26,
+                  "against": 7
+                }
+              },
+              "away": {
+                "played": 10,
+                "win": 5,
+                "draw": 2,
+                "lose": 3,
+                "goals": {
+                  "for": 18,
+                  "against": 11
+                }
+              },
+              "update": "2026-01-04T00:00:00+00:00"
+            },
+            {
+              "rank": 3,
+              "team": {
                 "id": 66,
                 "name": "Aston Villa",
                 "logo": "https://media.api-sports.io/football/teams/66.png"
@@ -96,51 +141,6 @@
                 "goals": {
                   "for": 15,
                   "against": 16
-                }
-              },
-              "update": "2026-01-04T00:00:00+00:00"
-            },
-            {
-              "rank": 3,
-              "team": {
-                "id": 50,
-                "name": "Manchester City",
-                "logo": "https://media.api-sports.io/football/teams/50.png"
-              },
-              "points": 41,
-              "goalsDiff": 26,
-              "group": "Premier League",
-              "form": "DWWWW",
-              "status": "same",
-              "description": "Promotion - Champions League (League phase)",
-              "all": {
-                "played": 19,
-                "win": 13,
-                "draw": 2,
-                "lose": 4,
-                "goals": {
-                  "for": 43,
-                  "against": 17
-                }
-              },
-              "home": {
-                "played": 9,
-                "win": 8,
-                "draw": 0,
-                "lose": 1,
-                "goals": {
-                  "for": 25,
-                  "against": 6
-                }
-              },
-              "away": {
-                "played": 10,
-                "win": 5,
-                "draw": 2,
-                "lose": 3,
-                "goals": {
-                  "for": 18,
-                  "against": 11
                 }
               },
               "update": "2026-01-04T00:00:00+00:00"
@@ -193,6 +193,51 @@
             {
               "rank": 5,
               "team": {
+                "id": 49,
+                "name": "Chelsea",
+                "logo": "https://media.api-sports.io/football/teams/49.png"
+              },
+              "points": 31,
+              "goalsDiff": 11,
+              "group": "Premier League",
+              "form": "DDLDW",
+              "status": "same",
+              "description": "Promotion - Europa League (League phase)",
+              "all": {
+                "played": 20,
+                "win": 8,
+                "draw": 7,
+                "lose": 5,
+                "goals": {
+                  "for": 33,
+                  "against": 22
+                }
+              },
+              "home": {
+                "played": 10,
+                "win": 4,
+                "draw": 3,
+                "lose": 3,
+                "goals": {
+                  "for": 15,
+                  "against": 11
+                }
+              },
+              "away": {
+                "played": 10,
+                "win": 4,
+                "draw": 4,
+                "lose": 2,
+                "goals": {
+                  "for": 18,
+                  "against": 11
+                }
+              },
+              "update": "2026-01-04T00:00:00+00:00"
+            },
+            {
+              "rank": 6,
+              "team": {
                 "id": 33,
                 "name": "Manchester United",
                 "logo": "https://media.api-sports.io/football/teams/33.png"
@@ -202,7 +247,7 @@
               "group": "Premier League",
               "form": "DDWLD",
               "status": "same",
-              "description": "Promotion - Europa League (League phase)",
+              "description": null,
               "all": {
                 "played": 20,
                 "win": 8,
@@ -231,51 +276,6 @@
                 "goals": {
                   "for": 16,
                   "against": 17
-                }
-              },
-              "update": "2026-01-04T00:00:00+00:00"
-            },
-            {
-              "rank": 6,
-              "team": {
-                "id": 49,
-                "name": "Chelsea",
-                "logo": "https://media.api-sports.io/football/teams/49.png"
-              },
-              "points": 30,
-              "goalsDiff": 11,
-              "group": "Premier League",
-              "form": "DLDWD",
-              "status": "same",
-              "description": null,
-              "all": {
-                "played": 19,
-                "win": 8,
-                "draw": 6,
-                "lose": 5,
-                "goals": {
-                  "for": 32,
-                  "against": 21
-                }
-              },
-              "home": {
-                "played": 10,
-                "win": 4,
-                "draw": 3,
-                "lose": 3,
-                "goals": {
-                  "for": 15,
-                  "against": 11
-                }
-              },
-              "away": {
-                "played": 9,
-                "win": 4,
-                "draw": 3,
-                "lose": 2,
-                "goals": {
-                  "for": 17,
-                  "against": 10
                 }
               },
               "update": "2026-01-04T00:00:00+00:00"
