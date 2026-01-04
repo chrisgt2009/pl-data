@@ -19,7 +19,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 39,
+          "elapsed": 45,
           "extra": null
         }
       },
@@ -113,6 +113,28 @@
           "type": "Card",
           "detail": "Yellow Card",
           "comments": "Roughing"
+        },
+        {
+          "time": {
+            "elapsed": 39,
+            "extra": null
+          },
+          "team": {
+            "id": 55,
+            "name": "Brentford",
+            "logo": "https://media.api-sports.io/football/teams/55.png"
+          },
+          "player": {
+            "id": 342022,
+            "name": "M. Kayode"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Tripping"
         }
       ]
     },
@@ -135,7 +157,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 25,
+          "elapsed": 33,
           "extra": null
         }
       },
@@ -229,8 +251,8 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 40,
-          "extra": null
+          "elapsed": 45,
+          "extra": 2
         }
       },
       "league": {
@@ -367,8 +389,8 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 41,
-          "extra": null
+          "elapsed": 45,
+          "extra": 2
         }
       },
       "league": {
