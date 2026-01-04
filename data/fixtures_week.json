@@ -3,12 +3,12 @@
     {
       "fixture": {
         "id": 1379164,
-        "referee": null,
+        "referee": "Jarred Gillett, Australia",
         "timezone": "UTC",
         "date": "2026-01-04T12:30:00+00:00",
         "timestamp": 1767529800,
         "periods": {
-          "first": null,
+          "first": 1767529800,
           "second": null
         },
         "venue": {
@@ -17,9 +17,9 @@
           "city": "Leeds"
         },
         "status": {
-          "long": "Not Started",
-          "short": "NS",
-          "elapsed": null,
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 18,
           "extra": null
         }
       },
@@ -48,13 +48,13 @@
         }
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       },
       "score": {
         "halftime": {
-          "home": null,
-          "away": null
+          "home": 0,
+          "away": 0
         },
         "fulltime": {
           "home": null,
