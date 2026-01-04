@@ -9,7 +9,7 @@
         "timestamp": 1767547800,
         "periods": {
           "first": 1767547800,
-          "second": null
+          "second": 1767551400
         },
         "venue": {
           "id": 555,
@@ -17,10 +17,10 @@
           "city": "Manchester"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 3
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 87,
+          "extra": null
         }
       },
       "league": {
