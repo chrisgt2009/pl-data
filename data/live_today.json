@@ -19,8 +19,8 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 73,
-          "extra": null
+          "elapsed": 90,
+          "extra": 1
         }
       },
       "league": {
@@ -156,6 +156,94 @@
           },
           "type": "Goal",
           "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 75,
+            "extra": null
+          },
+          "team": {
+            "id": 63,
+            "name": "Leeds",
+            "logo": "https://media.api-sports.io/football/teams/63.png"
+          },
+          "player": {
+            "id": 48389,
+            "name": "N. Okafor"
+          },
+          "assist": {
+            "id": 19461,
+            "name": "L. Nmecha"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 80,
+            "extra": null
+          },
+          "team": {
+            "id": 63,
+            "name": "Leeds",
+            "logo": "https://media.api-sports.io/football/teams/63.png"
+          },
+          "player": {
+            "id": 129142,
+            "name": "I. Gruev"
+          },
+          "assist": {
+            "id": 32966,
+            "name": "A. Tanaka"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 80,
+            "extra": null
+          },
+          "team": {
+            "id": 63,
+            "name": "Leeds",
+            "logo": "https://media.api-sports.io/football/teams/63.png"
+          },
+          "player": {
+            "id": 1408,
+            "name": "S. Bornauw"
+          },
+          "assist": {
+            "id": 162128,
+            "name": "W. Gnonto"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 87,
+            "extra": null
+          },
+          "team": {
+            "id": 63,
+            "name": "Leeds",
+            "logo": "https://media.api-sports.io/football/teams/63.png"
+          },
+          "player": {
+            "id": 50739,
+            "name": "B. Aaronson"
+          },
+          "assist": {
+            "id": 250,
+            "name": "J. Piroe"
+          },
+          "type": "subst",
+          "detail": "Substitution 4",
           "comments": null
         }
       ]
