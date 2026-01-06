@@ -19,8 +19,8 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 78,
-          "extra": null
+          "elapsed": 90,
+          "extra": 1
         }
       },
       "league": {
@@ -38,18 +38,18 @@
           "id": 48,
           "name": "West Ham",
           "logo": "https://media.api-sports.io/football/teams/48.png",
-          "winner": null
+          "winner": false
         },
         "away": {
           "id": 65,
           "name": "Nottingham Forest",
           "logo": "https://media.api-sports.io/football/teams/65.png",
-          "winner": null
+          "winner": true
         }
       },
       "goals": {
         "home": 1,
-        "away": 1
+        "away": 2
       },
       "score": {
         "halftime": {
@@ -244,6 +244,50 @@
           },
           "type": "Card",
           "detail": "Yellow Card",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 80,
+            "extra": null
+          },
+          "team": {
+            "id": 48,
+            "name": "West Ham",
+            "logo": "https://media.api-sports.io/football/teams/48.png"
+          },
+          "player": {
+            "id": 336585,
+            "name": "M. Fernandes"
+          },
+          "assist": {
+            "id": 284446,
+            "name": "F. Potts"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 89,
+            "extra": null
+          },
+          "team": {
+            "id": 65,
+            "name": "Nottingham Forest",
+            "logo": "https://media.api-sports.io/football/teams/65.png"
+          },
+          "player": {
+            "id": 18746,
+            "name": "M. Gibbs-White"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Goal",
+          "detail": "Penalty",
           "comments": null
         }
       ]
