@@ -1,10 +1,8 @@
 {
   "get": "drivers",
-  "parameters": {
-    "season": "2024"
-  },
+  "parameters": [],
   "errors": {
-    "season": "The Season field do not exist."
+    "parameter": "This endpoint require at least one parameter"
   },
   "results": 0,
   "response": []
