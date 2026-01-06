@@ -1,0 +1,9 @@
+{
+  "get": "drivers",
+  "parameters": [],
+  "errors": {
+    "parameter": "This endpoint require at least one parameter"
+  },
+  "results": 0,
+  "response": []
+}
