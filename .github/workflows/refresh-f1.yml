@@ -1,0 +1,51 @@
+name: Refresh F1 (2024)
+
+on:
+  workflow_dispatch:
+  schedule:
+    # daily at 03:15 UTC (adjust as you like)
+    - cron: "15 3 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  refresh-f1-2024:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Pull F1 data (2024)
+        env:
+          APISPORTS_KEY: ${{ secrets.APISPORTS_KEY }}
+          # If you ever use RapidAPI instead, set these secrets and uncomment:
+          # RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          # RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
+
+          F1_BASE_URL: "https://v1.formula-1.api-sports.io"
+          F1_SEASON: "2024"
+          F1_OUT_DIR: "data/f1/2024"
+        run: |
+          python scripts/f1/pull_f1.py
+
+      - name: Commit changes (if any)
+        run: |
+          git status --porcelain
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No changes."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add data/f1/2024
+          git commit -m "Refresh F1 data (2024)"
+          git push
