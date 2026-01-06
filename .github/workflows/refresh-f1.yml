@@ -21,13 +21,21 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
       - name: Pull F1 data (2024 + meta)
         env:
-          APISPORTS_KEY: ${{ secrets.APISPORTS_KEY }}
-          # If you ever use RapidAPI instead, set these secrets and uncomment:
+          # RapidAPI (recommended for your setup)
           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          # IMPORTANT: This is the RapidAPI host for the API you subscribed to.
+          # Most commonly for this API it is:
+          #   v1-formula-1-api-sports.p.rapidapi.com
           RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
-          
+
+          # Base URL stays the same
           F1_BASE_URL: "https://v1.formula-1.api-sports.io"
           F1_SEASON: "2024"
           F1_OUT_DIR: "data/f1/2024"
