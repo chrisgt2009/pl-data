@@ -8,7 +8,7 @@
         "date": "2026-01-06T20:00:00+00:00",
         "timestamp": 1767729600,
         "periods": {
-          "first": null,
+          "first": 1767729600,
           "second": null
         },
         "venue": {
@@ -17,9 +17,9 @@
           "city": "London"
         },
         "status": {
-          "long": "Not Started",
-          "short": "NS",
-          "elapsed": null,
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 28,
           "extra": null
         }
       },
@@ -38,23 +38,23 @@
           "id": 48,
           "name": "West Ham",
           "logo": "https://media.api-sports.io/football/teams/48.png",
-          "winner": null
+          "winner": true
         },
         "away": {
           "id": 65,
           "name": "Nottingham Forest",
           "logo": "https://media.api-sports.io/football/teams/65.png",
-          "winner": null
+          "winner": false
         }
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 1,
+        "away": 0
       },
       "score": {
         "halftime": {
-          "home": null,
-          "away": null
+          "home": 1,
+          "away": 0
         },
         "fulltime": {
           "home": null,
