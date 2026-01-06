@@ -1,0 +1,11 @@
+{
+  "get": "teams",
+  "parameters": {
+    "season": "2024"
+  },
+  "errors": {
+    "season": "The Season field do not exist."
+  },
+  "results": 0,
+  "response": []
+}
