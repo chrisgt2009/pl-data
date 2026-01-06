@@ -8,25 +8,50 @@ from urllib.parse import urlencode
 import requests
 
 BASE_URL = os.getenv("F1_BASE_URL", "https://v1.formula-1.api-sports.io")
-API_KEY = os.getenv("APISPORTS_KEY") or os.getenv("F1_API_KEY")
 YEAR = os.getenv("F1_SEASON", "2024")
 OUT_DIR = Path(os.getenv("F1_OUT_DIR", f"data/f1/{YEAR}"))
 
+# --- Auth (supports both API-Sports direct + RapidAPI) ---
+APISPORTS_KEY = os.getenv("APISPORTS_KEY") or os.getenv("F1_API_KEY")
+RAPIDAPI_KEY = os.getenv("RAPIDAPI_KEY")
+RAPIDAPI_HOST = os.getenv("RAPIDAPI_HOST")  # e.g. v1.formula-1.api-sports.io
+
+USING_RAPID = bool(RAPIDAPI_KEY)
+
 # Optional: if you later want race result files per race id
 ENABLE_RACE_RESULTS = os.getenv("F1_ENABLE_RACE_RESULTS", "false").lower() == "true"
-RACE_RESULTS_GET = os.getenv("F1_RACE_RESULTS_GET", "races/results")  # change if your API uses a different path
-RACE_RESULTS_PARAM = os.getenv("F1_RACE_RESULTS_PARAM", "race")       # usually "race" or "id"
+RACE_RESULTS_GET = os.getenv("F1_RACE_RESULTS_GET", "races/results")
+RACE_RESULTS_PARAM = os.getenv("F1_RACE_RESULTS_PARAM", "race")
 
-if not API_KEY:
-    print("ERROR: Missing API key. Set APISPORTS_KEY (recommended) or F1_API_KEY in env.", file=sys.stderr)
+if not APISPORTS_KEY and not RAPIDAPI_KEY:
+    print(
+        "ERROR: Missing API key. Set APISPORTS_KEY (API-Sports) OR RAPIDAPI_KEY (RapidAPI).",
+        file=sys.stderr,
+    )
     sys.exit(1)
 
-HEADERS = {
-    # API-Sports accepts this header on direct domain
-    "x-apisports-key": API_KEY,
-    # Some setups also work with these (harmless if ignored)
-    "x-rapidapi-key": API_KEY,
-}
+if USING_RAPID and not RAPIDAPI_HOST:
+    print(
+        "ERROR: RAPIDAPI_HOST is missing. Example: v1.formula-1.api-sports.io",
+        file=sys.stderr,
+    )
+    sys.exit(1)
+
+def build_headers() -> dict:
+    """
+    API-Sports direct: x-apisports-key
+    RapidAPI: x-rapidapi-key + x-rapidapi-host
+    """
+    if USING_RAPID:
+        return {
+            "x-rapidapi-key": RAPIDAPI_KEY,
+            "x-rapidapi-host": RAPIDAPI_HOST,
+        }
+    return {
+        "x-apisports-key": APISPORTS_KEY,
+    }
+
+HEADERS = build_headers()
 
 def ensure_dir(p: Path) -> None:
     p.mkdir(parents=True, exist_ok=True)
@@ -38,14 +63,21 @@ def fetch_json(get_name: str, params: dict | None = None) -> dict:
         url = f"{url}?{urlencode(params)}"
 
     r = requests.get(url, headers=HEADERS, timeout=45)
+
     try:
         payload = r.json()
     except Exception:
-        print(f"ERROR: Non-JSON response from {url}. Status={r.status_code}\n{r.text[:500]}", file=sys.stderr)
+        print(
+            f"ERROR: Non-JSON response from {url}. Status={r.status_code}\n{r.text[:500]}",
+            file=sys.stderr,
+        )
         raise
 
     if r.status_code >= 400:
-        print(f"ERROR: HTTP {r.status_code} for {url}\n{json.dumps(payload, indent=2)[:1500]}", file=sys.stderr)
+        print(
+            f"ERROR: HTTP {r.status_code} for {url}\n{json.dumps(payload, indent=2)[:1500]}",
+            file=sys.stderr,
+        )
         raise RuntimeError(f"HTTP {r.status_code}")
 
     return payload
@@ -79,11 +111,11 @@ def fetch_driver_ids_from_rankings(rankings_payload: dict) -> list[int]:
 def fetch_drivers_by_ids(driver_ids: list[int]) -> dict:
     """
     drivers endpoint requires at least one parameter.
-    We call drivers?id=<id> for each driver id and combine responses.
+    We'll call drivers?id=<id> for each driver id and combine responses.
     """
     out = {
         "get": "drivers",
-        "parameters": {"season_source": YEAR, "ids": driver_ids},
+        "parameters": {"ids": driver_ids, "season_source": YEAR},
         "errors": {},
         "results": 0,
         "response": []
@@ -106,22 +138,19 @@ def fetch_drivers_by_ids(driver_ids: list[int]) -> dict:
 def main() -> None:
     ensure_dir(OUT_DIR)
 
-    # Your confirmed behaviour:
+    # Confirmed behaviour:
     # - teams supports season ✅
     # - circuits supports season ✅
-    # - drivers does NOT accept season, and requires at least one parameter ❌
-    #   => build drivers.json using drivers?id=... from standings driver ids
+    # - drivers requires at least one parameter (no season alone) ❌
+    #   => build drivers.json via standings driver ids
 
     jobs = [
-        # meta: list of available seasons (no season param)
         ("seasons", {}, OUT_DIR / "season.json"),
 
-        # season-specific
         ("races", {"season": YEAR}, OUT_DIR / "races.json"),
         ("rankings/drivers", {"season": YEAR}, OUT_DIR / "standings_drivers.json"),
         ("rankings/teams", {"season": YEAR}, OUT_DIR / "standings_teams.json"),
 
-        # season-specific (as per your confirmation)
         ("circuits", {"season": YEAR}, OUT_DIR / "circuits.json"),
         ("teams", {"season": YEAR}, OUT_DIR / "teams.json"),
     ]
@@ -147,13 +176,19 @@ def main() -> None:
         print("⚠️ No driver ids found in standings_drivers.json; writing empty drivers.json with error note")
         write_json(
             OUT_DIR / "drivers.json",
-            {"get": "drivers", "parameters": {}, "errors": {"ids": "No ids found from rankings/drivers"}, "results": 0, "response": []}
+            {
+                "get": "drivers",
+                "parameters": {},
+                "errors": {"ids": "No ids found from rankings/drivers"},
+                "results": 0,
+                "response": []
+            }
         )
     else:
         drivers_payload = fetch_drivers_by_ids(driver_ids)
         write_json(OUT_DIR / "drivers.json", drivers_payload)
 
-    # Optional: race_results per race id (only enable once you confirm endpoint name)
+    # Optional: race_results per race id
     if ENABLE_RACE_RESULTS:
         try:
             races_payload = json.loads((OUT_DIR / "races.json").read_text(encoding="utf-8"))
