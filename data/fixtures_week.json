@@ -17,10 +17,10 @@
           "city": "London"
         },
         "status": {
-          "long": "Second Half",
-          "short": "2H",
-          "elapsed": 67,
-          "extra": null
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
+          "extra": 8
         }
       },
       "league": {
@@ -38,18 +38,18 @@
           "id": 48,
           "name": "West Ham",
           "logo": "https://media.api-sports.io/football/teams/48.png",
-          "winner": null
+          "winner": false
         },
         "away": {
           "id": 65,
           "name": "Nottingham Forest",
           "logo": "https://media.api-sports.io/football/teams/65.png",
-          "winner": null
+          "winner": true
         }
       },
       "goals": {
         "home": 1,
-        "away": 1
+        "away": 2
       },
       "score": {
         "halftime": {
@@ -57,8 +57,8 @@
           "away": 0
         },
         "fulltime": {
-          "home": null,
-          "away": null
+          "home": 1,
+          "away": 2
         },
         "extratime": {
           "home": null,
