@@ -24,6 +24,10 @@ jobs:
       - name: Pull F1 data (2024 + meta)
         env:
           APISPORTS_KEY: ${{ secrets.APISPORTS_KEY }}
+          # If you ever use RapidAPI instead, set these secrets and uncomment:
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
+          
           F1_BASE_URL: "https://v1.formula-1.api-sports.io"
           F1_SEASON: "2024"
           F1_OUT_DIR: "data/f1/2024"
