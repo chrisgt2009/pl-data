@@ -19,7 +19,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 82,
+          "elapsed": 85,
           "extra": null
         }
       },
@@ -89,7 +89,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 78,
+          "elapsed": 81,
           "extra": null
         }
       },
@@ -108,17 +108,17 @@
           "id": 36,
           "name": "Fulham",
           "logo": "https://media.api-sports.io/football/teams/36.png",
-          "winner": null
+          "winner": true
         },
         "away": {
           "id": 49,
           "name": "Chelsea",
           "logo": "https://media.api-sports.io/football/teams/49.png",
-          "winner": null
+          "winner": false
         }
       },
       "goals": {
-        "home": 1,
+        "home": 2,
         "away": 1
       },
       "score": {
@@ -159,7 +159,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 83,
+          "elapsed": 87,
           "extra": null
         }
       },
@@ -229,7 +229,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 81,
+          "elapsed": 85,
           "extra": null
         }
       },
@@ -299,7 +299,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 82,
+          "elapsed": 85,
           "extra": null
         }
       },
@@ -369,7 +369,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 84,
+          "elapsed": 87,
           "extra": null
         }
       },
