@@ -19,7 +19,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 28,
+          "elapsed": 32,
           "extra": null
         }
       },
@@ -113,7 +113,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 29,
+          "elapsed": 33,
           "extra": null
         }
       },
@@ -132,23 +132,23 @@
           "id": 34,
           "name": "Newcastle",
           "logo": "https://media.api-sports.io/football/teams/34.png",
-          "winner": null
+          "winner": false
         },
         "away": {
           "id": 63,
           "name": "Leeds",
           "logo": "https://media.api-sports.io/football/teams/63.png",
-          "winner": null
+          "winner": true
         }
       },
       "goals": {
         "home": 0,
-        "away": 0
+        "away": 1
       },
       "score": {
         "halftime": {
           "home": 0,
-          "away": 0
+          "away": 1
         },
         "fulltime": {
           "home": null,
@@ -207,6 +207,28 @@
           "type": "Card",
           "detail": "Yellow Card",
           "comments": "Holding"
+        },
+        {
+          "time": {
+            "elapsed": 32,
+            "extra": null
+          },
+          "team": {
+            "id": 63,
+            "name": "Leeds",
+            "logo": "https://media.api-sports.io/football/teams/63.png"
+          },
+          "player": {
+            "id": 50739,
+            "name": "B. Aaronson"
+          },
+          "assist": {
+            "id": 18766,
+            "name": "D. Calvert-Lewin"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
         }
       ]
     },
@@ -229,7 +251,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 54,
+          "elapsed": 59,
           "extra": null
         }
       },
@@ -389,6 +411,28 @@
           "type": "Card",
           "detail": "Yellow Card",
           "comments": "Foul"
+        },
+        {
+          "time": {
+            "elapsed": 57,
+            "extra": null
+          },
+          "team": {
+            "id": 47,
+            "name": "Tottenham",
+            "logo": "https://media.api-sports.io/football/teams/47.png"
+          },
+          "player": {
+            "id": 347316,
+            "name": "L. Bergvall"
+          },
+          "assist": {
+            "id": 336564,
+            "name": "W. Odobert"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
         }
       ]
     },
@@ -411,7 +455,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 57,
+          "elapsed": 61,
           "extra": null
         }
       },
@@ -539,12 +583,12 @@
             "logo": "https://media.api-sports.io/football/teams/746.png"
           },
           "player": {
-            "id": 301771,
-            "name": "S. Adingra"
+            "id": 339201,
+            "name": "C. Rigg"
           },
           "assist": {
-            "id": 284414,
-            "name": "R. Mundle"
+            "id": 349799,
+            "name": "E. Mayenda"
           },
           "type": "subst",
           "detail": "Substitution 1",
@@ -561,15 +605,37 @@
             "logo": "https://media.api-sports.io/football/teams/746.png"
           },
           "player": {
-            "id": 339201,
-            "name": "C. Rigg"
+            "id": 301771,
+            "name": "S. Adingra"
           },
           "assist": {
-            "id": 349799,
-            "name": "E. Mayenda"
+            "id": 284414,
+            "name": "R. Mundle"
           },
           "type": "subst",
           "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 60,
+            "extra": null
+          },
+          "team": {
+            "id": 746,
+            "name": "Sunderland",
+            "logo": "https://media.api-sports.io/football/teams/746.png"
+          },
+          "player": {
+            "id": 20638,
+            "name": "E. Le Fee"
+          },
+          "assist": {
+            "id": 20638,
+            "name": "E. Le Fee"
+          },
+          "type": "Goal",
+          "detail": "Missed Penalty",
           "comments": null
         }
       ]
@@ -593,7 +659,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 55,
+          "elapsed": 59,
           "extra": null
         }
       },
@@ -687,7 +753,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 56,
+          "elapsed": 60,
           "extra": null
         }
       },
@@ -803,6 +869,28 @@
           "type": "subst",
           "detail": "Substitution 1",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 57,
+            "extra": null
+          },
+          "team": {
+            "id": 39,
+            "name": "Wolves",
+            "logo": "https://media.api-sports.io/football/teams/39.png"
+          },
+          "player": {
+            "id": 195717,
+            "name": "Y. Mosquera"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Unsportsmanlike conduct"
         }
       ]
     },
@@ -825,7 +913,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 51,
+          "elapsed": 55,
           "extra": null
         }
       },
@@ -931,8 +1019,8 @@
             "logo": "https://media.api-sports.io/football/teams/49.png"
           },
           "player": {
-            "id": 19145,
-            "name": "T. Adarabioyo"
+            "id": 152982,
+            "name": "C. Palmer"
           },
           "assist": {
             "id": null,
@@ -953,8 +1041,8 @@
             "logo": "https://media.api-sports.io/football/teams/49.png"
           },
           "player": {
-            "id": 152982,
-            "name": "C. Palmer"
+            "id": 19145,
+            "name": "T. Adarabioyo"
           },
           "assist": {
             "id": null,
@@ -984,7 +1072,7 @@
           },
           "type": "Card",
           "detail": "Yellow Card",
-          "comments": "Unsportsmanlike conduct"
+          "comments": null
         },
         {
           "time": {
@@ -1095,7 +1183,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 54,
+          "elapsed": 58,
           "extra": null
         }
       },
@@ -1214,7 +1302,7 @@
         },
         {
           "time": {
-            "elapsed": 54,
+            "elapsed": 53,
             "extra": null
           },
           "team": {
@@ -1232,7 +1320,7 @@
           },
           "type": "Card",
           "detail": "Yellow Card",
-          "comments": null
+          "comments": "Holding"
         }
       ]
     }
