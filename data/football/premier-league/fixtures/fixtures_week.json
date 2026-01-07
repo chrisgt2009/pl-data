@@ -3,7 +3,7 @@
     {
       "fixture": {
         "id": 1379170,
-        "referee": null,
+        "referee": "Darren England, England",
         "timezone": "UTC",
         "date": "2026-01-07T19:30:00+00:00",
         "timestamp": 1767814200,
@@ -73,7 +73,7 @@
     {
       "fixture": {
         "id": 1379175,
-        "referee": null,
+        "referee": "Peter Bankes, England",
         "timezone": "UTC",
         "date": "2026-01-07T19:30:00+00:00",
         "timestamp": 1767814200,
@@ -143,7 +143,7 @@
     {
       "fixture": {
         "id": 1379174,
-        "referee": null,
+        "referee": "Thomas Kirk, England",
         "timezone": "UTC",
         "date": "2026-01-07T19:30:00+00:00",
         "timestamp": 1767814200,
@@ -213,7 +213,7 @@
     {
       "fixture": {
         "id": 1379176,
-        "referee": null,
+        "referee": "Thomas Bramall, England",
         "timezone": "UTC",
         "date": "2026-01-07T19:30:00+00:00",
         "timestamp": 1767814200,
@@ -283,7 +283,7 @@
     {
       "fixture": {
         "id": 1379173,
-        "referee": null,
+        "referee": "Andy Madley, England",
         "timezone": "UTC",
         "date": "2026-01-07T19:30:00+00:00",
         "timestamp": 1767814200,
@@ -353,7 +353,7 @@
     {
       "fixture": {
         "id": 1379171,
-        "referee": null,
+        "referee": "Matt Donohue, England",
         "timezone": "UTC",
         "date": "2026-01-07T19:30:00+00:00",
         "timestamp": 1767814200,
