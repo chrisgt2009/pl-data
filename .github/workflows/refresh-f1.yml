@@ -36,8 +36,8 @@ jobs:
           F1_BASE_URL: "https://v1.formula-1.api-sports.io"
 
           # Output location
-          F1_SEASON: "2024"
-          F1_OUT_DIR: "data/f1/2024"
+          F1_SEASON: "2012"
+          F1_OUT_DIR: "data/f1/2012"
 
           # Optional (leave false unless you want per-race files)
           F1_ENABLE_RACE_RESULTS: "false"
