@@ -9,7 +9,7 @@
         "timestamp": 1767814200,
         "periods": {
           "first": 1767814200,
-          "second": null
+          "second": 1767817800
         },
         "venue": {
           "id": 504,
@@ -17,10 +17,10 @@
           "city": "Bournemouth"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 5
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 82,
+          "extra": null
         }
       },
       "league": {
@@ -38,18 +38,18 @@
           "id": 35,
           "name": "Bournemouth",
           "logo": "https://media.api-sports.io/football/teams/35.png",
-          "winner": true
+          "winner": null
         },
         "away": {
           "id": 47,
           "name": "Tottenham",
           "logo": "https://media.api-sports.io/football/teams/47.png",
-          "winner": false
+          "winner": null
         }
       },
       "goals": {
         "home": 2,
-        "away": 1
+        "away": 2
       },
       "score": {
         "halftime": {
@@ -79,7 +79,7 @@
         "timestamp": 1767814200,
         "periods": {
           "first": 1767814200,
-          "second": null
+          "second": 1767817800
         },
         "venue": {
           "id": 535,
@@ -87,10 +87,10 @@
           "city": "London"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 7
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 78,
+          "extra": null
         }
       },
       "league": {
@@ -118,8 +118,8 @@
         }
       },
       "goals": {
-        "home": 0,
-        "away": 0
+        "home": 1,
+        "away": 1
       },
       "score": {
         "halftime": {
@@ -149,7 +149,7 @@
         "timestamp": 1767814200,
         "periods": {
           "first": 1767814200,
-          "second": null
+          "second": 1767817800
         },
         "venue": {
           "id": 22033,
@@ -157,10 +157,10 @@
           "city": "Liverpool"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 2
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 83,
+          "extra": null
         }
       },
       "league": {
@@ -178,18 +178,18 @@
           "id": 45,
           "name": "Everton",
           "logo": "https://media.api-sports.io/football/teams/45.png",
-          "winner": true
+          "winner": null
         },
         "away": {
           "id": 39,
           "name": "Wolves",
           "logo": "https://media.api-sports.io/football/teams/39.png",
-          "winner": false
+          "winner": null
         }
       },
       "goals": {
         "home": 1,
-        "away": 0
+        "away": 1
       },
       "score": {
         "halftime": {
@@ -219,7 +219,7 @@
         "timestamp": 1767814200,
         "periods": {
           "first": 1767814200,
-          "second": null
+          "second": 1767817800
         },
         "venue": {
           "id": 555,
@@ -227,10 +227,10 @@
           "city": "Manchester"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 5
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 81,
+          "extra": null
         }
       },
       "league": {
@@ -248,18 +248,18 @@
           "id": 50,
           "name": "Manchester City",
           "logo": "https://media.api-sports.io/football/teams/50.png",
-          "winner": true
+          "winner": null
         },
         "away": {
           "id": 51,
           "name": "Brighton",
           "logo": "https://media.api-sports.io/football/teams/51.png",
-          "winner": false
+          "winner": null
         }
       },
       "goals": {
         "home": 1,
-        "away": 0
+        "away": 1
       },
       "score": {
         "halftime": {
@@ -289,7 +289,7 @@
         "timestamp": 1767814200,
         "periods": {
           "first": 1767814200,
-          "second": null
+          "second": 1767817800
         },
         "venue": {
           "id": 525,
@@ -297,10 +297,10 @@
           "city": "London"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 1
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 82,
+          "extra": null
         }
       },
       "league": {
@@ -359,7 +359,7 @@
         "timestamp": 1767814200,
         "periods": {
           "first": 1767814200,
-          "second": null
+          "second": 1767817800
         },
         "venue": {
           "id": 10503,
@@ -367,10 +367,10 @@
           "city": "London"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 2
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 84,
+          "extra": null
         }
       },
       "league": {
@@ -398,7 +398,7 @@
         }
       },
       "goals": {
-        "home": 1,
+        "home": 3,
         "away": 0
       },
       "score": {
@@ -437,10 +437,10 @@
           "city": "Newcastle"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 15,
-          "extra": null
+          "long": "Halftime",
+          "short": "HT",
+          "elapsed": 45,
+          "extra": 8
         }
       },
       "league": {
@@ -458,23 +458,23 @@
           "id": 34,
           "name": "Newcastle",
           "logo": "https://media.api-sports.io/football/teams/34.png",
-          "winner": null
+          "winner": false
         },
         "away": {
           "id": 63,
           "name": "Leeds",
           "logo": "https://media.api-sports.io/football/teams/63.png",
-          "winner": null
+          "winner": true
         }
       },
       "goals": {
-        "home": 0,
-        "away": 0
+        "home": 1,
+        "away": 2
       },
       "score": {
         "halftime": {
-          "home": 0,
-          "away": 0
+          "home": 1,
+          "away": 2
         },
         "fulltime": {
           "home": null,
@@ -507,10 +507,10 @@
           "city": "Burnley"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 15,
-          "extra": null
+          "long": "Halftime",
+          "short": "HT",
+          "elapsed": 45,
+          "extra": 3
         }
       },
       "league": {
