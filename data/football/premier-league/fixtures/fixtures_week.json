@@ -19,8 +19,8 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 85,
-          "extra": null
+          "elapsed": 90,
+          "extra": 6
         }
       },
       "league": {
@@ -38,17 +38,17 @@
           "id": 35,
           "name": "Bournemouth",
           "logo": "https://media.api-sports.io/football/teams/35.png",
-          "winner": null
+          "winner": true
         },
         "away": {
           "id": 47,
           "name": "Tottenham",
           "logo": "https://media.api-sports.io/football/teams/47.png",
-          "winner": null
+          "winner": false
         }
       },
       "goals": {
-        "home": 2,
+        "home": 3,
         "away": 2
       },
       "score": {
@@ -89,8 +89,8 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 81,
-          "extra": null
+          "elapsed": 90,
+          "extra": 2
         }
       },
       "league": {
@@ -159,8 +159,8 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 87,
-          "extra": null
+          "elapsed": 90,
+          "extra": 8
         }
       },
       "league": {
@@ -229,8 +229,8 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 85,
-          "extra": null
+          "elapsed": 90,
+          "extra": 5
         }
       },
       "league": {
@@ -282,146 +282,6 @@
     },
     {
       "fixture": {
-        "id": 1379173,
-        "referee": "Andy Madley, England",
-        "timezone": "UTC",
-        "date": "2026-01-07T19:30:00+00:00",
-        "timestamp": 1767814200,
-        "periods": {
-          "first": 1767814200,
-          "second": 1767817800
-        },
-        "venue": {
-          "id": 525,
-          "name": "Selhurst Park",
-          "city": "London"
-        },
-        "status": {
-          "long": "Second Half",
-          "short": "2H",
-          "elapsed": 85,
-          "extra": null
-        }
-      },
-      "league": {
-        "id": 39,
-        "name": "Premier League",
-        "country": "England",
-        "logo": "https://media.api-sports.io/football/leagues/39.png",
-        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-        "season": 2025,
-        "round": "Regular Season - 21",
-        "standings": true
-      },
-      "teams": {
-        "home": {
-          "id": 52,
-          "name": "Crystal Palace",
-          "logo": "https://media.api-sports.io/football/teams/52.png",
-          "winner": null
-        },
-        "away": {
-          "id": 66,
-          "name": "Aston Villa",
-          "logo": "https://media.api-sports.io/football/teams/66.png",
-          "winner": null
-        }
-      },
-      "goals": {
-        "home": 0,
-        "away": 0
-      },
-      "score": {
-        "halftime": {
-          "home": 0,
-          "away": 0
-        },
-        "fulltime": {
-          "home": null,
-          "away": null
-        },
-        "extratime": {
-          "home": null,
-          "away": null
-        },
-        "penalty": {
-          "home": null,
-          "away": null
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1379171,
-        "referee": "Matt Donohue, England",
-        "timezone": "UTC",
-        "date": "2026-01-07T19:30:00+00:00",
-        "timestamp": 1767814200,
-        "periods": {
-          "first": 1767814200,
-          "second": 1767817800
-        },
-        "venue": {
-          "id": 10503,
-          "name": "Brentford Community Stadium",
-          "city": "London"
-        },
-        "status": {
-          "long": "Second Half",
-          "short": "2H",
-          "elapsed": 87,
-          "extra": null
-        }
-      },
-      "league": {
-        "id": 39,
-        "name": "Premier League",
-        "country": "England",
-        "logo": "https://media.api-sports.io/football/leagues/39.png",
-        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-        "season": 2025,
-        "round": "Regular Season - 21",
-        "standings": true
-      },
-      "teams": {
-        "home": {
-          "id": 55,
-          "name": "Brentford",
-          "logo": "https://media.api-sports.io/football/teams/55.png",
-          "winner": true
-        },
-        "away": {
-          "id": 746,
-          "name": "Sunderland",
-          "logo": "https://media.api-sports.io/football/teams/746.png",
-          "winner": false
-        }
-      },
-      "goals": {
-        "home": 3,
-        "away": 0
-      },
-      "score": {
-        "halftime": {
-          "home": 1,
-          "away": 0
-        },
-        "fulltime": {
-          "home": null,
-          "away": null
-        },
-        "extratime": {
-          "home": null,
-          "away": null
-        },
-        "penalty": {
-          "home": null,
-          "away": null
-        }
-      }
-    },
-    {
-      "fixture": {
         "id": 1379177,
         "referee": "Michael Salisbury, England",
         "timezone": "UTC",
@@ -429,7 +289,7 @@
         "timestamp": 1767816900,
         "periods": {
           "first": 1767816900,
-          "second": null
+          "second": 1767820500
         },
         "venue": {
           "id": 562,
@@ -437,10 +297,10 @@
           "city": "Newcastle"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 8
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 47,
+          "extra": null
         }
       },
       "league": {
@@ -499,7 +359,7 @@
         "timestamp": 1767816900,
         "periods": {
           "first": 1767816900,
-          "second": null
+          "second": 1767820500
         },
         "venue": {
           "id": 512,
@@ -507,10 +367,10 @@
           "city": "Burnley"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 3
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 50,
+          "extra": null
         }
       },
       "league": {
@@ -549,6 +409,146 @@
         "fulltime": {
           "home": null,
           "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1379173,
+        "referee": "Andy Madley, England",
+        "timezone": "UTC",
+        "date": "2026-01-07T19:30:00+00:00",
+        "timestamp": 1767814200,
+        "periods": {
+          "first": 1767814200,
+          "second": 1767817800
+        },
+        "venue": {
+          "id": 525,
+          "name": "Selhurst Park",
+          "city": "London"
+        },
+        "status": {
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
+          "extra": 4
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 21",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 52,
+          "name": "Crystal Palace",
+          "logo": "https://media.api-sports.io/football/teams/52.png",
+          "winner": null
+        },
+        "away": {
+          "id": 66,
+          "name": "Aston Villa",
+          "logo": "https://media.api-sports.io/football/teams/66.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": 0,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 0
+        },
+        "fulltime": {
+          "home": 0,
+          "away": 0
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1379171,
+        "referee": "Matt Donohue, England",
+        "timezone": "UTC",
+        "date": "2026-01-07T19:30:00+00:00",
+        "timestamp": 1767814200,
+        "periods": {
+          "first": 1767814200,
+          "second": 1767817800
+        },
+        "venue": {
+          "id": 10503,
+          "name": "Brentford Community Stadium",
+          "city": "London"
+        },
+        "status": {
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
+          "extra": 7
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 21",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 55,
+          "name": "Brentford",
+          "logo": "https://media.api-sports.io/football/teams/55.png",
+          "winner": true
+        },
+        "away": {
+          "id": 746,
+          "name": "Sunderland",
+          "logo": "https://media.api-sports.io/football/teams/746.png",
+          "winner": false
+        }
+      },
+      "goals": {
+        "home": 3,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 1,
+          "away": 0
+        },
+        "fulltime": {
+          "home": 3,
+          "away": 0
         },
         "extratime": {
           "home": null,
