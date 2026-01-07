@@ -23,8 +23,7 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      # Common output directories (NEW STRUCTURE)
-      - name: Ensure folders
+      - name: Ensure folders (NEW STRUCTURE)
         run: |
           mkdir -p data/football/premier-league/core
           mkdir -p data/football/premier-league/fixtures
@@ -35,7 +34,7 @@ jobs:
         name: Refresh upcoming fixtures (API-Football)
         shell: bash
         env:
-          BASE_URL: ${{ vars.URL_FIXTURES }}      # e.g. https://v3.football.api-sports.io/fixtures?
+          BASE_URL: ${{ vars.URL_FIXTURES }}
           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
           RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
           LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}
@@ -48,11 +47,11 @@ jobs:
 
           [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
-          # Next 14 days window (UTC)
           FROM=$(date -u +"%Y-%m-%d")
           TO=$(date -u -d "+14 days" +"%Y-%m-%d")
 
           FINAL_URL="${BASE_URL}&league=${LEAGUE_ID}&season=${SEASON}&from=${FROM}&to=${TO}"
+          echo "Fetching fixtures: $FINAL_URL"
 
           CODE=$(curl -sS -w "%{http_code}" -o "$TMPBODY" \
             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
@@ -86,7 +85,7 @@ jobs:
         name: Refresh standings (API-Football)
         shell: bash
         env:
-          BASE_URL: ${{ vars.URL_STANDINGS }}     # e.g. https://v3.football.api-sports.io/standings?
+          BASE_URL: ${{ vars.URL_STANDINGS }}
           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
           RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
           LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}
@@ -100,6 +99,7 @@ jobs:
           [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
           FINAL_URL="${BASE_URL}&season=${SEASON}&league=${LEAGUE_ID}"
+          echo "Fetching standings: $FINAL_URL"
 
           CODE=$(curl -sS -w "%{http_code}" -o "$TMPBODY" \
             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
@@ -133,7 +133,7 @@ jobs:
         name: Refresh top scorers (API-Football)
         shell: bash
         env:
-          BASE_URL: ${{ vars.URL_SCORERS }}       # e.g. https://v3.football.api-sports.io/players/topscorers?
+          BASE_URL: ${{ vars.URL_SCORERS }}
           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
           RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
           LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}
@@ -147,6 +147,7 @@ jobs:
           [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
           FINAL_URL="${BASE_URL}&season=${SEASON}&league=${LEAGUE_ID}"
+          echo "Fetching scorers: $FINAL_URL"
 
           CODE=$(curl -sS -w "%{http_code}" -o "$TMPBODY" \
             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
