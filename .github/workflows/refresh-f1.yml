@@ -1,4 +1,4 @@
-name: Refresh F1 (2024)
+name: Refresh F1 (2013-2024)
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  refresh-f1-2024:
+  refresh-f1:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,7 +26,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Pull F1 data (2024)
+      - name: Pull F1 data (range)
         env:
           # RapidAPI (your setup)
           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
@@ -35,9 +35,12 @@ jobs:
           # API base
           F1_BASE_URL: "https://v1.formula-1.api-sports.io"
 
-          # Output location
-          F1_SEASON: "2013"
-          F1_OUT_DIR: "data/f1/2013"
+          # ✅ Pull a range of seasons (inclusive)
+          F1_SEASON_FROM: "2013"
+          F1_SEASON_TO: "2024"
+
+          # ✅ Root output folder (script will create data/f1/<year>)
+          F1_OUT_ROOT: "data/f1"
 
           # Optional (leave false unless you want per-race files)
           F1_ENABLE_RACE_RESULTS: "false"
@@ -56,6 +59,71 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add data/f1/2013
-          git commit -m "Refresh F1 data (2013)"
+          git add data/f1
+          git commit -m "Refresh F1 data (2013-2024)"
           git push
+
+
+
+
+# name: Refresh F1 (2024)
+
+# on:
+#   workflow_dispatch:
+#   schedule:
+#     - cron: "15 3 * * *"
+
+# permissions:
+#   contents: write
+
+# jobs:
+#   refresh-f1-2024:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
+
+#       - name: Set up Python
+#         uses: actions/setup-python@v5
+#         with:
+#           python-version: "3.11"
+
+#       - name: Install deps
+#         run: |
+#           python -m pip install --upgrade pip
+#           pip install requests
+
+#       - name: Pull F1 data (2024)
+#         env:
+#           # RapidAPI (your setup)
+#           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+#           RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
+
+#           # API base
+#           F1_BASE_URL: "https://v1.formula-1.api-sports.io"
+
+#           # Output location
+#           F1_SEASON: "2013"
+#           F1_OUT_DIR: "data/f1/2013"
+
+#           # Optional (leave false unless you want per-race files)
+#           F1_ENABLE_RACE_RESULTS: "false"
+#           F1_RACE_RESULTS_GET: "races/results"
+#           F1_RACE_RESULTS_PARAM: "race"
+#         run: |
+#           python scripts/f1/pull_f1.py
+
+#       - name: Commit changes (if any)
+#         run: |
+#           if [ -z "$(git status --porcelain)" ]; then
+#             echo "No changes."
+#             exit 0
+#           fi
+
+#           git config user.name "github-actions[bot]"
+#           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+#           git add data/f1/2013
+#           git commit -m "Refresh F1 data (2013)"
+#           git push
