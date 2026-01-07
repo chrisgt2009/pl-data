@@ -18,7 +18,7 @@ RAPIDAPI_HOST = os.getenv("RAPIDAPI_HOST")  # e.g. v1.formula-1.api-sports.io
 
 USING_RAPID = bool(RAPIDAPI_KEY)
 
-# Optional: if you later want race result files per race id
+# Optional: race results per race id
 ENABLE_RACE_RESULTS = os.getenv("F1_ENABLE_RACE_RESULTS", "false").lower() == "true"
 RACE_RESULTS_GET = os.getenv("F1_RACE_RESULTS_GET", "races/results")
 RACE_RESULTS_PARAM = os.getenv("F1_RACE_RESULTS_PARAM", "race")
@@ -37,6 +37,7 @@ if USING_RAPID and not RAPIDAPI_HOST:
     )
     sys.exit(1)
 
+
 def build_headers() -> dict:
     """
     API-Sports direct: x-apisports-key
@@ -51,10 +52,13 @@ def build_headers() -> dict:
         "x-apisports-key": APISPORTS_KEY,
     }
 
+
 HEADERS = build_headers()
+
 
 def ensure_dir(p: Path) -> None:
     p.mkdir(parents=True, exist_ok=True)
+
 
 def fetch_json(get_name: str, params: dict | None = None) -> dict:
     params = params or {}
@@ -82,10 +86,12 @@ def fetch_json(get_name: str, params: dict | None = None) -> dict:
 
     return payload
 
+
 def write_json(path: Path, payload: dict) -> None:
     ensure_dir(path.parent)
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"✅ wrote {path}")
+
 
 def first_error(payload: dict) -> str | None:
     err = payload.get("errors")
@@ -93,6 +99,7 @@ def first_error(payload: dict) -> str | None:
         k = next(iter(err.keys()))
         return f"{k}: {err.get(k)}"
     return None
+
 
 def fetch_driver_ids_from_rankings(rankings_payload: dict) -> list[int]:
     """
@@ -108,6 +115,7 @@ def fetch_driver_ids_from_rankings(rankings_payload: dict) -> list[int]:
             ids.add(d["id"])
     return sorted(ids)
 
+
 def fetch_drivers_by_ids(driver_ids: list[int]) -> dict:
     """
     drivers endpoint requires at least one parameter.
@@ -118,7 +126,7 @@ def fetch_drivers_by_ids(driver_ids: list[int]) -> dict:
         "parameters": {"ids": driver_ids, "season_source": YEAR},
         "errors": {},
         "results": 0,
-        "response": []
+        "response": [],
     }
 
     for did in driver_ids:
@@ -135,22 +143,28 @@ def fetch_drivers_by_ids(driver_ids: list[int]) -> dict:
     out["results"] = len(out["response"])
     return out
 
+
 def main() -> None:
     ensure_dir(OUT_DIR)
 
-    # Confirmed behaviour:
+    # OPTION A: single source of truth ONLY in data/f1/<YEAR>/
+    #
+    # Confirmed behaviour (from your testing):
     # - teams supports season ✅
     # - circuits supports season ✅
-    # - drivers requires at least one parameter (no season alone) ❌
+    # - drivers requires at least one parameter (season alone fails) ❌
     #   => build drivers.json via standings driver ids
 
     jobs = [
-        ("seasons", {}, OUT_DIR / "season.json"),
+        # seasons list (we still store it under YEAR folder for Option A)
+        ("seasons", {}, OUT_DIR / "seasons.json"),
 
+        # season-specific
         ("races", {"season": YEAR}, OUT_DIR / "races.json"),
         ("rankings/drivers", {"season": YEAR}, OUT_DIR / "standings_drivers.json"),
         ("rankings/teams", {"season": YEAR}, OUT_DIR / "standings_teams.json"),
 
+        # season-scoped per your confirmation
         ("circuits", {"season": YEAR}, OUT_DIR / "circuits.json"),
         ("teams", {"season": YEAR}, OUT_DIR / "teams.json"),
     ]
@@ -181,8 +195,8 @@ def main() -> None:
                 "parameters": {},
                 "errors": {"ids": "No ids found from rankings/drivers"},
                 "results": 0,
-                "response": []
-            }
+                "response": [],
+            },
         )
     else:
         drivers_payload = fetch_drivers_by_ids(driver_ids)
@@ -210,6 +224,7 @@ def main() -> None:
                 continue
             payload = fetch_json(RACE_RESULTS_GET, {RACE_RESULTS_PARAM: race_id})
             write_json(rr_dir / f"{race_id}.json", payload)
+
 
 if __name__ == "__main__":
     main()
