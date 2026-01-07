@@ -26,20 +26,23 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Pull F1 data (2024 + meta)
+      - name: Pull F1 data (2024)
         env:
-          # RapidAPI (recommended for your setup)
+          # RapidAPI (your setup)
           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
-          # IMPORTANT: This is the RapidAPI host for the API you subscribed to.
-          # Most commonly for this API it is:
-          #   v1-formula-1-api-sports.p.rapidapi.com
           RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
 
-          # Base URL stays the same
+          # API base
           F1_BASE_URL: "https://v1.formula-1.api-sports.io"
+
+          # Output location
           F1_SEASON: "2024"
           F1_OUT_DIR: "data/f1/2024"
-          F1_META_DIR: "data/f1/_meta"
+
+          # Optional (leave false unless you want per-race files)
+          F1_ENABLE_RACE_RESULTS: "false"
+          F1_RACE_RESULTS_GET: "races/results"
+          F1_RACE_RESULTS_PARAM: "race"
         run: |
           python scripts/f1/pull_f1.py
 
@@ -53,6 +56,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add data/f1/_meta data/f1/2024
+          git add data/f1/2024
           git commit -m "Refresh F1 data (2024)"
           git push
