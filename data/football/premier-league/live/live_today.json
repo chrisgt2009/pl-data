@@ -19,7 +19,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 66,
+          "elapsed": 70,
           "extra": null
         }
       },
@@ -38,17 +38,17 @@
           "id": 44,
           "name": "Burnley",
           "logo": "https://media.api-sports.io/football/teams/44.png",
-          "winner": false
+          "winner": null
         },
         "away": {
           "id": 33,
           "name": "Manchester United",
           "logo": "https://media.api-sports.io/football/teams/33.png",
-          "winner": true
+          "winner": null
         }
       },
       "goals": {
-        "home": 1,
+        "home": 2,
         "away": 2
       },
       "score": {
@@ -195,8 +195,8 @@
             "name": "B. Fernandes"
           },
           "assist": {
-            "id": 70100,
-            "name": "J. Zirkzee"
+            "id": 19220,
+            "name": "M. Mount"
           },
           "type": "subst",
           "detail": "Substitution 1",
@@ -223,6 +223,28 @@
           "type": "subst",
           "detail": "Substitution 2",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 66,
+            "extra": null
+          },
+          "team": {
+            "id": 44,
+            "name": "Burnley",
+            "logo": "https://media.api-sports.io/football/teams/44.png"
+          },
+          "player": {
+            "id": 196855,
+            "name": "J. Anthony"
+          },
+          "assist": {
+            "id": 37882,
+            "name": "M. Edwards"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
         }
       ]
     },
@@ -245,7 +267,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 63,
+          "elapsed": 67,
           "extra": null
         }
       },
