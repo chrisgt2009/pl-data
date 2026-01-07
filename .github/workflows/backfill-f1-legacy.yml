@@ -28,8 +28,8 @@ jobs:
         env:
           ERGAST_BASE_URL: "http://api.jolpi.ca/ergast/f1"
           ERGAST_OUT_ROOT: "data/f1"
-          ERGAST_START_YEAR: "1950"
-          ERGAST_END_YEAR: "2011"
+          ERGAST_START_YEAR: "2012"
+          ERGAST_END_YEAR: "2022"
           ERGAST_DOWNLOAD_RESULTS: "true"
           ERGAST_SLEEP_SECONDS: "0.25"
         run: |
