@@ -19,7 +19,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 70,
+          "elapsed": 80,
           "extra": null
         }
       },
@@ -245,6 +245,72 @@
           "type": "Goal",
           "detail": "Normal Goal",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 74,
+            "extra": null
+          },
+          "team": {
+            "id": 33,
+            "name": "Manchester United",
+            "logo": "https://media.api-sports.io/football/teams/33.png"
+          },
+          "player": {
+            "id": 1165,
+            "name": "M. Cunha"
+          },
+          "assist": {
+            "id": 70100,
+            "name": "J. Zirkzee"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 74,
+            "extra": null
+          },
+          "team": {
+            "id": 33,
+            "name": "Manchester United",
+            "logo": "https://media.api-sports.io/football/teams/33.png"
+          },
+          "player": {
+            "id": 747,
+            "name": "Casemiro"
+          },
+          "assist": {
+            "id": 284322,
+            "name": "K. Mainoo"
+          },
+          "type": "subst",
+          "detail": "Substitution 4",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 76,
+            "extra": null
+          },
+          "team": {
+            "id": 44,
+            "name": "Burnley",
+            "logo": "https://media.api-sports.io/football/teams/44.png"
+          },
+          "player": {
+            "id": 138822,
+            "name": "A. Broja"
+          },
+          "assist": {
+            "id": 98936,
+            "name": "L. Foster"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
         }
       ]
     },
@@ -267,7 +333,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 67,
+          "elapsed": 77,
           "extra": null
         }
       },
@@ -536,6 +602,50 @@
           },
           "type": "Goal",
           "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 75,
+            "extra": null
+          },
+          "team": {
+            "id": 34,
+            "name": "Newcastle",
+            "logo": "https://media.api-sports.io/football/teams/34.png"
+          },
+          "player": {
+            "id": 2806,
+            "name": "F. Schar"
+          },
+          "assist": {
+            "id": 19192,
+            "name": "J. Ramsey"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 75,
+            "extra": null
+          },
+          "team": {
+            "id": 34,
+            "name": "Newcastle",
+            "logo": "https://media.api-sports.io/football/teams/34.png"
+          },
+          "player": {
+            "id": 158054,
+            "name": "N. Woltemade"
+          },
+          "assist": {
+            "id": 20649,
+            "name": "Y. Wissa"
+          },
+          "type": "subst",
+          "detail": "Substitution 4",
           "comments": null
         }
       ]
