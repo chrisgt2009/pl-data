@@ -30,7 +30,7 @@
     "season_source": "2024"
   },
   "errors": {},
-  "results": 4,
+  "results": 8,
   "response": [
     {
       "id": 2,
@@ -504,6 +504,178 @@
             "id": 4,
             "name": "Force India",
             "logo": "https://media.api-sports.io/formula-1/teams/4.png"
+          }
+        }
+      ]
+    },
+    {
+      "id": 94,
+      "name": "Jack Doohan",
+      "abbr": "DOO",
+      "image": "https://media.api-sports.io/formula-1/drivers/94.png",
+      "nationality": "Australian",
+      "country": {
+        "name": "Australia",
+        "code": "AU"
+      },
+      "birthdate": "2003-01-20",
+      "birthplace": "Gold Coast, Australia",
+      "number": 7,
+      "grands_prix_entered": 7,
+      "world_championships": 0,
+      "podiums": 0,
+      "highest_race_finish": {
+        "position": 13,
+        "number": 1
+      },
+      "highest_grid_position": 11,
+      "career_points": "0",
+      "teams": [
+        {
+          "season": 2025,
+          "team": {
+            "id": 13,
+            "name": "Alpine F1 Team",
+            "logo": "https://media.api-sports.io/formula-1/teams/13.png"
+          }
+        },
+        {
+          "season": 2024,
+          "team": {
+            "id": 13,
+            "name": "Alpine F1 Team",
+            "logo": "https://media.api-sports.io/formula-1/teams/13.png"
+          }
+        }
+      ]
+    },
+    {
+      "id": 97,
+      "name": "Oscar Piastri",
+      "abbr": "PIA",
+      "image": "https://media.api-sports.io/formula-1/drivers/97.png",
+      "nationality": "Australian",
+      "country": {
+        "name": "Australia",
+        "code": "AU"
+      },
+      "birthdate": "2001-04-06",
+      "birthplace": "Melbourne, Victoria",
+      "number": 81,
+      "grands_prix_entered": 69,
+      "world_championships": 0,
+      "podiums": 25,
+      "highest_race_finish": {
+        "position": 1,
+        "number": 9
+      },
+      "highest_grid_position": 1,
+      "career_points": "781",
+      "teams": [
+        {
+          "season": 2025,
+          "team": {
+            "id": 2,
+            "name": "McLaren Racing",
+            "logo": "https://media.api-sports.io/formula-1/teams/2.png"
+          }
+        },
+        {
+          "season": 2024,
+          "team": {
+            "id": 2,
+            "name": "McLaren Racing",
+            "logo": "https://media.api-sports.io/formula-1/teams/2.png"
+          }
+        },
+        {
+          "season": 2023,
+          "team": {
+            "id": 2,
+            "name": "McLaren Racing",
+            "logo": "https://media.api-sports.io/formula-1/teams/2.png"
+          }
+        }
+      ]
+    },
+    {
+      "id": 101,
+      "name": "Oliver Bearman",
+      "abbr": "BEA",
+      "image": "https://media.api-sports.io/formula-1/drivers/101.png",
+      "nationality": "British",
+      "country": {
+        "name": "United Kingdom",
+        "code": "GB"
+      },
+      "birthdate": "2005-05-08",
+      "birthplace": "Chelmsford, England",
+      "number": 87,
+      "grands_prix_entered": 26,
+      "world_championships": 0,
+      "podiums": 0,
+      "highest_race_finish": {
+        "position": 4,
+        "number": 1
+      },
+      "highest_grid_position": 8,
+      "career_points": "48",
+      "teams": [
+        {
+          "season": 2025,
+          "team": {
+            "id": 14,
+            "name": "Haas F1 Team",
+            "logo": "https://media.api-sports.io/formula-1/teams/14.png"
+          }
+        },
+        {
+          "season": 2024,
+          "team": {
+            "id": 14,
+            "name": "Haas F1 Team",
+            "logo": "https://media.api-sports.io/formula-1/teams/14.png"
+          }
+        }
+      ]
+    },
+    {
+      "id": 105,
+      "name": "Franco Colapinto",
+      "abbr": null,
+      "image": "https://media.api-sports.io/formula-1/drivers/105.png",
+      "nationality": "Argentinian",
+      "country": {
+        "name": "Argentina",
+        "code": "AR"
+      },
+      "birthdate": "2003-05-27",
+      "birthplace": "Buenos Aires, Argentina",
+      "number": 43,
+      "grands_prix_entered": 26,
+      "world_championships": 0,
+      "podiums": 0,
+      "highest_race_finish": {
+        "position": 8,
+        "number": 1
+      },
+      "highest_grid_position": 8,
+      "career_points": "5",
+      "teams": [
+        {
+          "season": 2025,
+          "team": {
+            "id": 13,
+            "name": "Alpine F1 Team",
+            "logo": "https://media.api-sports.io/formula-1/teams/13.png"
+          }
+        },
+        {
+          "season": 2024,
+          "team": {
+            "id": 12,
+            "name": "Williams F1 Team",
+            "logo": "https://media.api-sports.io/formula-1/teams/12.png"
           }
         }
       ]
