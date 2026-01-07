@@ -8,7 +8,7 @@ from urllib.parse import urlencode
 import requests
 
 BASE_URL = os.getenv("F1_BASE_URL", "https://v1.formula-1.api-sports.io")
-YEAR = os.getenv("F1_SEASON", "2012")
+YEAR = os.getenv("F1_SEASON", "2013")
 OUT_DIR = Path(os.getenv("F1_OUT_DIR", f"data/f1/{YEAR}"))
 
 # --- Auth (supports both API-Sports direct + RapidAPI) ---
