@@ -36,8 +36,8 @@ jobs:
           F1_BASE_URL: "https://v1.formula-1.api-sports.io"
 
           # Output location
-          F1_SEASON: "2012"
-          F1_OUT_DIR: "data/f1/2012"
+          F1_SEASON: "2013"
+          F1_OUT_DIR: "data/f1/2013"
 
           # Optional (leave false unless you want per-race files)
           F1_ENABLE_RACE_RESULTS: "false"
@@ -56,6 +56,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add data/f1/2012
-          git commit -m "Refresh F1 data (2012)"
+          git add data/f1/2013
+          git commit -m "Refresh F1 data (2013)"
           git push
