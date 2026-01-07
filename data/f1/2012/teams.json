@@ -1,5 +1,5 @@
 {
-  "get": "races",
+  "get": "teams",
   "parameters": {
     "season": "2012"
   },

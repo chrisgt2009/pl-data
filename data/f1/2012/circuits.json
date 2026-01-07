@@ -1,5 +1,5 @@
 {
-  "get": "races",
+  "get": "circuits",
   "parameters": {
     "season": "2012"
   },
