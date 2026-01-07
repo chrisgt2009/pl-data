@@ -23,6 +23,13 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
+      # Common output directories (NEW STRUCTURE)
+      - name: Ensure folders
+        run: |
+          mkdir -p data/football/premier-league/core
+          mkdir -p data/football/premier-league/fixtures
+          mkdir -p data/football/premier-league/live
+
       # ---------------- FIXTURES (next 14 days) ----------------
       - id: fixtures
         name: Refresh upcoming fixtures (API-Football)
@@ -35,9 +42,8 @@ jobs:
           SEASON: ${{ vars.SEASON_PL }}
         run: |
           set -euo pipefail
-          mkdir -p data/
 
-          OUT="data/fixtures_week.json"
+          OUT="data/football/premier-league/fixtures/fixtures_week.json"
           TMPBODY="$(mktemp)"
 
           [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
@@ -87,9 +93,8 @@ jobs:
           SEASON: ${{ vars.SEASON_PL }}
         run: |
           set -euo pipefail
-          mkdir -p data/
 
-          OUT="data/standings.json"
+          OUT="data/football/premier-league/core/standings.json"
           TMPBODY="$(mktemp)"
 
           [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
@@ -135,9 +140,8 @@ jobs:
           SEASON: ${{ vars.SEASON_PL }}
         run: |
           set -euo pipefail
-          mkdir -p data/
 
-          OUT="data/scorers.json"
+          OUT="data/football/premier-league/core/scorers.json"
           TMPBODY="$(mktemp)"
 
           [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
@@ -177,6 +181,9 @@ jobs:
         run: |
           git config user.name "pl-bot"
           git config user.email "pl-bot@users.noreply.github.com"
-          git add data/*.json
+
+          git add data/football/premier-league/core/*.json
+          git add data/football/premier-league/fixtures/*.json
+
           git commit -m "Update core feeds (fixtures/standings/scorers)"
           git push
