@@ -56,6 +56,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add data/f1/2024
-          git commit -m "Refresh F1 data (2024)"
+          git add data/f1/2012
+          git commit -m "Refresh F1 data (2012)"
           git push
