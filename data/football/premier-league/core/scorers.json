@@ -1554,12 +1554,12 @@
             "season": 2025
           },
           "games": {
-            "appearences": 20,
-            "lineups": 20,
-            "minutes": 1800,
+            "appearences": 21,
+            "lineups": 21,
+            "minutes": 1890,
             "number": 20,
             "position": "Attacker",
-            "rating": "6.88",
+            "rating": "6.87",
             "captain": false
           },
           "substitutes": {
@@ -1568,7 +1568,7 @@
             "bench": 0
           },
           "shots": {
-            "total": 32,
+            "total": 34,
             "on": 20
           },
           "goals": {
@@ -1578,27 +1578,27 @@
             "saves": null
           },
           "passes": {
-            "total": 404,
-            "key": 13,
+            "total": 426,
+            "key": 14,
             "accuracy": null
           },
           "tackles": {
-            "total": 22,
+            "total": 24,
             "blocks": 1,
-            "interceptions": 11
+            "interceptions": 13
           },
           "duels": {
-            "total": 209,
-            "won": 90
+            "total": 223,
+            "won": 97
           },
           "dribbles": {
-            "attempts": 65,
+            "attempts": 66,
             "success": 29,
             "past": null
           },
           "fouls": {
-            "drawn": 28,
-            "committed": 10
+            "drawn": 29,
+            "committed": 11
           },
           "cards": {
             "yellow": 2,
