@@ -737,20 +737,20 @@
                 "name": "Nottingham Forest",
                 "logo": "https://media.api-sports.io/football/teams/65.png"
               },
-              "points": 18,
-              "goalsDiff": -14,
+              "points": 21,
+              "goalsDiff": -13,
               "group": "Premier League",
-              "form": "LLLLW",
+              "form": "WLLLL",
               "status": "same",
               "description": null,
               "all": {
-                "played": 20,
-                "win": 5,
+                "played": 21,
+                "win": 6,
                 "draw": 3,
                 "lose": 12,
                 "goals": {
-                  "for": 19,
-                  "against": 33
+                  "for": 21,
+                  "against": 34
                 }
               },
               "home": {
@@ -764,13 +764,13 @@
                 }
               },
               "away": {
-                "played": 10,
-                "win": 2,
+                "played": 11,
+                "win": 3,
                 "draw": 2,
                 "lose": 6,
                 "goals": {
-                  "for": 7,
-                  "against": 16
+                  "for": 9,
+                  "against": 17
                 }
               },
               "update": "2026-01-06T00:00:00+00:00"
@@ -783,29 +783,29 @@
                 "logo": "https://media.api-sports.io/football/teams/48.png"
               },
               "points": 14,
-              "goalsDiff": -20,
+              "goalsDiff": -21,
               "group": "Premier League",
-              "form": "LDLLL",
+              "form": "LLDLL",
               "status": "same",
               "description": "Relegation - Championship",
               "all": {
-                "played": 20,
+                "played": 21,
                 "win": 3,
                 "draw": 5,
-                "lose": 12,
+                "lose": 13,
                 "goals": {
-                  "for": 21,
-                  "against": 41
+                  "for": 22,
+                  "against": 43
                 }
               },
               "home": {
-                "played": 10,
+                "played": 11,
                 "win": 2,
                 "draw": 1,
-                "lose": 7,
+                "lose": 8,
                 "goals": {
-                  "for": 12,
-                  "against": 23
+                  "for": 13,
+                  "against": 25
                 }
               },
               "away": {
