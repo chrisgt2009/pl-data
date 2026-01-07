@@ -1,5 +1,5 @@
 {
-  "get": "rankings",
+  "get": "circuits",
   "parameters": {
     "season": "2013"
   },
