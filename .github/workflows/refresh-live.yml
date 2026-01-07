@@ -12,7 +12,7 @@ on:
     - cron: "*/10 17-22 * * 1-5"    # Weekday evenings every 10 mins
     # Light refresh otherwise
     - cron: "*/15 7-10 * * *"       # mornings
-    # Overnight hourly (split)
+    # Overnight hourly
     - cron: "0 0-6 * * *"
     - cron: "0 23 * * *"
 
@@ -29,6 +29,10 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
+      - name: Ensure folders (NEW STRUCTURE)
+        run: |
+          mkdir -p data/football/premier-league/live
+
       - id: live_today
         name: Refresh live fixtures (API-Football)
         shell: bash
@@ -40,14 +44,12 @@ jobs:
           SEASON: ${{ vars.SEASON_PL }}           # 2025
         run: |
           set -euo pipefail
-          mkdir -p data/
 
-          OUT="data/live_today.json"
+          OUT="data/football/premier-league/live/live_today.json"
           TMPBODY="$(mktemp)"
 
           [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
-          # If your live endpoint doesn't support league filtering, remove &league=...
           FINAL_URL="${BASE_URL}&league=${LEAGUE_ID}&season=${SEASON}"
 
           CODE=$(curl -sS -w "%{http_code}" -o "$TMPBODY" \
@@ -61,15 +63,13 @@ jobs:
             exit 0
           fi
 
-          # Ensure .response is array
           OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
           if [[ "$OK" != "true" ]]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          NORM=$(mktemp)
-          # Wrap in your Swift envelope shape
+          NORM="$(mktemp)"
           jq '{matches: .response}' "$TMPBODY" > "$NORM"
 
           if ! cmp -s "$NORM" "$OUT"; then
@@ -84,6 +84,7 @@ jobs:
         run: |
           git config user.name "pl-bot"
           git config user.email "pl-bot@users.noreply.github.com"
-          git add data/live_today.json
+
+          git add data/football/premier-league/live/live_today.json
           git commit -m "Update live (PL)"
           git push
