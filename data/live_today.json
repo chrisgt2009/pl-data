@@ -19,7 +19,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 5,
+          "elapsed": 28,
           "extra": null
         }
       },
@@ -38,12 +38,106 @@
           "id": 44,
           "name": "Burnley",
           "logo": "https://media.api-sports.io/football/teams/44.png",
-          "winner": null
+          "winner": true
         },
         "away": {
           "id": 33,
           "name": "Manchester United",
           "logo": "https://media.api-sports.io/football/teams/33.png",
+          "winner": false
+        }
+      },
+      "goals": {
+        "home": 1,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 1,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      },
+      "events": [
+        {
+          "time": {
+            "elapsed": 13,
+            "extra": null
+          },
+          "team": {
+            "id": 44,
+            "name": "Burnley",
+            "logo": "https://media.api-sports.io/football/teams/44.png"
+          },
+          "player": {
+            "id": 402329,
+            "name": "A. Heaven"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Goal",
+          "detail": "Own Goal",
+          "comments": null
+        }
+      ]
+    },
+    {
+      "fixture": {
+        "id": 1379177,
+        "referee": "Michael Salisbury, England",
+        "timezone": "UTC",
+        "date": "2026-01-07T20:15:00+00:00",
+        "timestamp": 1767816900,
+        "periods": {
+          "first": 1767816900,
+          "second": null
+        },
+        "venue": {
+          "id": 562,
+          "name": "St. James' Park",
+          "city": "Newcastle"
+        },
+        "status": {
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 29,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 21",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 34,
+          "name": "Newcastle",
+          "logo": "https://media.api-sports.io/football/teams/34.png",
+          "winner": null
+        },
+        "away": {
+          "id": 63,
+          "name": "Leeds",
+          "logo": "https://media.api-sports.io/football/teams/63.png",
           "winner": null
         }
       },
@@ -69,7 +163,648 @@
           "away": null
         }
       },
-      "events": []
+      "events": [
+        {
+          "time": {
+            "elapsed": 7,
+            "extra": null
+          },
+          "team": {
+            "id": 34,
+            "name": "Newcastle",
+            "logo": "https://media.api-sports.io/football/teams/34.png"
+          },
+          "player": {
+            "id": 163189,
+            "name": "M. Thiaw"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Tripping"
+        },
+        {
+          "time": {
+            "elapsed": 22,
+            "extra": null
+          },
+          "team": {
+            "id": 63,
+            "name": "Leeds",
+            "logo": "https://media.api-sports.io/football/teams/63.png"
+          },
+          "player": {
+            "id": 18766,
+            "name": "D. Calvert-Lewin"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Holding"
+        }
+      ]
+    },
+    {
+      "fixture": {
+        "id": 1379170,
+        "referee": "Darren England, England",
+        "timezone": "UTC",
+        "date": "2026-01-07T19:30:00+00:00",
+        "timestamp": 1767814200,
+        "periods": {
+          "first": 1767814200,
+          "second": 1767817800
+        },
+        "venue": {
+          "id": 504,
+          "name": "Vitality Stadium",
+          "city": "Bournemouth"
+        },
+        "status": {
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 54,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 21",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 35,
+          "name": "Bournemouth",
+          "logo": "https://media.api-sports.io/football/teams/35.png",
+          "winner": true
+        },
+        "away": {
+          "id": 47,
+          "name": "Tottenham",
+          "logo": "https://media.api-sports.io/football/teams/47.png",
+          "winner": false
+        }
+      },
+      "goals": {
+        "home": 2,
+        "away": 1
+      },
+      "score": {
+        "halftime": {
+          "home": 2,
+          "away": 1
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      },
+      "events": [
+        {
+          "time": {
+            "elapsed": 5,
+            "extra": null
+          },
+          "team": {
+            "id": 47,
+            "name": "Tottenham",
+            "logo": "https://media.api-sports.io/football/teams/47.png"
+          },
+          "player": {
+            "id": 270510,
+            "name": "M. Tel"
+          },
+          "assist": {
+            "id": 162016,
+            "name": "X. Simons"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 22,
+            "extra": null
+          },
+          "team": {
+            "id": 35,
+            "name": "Bournemouth",
+            "logo": "https://media.api-sports.io/football/teams/35.png"
+          },
+          "player": {
+            "id": 152856,
+            "name": "Evanilson"
+          },
+          "assist": {
+            "id": 19245,
+            "name": "M. Tavernier"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 36,
+            "extra": null
+          },
+          "team": {
+            "id": 35,
+            "name": "Bournemouth",
+            "logo": "https://media.api-sports.io/football/teams/35.png"
+          },
+          "player": {
+            "id": 368030,
+            "name": "E. J. Kroupi"
+          },
+          "assist": {
+            "id": 6610,
+            "name": "M. Senesi"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 43,
+            "extra": null
+          },
+          "team": {
+            "id": 35,
+            "name": "Bournemouth",
+            "logo": "https://media.api-sports.io/football/teams/35.png"
+          },
+          "player": {
+            "id": 19281,
+            "name": "A. Semenyo"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Tripping"
+        },
+        {
+          "time": {
+            "elapsed": 52,
+            "extra": null
+          },
+          "team": {
+            "id": 35,
+            "name": "Bournemouth",
+            "logo": "https://media.api-sports.io/football/teams/35.png"
+          },
+          "player": {
+            "id": 18872,
+            "name": "L. Cook"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Foul"
+        }
+      ]
+    },
+    {
+      "fixture": {
+        "id": 1379171,
+        "referee": "Matt Donohue, England",
+        "timezone": "UTC",
+        "date": "2026-01-07T19:30:00+00:00",
+        "timestamp": 1767814200,
+        "periods": {
+          "first": 1767814200,
+          "second": 1767817800
+        },
+        "venue": {
+          "id": 10503,
+          "name": "Brentford Community Stadium",
+          "city": "London"
+        },
+        "status": {
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 57,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 21",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 55,
+          "name": "Brentford",
+          "logo": "https://media.api-sports.io/football/teams/55.png",
+          "winner": true
+        },
+        "away": {
+          "id": 746,
+          "name": "Sunderland",
+          "logo": "https://media.api-sports.io/football/teams/746.png",
+          "winner": false
+        }
+      },
+      "goals": {
+        "home": 1,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 1,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      },
+      "events": [
+        {
+          "time": {
+            "elapsed": 30,
+            "extra": null
+          },
+          "team": {
+            "id": 55,
+            "name": "Brentford",
+            "logo": "https://media.api-sports.io/football/teams/55.png"
+          },
+          "player": {
+            "id": 196156,
+            "name": "I. Thiago"
+          },
+          "assist": {
+            "id": 25073,
+            "name": "V. Janelt"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 43,
+            "extra": null
+          },
+          "team": {
+            "id": 55,
+            "name": "Brentford",
+            "logo": "https://media.api-sports.io/football/teams/55.png"
+          },
+          "player": {
+            "id": 196156,
+            "name": "I. Thiago"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Holding"
+        },
+        {
+          "time": {
+            "elapsed": 45,
+            "extra": null
+          },
+          "team": {
+            "id": 746,
+            "name": "Sunderland",
+            "logo": "https://media.api-sports.io/football/teams/746.png"
+          },
+          "player": {
+            "id": 119121,
+            "name": "T. Hume"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Foul"
+        },
+        {
+          "time": {
+            "elapsed": 52,
+            "extra": null
+          },
+          "team": {
+            "id": 746,
+            "name": "Sunderland",
+            "logo": "https://media.api-sports.io/football/teams/746.png"
+          },
+          "player": {
+            "id": 301771,
+            "name": "S. Adingra"
+          },
+          "assist": {
+            "id": 284414,
+            "name": "R. Mundle"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 52,
+            "extra": null
+          },
+          "team": {
+            "id": 746,
+            "name": "Sunderland",
+            "logo": "https://media.api-sports.io/football/teams/746.png"
+          },
+          "player": {
+            "id": 339201,
+            "name": "C. Rigg"
+          },
+          "assist": {
+            "id": 349799,
+            "name": "E. Mayenda"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        }
+      ]
+    },
+    {
+      "fixture": {
+        "id": 1379173,
+        "referee": "Andy Madley, England",
+        "timezone": "UTC",
+        "date": "2026-01-07T19:30:00+00:00",
+        "timestamp": 1767814200,
+        "periods": {
+          "first": 1767814200,
+          "second": 1767817800
+        },
+        "venue": {
+          "id": 525,
+          "name": "Selhurst Park",
+          "city": "London"
+        },
+        "status": {
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 55,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 21",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 52,
+          "name": "Crystal Palace",
+          "logo": "https://media.api-sports.io/football/teams/52.png",
+          "winner": null
+        },
+        "away": {
+          "id": 66,
+          "name": "Aston Villa",
+          "logo": "https://media.api-sports.io/football/teams/66.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": 0,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      },
+      "events": [
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 66,
+            "name": "Aston Villa",
+            "logo": "https://media.api-sports.io/football/teams/66.png"
+          },
+          "player": {
+            "id": 19599,
+            "name": "E. Martinez"
+          },
+          "assist": {
+            "id": 36878,
+            "name": "M. Bizot"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        }
+      ]
+    },
+    {
+      "fixture": {
+        "id": 1379174,
+        "referee": "Thomas Kirk, England",
+        "timezone": "UTC",
+        "date": "2026-01-07T19:30:00+00:00",
+        "timestamp": 1767814200,
+        "periods": {
+          "first": 1767814200,
+          "second": 1767817800
+        },
+        "venue": {
+          "id": 22033,
+          "name": "Hill Dickinson Stadium",
+          "city": "Liverpool"
+        },
+        "status": {
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 56,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 21",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 45,
+          "name": "Everton",
+          "logo": "https://media.api-sports.io/football/teams/45.png",
+          "winner": true
+        },
+        "away": {
+          "id": 39,
+          "name": "Wolves",
+          "logo": "https://media.api-sports.io/football/teams/39.png",
+          "winner": false
+        }
+      },
+      "goals": {
+        "home": 1,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 1,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      },
+      "events": [
+        {
+          "time": {
+            "elapsed": 17,
+            "extra": null
+          },
+          "team": {
+            "id": 45,
+            "name": "Everton",
+            "logo": "https://media.api-sports.io/football/teams/45.png"
+          },
+          "player": {
+            "id": 2934,
+            "name": "M. Keane"
+          },
+          "assist": {
+            "id": 284500,
+            "name": "T. Iroegbunam"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 43,
+            "extra": null
+          },
+          "team": {
+            "id": 39,
+            "name": "Wolves",
+            "logo": "https://media.api-sports.io/football/teams/39.png"
+          },
+          "player": {
+            "id": 1590,
+            "name": "J. Sa"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Unsportsmanlike conduct"
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 39,
+            "name": "Wolves",
+            "logo": "https://media.api-sports.io/football/teams/39.png"
+          },
+          "player": {
+            "id": 13708,
+            "name": "J. Arias"
+          },
+          "assist": {
+            "id": 265784,
+            "name": "Andre"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        }
+      ]
     },
     {
       "fixture": {
@@ -80,7 +815,7 @@
         "timestamp": 1767814200,
         "periods": {
           "first": 1767814200,
-          "second": null
+          "second": 1767817800
         },
         "venue": {
           "id": 535,
@@ -88,10 +823,10 @@
           "city": "London"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 45,
-          "extra": 4
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 51,
+          "extra": null
         }
       },
       "league": {
@@ -109,22 +844,22 @@
           "id": 36,
           "name": "Fulham",
           "logo": "https://media.api-sports.io/football/teams/36.png",
-          "winner": true
+          "winner": null
         },
         "away": {
           "id": 49,
           "name": "Chelsea",
           "logo": "https://media.api-sports.io/football/teams/49.png",
-          "winner": false
+          "winner": null
         }
       },
       "goals": {
-        "home": 1,
+        "home": 0,
         "away": 0
       },
       "score": {
         "halftime": {
-          "home": 1,
+          "home": 0,
           "away": 0
         },
         "fulltime": {
@@ -291,348 +1026,23 @@
             "id": null,
             "name": null
           },
-          "type": "Goal",
-          "detail": "Normal Goal",
-          "comments": null
-        }
-      ]
-    },
-    {
-      "fixture": {
-        "id": 1379177,
-        "referee": "Michael Salisbury, England",
-        "timezone": "UTC",
-        "date": "2026-01-07T20:15:00+00:00",
-        "timestamp": 1767816900,
-        "periods": {
-          "first": 1767816900,
-          "second": null
-        },
-        "venue": {
-          "id": 562,
-          "name": "St. James' Park",
-          "city": "Newcastle"
-        },
-        "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 5,
-          "extra": null
-        }
-      },
-      "league": {
-        "id": 39,
-        "name": "Premier League",
-        "country": "England",
-        "logo": "https://media.api-sports.io/football/leagues/39.png",
-        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-        "season": 2025,
-        "round": "Regular Season - 21",
-        "standings": true
-      },
-      "teams": {
-        "home": {
-          "id": 34,
-          "name": "Newcastle",
-          "logo": "https://media.api-sports.io/football/teams/34.png",
-          "winner": null
-        },
-        "away": {
-          "id": 63,
-          "name": "Leeds",
-          "logo": "https://media.api-sports.io/football/teams/63.png",
-          "winner": null
-        }
-      },
-      "goals": {
-        "home": 0,
-        "away": 0
-      },
-      "score": {
-        "halftime": {
-          "home": 0,
-          "away": 0
-        },
-        "fulltime": {
-          "home": null,
-          "away": null
-        },
-        "extratime": {
-          "home": null,
-          "away": null
-        },
-        "penalty": {
-          "home": null,
-          "away": null
-        }
-      },
-      "events": []
-    },
-    {
-      "fixture": {
-        "id": 1379170,
-        "referee": "Darren England, England",
-        "timezone": "UTC",
-        "date": "2026-01-07T19:30:00+00:00",
-        "timestamp": 1767814200,
-        "periods": {
-          "first": 1767814200,
-          "second": null
-        },
-        "venue": {
-          "id": 504,
-          "name": "Vitality Stadium",
-          "city": "Bournemouth"
-        },
-        "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 5
-        }
-      },
-      "league": {
-        "id": 39,
-        "name": "Premier League",
-        "country": "England",
-        "logo": "https://media.api-sports.io/football/leagues/39.png",
-        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-        "season": 2025,
-        "round": "Regular Season - 21",
-        "standings": true
-      },
-      "teams": {
-        "home": {
-          "id": 35,
-          "name": "Bournemouth",
-          "logo": "https://media.api-sports.io/football/teams/35.png",
-          "winner": true
-        },
-        "away": {
-          "id": 47,
-          "name": "Tottenham",
-          "logo": "https://media.api-sports.io/football/teams/47.png",
-          "winner": false
-        }
-      },
-      "goals": {
-        "home": 2,
-        "away": 1
-      },
-      "score": {
-        "halftime": {
-          "home": 2,
-          "away": 1
-        },
-        "fulltime": {
-          "home": null,
-          "away": null
-        },
-        "extratime": {
-          "home": null,
-          "away": null
-        },
-        "penalty": {
-          "home": null,
-          "away": null
-        }
-      },
-      "events": [
-        {
-          "time": {
-            "elapsed": 5,
-            "extra": null
-          },
-          "team": {
-            "id": 47,
-            "name": "Tottenham",
-            "logo": "https://media.api-sports.io/football/teams/47.png"
-          },
-          "player": {
-            "id": 270510,
-            "name": "M. Tel"
-          },
-          "assist": {
-            "id": 162016,
-            "name": "X. Simons"
-          },
-          "type": "Goal",
-          "detail": "Normal Goal",
+          "type": "Var",
+          "detail": "Goal Disallowed - offside",
           "comments": null
         },
         {
           "time": {
-            "elapsed": 22,
-            "extra": null
+            "elapsed": 45,
+            "extra": 7
           },
           "team": {
-            "id": 35,
-            "name": "Bournemouth",
-            "logo": "https://media.api-sports.io/football/teams/35.png"
+            "id": 36,
+            "name": "Fulham",
+            "logo": "https://media.api-sports.io/football/teams/36.png"
           },
           "player": {
-            "id": 152856,
-            "name": "Evanilson"
-          },
-          "assist": {
-            "id": 19245,
-            "name": "M. Tavernier"
-          },
-          "type": "Goal",
-          "detail": "Normal Goal",
-          "comments": null
-        },
-        {
-          "time": {
-            "elapsed": 36,
-            "extra": null
-          },
-          "team": {
-            "id": 35,
-            "name": "Bournemouth",
-            "logo": "https://media.api-sports.io/football/teams/35.png"
-          },
-          "player": {
-            "id": 368030,
-            "name": "E. J. Kroupi"
-          },
-          "assist": {
-            "id": 6610,
-            "name": "M. Senesi"
-          },
-          "type": "Goal",
-          "detail": "Normal Goal",
-          "comments": null
-        },
-        {
-          "time": {
-            "elapsed": 43,
-            "extra": null
-          },
-          "team": {
-            "id": 35,
-            "name": "Bournemouth",
-            "logo": "https://media.api-sports.io/football/teams/35.png"
-          },
-          "player": {
-            "id": 19281,
-            "name": "A. Semenyo"
-          },
-          "assist": {
-            "id": null,
-            "name": null
-          },
-          "type": "Card",
-          "detail": "Yellow Card",
-          "comments": "Tripping"
-        }
-      ]
-    },
-    {
-      "fixture": {
-        "id": 1379171,
-        "referee": "Matt Donohue, England",
-        "timezone": "UTC",
-        "date": "2026-01-07T19:30:00+00:00",
-        "timestamp": 1767814200,
-        "periods": {
-          "first": 1767814200,
-          "second": null
-        },
-        "venue": {
-          "id": 10503,
-          "name": "Brentford Community Stadium",
-          "city": "London"
-        },
-        "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 2
-        }
-      },
-      "league": {
-        "id": 39,
-        "name": "Premier League",
-        "country": "England",
-        "logo": "https://media.api-sports.io/football/leagues/39.png",
-        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-        "season": 2025,
-        "round": "Regular Season - 21",
-        "standings": true
-      },
-      "teams": {
-        "home": {
-          "id": 55,
-          "name": "Brentford",
-          "logo": "https://media.api-sports.io/football/teams/55.png",
-          "winner": true
-        },
-        "away": {
-          "id": 746,
-          "name": "Sunderland",
-          "logo": "https://media.api-sports.io/football/teams/746.png",
-          "winner": false
-        }
-      },
-      "goals": {
-        "home": 1,
-        "away": 0
-      },
-      "score": {
-        "halftime": {
-          "home": 1,
-          "away": 0
-        },
-        "fulltime": {
-          "home": null,
-          "away": null
-        },
-        "extratime": {
-          "home": null,
-          "away": null
-        },
-        "penalty": {
-          "home": null,
-          "away": null
-        }
-      },
-      "events": [
-        {
-          "time": {
-            "elapsed": 30,
-            "extra": null
-          },
-          "team": {
-            "id": 55,
-            "name": "Brentford",
-            "logo": "https://media.api-sports.io/football/teams/55.png"
-          },
-          "player": {
-            "id": 196156,
-            "name": "I. Thiago"
-          },
-          "assist": {
-            "id": 25073,
-            "name": "V. Janelt"
-          },
-          "type": "Goal",
-          "detail": "Normal Goal",
-          "comments": null
-        },
-        {
-          "time": {
-            "elapsed": 43,
-            "extra": null
-          },
-          "team": {
-            "id": 55,
-            "name": "Brentford",
-            "logo": "https://media.api-sports.io/football/teams/55.png"
-          },
-          "player": {
-            "id": 196156,
-            "name": "I. Thiago"
+            "id": 131,
+            "name": "J. Cuenca"
           },
           "assist": {
             "id": null,
@@ -644,212 +1054,25 @@
         },
         {
           "time": {
-            "elapsed": 45,
+            "elapsed": 46,
             "extra": null
           },
           "team": {
-            "id": 746,
-            "name": "Sunderland",
-            "logo": "https://media.api-sports.io/football/teams/746.png"
+            "id": 36,
+            "name": "Fulham",
+            "logo": "https://media.api-sports.io/football/teams/36.png"
           },
           "player": {
-            "id": 119121,
-            "name": "T. Hume"
+            "id": 131,
+            "name": "J. Cuenca"
           },
           "assist": {
-            "id": null,
-            "name": null
+            "id": 237819,
+            "name": "Kevin"
           },
-          "type": "Card",
-          "detail": "Yellow Card",
+          "type": "subst",
+          "detail": "Substitution 1",
           "comments": null
-        }
-      ]
-    },
-    {
-      "fixture": {
-        "id": 1379173,
-        "referee": "Andy Madley, England",
-        "timezone": "UTC",
-        "date": "2026-01-07T19:30:00+00:00",
-        "timestamp": 1767814200,
-        "periods": {
-          "first": 1767814200,
-          "second": null
-        },
-        "venue": {
-          "id": 525,
-          "name": "Selhurst Park",
-          "city": "London"
-        },
-        "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 1
-        }
-      },
-      "league": {
-        "id": 39,
-        "name": "Premier League",
-        "country": "England",
-        "logo": "https://media.api-sports.io/football/leagues/39.png",
-        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-        "season": 2025,
-        "round": "Regular Season - 21",
-        "standings": true
-      },
-      "teams": {
-        "home": {
-          "id": 52,
-          "name": "Crystal Palace",
-          "logo": "https://media.api-sports.io/football/teams/52.png",
-          "winner": null
-        },
-        "away": {
-          "id": 66,
-          "name": "Aston Villa",
-          "logo": "https://media.api-sports.io/football/teams/66.png",
-          "winner": null
-        }
-      },
-      "goals": {
-        "home": 0,
-        "away": 0
-      },
-      "score": {
-        "halftime": {
-          "home": 0,
-          "away": 0
-        },
-        "fulltime": {
-          "home": null,
-          "away": null
-        },
-        "extratime": {
-          "home": null,
-          "away": null
-        },
-        "penalty": {
-          "home": null,
-          "away": null
-        }
-      },
-      "events": []
-    },
-    {
-      "fixture": {
-        "id": 1379174,
-        "referee": "Thomas Kirk, England",
-        "timezone": "UTC",
-        "date": "2026-01-07T19:30:00+00:00",
-        "timestamp": 1767814200,
-        "periods": {
-          "first": 1767814200,
-          "second": null
-        },
-        "venue": {
-          "id": 22033,
-          "name": "Hill Dickinson Stadium",
-          "city": "Liverpool"
-        },
-        "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 2
-        }
-      },
-      "league": {
-        "id": 39,
-        "name": "Premier League",
-        "country": "England",
-        "logo": "https://media.api-sports.io/football/leagues/39.png",
-        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-        "season": 2025,
-        "round": "Regular Season - 21",
-        "standings": true
-      },
-      "teams": {
-        "home": {
-          "id": 45,
-          "name": "Everton",
-          "logo": "https://media.api-sports.io/football/teams/45.png",
-          "winner": true
-        },
-        "away": {
-          "id": 39,
-          "name": "Wolves",
-          "logo": "https://media.api-sports.io/football/teams/39.png",
-          "winner": false
-        }
-      },
-      "goals": {
-        "home": 1,
-        "away": 0
-      },
-      "score": {
-        "halftime": {
-          "home": 1,
-          "away": 0
-        },
-        "fulltime": {
-          "home": null,
-          "away": null
-        },
-        "extratime": {
-          "home": null,
-          "away": null
-        },
-        "penalty": {
-          "home": null,
-          "away": null
-        }
-      },
-      "events": [
-        {
-          "time": {
-            "elapsed": 17,
-            "extra": null
-          },
-          "team": {
-            "id": 45,
-            "name": "Everton",
-            "logo": "https://media.api-sports.io/football/teams/45.png"
-          },
-          "player": {
-            "id": 2934,
-            "name": "M. Keane"
-          },
-          "assist": {
-            "id": 284500,
-            "name": "T. Iroegbunam"
-          },
-          "type": "Goal",
-          "detail": "Normal Goal",
-          "comments": null
-        },
-        {
-          "time": {
-            "elapsed": 43,
-            "extra": null
-          },
-          "team": {
-            "id": 39,
-            "name": "Wolves",
-            "logo": "https://media.api-sports.io/football/teams/39.png"
-          },
-          "player": {
-            "id": 1590,
-            "name": "J. Sa"
-          },
-          "assist": {
-            "id": null,
-            "name": null
-          },
-          "type": "Card",
-          "detail": "Yellow Card",
-          "comments": "Unsportsmanlike conduct"
         }
       ]
     },
@@ -862,7 +1085,7 @@
         "timestamp": 1767814200,
         "periods": {
           "first": 1767814200,
-          "second": null
+          "second": 1767817800
         },
         "venue": {
           "id": 555,
@@ -870,10 +1093,10 @@
           "city": "Manchester"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 5
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 54,
+          "extra": null
         }
       },
       "league": {
@@ -987,6 +1210,28 @@
           },
           "type": "Goal",
           "detail": "Penalty",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 54,
+            "extra": null
+          },
+          "team": {
+            "id": 51,
+            "name": "Brighton",
+            "logo": "https://media.api-sports.io/football/teams/51.png"
+          },
+          "player": {
+            "id": 38695,
+            "name": "J. P. van Hecke"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
           "comments": null
         }
       ]
