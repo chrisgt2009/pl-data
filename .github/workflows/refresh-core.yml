@@ -7,9 +7,9 @@ concurrency:
 on:
   workflow_dispatch:
   schedule:
-    # Standings/scorers every 3 hours (lighter but timely)
+    # Standings/scorers every 3 hours
     - cron: "5 */3 * * *"
-    # Fixtures twice a day (morning + late evening London)
+    # Fixtures twice a day (London morning and late evening)
     - cron: "0 7,23 * * *"
 
 permissions:
@@ -25,14 +25,13 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Ensure folders (NEW STRUCTURE)
+      - name: Ensure folders
         run: |
           mkdir -p data/football/premier-league/core
           mkdir -p data/football/premier-league/fixtures
           mkdir -p data/football/premier-league/live
           mkdir -p data/ops
 
-      # Optional: Post-window trigger (refresh standings/scorers once after last FT)
       - id: post_window
         name: Check post-window trigger
         shell: bash
@@ -43,7 +42,6 @@ jobs:
 
           if [[ -f "$FLAG" ]]; then
             TS=$(jq -r '.ts // 0' "$FLAG")
-            # Consider the trigger valid if within last 90 minutes
             if (( NOW_TS - TS <= 5400 )); then
               echo "trigger=true" >> "$GITHUB_OUTPUT"
             else
@@ -206,7 +204,6 @@ jobs:
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
 
-      # ---------------- CLEAN POST-WINDOW FLAG (if used) ----------------
       - name: Clear post-window flag
         if: steps.post_window.outputs.trigger == 'true' && (steps.standings.outputs.changed == 'true' || steps.scorers.outputs.changed == 'true')
         shell: bash
@@ -222,7 +219,6 @@ jobs:
             git push
           fi
 
-      # ---------------- COMMIT ----------------
       - name: Commit & push
         if: steps.fixtures.outputs.changed == 'true' || steps.standings.outputs.changed == 'true' || steps.scorers.outputs.changed == 'true'
         run: |
@@ -234,7 +230,6 @@ jobs:
 
           git commit -m "Update core feeds (fixtures/standings/scorers)"
           git push
-
 
 
 # name: Refresh Core (PL)
