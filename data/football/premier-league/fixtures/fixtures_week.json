@@ -3,12 +3,12 @@
     {
       "fixture": {
         "id": 1379169,
-        "referee": null,
+        "referee": "Anthony Taylor, England",
         "timezone": "UTC",
         "date": "2026-01-08T20:00:00+00:00",
         "timestamp": 1767902400,
         "periods": {
-          "first": null,
+          "first": 1767902400,
           "second": null
         },
         "venue": {
@@ -17,9 +17,9 @@
           "city": "London"
         },
         "status": {
-          "long": "Not Started",
-          "short": "NS",
-          "elapsed": null,
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 25,
           "extra": null
         }
       },
@@ -48,13 +48,13 @@
         }
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       },
       "score": {
         "halftime": {
-          "home": null,
-          "away": null
+          "home": 0,
+          "away": 0
         },
         "fulltime": {
           "home": null,
@@ -772,6 +772,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-08T16:02:57Z"
+    "lastUpdatedUTC": "2026-01-08T20:24:27Z"
   }
 }
