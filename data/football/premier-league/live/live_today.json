@@ -19,8 +19,8 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 85,
-          "extra": null
+          "elapsed": 90,
+          "extra": 7
         }
       },
       "league": {
@@ -200,6 +200,116 @@
           },
           "type": "subst",
           "detail": "Substitution 5",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 83,
+            "extra": null
+          },
+          "team": {
+            "id": 42,
+            "name": "Arsenal",
+            "logo": "https://media.api-sports.io/football/teams/42.png"
+          },
+          "player": {
+            "id": 114745,
+            "name": "M. Arteta"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Unsportsmanlike conduct"
+        },
+        {
+          "time": {
+            "elapsed": 90,
+            "extra": null
+          },
+          "team": {
+            "id": 40,
+            "name": "Liverpool",
+            "logo": "https://media.api-sports.io/football/teams/40.png"
+          },
+          "player": {
+            "id": 6716,
+            "name": "A. Mac Allister"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Holding"
+        },
+        {
+          "time": {
+            "elapsed": 90,
+            "extra": 3
+          },
+          "team": {
+            "id": 42,
+            "name": "Arsenal",
+            "logo": "https://media.api-sports.io/football/teams/42.png"
+          },
+          "player": {
+            "id": 127769,
+            "name": "G. Martinelli"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Unsportsmanlike conduct"
+        },
+        {
+          "time": {
+            "elapsed": 90,
+            "extra": 3
+          },
+          "team": {
+            "id": 40,
+            "name": "Liverpool",
+            "logo": "https://media.api-sports.io/football/teams/40.png"
+          },
+          "player": {
+            "id": 1145,
+            "name": "I. Konate"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Unsportsmanlike conduct"
+        },
+        {
+          "time": {
+            "elapsed": 90,
+            "extra": 5
+          },
+          "team": {
+            "id": 40,
+            "name": "Liverpool",
+            "logo": "https://media.api-sports.io/football/teams/40.png"
+          },
+          "player": {
+            "id": 180317,
+            "name": "C. Bradley"
+          },
+          "assist": {
+            "id": 284,
+            "name": "J. Gomez"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
           "comments": null
         }
       ]
