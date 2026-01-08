@@ -4,12 +4,8 @@
     "season": "2022"
   },
   "errors": {
-    "rateLimit": "Too many requests. Your rate limit is 10 requests per minute."
+    "season": "The Season field do not exist."
   },
   "results": 0,
-  "paging": {
-    "current": 1,
-    "total": 1
-  },
   "response": []
 }
