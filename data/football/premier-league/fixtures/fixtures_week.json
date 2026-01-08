@@ -9,7 +9,7 @@
         "timestamp": 1767902400,
         "periods": {
           "first": 1767902400,
-          "second": null
+          "second": 1767906000
         },
         "venue": {
           "id": 494,
@@ -17,10 +17,10 @@
           "city": "London"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 25,
-          "extra": null
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
+          "extra": 8
         }
       },
       "league": {
@@ -57,8 +57,8 @@
           "away": 0
         },
         "fulltime": {
-          "home": null,
-          "away": null
+          "home": 0,
+          "away": 0
         },
         "extratime": {
           "home": null,
@@ -772,6 +772,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-08T20:24:27Z"
+    "lastUpdatedUTC": "2026-01-08T22:28:35Z"
   }
 }
