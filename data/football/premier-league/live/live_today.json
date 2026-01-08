@@ -9,7 +9,7 @@
         "timestamp": 1767902400,
         "periods": {
           "first": 1767902400,
-          "second": null
+          "second": 1767906000
         },
         "venue": {
           "id": 494,
@@ -17,10 +17,10 @@
           "city": "London"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 2
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 64,
+          "extra": null
         }
       },
       "league": {
@@ -91,6 +91,28 @@
           "type": "Card",
           "detail": "Yellow Card",
           "comments": "Holding"
+        },
+        {
+          "time": {
+            "elapsed": 57,
+            "extra": null
+          },
+          "team": {
+            "id": 42,
+            "name": "Arsenal",
+            "logo": "https://media.api-sports.io/football/teams/42.png"
+          },
+          "player": {
+            "id": 127817,
+            "name": "P. Hincapie"
+          },
+          "assist": {
+            "id": 313245,
+            "name": "M. Lewis-Skelly"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
         }
       ]
     }
