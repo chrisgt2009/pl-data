@@ -7,7 +7,7 @@ concurrency:
 on:
   workflow_dispatch:
   schedule:
-    # Match-heavy windows (UK time-ish; adjust as needed)
+    # Match-heavy windows (UK-oriented; adjust as needed)
     - cron: "*/5 11-22 * * 6,0"     # Sat/Sun every 5 mins
     - cron: "*/10 17-22 * * 1-5"    # Weekday evenings every 10 mins
     # Light refresh otherwise
@@ -29,7 +29,7 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Ensure folders (NEW STRUCTURE)
+      - name: Ensure folders
         run: |
           mkdir -p data/football/premier-league/live
           mkdir -p data/football/premier-league/fixtures
@@ -43,10 +43,8 @@ jobs:
           OUT="data/football/premier-league/live/live_today.json"
           FIX="data/football/premier-league/fixtures/fixtures_week.json"
 
-          # Default to fetch unless evidence says otherwise
           SHOULD="yes"
 
-          # If we already have a live file, check if any match looks live
           if [[ -f "$OUT" ]]; then
             LIVE=$(jq '[.matches[]? | .fixture.status.short // "" | ascii_upcase] | any(. == "1H" or . == "HT" or . == "2H" or . == "ET" or . == "P" or . == "LIVE")' "$OUT")
             if [[ "$LIVE" == "true" ]]; then
@@ -55,17 +53,15 @@ jobs:
               SHOULD="maybe"
             fi
           else
-            # If we have no live file, use fixtures to decide
             SHOULD="maybe"
           fi
 
-          # If not live now, check upcoming kickoffs within 15 minutes (optional ramp)
           if [[ "$SHOULD" == "maybe" && -f "$FIX" ]]; then
             NOW=$(date -u +%s)
             NEAR=$(jq --arg now "$NOW" '
               def to_ts($s):
                 (try ($s
-                      | sub("\\.[0-9]{3}Z$"; "Z")        # strip fractional seconds if present
+                      | sub("\\.[0-9]{3}Z$"; "Z")
                       | strptime("%Y-%m-%dT%H:%M:%S%z")
                       | mktime) catch null);
               [.matches[]? | .fixture.date as $d | to_ts($d) ]
@@ -83,8 +79,6 @@ jobs:
         run: |
           set -euo pipefail
           STATE="data/ops/live_usage.json"
-
-          # London date stamp for rollover
           LONDON_DATE=$(TZ=Europe/London date +%F)
 
           if [[ -f "$STATE" ]]; then
@@ -99,15 +93,12 @@ jobs:
             COUNT=0
           fi
 
-          # Soft cap for live calls (tune as needed below 7500/day overall)
           CAP=6000
           OVER="false"
           if (( COUNT >= CAP )); then
             OVER="true"
           fi
 
-          echo "date=$LONDON_DATE" > "$STATE.tmp"
-          echo "count=$COUNT" >> "$STATE.tmp"
           jq -n --arg date "$LONDON_DATE" --argjson count "$COUNT" '{date:$date, count:$count}' > "$STATE"
 
           echo "over_cap=$OVER" >> "$GITHUB_OUTPUT"
@@ -132,7 +123,6 @@ jobs:
 
           FINAL_URL="${BASE_URL}&league=${LEAGUE_ID}&season=${SEASON}"
 
-          # Add timeouts to avoid long hangs
           CODE=$(curl -sS --connect-timeout 5 --max-time 20 -w "%{http_code}" -o "$TMPBODY" \
             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
@@ -150,9 +140,8 @@ jobs:
             exit 0
           fi
 
-          # Optional: add lastUpdatedUTC metadata for the app
-          NORM="$(mktemp)"
           TS=$(date -u +%FT%TZ)
+          NORM="$(mktemp)"
           jq --arg ts "$TS" '{matches: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
           if ! cmp -s "$NORM" "$OUT"; then
@@ -185,6 +174,35 @@ jobs:
           git add data/football/premier-league/live/live_today.json
           git commit -m "Update live (PL)"
           git push
+
+      - name: Set post-window trigger if day finished
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="data/football/premier-league/live/live_today.json"
+          mkdir -p data/ops
+
+          if [[ ! -f "$OUT" ]]; then
+            echo "No live_today.json present; skipping trigger."
+            exit 0
+          fi
+
+          LIVE=$(jq '[.matches[]? | .fixture.status.short // "" | ascii_upcase] | any(. == "1H" or . == "HT" or . == "2H" or . == "ET" or . == "P" or . == "LIVE")' "$OUT")
+          HAS_FT=$(jq '[.matches[]? | .fixture.status.short // "" | ascii_upcase] | any(. == "FT")' "$OUT")
+
+          if [[ "$LIVE" == "false" && "$HAS_FT" == "true" ]]; then
+            NOW_TS=$(date -u +%s)
+            echo "{\"ts\": ${NOW_TS}}" > data/ops/post_window.json
+
+            git config user.name "pl-bot"
+            git config user.email "pl-bot@users.noreply.github.com"
+            git add data/ops/post_window.json
+            git commit -m "Post-window trigger"
+            git push || true
+            echo "Post-window trigger set."
+          else
+            echo "Still live or no FT detected; no trigger."
+          fi
 
 
 
