@@ -1,221 +1,13 @@
-name: Refresh Live (PL)
-
-concurrency:
-  group: pl-live-commit
-  cancel-in-progress: true
-
-on:
-  workflow_dispatch:
-  schedule:
-    # Match-heavy windows (UK-oriented; adjust as needed)
-    - cron: "*/5 11-22 * * 6,0"     # Sat/Sun every 5 mins
-    - cron: "*/10 17-22 * * 1-5"    # Weekday evenings every 10 mins
-    # Light refresh otherwise
-    - cron: "*/15 7-10 * * *"       # mornings
-    # Overnight hourly
-    - cron: "0 0-6 * * *"
-    - cron: "0 23 * * *"
-
-permissions:
-  contents: write
-
-jobs:
-  live:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq
-
-      - name: Ensure folders
-        run: |
-          mkdir -p data/football/premier-league/live
-          mkdir -p data/football/premier-league/fixtures
-          mkdir -p data/ops
-
-      - id: preflight_live
-        name: Preflight (should we fetch live?)
-        shell: bash
-        run: |
-          set -euo pipefail
-          OUT="data/football/premier-league/live/live_today.json"
-          FIX="data/football/premier-league/fixtures/fixtures_week.json"
-
-          SHOULD="yes"
-
-          if [[ -f "$OUT" ]]; then
-            LIVE=$(jq '[.matches[]? | .fixture.status.short // "" | ascii_upcase] | any(. == "1H" or . == "HT" or . == "2H" or . == "ET" or . == "P" or . == "LIVE")' "$OUT")
-            if [[ "$LIVE" == "true" ]]; then
-              SHOULD="yes"
-            else
-              SHOULD="maybe"
-            fi
-          else
-            SHOULD="maybe"
-          fi
-
-          if [[ "$SHOULD" == "maybe" && -f "$FIX" ]]; then
-            NOW=$(date -u +%s)
-            NEAR=$(jq --arg now "$NOW" '
-              def to_ts($s):
-                (try ($s
-                      | sub("\\.[0-9]{3}Z$"; "Z")
-                      | strptime("%Y-%m-%dT%H:%M:%S%z")
-                      | mktime) catch null);
-              [.matches[]? | .fixture.date as $d | to_ts($d) ]
-              | map(select(. != null and (. - ($now|tonumber)) >= 0 and (. - ($now|tonumber)) <= 900))
-              | length > 0
-            ' "$FIX")
-            if [[ "$NEAR" == "true" ]]; then SHOULD="yes"; else SHOULD="no"; fi
-          fi
-
-          echo "should_fetch=$SHOULD" >> "$GITHUB_OUTPUT"
-
-      - id: live_quota
-        name: Quota guard (live soft cap)
-        shell: bash
-        run: |
-          set -euo pipefail
-          STATE="data/ops/live_usage.json"
-          LONDON_DATE=$(TZ=Europe/London date +%F)
-
-          if [[ -f "$STATE" ]]; then
-            CURR_DATE=$(jq -r '.date // ""' "$STATE")
-            COUNT=$(jq -r '.count // 0' "$STATE")
-          else
-            CURR_DATE=""
-            COUNT=0
-          fi
-
-          if [[ "$CURR_DATE" != "$LONDON_DATE" ]]; then
-            COUNT=0
-          fi
-
-          CAP=6000
-          OVER="false"
-          if (( COUNT >= CAP )); then
-            OVER="true"
-          fi
-
-          jq -n --arg date "$LONDON_DATE" --argjson count "$COUNT" '{date:$date, count:$count}' > "$STATE"
-
-          echo "over_cap=$OVER" >> "$GITHUB_OUTPUT"
-
-      - id: live_today
-        name: Refresh live fixtures (API-Football)
-        if: steps.preflight_live.outputs.should_fetch != 'no' && steps.live_quota.outputs.over_cap != 'true'
-        shell: bash
-        env:
-          BASE_URL: ${{ vars.URL_LIVE }}          # e.g. https://v3.football.api-sports.io/fixtures?live=all
-          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
-          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
-          LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}     # 39
-          SEASON: ${{ vars.SEASON_PL }}           # 2025
-        run: |
-          set -euo pipefail
-
-          OUT="data/football/premier-league/live/live_today.json"
-          TMPBODY="$(mktemp)"
-
-          [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
-
-          FINAL_URL="${BASE_URL}&league=${LEAGUE_ID}&season=${SEASON}"
-
-          CODE=$(curl -sS --connect-timeout 5 --max-time 20 -w "%{http_code}" -o "$TMPBODY" \
-            -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
-            -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
-            "$FINAL_URL" || true)
-
-          echo "code=$CODE" >> "$GITHUB_OUTPUT"
-          if [[ "$CODE" != "200" ]]; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
-          if [[ "$OK" != "true" ]]; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          TS=$(date -u +%FT%TZ)
-          NORM="$(mktemp)"
-          jq --arg ts "$TS" '{matches: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
-
-          if ! cmp -s "$NORM" "$OUT"; then
-            mv "$NORM" "$OUT"
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Increment live quota on success
-        if: steps.live_today.outputs.code == '200'
-        shell: bash
-        run: |
-          set -euo pipefail
-          STATE="data/ops/live_usage.json"
-          COUNT=$(jq -r '.count // 0' "$STATE")
-          jq --argjson c $((COUNT+1)) '.count = $c' "$STATE" > "$STATE.tmp" && mv "$STATE.tmp" "$STATE"
-          git config user.name "pl-bot"
-          git config user.email "pl-bot@users.noreply.github.com"
-          git add "$STATE"
-          git commit -m "live quota ++" || true
-          git push || true
-
-      - name: Commit & push
-        if: steps.live_today.outputs.changed == 'true'
-        run: |
-          git config user.name "pl-bot"
-          git config user.email "pl-bot@users.noreply.github.com"
-
-          git add data/football/premier-league/live/live_today.json
-          git commit -m "Update live (PL)"
-          git push
-
-      - name: Set post-window trigger if day finished
-        shell: bash
-        run: |
-          set -euo pipefail
-          OUT="data/football/premier-league/live/live_today.json"
-          mkdir -p data/ops
-
-          if [[ ! -f "$OUT" ]]; then
-            echo "No live_today.json present; skipping trigger."
-            exit 0
-          fi
-
-          LIVE=$(jq '[.matches[]? | .fixture.status.short // "" | ascii_upcase] | any(. == "1H" or . == "HT" or . == "2H" or . == "ET" or . == "P" or . == "LIVE")' "$OUT")
-          HAS_FT=$(jq '[.matches[]? | .fixture.status.short // "" | ascii_upcase] | any(. == "FT")' "$OUT")
-
-          if [[ "$LIVE" == "false" && "$HAS_FT" == "true" ]]; then
-            NOW_TS=$(date -u +%s)
-            echo "{\"ts\": ${NOW_TS}}" > data/ops/post_window.json
-
-            git config user.name "pl-bot"
-            git config user.email "pl-bot@users.noreply.github.com"
-            git add data/ops/post_window.json
-            git commit -m "Post-window trigger"
-            git push || true
-            echo "Post-window trigger set."
-          else
-            echo "Still live or no FT detected; no trigger."
-          fi
-
-
-
 # name: Refresh Live (PL)
 
 # concurrency:
 #   group: pl-live-commit
-#   cancel-in-progress: false
+#   cancel-in-progress: true
 
 # on:
 #   workflow_dispatch:
 #   schedule:
-#     # Match-heavy windows (UK time-ish; adjust if you want)
+#     # Match-heavy windows (UK-oriented; adjust as needed)
 #     - cron: "*/5 11-22 * * 6,0"     # Sat/Sun every 5 mins
 #     - cron: "*/10 17-22 * * 1-5"    # Weekday evenings every 10 mins
 #     # Light refresh otherwise
@@ -237,12 +29,83 @@ jobs:
 #       - name: Install jq
 #         run: sudo apt-get update && sudo apt-get install -y jq
 
-#       - name: Ensure folders (NEW STRUCTURE)
+#       - name: Ensure folders
 #         run: |
 #           mkdir -p data/football/premier-league/live
+#           mkdir -p data/football/premier-league/fixtures
+#           mkdir -p data/ops
+
+#       - id: preflight_live
+#         name: Preflight (should we fetch live?)
+#         shell: bash
+#         run: |
+#           set -euo pipefail
+#           OUT="data/football/premier-league/live/live_today.json"
+#           FIX="data/football/premier-league/fixtures/fixtures_week.json"
+
+#           SHOULD="yes"
+
+#           if [[ -f "$OUT" ]]; then
+#             LIVE=$(jq '[.matches[]? | .fixture.status.short // "" | ascii_upcase] | any(. == "1H" or . == "HT" or . == "2H" or . == "ET" or . == "P" or . == "LIVE")' "$OUT")
+#             if [[ "$LIVE" == "true" ]]; then
+#               SHOULD="yes"
+#             else
+#               SHOULD="maybe"
+#             fi
+#           else
+#             SHOULD="maybe"
+#           fi
+
+#           if [[ "$SHOULD" == "maybe" && -f "$FIX" ]]; then
+#             NOW=$(date -u +%s)
+#             NEAR=$(jq --arg now "$NOW" '
+#               def to_ts($s):
+#                 (try ($s
+#                       | sub("\\.[0-9]{3}Z$"; "Z")
+#                       | strptime("%Y-%m-%dT%H:%M:%S%z")
+#                       | mktime) catch null);
+#               [.matches[]? | .fixture.date as $d | to_ts($d) ]
+#               | map(select(. != null and (. - ($now|tonumber)) >= 0 and (. - ($now|tonumber)) <= 900))
+#               | length > 0
+#             ' "$FIX")
+#             if [[ "$NEAR" == "true" ]]; then SHOULD="yes"; else SHOULD="no"; fi
+#           fi
+
+#           echo "should_fetch=$SHOULD" >> "$GITHUB_OUTPUT"
+
+#       - id: live_quota
+#         name: Quota guard (live soft cap)
+#         shell: bash
+#         run: |
+#           set -euo pipefail
+#           STATE="data/ops/live_usage.json"
+#           LONDON_DATE=$(TZ=Europe/London date +%F)
+
+#           if [[ -f "$STATE" ]]; then
+#             CURR_DATE=$(jq -r '.date // ""' "$STATE")
+#             COUNT=$(jq -r '.count // 0' "$STATE")
+#           else
+#             CURR_DATE=""
+#             COUNT=0
+#           fi
+
+#           if [[ "$CURR_DATE" != "$LONDON_DATE" ]]; then
+#             COUNT=0
+#           fi
+
+#           CAP=6000
+#           OVER="false"
+#           if (( COUNT >= CAP )); then
+#             OVER="true"
+#           fi
+
+#           jq -n --arg date "$LONDON_DATE" --argjson count "$COUNT" '{date:$date, count:$count}' > "$STATE"
+
+#           echo "over_cap=$OVER" >> "$GITHUB_OUTPUT"
 
 #       - id: live_today
 #         name: Refresh live fixtures (API-Football)
+#         if: steps.preflight_live.outputs.should_fetch != 'no' && steps.live_quota.outputs.over_cap != 'true'
 #         shell: bash
 #         env:
 #           BASE_URL: ${{ vars.URL_LIVE }}          # e.g. https://v3.football.api-sports.io/fixtures?live=all
@@ -260,7 +123,7 @@ jobs:
 
 #           FINAL_URL="${BASE_URL}&league=${LEAGUE_ID}&season=${SEASON}"
 
-#           CODE=$(curl -sS -w "%{http_code}" -o "$TMPBODY" \
+#           CODE=$(curl -sS --connect-timeout 5 --max-time 20 -w "%{http_code}" -o "$TMPBODY" \
 #             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
 #             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
 #             "$FINAL_URL" || true)
@@ -277,8 +140,9 @@ jobs:
 #             exit 0
 #           fi
 
+#           TS=$(date -u +%FT%TZ)
 #           NORM="$(mktemp)"
-#           jq '{matches: .response}' "$TMPBODY" > "$NORM"
+#           jq --arg ts "$TS" '{matches: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
 #           if ! cmp -s "$NORM" "$OUT"; then
 #             mv "$NORM" "$OUT"
@@ -286,6 +150,20 @@ jobs:
 #           else
 #             echo "changed=false" >> "$GITHUB_OUTPUT"
 #           fi
+
+#       - name: Increment live quota on success
+#         if: steps.live_today.outputs.code == '200'
+#         shell: bash
+#         run: |
+#           set -euo pipefail
+#           STATE="data/ops/live_usage.json"
+#           COUNT=$(jq -r '.count // 0' "$STATE")
+#           jq --argjson c $((COUNT+1)) '.count = $c' "$STATE" > "$STATE.tmp" && mv "$STATE.tmp" "$STATE"
+#           git config user.name "pl-bot"
+#           git config user.email "pl-bot@users.noreply.github.com"
+#           git add "$STATE"
+#           git commit -m "live quota ++" || true
+#           git push || true
 
 #       - name: Commit & push
 #         if: steps.live_today.outputs.changed == 'true'
@@ -296,3 +174,125 @@ jobs:
 #           git add data/football/premier-league/live/live_today.json
 #           git commit -m "Update live (PL)"
 #           git push
+
+#       - name: Set post-window trigger if day finished
+#         shell: bash
+#         run: |
+#           set -euo pipefail
+#           OUT="data/football/premier-league/live/live_today.json"
+#           mkdir -p data/ops
+
+#           if [[ ! -f "$OUT" ]]; then
+#             echo "No live_today.json present; skipping trigger."
+#             exit 0
+#           fi
+
+#           LIVE=$(jq '[.matches[]? | .fixture.status.short // "" | ascii_upcase] | any(. == "1H" or . == "HT" or . == "2H" or . == "ET" or . == "P" or . == "LIVE")' "$OUT")
+#           HAS_FT=$(jq '[.matches[]? | .fixture.status.short // "" | ascii_upcase] | any(. == "FT")' "$OUT")
+
+#           if [[ "$LIVE" == "false" && "$HAS_FT" == "true" ]]; then
+#             NOW_TS=$(date -u +%s)
+#             echo "{\"ts\": ${NOW_TS}}" > data/ops/post_window.json
+
+#             git config user.name "pl-bot"
+#             git config user.email "pl-bot@users.noreply.github.com"
+#             git add data/ops/post_window.json
+#             git commit -m "Post-window trigger"
+#             git push || true
+#             echo "Post-window trigger set."
+#           else
+#             echo "Still live or no FT detected; no trigger."
+#           fi
+
+
+
+name: Refresh Live (PL)
+
+concurrency:
+  group: pl-live-commit
+  cancel-in-progress: false
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Match-heavy windows (UK time-ish; adjust if you want)
+    - cron: "*/5 11-22 * * 6,0"     # Sat/Sun every 5 mins
+    - cron: "*/10 17-22 * * 1-5"    # Weekday evenings every 10 mins
+    # Light refresh otherwise
+    - cron: "*/15 7-10 * * *"       # mornings
+    # Overnight hourly
+    - cron: "0 0-6 * * *"
+    - cron: "0 23 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Ensure folders (NEW STRUCTURE)
+        run: |
+          mkdir -p data/football/premier-league/live
+
+      - id: live_today
+        name: Refresh live fixtures (API-Football)
+        shell: bash
+        env:
+          BASE_URL: ${{ vars.URL_LIVE }}          # e.g. https://v3.football.api-sports.io/fixtures?live=all
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
+          LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}     # 39
+          SEASON: ${{ vars.SEASON_PL }}           # 2025
+        run: |
+          set -euo pipefail
+
+          OUT="data/football/premier-league/live/live_today.json"
+          TMPBODY="$(mktemp)"
+
+          [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+
+          FINAL_URL="${BASE_URL}&league=${LEAGUE_ID}&season=${SEASON}"
+
+          CODE=$(curl -sS -w "%{http_code}" -o "$TMPBODY" \
+            -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
+            -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+            "$FINAL_URL" || true)
+
+          echo "code=$CODE" >> "$GITHUB_OUTPUT"
+          if [[ "$CODE" != "200" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
+          if [[ "$OK" != "true" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          NORM="$(mktemp)"
+          jq '{matches: .response}' "$TMPBODY" > "$NORM"
+
+          if ! cmp -s "$NORM" "$OUT"; then
+            mv "$NORM" "$OUT"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit & push
+        if: steps.live_today.outputs.changed == 'true'
+        run: |
+          git config user.name "pl-bot"
+          git config user.email "pl-bot@users.noreply.github.com"
+
+          git add data/football/premier-league/live/live_today.json
+          git commit -m "Update live (PL)"
+          git push
