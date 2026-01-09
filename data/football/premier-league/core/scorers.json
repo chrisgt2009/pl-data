@@ -39,7 +39,7 @@
             "minutes": 1826,
             "number": 9,
             "position": "Attacker",
-            "rating": "7.58",
+            "rating": "7.57",
             "captain": false
           },
           "substitutes": {
@@ -134,7 +134,7 @@
             "minutes": 1754,
             "number": 9,
             "position": "Attacker",
-            "rating": "7.15",
+            "rating": "7.13",
             "captain": false
           },
           "substitutes": {
@@ -154,7 +154,7 @@
           },
           "passes": {
             "total": 338,
-            "key": 10,
+            "key": 11,
             "accuracy": null
           },
           "tackles": {
@@ -226,10 +226,10 @@
           "games": {
             "appearences": 20,
             "lineups": 20,
-            "minutes": 1809,
+            "minutes": 1798,
             "number": 24,
             "position": "Midfielder",
-            "rating": "7.16",
+            "rating": "7.13",
             "captain": false
           },
           "substitutes": {
@@ -248,7 +248,7 @@
             "saves": null
           },
           "passes": {
-            "total": 513,
+            "total": 516,
             "key": 25,
             "accuracy": null
           },
@@ -258,12 +258,12 @@
             "interceptions": 6
           },
           "duels": {
-            "total": 295,
-            "won": 120
+            "total": 297,
+            "won": 121
           },
           "dribbles": {
-            "attempts": 71,
-            "success": 32,
+            "attempts": 72,
+            "success": 33,
             "past": null
           },
           "fouls": {
@@ -324,7 +324,7 @@
             "minutes": 1314,
             "number": 9,
             "position": "Attacker",
-            "rating": "6.78",
+            "rating": "6.82",
             "captain": false
           },
           "substitutes": {
@@ -349,7 +349,7 @@
           },
           "tackles": {
             "total": 8,
-            "blocks": null,
+            "blocks": 1,
             "interceptions": 2
           },
           "duels": {
@@ -511,10 +511,10 @@
           "games": {
             "appearences": 20,
             "lineups": 19,
-            "minutes": 1763,
+            "minutes": 1749,
             "number": 39,
             "position": "Midfielder",
-            "rating": "7.46",
+            "rating": "7.48",
             "captain": false
           },
           "substitutes": {
@@ -533,18 +533,18 @@
             "saves": null
           },
           "passes": {
-            "total": 1029,
+            "total": 1028,
             "key": 30,
             "accuracy": 44
           },
           "tackles": {
-            "total": 41,
+            "total": 42,
             "blocks": 1,
             "interceptions": 11
           },
           "duels": {
-            "total": 225,
-            "won": 109
+            "total": 227,
+            "won": 110
           },
           "dribbles": {
             "attempts": 33,
@@ -828,12 +828,12 @@
             "interceptions": 9
           },
           "duels": {
-            "total": 245,
-            "won": 85
+            "total": 247,
+            "won": 86
           },
           "dribbles": {
-            "attempts": 68,
-            "success": 24,
+            "attempts": 70,
+            "success": 25,
             "past": null
           },
           "fouls": {
@@ -894,7 +894,7 @@
             "minutes": 1509,
             "number": 8,
             "position": "Midfielder",
-            "rating": "7.23",
+            "rating": "7.22",
             "captain": false
           },
           "substitutes": {
@@ -986,7 +986,7 @@
           "games": {
             "appearences": 21,
             "lineups": 13,
-            "minutes": 1289,
+            "minutes": 1278,
             "number": 9,
             "position": "Attacker",
             "rating": "6.85",
@@ -1084,7 +1084,7 @@
             "minutes": 1570,
             "number": 47,
             "position": "Midfielder",
-            "rating": "7.17",
+            "rating": "7.15",
             "captain": false
           },
           "substitutes": {
@@ -1293,7 +1293,7 @@
             "saves": null
           },
           "passes": {
-            "total": 147,
+            "total": 148,
             "key": 6,
             "accuracy": null
           },
@@ -1556,10 +1556,10 @@
           "games": {
             "appearences": 20,
             "lineups": 19,
-            "minutes": 1657,
+            "minutes": 1651,
             "number": 7,
             "position": "Midfielder",
-            "rating": "6.96",
+            "rating": "6.99",
             "captain": false
           },
           "substitutes": {
@@ -1588,7 +1588,7 @@
             "interceptions": 14
           },
           "duels": {
-            "total": 265,
+            "total": 266,
             "won": 121
           },
           "dribbles": {
@@ -1873,7 +1873,7 @@
             "interceptions": 10
           },
           "duels": {
-            "total": 182,
+            "total": 184,
             "won": 82
           },
           "dribbles": {
@@ -1902,6 +1902,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-09T06:49:37Z"
+    "lastUpdatedUTC": "2026-01-09T09:38:14Z"
   }
 }
