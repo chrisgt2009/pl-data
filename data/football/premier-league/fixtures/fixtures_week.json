@@ -2,76 +2,6 @@
   "matches": [
     {
       "fixture": {
-        "id": 1379169,
-        "referee": "Anthony Taylor, England",
-        "timezone": "UTC",
-        "date": "2026-01-08T20:00:00+00:00",
-        "timestamp": 1767902400,
-        "periods": {
-          "first": 1767902400,
-          "second": 1767906000
-        },
-        "venue": {
-          "id": 494,
-          "name": "Emirates Stadium",
-          "city": "London"
-        },
-        "status": {
-          "long": "Match Finished",
-          "short": "FT",
-          "elapsed": 90,
-          "extra": 8
-        }
-      },
-      "league": {
-        "id": 39,
-        "name": "Premier League",
-        "country": "England",
-        "logo": "https://media.api-sports.io/football/leagues/39.png",
-        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-        "season": 2025,
-        "round": "Regular Season - 21",
-        "standings": true
-      },
-      "teams": {
-        "home": {
-          "id": 42,
-          "name": "Arsenal",
-          "logo": "https://media.api-sports.io/football/teams/42.png",
-          "winner": null
-        },
-        "away": {
-          "id": 40,
-          "name": "Liverpool",
-          "logo": "https://media.api-sports.io/football/teams/40.png",
-          "winner": null
-        }
-      },
-      "goals": {
-        "home": 0,
-        "away": 0
-      },
-      "score": {
-        "halftime": {
-          "home": 0,
-          "away": 0
-        },
-        "fulltime": {
-          "home": 0,
-          "away": 0
-        },
-        "extratime": {
-          "home": null,
-          "away": null
-        },
-        "penalty": {
-          "home": null,
-          "away": null
-        }
-      }
-    },
-    {
-      "fixture": {
         "id": 1379184,
         "referee": null,
         "timezone": "UTC",
@@ -772,6 +702,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-08T22:28:35Z"
+    "lastUpdatedUTC": "2026-01-09T16:26:05Z"
   }
 }
