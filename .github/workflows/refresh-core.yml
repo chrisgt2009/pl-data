@@ -204,29 +204,33 @@ jobs:
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
 
-      # ---------------- SEASONS (API-Football global seasons) ----------------
-      - id: seasons
-        name: Refresh seasons (API-Football)
+      # ---------------- SEASON FIXTURES (full season) ----------------
+      - id: fixtures_season
+        name: Refresh full season fixtures (API-Football)
         if: steps.post_window.outputs.trigger == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.event.schedule, '5 ')
         shell: bash
         env:
-          BASE_URL: ${{ vars.URL_SEASONS }}   # e.g. https://v3.football.api-sports.io/seasons
+          BASE_URL: ${{ vars.URL_FIXTURES }}
           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
-          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}  # e.g. v3.football.api-sports.io
+          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
+          LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}
+          SEASON: ${{ vars.SEASON_PL }}
         run: |
           set -euo pipefail
 
-          OUT="data/football/premier-league/core/seasons.json"
+          OUT="data/football/premier-league/fixtures/fixtures_season.json"
           TMPBODY="$(mktemp)"
 
           [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
-          echo "Fetching seasons: ${BASE_URL}"
+          # Full season: league + season only (no from/to)
+          FINAL_URL="${BASE_URL}&league=${LEAGUE_ID}&season=${SEASON}"
+          echo "Fetching full season fixtures: $FINAL_URL"
 
-          CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
+          CODE=$(curl -sS --connect-timeout 5 --max-time 35 -w "%{http_code}" -o "$TMPBODY" \
             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
-            "${BASE_URL}" || true)
+            "$FINAL_URL" || true)
 
           echo "code=$CODE" >> "$GITHUB_OUTPUT"
           if [[ "$CODE" != "200" ]]; then
@@ -242,7 +246,7 @@ jobs:
 
           TS=$(date -u +%FT%TZ)
           NORM=$(mktemp)
-          jq --arg ts "$TS" '{seasons: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
+          jq --arg ts "$TS" '{matches: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
           if ! cmp -s "$NORM" "$OUT"; then
             mv "$NORM" "$OUT"
@@ -267,7 +271,7 @@ jobs:
           fi
 
       - name: Commit & push
-        if: steps.fixtures.outputs.changed == 'true' || steps.standings.outputs.changed == 'true' || steps.scorers.outputs.changed == 'true' || steps.seasons.outputs.changed == 'true'
+        if: steps.fixtures.outputs.changed == 'true' || steps.standings.outputs.changed == 'true' || steps.scorers.outputs.changed == 'true' || steps.fixtures_season.outputs.changed == 'true'
         run: |
           git config user.name "pl-bot"
           git config user.email "pl-bot@users.noreply.github.com"
@@ -275,10 +279,8 @@ jobs:
           git add data/football/premier-league/core/*.json
           git add data/football/premier-league/fixtures/*.json
 
-          git commit -m "Update core feeds (fixtures/standings/scorers/seasons)"
+          git commit -m "Update core feeds (fixtures/standings/scorers/season)"
           git push
-
-
 
 
 
