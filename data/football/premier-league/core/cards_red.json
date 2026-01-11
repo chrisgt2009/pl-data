@@ -1,0 +1,1907 @@
+{
+  "cards_red": [
+    {
+      "player": {
+        "id": 116117,
+        "name": "M. Caicedo",
+        "firstname": "Moisés Isaac",
+        "lastname": "Caicedo Corozo",
+        "age": 24,
+        "birth": {
+          "date": "2001-11-02",
+          "place": "Santo Domingo",
+          "country": "Ecuador"
+        },
+        "nationality": "Ecuador",
+        "height": "178",
+        "weight": "73",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/116117.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 49,
+            "name": "Chelsea",
+            "logo": "https://media.api-sports.io/football/teams/49.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 16,
+            "lineups": 15,
+            "minutes": 1343,
+            "number": 25,
+            "position": "Midfielder",
+            "rating": "7.31",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 1,
+            "out": 0,
+            "bench": 2
+          },
+          "shots": {
+            "total": 7,
+            "on": 6
+          },
+          "goals": {
+            "total": 3,
+            "conceded": 0,
+            "assists": 1,
+            "saves": null
+          },
+          "passes": {
+            "total": 899,
+            "key": 9,
+            "accuracy": 51
+          },
+          "tackles": {
+            "total": 45,
+            "blocks": 9,
+            "interceptions": 37
+          },
+          "duels": {
+            "total": 167,
+            "won": 93
+          },
+          "dribbles": {
+            "attempts": 17,
+            "success": 9,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 29,
+            "committed": 27
+          },
+          "cards": {
+            "yellow": 5,
+            "yellowred": 0,
+            "red": 1
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 0,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 22225,
+        "name": "Reinildo",
+        "firstname": "Reinildo Isnard",
+        "lastname": "Mandava",
+        "age": 31,
+        "birth": {
+          "date": "1994-01-21",
+          "place": "Beira",
+          "country": "Mozambique"
+        },
+        "nationality": "Mozambique",
+        "height": "183",
+        "weight": "73",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/22225.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 746,
+            "name": "Sunderland",
+            "logo": "https://media.api-sports.io/football/teams/746.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 12,
+            "lineups": 12,
+            "minutes": 1023,
+            "number": 17,
+            "position": "Defender",
+            "rating": "6.73",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 0,
+            "out": 0,
+            "bench": 0
+          },
+          "shots": {
+            "total": 1,
+            "on": null
+          },
+          "goals": {
+            "total": 0,
+            "conceded": 0,
+            "assists": 0,
+            "saves": null
+          },
+          "passes": {
+            "total": 398,
+            "key": null,
+            "accuracy": null
+          },
+          "tackles": {
+            "total": 24,
+            "blocks": 7,
+            "interceptions": 17
+          },
+          "duels": {
+            "total": 121,
+            "won": 70
+          },
+          "dribbles": {
+            "attempts": 12,
+            "success": 6,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 24,
+            "committed": 18
+          },
+          "cards": {
+            "yellow": 4,
+            "yellowred": 0,
+            "red": 1
+          },
+          "penalty": {
+            "won": 1,
+            "commited": 1,
+            "scored": 0,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 19720,
+        "name": "T. Chalobah",
+        "firstname": "Trevoh Thomas",
+        "lastname": "Chalobah",
+        "age": 26,
+        "birth": {
+          "date": "1999-07-05",
+          "place": "Freetown",
+          "country": "Sierra Leone"
+        },
+        "nationality": "England",
+        "height": "190",
+        "weight": "75",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/19720.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 49,
+            "name": "Chelsea",
+            "logo": "https://media.api-sports.io/football/teams/49.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 20,
+            "lineups": 20,
+            "minutes": 1742,
+            "number": 23,
+            "position": "Defender",
+            "rating": "7.01",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 0,
+            "out": 1,
+            "bench": 0
+          },
+          "shots": {
+            "total": 11,
+            "on": 5
+          },
+          "goals": {
+            "total": 3,
+            "conceded": 0,
+            "assists": 0,
+            "saves": null
+          },
+          "passes": {
+            "total": 1358,
+            "key": 3,
+            "accuracy": 62
+          },
+          "tackles": {
+            "total": 26,
+            "blocks": 10,
+            "interceptions": 19
+          },
+          "duels": {
+            "total": 152,
+            "won": 90
+          },
+          "dribbles": {
+            "attempts": 8,
+            "success": 6,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 15,
+            "committed": 13
+          },
+          "cards": {
+            "yellow": 3,
+            "yellowred": 0,
+            "red": 1
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 0,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 47380,
+        "name": "Marc Cucurella",
+        "firstname": "Marc",
+        "lastname": "Cucurella Saseta",
+        "age": 27,
+        "birth": {
+          "date": "1998-07-22",
+          "place": "Alella",
+          "country": "Spain"
+        },
+        "nationality": "Spain",
+        "height": "174",
+        "weight": "66",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/47380.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 49,
+            "name": "Chelsea",
+            "logo": "https://media.api-sports.io/football/teams/49.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 19,
+            "lineups": 18,
+            "minutes": 1529,
+            "number": 3,
+            "position": "Defender",
+            "rating": "6.72",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 1,
+            "out": 3,
+            "bench": 1
+          },
+          "shots": {
+            "total": 8,
+            "on": 2
+          },
+          "goals": {
+            "total": 0,
+            "conceded": 0,
+            "assists": 2,
+            "saves": null
+          },
+          "passes": {
+            "total": 863,
+            "key": 21,
+            "accuracy": null
+          },
+          "tackles": {
+            "total": 35,
+            "blocks": 5,
+            "interceptions": 18
+          },
+          "duels": {
+            "total": 133,
+            "won": 73
+          },
+          "dribbles": {
+            "attempts": 2,
+            "success": 1,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 17,
+            "committed": 24
+          },
+          "cards": {
+            "yellow": 3,
+            "yellowred": 0,
+            "red": 1
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 0,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 18959,
+        "name": "Robert Sánchez",
+        "firstname": "Robert",
+        "lastname": "Lynch Sánchez",
+        "age": 28,
+        "birth": {
+          "date": "1997-11-18",
+          "place": "Cartagena",
+          "country": "Spain"
+        },
+        "nationality": "Spain",
+        "height": "197",
+        "weight": "90",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/18959.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 49,
+            "name": "Chelsea",
+            "logo": "https://media.api-sports.io/football/teams/49.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 20,
+            "lineups": 20,
+            "minutes": 1715,
+            "number": 1,
+            "position": "Goalkeeper",
+            "rating": "6.88",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 0,
+            "out": 0,
+            "bench": 0
+          },
+          "shots": {
+            "total": null,
+            "on": null
+          },
+          "goals": {
+            "total": 0,
+            "conceded": 21,
+            "assists": 1,
+            "saves": 48
+          },
+          "passes": {
+            "total": 718,
+            "key": 5,
+            "accuracy": null
+          },
+          "tackles": {
+            "total": null,
+            "blocks": null,
+            "interceptions": 1
+          },
+          "duels": {
+            "total": 15,
+            "won": 13
+          },
+          "dribbles": {
+            "attempts": null,
+            "success": null,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 6,
+            "committed": 2
+          },
+          "cards": {
+            "yellow": 2,
+            "yellowred": 0,
+            "red": 1
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 0,
+            "missed": 0,
+            "saved": 0
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 138787,
+        "name": "A. Gordon",
+        "firstname": "Anthony Michael",
+        "lastname": "Gordon",
+        "age": 24,
+        "birth": {
+          "date": "2001-02-24",
+          "place": "Liverpool",
+          "country": "England"
+        },
+        "nationality": "England",
+        "height": "183",
+        "weight": "72",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/138787.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 34,
+            "name": "Newcastle",
+            "logo": "https://media.api-sports.io/football/teams/34.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 16,
+            "lineups": 14,
+            "minutes": 1010,
+            "number": 10,
+            "position": "Attacker",
+            "rating": "6.99",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 2,
+            "out": 11,
+            "bench": 2
+          },
+          "shots": {
+            "total": 19,
+            "on": 9
+          },
+          "goals": {
+            "total": 2,
+            "conceded": 0,
+            "assists": 1,
+            "saves": null
+          },
+          "passes": {
+            "total": 313,
+            "key": 16,
+            "accuracy": null
+          },
+          "tackles": {
+            "total": 12,
+            "blocks": null,
+            "interceptions": 1
+          },
+          "duels": {
+            "total": 131,
+            "won": 62
+          },
+          "dribbles": {
+            "attempts": 49,
+            "success": 23,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 22,
+            "committed": 10
+          },
+          "cards": {
+            "yellow": 2,
+            "yellowred": 0,
+            "red": 1
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 2,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 162016,
+        "name": "X. Simons",
+        "firstname": "Xavier Quentin Shay",
+        "lastname": "Simons",
+        "age": 22,
+        "birth": {
+          "date": "2003-04-21",
+          "place": "Amsterdam",
+          "country": "Netherlands"
+        },
+        "nationality": "Netherlands",
+        "height": "179",
+        "weight": "58",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/162016.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 47,
+            "name": "Tottenham",
+            "logo": "https://media.api-sports.io/football/teams/47.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 15,
+            "lineups": 10,
+            "minutes": 928,
+            "number": 7,
+            "position": "Attacker",
+            "rating": "6.75",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 5,
+            "out": 6,
+            "bench": 5
+          },
+          "shots": {
+            "total": 10,
+            "on": 4
+          },
+          "goals": {
+            "total": 1,
+            "conceded": 0,
+            "assists": 3,
+            "saves": null
+          },
+          "passes": {
+            "total": 392,
+            "key": 10,
+            "accuracy": null
+          },
+          "tackles": {
+            "total": 21,
+            "blocks": null,
+            "interceptions": 6
+          },
+          "duels": {
+            "total": 132,
+            "won": 61
+          },
+          "dribbles": {
+            "attempts": 30,
+            "success": 12,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 19,
+            "committed": 10
+          },
+          "cards": {
+            "yellow": 2,
+            "yellowred": 0,
+            "red": 1
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 0,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 41606,
+        "name": "Toti Gomes",
+        "firstname": "Tote António",
+        "lastname": "Gomes",
+        "age": 26,
+        "birth": {
+          "date": "1999-01-16",
+          "place": "Bissau",
+          "country": "Guinea-Bissau"
+        },
+        "nationality": "Portugal",
+        "height": "187",
+        "weight": "72",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/41606.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 39,
+            "name": "Wolves",
+            "logo": "https://media.api-sports.io/football/teams/39.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 13,
+            "lineups": 12,
+            "minutes": 953,
+            "number": 24,
+            "position": "Defender",
+            "rating": "6.39",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 1,
+            "out": 4,
+            "bench": 3
+          },
+          "shots": {
+            "total": 1,
+            "on": 1
+          },
+          "goals": {
+            "total": 0,
+            "conceded": 0,
+            "assists": 0,
+            "saves": null
+          },
+          "passes": {
+            "total": 574,
+            "key": 5,
+            "accuracy": 41
+          },
+          "tackles": {
+            "total": 14,
+            "blocks": 7,
+            "interceptions": 8
+          },
+          "duels": {
+            "total": 70,
+            "won": 42
+          },
+          "dribbles": {
+            "attempts": 10,
+            "success": 8,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 8,
+            "committed": 9
+          },
+          "cards": {
+            "yellow": 2,
+            "yellowred": 0,
+            "red": 1
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 0,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 135068,
+        "name": "E. Agbadou",
+        "firstname": "Emmanuel Elysee",
+        "lastname": "Djedje Agbadou Badobre",
+        "age": 28,
+        "birth": {
+          "date": "1997-06-17",
+          "place": "Abidjan",
+          "country": "Côte d'Ivoire"
+        },
+        "nationality": "Côte d'Ivoire",
+        "height": "192",
+        "weight": "80",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/135068.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 39,
+            "name": "Wolves",
+            "logo": "https://media.api-sports.io/football/teams/39.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 13,
+            "lineups": 11,
+            "minutes": 1011,
+            "number": 12,
+            "position": "Defender",
+            "rating": "6.82",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 2,
+            "out": 0,
+            "bench": 4
+          },
+          "shots": {
+            "total": 6,
+            "on": 3
+          },
+          "goals": {
+            "total": 0,
+            "conceded": 0,
+            "assists": 0,
+            "saves": null
+          },
+          "passes": {
+            "total": 605,
+            "key": 3,
+            "accuracy": null
+          },
+          "tackles": {
+            "total": 28,
+            "blocks": 14,
+            "interceptions": 12
+          },
+          "duels": {
+            "total": 93,
+            "won": 60
+          },
+          "dribbles": {
+            "attempts": 5,
+            "success": 4,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 5,
+            "committed": 10
+          },
+          "cards": {
+            "yellow": 1,
+            "yellowred": 0,
+            "red": 1
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 0,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 18872,
+        "name": "L. Cook",
+        "firstname": "Lewis John",
+        "lastname": "Cook",
+        "age": 28,
+        "birth": {
+          "date": "1997-02-03",
+          "place": "York",
+          "country": "England"
+        },
+        "nationality": "England",
+        "height": "175",
+        "weight": "71",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/18872.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 35,
+            "name": "Bournemouth",
+            "logo": "https://media.api-sports.io/football/teams/35.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 11,
+            "lineups": 4,
+            "minutes": 522,
+            "number": 4,
+            "position": "Midfielder",
+            "rating": "6.78",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 7,
+            "out": 0,
+            "bench": 8
+          },
+          "shots": {
+            "total": 2,
+            "on": null
+          },
+          "goals": {
+            "total": 0,
+            "conceded": 0,
+            "assists": 1,
+            "saves": null
+          },
+          "passes": {
+            "total": 314,
+            "key": 9,
+            "accuracy": null
+          },
+          "tackles": {
+            "total": 14,
+            "blocks": 1,
+            "interceptions": 16
+          },
+          "duels": {
+            "total": 45,
+            "won": 23
+          },
+          "dribbles": {
+            "attempts": 2,
+            "success": 2,
+            "past": null
+          },
+          "fouls": {
+            "drawn": null,
+            "committed": 7
+          },
+          "cards": {
+            "yellow": 1,
+            "yellowred": 0,
+            "red": 1
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 0,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 19354,
+        "name": "E. Konsa",
+        "firstname": "Ezri",
+        "lastname": "Konsa Ngoyo",
+        "age": 28,
+        "birth": {
+          "date": "1997-10-23",
+          "place": "London",
+          "country": "England"
+        },
+        "nationality": "England",
+        "height": "183",
+        "weight": "73",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/19354.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 66,
+            "name": "Aston Villa",
+            "logo": "https://media.api-sports.io/football/teams/66.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 20,
+            "lineups": 20,
+            "minutes": 1776,
+            "number": 4,
+            "position": "Defender",
+            "rating": "7",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 0,
+            "out": 0,
+            "bench": 0
+          },
+          "shots": {
+            "total": 2,
+            "on": 2
+          },
+          "goals": {
+            "total": 0,
+            "conceded": 0,
+            "assists": 0,
+            "saves": null
+          },
+          "passes": {
+            "total": 1249,
+            "key": 4,
+            "accuracy": 59
+          },
+          "tackles": {
+            "total": 11,
+            "blocks": 17,
+            "interceptions": 14
+          },
+          "duels": {
+            "total": 85,
+            "won": 55
+          },
+          "dribbles": {
+            "attempts": 10,
+            "success": 6,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 24,
+            "committed": 8
+          },
+          "cards": {
+            "yellow": 0,
+            "yellowred": 0,
+            "red": 1
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 0,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 2934,
+        "name": "M. Keane",
+        "firstname": "Michael Vincent",
+        "lastname": "Keane",
+        "age": 32,
+        "birth": {
+          "date": "1993-01-11",
+          "place": "Stockport",
+          "country": "England"
+        },
+        "nationality": "England",
+        "height": "191",
+        "weight": "82",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/2934.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 45,
+            "name": "Everton",
+            "logo": "https://media.api-sports.io/football/teams/45.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 19,
+            "lineups": 19,
+            "minutes": 1678,
+            "number": 5,
+            "position": "Defender",
+            "rating": "6.94",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 0,
+            "out": 1,
+            "bench": 0
+          },
+          "shots": {
+            "total": 11,
+            "on": 4
+          },
+          "goals": {
+            "total": 3,
+            "conceded": 0,
+            "assists": 0,
+            "saves": null
+          },
+          "passes": {
+            "total": 693,
+            "key": 1,
+            "accuracy": null
+          },
+          "tackles": {
+            "total": 20,
+            "blocks": 17,
+            "interceptions": 21
+          },
+          "duels": {
+            "total": 159,
+            "won": 97
+          },
+          "dribbles": {
+            "attempts": 4,
+            "success": 2,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 5,
+            "committed": 10
+          },
+          "cards": {
+            "yellow": 0,
+            "yellowred": 0,
+            "red": 1
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 0,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 1243,
+        "name": "T. Souček",
+        "firstname": "Tomáš",
+        "lastname": "Souček",
+        "age": 30,
+        "birth": {
+          "date": "1995-02-27",
+          "place": "Havlíčkův Brod",
+          "country": "Czechia"
+        },
+        "nationality": "Czechia",
+        "height": "192",
+        "weight": "86",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/1243.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 48,
+            "name": "West Ham",
+            "logo": "https://media.api-sports.io/football/teams/48.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 18,
+            "lineups": 7,
+            "minutes": 738,
+            "number": 28,
+            "position": "Midfielder",
+            "rating": "6.58",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 11,
+            "out": 4,
+            "bench": 11
+          },
+          "shots": {
+            "total": 9,
+            "on": 7
+          },
+          "goals": {
+            "total": 2,
+            "conceded": 0,
+            "assists": 0,
+            "saves": null
+          },
+          "passes": {
+            "total": 300,
+            "key": 3,
+            "accuracy": null
+          },
+          "tackles": {
+            "total": 13,
+            "blocks": 5,
+            "interceptions": 5
+          },
+          "duels": {
+            "total": 102,
+            "won": 53
+          },
+          "dribbles": {
+            "attempts": 4,
+            "success": 1,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 7,
+            "committed": 15
+          },
+          "cards": {
+            "yellow": 0,
+            "yellowred": 0,
+            "red": 1
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 0,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 2990,
+        "name": "I. Gueye",
+        "firstname": "Idrissa Gana",
+        "lastname": "Gueye",
+        "age": 36,
+        "birth": {
+          "date": "1989-09-26",
+          "place": "Dakar",
+          "country": "Senegal"
+        },
+        "nationality": "Senegal",
+        "height": "174",
+        "weight": "66",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/2990.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 45,
+            "name": "Everton",
+            "logo": "https://media.api-sports.io/football/teams/45.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 13,
+            "lineups": 13,
+            "minutes": 1055,
+            "number": 27,
+            "position": "Midfielder",
+            "rating": "6.71",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 0,
+            "out": 3,
+            "bench": 0
+          },
+          "shots": {
+            "total": 9,
+            "on": 3
+          },
+          "goals": {
+            "total": 2,
+            "conceded": 0,
+            "assists": 0,
+            "saves": null
+          },
+          "passes": {
+            "total": 514,
+            "key": 5,
+            "accuracy": null
+          },
+          "tackles": {
+            "total": 31,
+            "blocks": 3,
+            "interceptions": 13
+          },
+          "duels": {
+            "total": 87,
+            "won": 54
+          },
+          "dribbles": {
+            "attempts": 8,
+            "success": 1,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 14,
+            "committed": 10
+          },
+          "cards": {
+            "yellow": 0,
+            "yellowred": 0,
+            "red": 1
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 0,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 330238,
+        "name": "Lucas Pires",
+        "firstname": "Lucas",
+        "lastname": "Pires Silva",
+        "age": 24,
+        "birth": {
+          "date": "2001-03-24",
+          "place": "São Paulo",
+          "country": "Brazil"
+        },
+        "nationality": "Brazil",
+        "height": "175",
+        "weight": "71",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/330238.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 44,
+            "name": "Burnley",
+            "logo": "https://media.api-sports.io/football/teams/44.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 7,
+            "lineups": 6,
+            "minutes": 502,
+            "number": 23,
+            "position": "Defender",
+            "rating": "6.36",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 1,
+            "out": 0,
+            "bench": 12
+          },
+          "shots": {
+            "total": 6,
+            "on": 1
+          },
+          "goals": {
+            "total": 0,
+            "conceded": 0,
+            "assists": 0,
+            "saves": null
+          },
+          "passes": {
+            "total": 185,
+            "key": 6,
+            "accuracy": null
+          },
+          "tackles": {
+            "total": 11,
+            "blocks": 2,
+            "interceptions": 4
+          },
+          "duels": {
+            "total": 46,
+            "won": 18
+          },
+          "dribbles": {
+            "attempts": 9,
+            "success": 5,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 1,
+            "committed": 5
+          },
+          "cards": {
+            "yellow": 0,
+            "yellowred": 0,
+            "red": 1
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 0,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 19911,
+        "name": "L. O&apos;Nien",
+        "firstname": "Luke Terry",
+        "lastname": "O'Nien",
+        "age": 31,
+        "birth": {
+          "date": "1994-11-21",
+          "place": "Hemel Hempstead",
+          "country": "England"
+        },
+        "nationality": "England",
+        "height": "174",
+        "weight": "74",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/19911.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 746,
+            "name": "Sunderland",
+            "logo": "https://media.api-sports.io/football/teams/746.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 3,
+            "lineups": 0,
+            "minutes": 28,
+            "number": 13,
+            "position": "Midfielder",
+            "rating": "6.6",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 3,
+            "out": 0,
+            "bench": 12
+          },
+          "shots": {
+            "total": null,
+            "on": null
+          },
+          "goals": {
+            "total": 0,
+            "conceded": 0,
+            "assists": 0,
+            "saves": null
+          },
+          "passes": {
+            "total": 14,
+            "key": null,
+            "accuracy": null
+          },
+          "tackles": {
+            "total": 2,
+            "blocks": null,
+            "interceptions": null
+          },
+          "duels": {
+            "total": 3,
+            "won": 2
+          },
+          "dribbles": {
+            "attempts": null,
+            "success": null,
+            "past": null
+          },
+          "fouls": {
+            "drawn": null,
+            "committed": 1
+          },
+          "cards": {
+            "yellow": 0,
+            "yellowred": 0,
+            "red": 1
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 0,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 30776,
+        "name": "C. Romero",
+        "firstname": "Cristian Gabriel",
+        "lastname": "Romero",
+        "age": 27,
+        "birth": {
+          "date": "1998-04-27",
+          "place": "Córdoba",
+          "country": "Argentina"
+        },
+        "nationality": "Argentina",
+        "height": "185",
+        "weight": "78",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/30776.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 47,
+            "name": "Tottenham",
+            "logo": "https://media.api-sports.io/football/teams/47.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 17,
+            "lineups": 16,
+            "minutes": 1459,
+            "number": 17,
+            "position": "Defender",
+            "rating": "7.19",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 1,
+            "out": 2,
+            "bench": 1
+          },
+          "shots": {
+            "total": 9,
+            "on": 4
+          },
+          "goals": {
+            "total": 2,
+            "conceded": 0,
+            "assists": 1,
+            "saves": null
+          },
+          "passes": {
+            "total": 864,
+            "key": 9,
+            "accuracy": 44
+          },
+          "tackles": {
+            "total": 44,
+            "blocks": 11,
+            "interceptions": 23
+          },
+          "duels": {
+            "total": 170,
+            "won": 112
+          },
+          "dribbles": {
+            "attempts": 8,
+            "success": 6,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 11,
+            "committed": 22
+          },
+          "cards": {
+            "yellow": 8,
+            "yellowred": 1,
+            "red": 0
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 0,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 747,
+        "name": "Casemiro",
+        "firstname": "Carlos Henrique",
+        "lastname": "Casimiro",
+        "age": 33,
+        "birth": {
+          "date": "1992-02-23",
+          "place": "São José dos Campos",
+          "country": "Brazil"
+        },
+        "nationality": "Brazil",
+        "height": "185",
+        "weight": "84",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/747.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 33,
+            "name": "Manchester United",
+            "logo": "https://media.api-sports.io/football/teams/33.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 19,
+            "lineups": 18,
+            "minutes": 1317,
+            "number": 18,
+            "position": "Midfielder",
+            "rating": "6.99",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 1,
+            "out": 12,
+            "bench": 1
+          },
+          "shots": {
+            "total": 18,
+            "on": 6
+          },
+          "goals": {
+            "total": 4,
+            "conceded": 0,
+            "assists": 1,
+            "saves": null
+          },
+          "passes": {
+            "total": 796,
+            "key": 19,
+            "accuracy": null
+          },
+          "tackles": {
+            "total": 45,
+            "blocks": 11,
+            "interceptions": 13
+          },
+          "duels": {
+            "total": 185,
+            "won": 92
+          },
+          "dribbles": {
+            "attempts": 5,
+            "success": 3,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 15,
+            "committed": 27
+          },
+          "cards": {
+            "yellow": 6,
+            "yellowred": 1,
+            "red": 0
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 0,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 1646,
+        "name": "Lucas Paquetá",
+        "firstname": "Lucas",
+        "lastname": "Tolentino Coelho de Lima",
+        "age": 28,
+        "birth": {
+          "date": "1997-08-27",
+          "place": "Rio de Janeiro",
+          "country": "Brazil"
+        },
+        "nationality": "Brazil",
+        "height": "180",
+        "weight": "72",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/1646.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 48,
+            "name": "West Ham",
+            "logo": "https://media.api-sports.io/football/teams/48.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 18,
+            "lineups": 18,
+            "minutes": 1521,
+            "number": 10,
+            "position": "Attacker",
+            "rating": "6.89",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 0,
+            "out": 9,
+            "bench": 0
+          },
+          "shots": {
+            "total": 17,
+            "on": 11
+          },
+          "goals": {
+            "total": 4,
+            "conceded": 0,
+            "assists": 1,
+            "saves": null
+          },
+          "passes": {
+            "total": 788,
+            "key": 23,
+            "accuracy": null
+          },
+          "tackles": {
+            "total": 39,
+            "blocks": 6,
+            "interceptions": 8
+          },
+          "duels": {
+            "total": 264,
+            "won": 123
+          },
+          "dribbles": {
+            "attempts": 42,
+            "success": 16,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 30,
+            "committed": 28
+          },
+          "cards": {
+            "yellow": 6,
+            "yellowred": 1,
+            "red": 0
+          },
+          "penalty": {
+            "won": null,
+            "commited": 1,
+            "scored": 2,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 19187,
+        "name": "J. Grealish",
+        "firstname": "Jack Peter",
+        "lastname": "Grealish",
+        "age": 30,
+        "birth": {
+          "date": "1995-09-10",
+          "place": "Birmingham",
+          "country": "England"
+        },
+        "nationality": "England",
+        "height": "180",
+        "weight": "77",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/19187.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 45,
+            "name": "Everton",
+            "logo": "https://media.api-sports.io/football/teams/45.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 19,
+            "lineups": 17,
+            "minutes": 1541,
+            "number": 18,
+            "position": "Midfielder",
+            "rating": "7.21",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 2,
+            "out": 6,
+            "bench": 2
+          },
+          "shots": {
+            "total": 14,
+            "on": 8
+          },
+          "goals": {
+            "total": 2,
+            "conceded": 0,
+            "assists": 6,
+            "saves": null
+          },
+          "passes": {
+            "total": 552,
+            "key": 40,
+            "accuracy": null
+          },
+          "tackles": {
+            "total": 20,
+            "blocks": 6,
+            "interceptions": 12
+          },
+          "duels": {
+            "total": 199,
+            "won": 99
+          },
+          "dribbles": {
+            "attempts": 56,
+            "success": 23,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 52,
+            "committed": 11
+          },
+          "cards": {
+            "yellow": 4,
+            "yellowred": 1,
+            "red": 0
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 0,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-11T21:59:28Z"
+  }
+}
