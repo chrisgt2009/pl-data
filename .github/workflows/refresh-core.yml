@@ -7,7 +7,7 @@ concurrency:
 on:
   workflow_dispatch:
   schedule:
-    # Standings/scorers every 3 hours
+    # Standings/scorers/cards/assists every 3 hours
     - cron: "5 */3 * * *"
     # Fixtures twice a day (London morning and late evening)
     - cron: "0 7,23 * * *"
@@ -31,6 +31,18 @@ jobs:
           mkdir -p data/football/premier-league/fixtures
           mkdir -p data/football/premier-league/live
           mkdir -p data/ops
+
+      - name: Ensure extra folders
+        run: |
+          mkdir -p data/football/premier-league/teams
+          mkdir -p data/football/premier-league/matches
+          mkdir -p data/football/premier-league/media
+
+      - name: Locate workflow and list tree
+        run: |
+          echo "Workflow path: .github/workflows/refresh_core_pl.yml"
+          ls -la .github/workflows || true
+          find data -maxdepth 3 -type d -print || true
 
       - id: post_window
         name: Check post-window trigger
@@ -69,6 +81,19 @@ jobs:
           TMPBODY="$(mktemp)"
 
           [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+
+          # Reuse if recent (60 min)
+          REUSE_MAX_AGE_MIN=60
+          if [[ -f "$OUT" ]]; then
+            MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
+            NOW=$(date +%s)
+            AGE_MIN=$(( (NOW - MTIME) / 60 ))
+            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then
+              echo "Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m)"
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
 
           FROM=$(date -u +"%Y-%m-%d")
           TO=$(date -u -d "+14 days" +"%Y-%m-%d")
@@ -123,6 +148,19 @@ jobs:
 
           [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
+          # Reuse if recent (180 min)
+          REUSE_MAX_AGE_MIN=180
+          if [[ -f "$OUT" ]]; then
+            MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
+            NOW=$(date +%s)
+            AGE_MIN=$(( (NOW - MTIME) / 60 ))
+            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then
+              echo "Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m)"
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+
           FINAL_URL="${BASE_URL}&season=${SEASON}&league=${LEAGUE_ID}"
           echo "Fetching standings: $FINAL_URL"
 
@@ -173,6 +211,19 @@ jobs:
 
           [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
+          # Reuse if recent (180 min)
+          REUSE_MAX_AGE_MIN=180
+          if [[ -f "$OUT" ]]; then
+            MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
+            NOW=$(date +%s)
+            AGE_MIN=$(( (NOW - MTIME) / 60 ))
+            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then
+              echo "Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m)"
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+
           FINAL_URL="${BASE_URL}&season=${SEASON}&league=${LEAGUE_ID}"
           echo "Fetching scorers: $FINAL_URL"
 
@@ -204,6 +255,195 @@ jobs:
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
 
+      # ---------------- TOP ASSISTS ----------------
+      - id: assists
+        name: Refresh top assists (API-Football)
+        if: steps.post_window.outputs.trigger == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.event.schedule, '5 ')
+        shell: bash
+        env:
+          BASE_URL: ${{ vars.URL_TOP_ASSISTS }}
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
+          LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}
+          SEASON: ${{ vars.SEASON_PL }}
+        run: |
+          set -euo pipefail
+
+          OUT="data/football/premier-league/core/assists.json"
+          TMPBODY="$(mktemp)"
+
+          [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+
+          # Reuse if recent (180 min)
+          REUSE_MAX_AGE_MIN=180
+          if [[ -f "$OUT" ]]; then
+            MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
+            NOW=$(date +%s)
+            AGE_MIN=$(( (NOW - MTIME) / 60 ))
+            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then
+              echo "Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m)"
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+
+          FINAL_URL="${BASE_URL}&season=${SEASON}&league=${LEAGUE_ID}"
+          echo "Fetching top assists: $FINAL_URL"
+
+          CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
+            -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
+            -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+            "$FINAL_URL" || true)
+
+          echo "code=$CODE" >> "$GITHUB_OUTPUT"
+          if [[ "$CODE" != "200" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
+          if [[ "$OK" != "true" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          TS=$(date -u +%FT%TZ)
+          NORM=$(mktemp)
+          jq --arg ts "$TS" '{assists: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
+
+          if ! cmp -s "$NORM" "$OUT"; then
+            mv "$NORM" "$OUT"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # ---------------- TOP YELLOW CARDS ----------------
+      - id: cards_yellow
+        name: Refresh top yellow cards (API-Football)
+        if: steps.post_window.outputs.trigger == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.event.schedule, '5 ')
+        shell: bash
+        env:
+          BASE_URL: ${{ vars.URL_TOP_YELLOWS }}
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
+          LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}
+          SEASON: ${{ vars.SEASON_PL }}
+        run: |
+          set -euo pipefail
+
+          OUT="data/football/premier-league/core/cards_yellow.json"
+          TMPBODY="$(mktemp)"
+
+          [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+
+          # Reuse if recent (180 min)
+          REUSE_MAX_AGE_MIN=180
+          if [[ -f "$OUT" ]]; then
+            MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
+            NOW=$(date +%s)
+            AGE_MIN=$(( (NOW - MTIME) / 60 ))
+            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then
+              echo "Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m)"
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+
+          FINAL_URL="${BASE_URL}&season=${SEASON}&league=${LEAGUE_ID}"
+          echo "Fetching yellow cards leaderboard: $FINAL_URL"
+
+          CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
+            -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
+            -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+            "$FINAL_URL" || true)
+
+          echo "code=$CODE" >> "$GITHUB_OUTPUT"
+          if [[ "$CODE" != "200" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
+          if [[ "$OK" != "true" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          TS=$(date -u +%FT%TZ)
+          NORM=$(mktemp)
+          jq --arg ts "$TS" '{cards_yellow: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
+
+          if ! cmp -s "$NORM" "$OUT"; then
+            mv "$NORM" "$OUT"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # ---------------- TOP RED CARDS ----------------
+      - id: cards_red
+        name: Refresh top red cards (API-Football)
+        if: steps.post_window.outputs.trigger == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.event.schedule, '5 ')
+        shell: bash
+        env:
+          BASE_URL: ${{ vars.URL_TOP_REDS }}
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
+          LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}
+          SEASON: ${{ vars.SEASON_PL }}
+        run: |
+          set -euo pipefail
+
+          OUT="data/football/premier-league/core/cards_red.json"
+          TMPBODY="$(mktemp)"
+
+          [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+
+          # Reuse if recent (180 min)
+          REUSE_MAX_AGE_MIN=180
+          if [[ -f "$OUT" ]]; then
+            MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
+            NOW=$(date +%s)
+            AGE_MIN=$(( (NOW - MTIME) / 60 ))
+            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then
+              echo "Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m)"
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+
+          FINAL_URL="${BASE_URL}&season=${SEASON}&league=${LEAGUE_ID}"
+          echo "Fetching red cards leaderboard: $FINAL_URL"
+
+          CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
+            -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
+            -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+            "$FINAL_URL" || true)
+
+          echo "code=$CODE" >> "$GITHUB_OUTPUT"
+          if [[ "$CODE" != "200" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
+          if [[ "$OK" != "true" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          TS=$(date -u +%FT%TZ)
+          NORM=$(mktemp)
+          jq --arg ts "$TS" '{cards_red: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
+
+          if ! cmp -s "$NORM" "$OUT"; then
+            mv "$NORM" "$OUT"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
       # ---------------- SEASON FIXTURES (full season) ----------------
       - id: fixtures_season
         name: Refresh full season fixtures (API-Football)
@@ -223,7 +463,19 @@ jobs:
 
           [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
-          # Full season: league + season only (no from/to)
+          # Reuse if recent (720 min = 12h)
+          REUSE_MAX_AGE_MIN=720
+          if [[ -f "$OUT" ]]; then
+            MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
+            NOW=$(date +%s)
+            AGE_MIN=$(( (NOW - MTIME) / 60 ))
+            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then
+              echo "Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m)"
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+
           FINAL_URL="${BASE_URL}&league=${LEAGUE_ID}&season=${SEASON}"
           echo "Fetching full season fixtures: $FINAL_URL"
 
@@ -255,8 +507,158 @@ jobs:
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
 
+      # ---------------- TEAMS ----------------
+      - id: teams
+        name: Refresh teams (API-Football)
+        if: github.event_name == 'workflow_dispatch' || startsWith(github.event.schedule, '5 ')
+        shell: bash
+        env:
+          BASE_URL: ${{ vars.URL_TEAMS }}
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
+          LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}
+          SEASON: ${{ vars.SEASON_PL }}
+        run: |
+          set -euo pipefail
+
+          OUT="data/football/premier-league/core/teams.json"
+          TMPBODY="$(mktemp)"
+
+          [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+
+          FINAL_URL="${BASE_URL}&league=${LEAGUE_ID}&season=${SEASON}"
+          echo "Fetching teams: $FINAL_URL"
+
+          CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
+            -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
+            -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+            "$FINAL_URL" || true)
+
+          echo "code=$CODE" >> "$GITHUB_OUTPUT"
+          if [[ "$CODE" != "200" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
+          if [[ "$OK" != "true" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          TS=$(date -u +%FT%TZ)
+          NORM=$(mktemp)
+          jq --arg ts "$TS" '{teams: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
+
+          if ! cmp -s "$NORM" "$OUT"; then
+            mv "$NORM" "$OUT"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # ---------------- VENUES ----------------
+      - id: venues
+        name: Refresh venues (API-Football)
+        if: github.event_name == 'workflow_dispatch' || startsWith(github.event.schedule, '5 ')
+        shell: bash
+        env:
+          BASE_URL: ${{ vars.URL_VENUES }}
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
+          LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}
+          SEASON: ${{ vars.SEASON_PL }}
+        run: |
+          set -euo pipefail
+
+          OUT="data/football/premier-league/core/venues.json"
+          TMPBODY="$(mktemp)"
+
+          [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+
+          FINAL_URL="${BASE_URL}&league=${LEAGUE_ID}&season=${SEASON}"
+          echo "Fetching venues: $FINAL_URL"
+
+          CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
+            -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
+            -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+            "$FINAL_URL" || true)
+
+          echo "code=$CODE" >> "$GITHUB_OUTPUT"
+          if [[ "$CODE" != "200" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
+          if [[ "$OK" != "true" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          TS=$(date -u +%FT%TZ)
+          NORM=$(mktemp)
+          jq --arg ts "$TS" '{venues: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
+
+          if ! cmp -s "$NORM" "$OUT"; then
+            mv "$NORM" "$OUT"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # ---------------- ROUNDS ----------------
+      - id: rounds
+        name: Refresh rounds (API-Football)
+        if: github.event_name == 'workflow_dispatch' || startsWith(github.event.schedule, '5 ')
+        shell: bash
+        env:
+          BASE_URL: ${{ vars.URL_ROUNDS }}
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
+          LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}
+          SEASON: ${{ vars.SEASON_PL }}
+        run: |
+          set -euo pipefail
+
+          OUT="data/football/premier-league/core/rounds.json"
+          TMPBODY="$(mktemp)"
+
+          [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+
+          FINAL_URL="${BASE_URL}&league=${LEAGUE_ID}&season=${SEASON}"
+          echo "Fetching rounds: $FINAL_URL"
+
+          CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
+            -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
+            -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+            "$FINAL_URL" || true)
+
+          echo "code=$CODE" >> "$GITHUB_OUTPUT"
+          if [[ "$CODE" != "200" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
+          if [[ "$OK" != "true" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          TS=$(date -u +%FT%TZ)
+          NORM=$(mktemp)
+          jq --arg ts "$TS" '{rounds: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
+
+          if ! cmp -s "$NORM" "$OUT"; then
+            mv "$NORM" "$OUT"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Clear post-window flag
-        if: steps.post_window.outputs.trigger == 'true' && (steps.standings.outputs.changed == 'true' || steps.scorers.outputs.changed == 'true')
+        if: steps.post_window.outputs.trigger == 'true' && (steps.standings.outputs.changed == 'true' || steps.scorers.outputs.changed == 'true' || steps.assists.outputs.changed == 'true' || steps.cards_yellow.outputs.changed == 'true' || steps.cards_red.outputs.changed == 'true')
         shell: bash
         run: |
           set -euo pipefail
@@ -271,16 +673,312 @@ jobs:
           fi
 
       - name: Commit & push
-        if: steps.fixtures.outputs.changed == 'true' || steps.standings.outputs.changed == 'true' || steps.scorers.outputs.changed == 'true' || steps.fixtures_season.outputs.changed == 'true'
+        if: steps.fixtures.outputs.changed == 'true' || steps.standings.outputs.changed == 'true' || steps.scorers.outputs.changed == 'true' || steps.assists.outputs.changed == 'true' || steps.cards_yellow.outputs.changed == 'true' || steps.cards_red.outputs.changed == 'true' || steps.fixtures_season.outputs.changed == 'true' || steps.teams.outputs.changed == 'true' || steps.venues.outputs.changed == 'true' || steps.rounds.outputs.changed == 'true'
         run: |
           git config user.name "pl-bot"
           git config user.email "pl-bot@users.noreply.github.com"
 
           git add data/football/premier-league/core/*.json
           git add data/football/premier-league/fixtures/*.json
+          git add data/football/premier-league/live/*.json || true
 
-          git commit -m "Update core feeds (fixtures/standings/scorers/season)"
+          git commit -m "Update core feeds (fixtures/standings/scorers/assists/cards/teams/venues/rounds)"
           git push
+
+
+
+
+
+
+
+
+
+# name: Refresh Core (PL)
+
+# concurrency:
+#   group: pl-data-commit
+#   cancel-in-progress: false
+
+# on:
+#   workflow_dispatch:
+#   schedule:
+#     # Standings/scorers every 3 hours
+#     - cron: "5 */3 * * *"
+#     # Fixtures twice a day (London morning and late evening)
+#     - cron: "0 7,23 * * *"
+
+# permissions:
+#   contents: write
+
+# jobs:
+#   core:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+
+#       - name: Install jq
+#         run: sudo apt-get update && sudo apt-get install -y jq
+
+#       - name: Ensure folders
+#         run: |
+#           mkdir -p data/football/premier-league/core
+#           mkdir -p data/football/premier-league/fixtures
+#           mkdir -p data/football/premier-league/live
+#           mkdir -p data/ops
+
+#       - id: post_window
+#         name: Check post-window trigger
+#         shell: bash
+#         run: |
+#           set -euo pipefail
+#           FLAG="data/ops/post_window.json"
+#           NOW_TS=$(date -u +%s)
+
+#           if [[ -f "$FLAG" ]]; then
+#             TS=$(jq -r '.ts // 0' "$FLAG")
+#             if (( NOW_TS - TS <= 5400 )); then
+#               echo "trigger=true" >> "$GITHUB_OUTPUT"
+#             else
+#               echo "trigger=false" >> "$GITHUB_OUTPUT"
+#             fi
+#           else
+#             echo "trigger=false" >> "$GITHUB_OUTPUT"
+#           fi
+
+#       # ---------------- FIXTURES (next 14 days) ----------------
+#       - id: fixtures
+#         name: Refresh upcoming fixtures (API-Football)
+#         if: github.event.schedule == '0 7 * * *' || github.event.schedule == '0 23 * * *' || github.event_name == 'workflow_dispatch'
+#         shell: bash
+#         env:
+#           BASE_URL: ${{ vars.URL_FIXTURES }}
+#           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+#           RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
+#           LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}
+#           SEASON: ${{ vars.SEASON_PL }}
+#         run: |
+#           set -euo pipefail
+
+#           OUT="data/football/premier-league/fixtures/fixtures_week.json"
+#           TMPBODY="$(mktemp)"
+
+#           [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+
+#           FROM=$(date -u +"%Y-%m-%d")
+#           TO=$(date -u -d "+14 days" +"%Y-%m-%d")
+
+#           FINAL_URL="${BASE_URL}&league=${LEAGUE_ID}&season=${SEASON}&from=${FROM}&to=${TO}"
+#           echo "Fetching fixtures: $FINAL_URL"
+
+#           CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
+#             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
+#             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+#             "$FINAL_URL" || true)
+
+#           echo "code=$CODE" >> "$GITHUB_OUTPUT"
+#           if [[ "$CODE" != "200" ]]; then
+#             echo "changed=false" >> "$GITHUB_OUTPUT"
+#             exit 0
+#           fi
+
+#           OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
+#           if [[ "$OK" != "true" ]]; then
+#             echo "changed=false" >> "$GITHUB_OUTPUT"
+#             exit 0
+#           fi
+
+#           TS=$(date -u +%FT%TZ)
+#           NORM=$(mktemp)
+#           jq --arg ts "$TS" '{matches: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
+
+#           if ! cmp -s "$NORM" "$OUT"; then
+#             mv "$NORM" "$OUT"
+#             echo "changed=true" >> "$GITHUB_OUTPUT"
+#           else
+#             echo "changed=false" >> "$GITHUB_OUTPUT"
+#           fi
+
+#       # ---------------- STANDINGS ----------------
+#       - id: standings
+#         name: Refresh standings (API-Football)
+#         if: steps.post_window.outputs.trigger == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.event.schedule, '5 ')
+#         shell: bash
+#         env:
+#           BASE_URL: ${{ vars.URL_STANDINGS }}
+#           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+#           RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
+#           LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}
+#           SEASON: ${{ vars.SEASON_PL }}
+#         run: |
+#           set -euo pipefail
+
+#           OUT="data/football/premier-league/core/standings.json"
+#           TMPBODY="$(mktemp)"
+
+#           [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+
+#           FINAL_URL="${BASE_URL}&season=${SEASON}&league=${LEAGUE_ID}"
+#           echo "Fetching standings: $FINAL_URL"
+
+#           CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
+#             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
+#             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+#             "$FINAL_URL" || true)
+
+#           echo "code=$CODE" >> "$GITHUB_OUTPUT"
+#           if [[ "$CODE" != "200" ]]; then
+#             echo "changed=false" >> "$GITHUB_OUTPUT"
+#             exit 0
+#           fi
+
+#           OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
+#           if [[ "$OK" != "true" ]]; then
+#             echo "changed=false" >> "$GITHUB_OUTPUT"
+#             exit 0
+#           fi
+
+#           TS=$(date -u +%FT%TZ)
+#           NORM=$(mktemp)
+#           jq --arg ts "$TS" '{standings: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
+
+#           if ! cmp -s "$NORM" "$OUT"; then
+#             mv "$NORM" "$OUT"
+#             echo "changed=true" >> "$GITHUB_OUTPUT"
+#           else
+#             echo "changed=false" >> "$GITHUB_OUTPUT"
+#           fi
+
+#       # ---------------- TOP SCORERS ----------------
+#       - id: scorers
+#         name: Refresh top scorers (API-Football)
+#         if: steps.post_window.outputs.trigger == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.event.schedule, '5 ')
+#         shell: bash
+#         env:
+#           BASE_URL: ${{ vars.URL_SCORERS }}
+#           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+#           RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
+#           LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}
+#           SEASON: ${{ vars.SEASON_PL }}
+#         run: |
+#           set -euo pipefail
+
+#           OUT="data/football/premier-league/core/scorers.json"
+#           TMPBODY="$(mktemp)"
+
+#           [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+
+#           FINAL_URL="${BASE_URL}&season=${SEASON}&league=${LEAGUE_ID}"
+#           echo "Fetching scorers: $FINAL_URL"
+
+#           CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
+#             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
+#             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+#             "$FINAL_URL" || true)
+
+#           echo "code=$CODE" >> "$GITHUB_OUTPUT"
+#           if [[ "$CODE" != "200" ]]; then
+#             echo "changed=false" >> "$GITHUB_OUTPUT"
+#             exit 0
+#           fi
+
+#           OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
+#           if [[ "$OK" != "true" ]]; then
+#             echo "changed=false" >> "$GITHUB_OUTPUT"
+#             exit 0
+#           fi
+
+#           TS=$(date -u +%FT%TZ)
+#           NORM=$(mktemp)
+#           jq --arg ts "$TS" '{scorers: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
+
+#           if ! cmp -s "$NORM" "$OUT"; then
+#             mv "$NORM" "$OUT"
+#             echo "changed=true" >> "$GITHUB_OUTPUT"
+#           else
+#             echo "changed=false" >> "$GITHUB_OUTPUT"
+#           fi
+
+#       # ---------------- SEASON FIXTURES (full season) ----------------
+#       - id: fixtures_season
+#         name: Refresh full season fixtures (API-Football)
+#         if: steps.post_window.outputs.trigger == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.event.schedule, '5 ')
+#         shell: bash
+#         env:
+#           BASE_URL: ${{ vars.URL_FIXTURES }}
+#           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+#           RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
+#           LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}
+#           SEASON: ${{ vars.SEASON_PL }}
+#         run: |
+#           set -euo pipefail
+
+#           OUT="data/football/premier-league/fixtures/fixtures_season.json"
+#           TMPBODY="$(mktemp)"
+
+#           [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+
+#           # Full season: league + season only (no from/to)
+#           FINAL_URL="${BASE_URL}&league=${LEAGUE_ID}&season=${SEASON}"
+#           echo "Fetching full season fixtures: $FINAL_URL"
+
+#           CODE=$(curl -sS --connect-timeout 5 --max-time 35 -w "%{http_code}" -o "$TMPBODY" \
+#             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
+#             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+#             "$FINAL_URL" || true)
+
+#           echo "code=$CODE" >> "$GITHUB_OUTPUT"
+#           if [[ "$CODE" != "200" ]]; then
+#             echo "changed=false" >> "$GITHUB_OUTPUT"
+#             exit 0
+#           fi
+
+#           OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
+#           if [[ "$OK" != "true" ]]; then
+#             echo "changed=false" >> "$GITHUB_OUTPUT"
+#             exit 0
+#           fi
+
+#           TS=$(date -u +%FT%TZ)
+#           NORM=$(mktemp)
+#           jq --arg ts "$TS" '{matches: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
+
+#           if ! cmp -s "$NORM" "$OUT"; then
+#             mv "$NORM" "$OUT"
+#             echo "changed=true" >> "$GITHUB_OUTPUT"
+#           else
+#             echo "changed=false" >> "$GITHUB_OUTPUT"
+#           fi
+
+#       - name: Clear post-window flag
+#         if: steps.post_window.outputs.trigger == 'true' && (steps.standings.outputs.changed == 'true' || steps.scorers.outputs.changed == 'true')
+#         shell: bash
+#         run: |
+#           set -euo pipefail
+#           FLAG="data/ops/post_window.json"
+#           if [[ -f "$FLAG" ]]; then
+#             rm -f "$FLAG"
+#             git config user.name "pl-bot"
+#             git config user.email "pl-bot@users.noreply.github.com"
+#             git add -A
+#             git commit -m "Clear post-window trigger"
+#             git push
+#           fi
+
+#       - name: Commit & push
+#         if: steps.fixtures.outputs.changed == 'true' || steps.standings.outputs.changed == 'true' || steps.scorers.outputs.changed == 'true' || steps.fixtures_season.outputs.changed == 'true'
+#         run: |
+#           git config user.name "pl-bot"
+#           git config user.email "pl-bot@users.noreply.github.com"
+
+#           git add data/football/premier-league/core/*.json
+#           git add data/football/premier-league/fixtures/*.json
+
+#           git commit -m "Update core feeds (fixtures/standings/scorers/season)"
+#           git push
+
+
+
 
 
 
