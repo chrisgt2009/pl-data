@@ -1,0 +1,237 @@
+name: Fetch match events
+
+on:
+  workflow_dispatch:
+    inputs:
+      window_days:
+        description: "Days back to consider fixtures"
+        required: false
+        default: "7"
+      max_per_run:
+        description: "Max fixtures to process per run"
+        required: false
+        default: "20"
+      per_request_sleep_ms:
+        description: "Sleep (ms) between requests"
+        required: false
+        default: "200"
+  schedule:
+    - cron: "12 * * * *" # run hourly at :12
+
+env:
+  # Provide defaults that are always parseable; compute fallbacks in a step
+  EVENTS_WINDOW_DAYS: ${{ vars.EVENTS_WINDOW_DAYS }}
+  MAX_EVENTS_PER_RUN: ${{ vars.MAX_EVENTS_PER_RUN }}
+  PER_REQUEST_SLEEP_MS: ${{ vars.PER_REQUEST_SLEEP_MS }}
+  EVENTS_BASE_URL: ${{ vars.EVENTS_BASE_URL }}
+  FIXTURES_WEEK: data/football/premier-league/fixtures/fixtures_week.json
+  FIXTURES_SEASON: data/football/premier-league/fixtures/fixtures_season.json
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-events:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup jq
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y jq
+
+      - name: Compute runtime defaults
+        id: defaults
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Prefer workflow_dispatch inputs; then vars; then hard-coded fallback
+          EVENTS_WINDOW_DAYS="${{ github.event.inputs.window_days || env.EVENTS_WINDOW_DAYS || '7' }}"
+          MAX_EVENTS_PER_RUN="${{ github.event.inputs.max_per_run || env.MAX_EVENTS_PER_RUN || '20' }}"
+          PER_REQUEST_SLEEP_MS="${{ github.event.inputs.per_request_sleep_ms || env.PER_REQUEST_SLEEP_MS || '200' }}"
+          EVENTS_BASE_URL="${{ env.EVENTS_BASE_URL || 'https://api-football-v1.p.rapidapi.com/v3/fixtures/events?fixture=' }}"
+
+          echo "EVENTS_WINDOW_DAYS=${EVENTS_WINDOW_DAYS}" >> "$GITHUB_OUTPUT"
+          echo "MAX_EVENTS_PER_RUN=${MAX_EVENTS_PER_RUN}" >> "$GITHUB_OUTPUT"
+          echo "PER_REQUEST_SLEEP_MS=${PER_REQUEST_SLEEP_MS}" >> "$GITHUB_OUTPUT"
+          echo "EVENTS_BASE_URL=${EVENTS_BASE_URL}" >> "$GITHUB_OUTPUT"
+
+      - name: Validate config
+        id: validate
+        shell: bash
+        env:
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
+          EVENTS_BASE_URL: ${{ steps.defaults.outputs.EVENTS_BASE_URL }}
+          FIXTURES_WEEK: ${{ env.FIXTURES_WEEK }}
+          FIXTURES_SEASON: ${{ env.FIXTURES_SEASON }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${EVENTS_BASE_URL:-}" ]]; then
+            echo "match_events: URL_EVENTS is not set. Skipping all event fetches."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [[ -z "${RAPIDAPI_KEY:-}" || -z "${RAPIDAPI_HOST:-}" ]]; then
+            echo "match_events: RAPIDAPI credentials missing. Skipping all event fetches."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          declare -a SOURCES=("$FIXTURES_WEEK" "$FIXTURES_SEASON")
+          FOUND_SOURCE=false
+          for SRC in "${SOURCES[@]}"; do
+            if [[ -f "$SRC" ]]; then
+              echo "match_events: Found source $SRC"
+              FOUND_SOURCE=true
+            else
+              echo "match_events: Source missing $SRC (ok if not yet generated)"
+            fi
+          done
+          if [[ "$FOUND_SOURCE" == "false" ]]; then
+            echo "match_events: No source fixtures files present. Skipping."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Build candidate fixtures
+        id: candidates
+        if: steps.validate.outputs.changed == 'true'
+        shell: bash
+        env:
+          EVENTS_WINDOW_DAYS: ${{ steps.defaults.outputs.EVENTS_WINDOW_DAYS }}
+          FIXTURES_WEEK: ${{ env.FIXTURES_WEEK }}
+          FIXTURES_SEASON: ${{ env.FIXTURES_SEASON }}
+        run: |
+          set -euo pipefail
+          NOW=$(date -u +%s)
+          WINDOW_SEC=$((EVENTS_WINDOW_DAYS*24*3600))
+          echo "match_events: Considering finished/live fixtures within the last ${EVENTS_WINDOW_DAYS} days."
+          TMPFIX="$(mktemp)"
+          > "$TMPFIX"
+          extract() {
+            local file="$1"
+            if [[ -f "$file" ]]; then
+              jq -r '.matches[]? | [.fixture.id, .fixture.date, .fixture.status.short] | @tsv' "$file" 2>/dev/null || true
+            fi
+          }
+          extract "$FIXTURES_WEEK" >> "$TMPFIX"
+          extract "$FIXTURES_SEASON" >> "$TMPFIX"
+          sort -u "$TMPFIX" -o "$TMPFIX"
+          FILTERED="$(mktemp)"
+          > "$FILTERED"
+          while IFS=$'\t' read -r fid fdate fstatus; do
+            ts=$(date -u -d "$fdate" +%s 2>/dev/null || echo "")
+            [[ -z "$ts" ]] && continue
+            age=$(( NOW - ts ))
+            (( age < 0 || age > WINDOW_SEC )) && continue
+            case "$fstatus" in
+              FT|AET|PEN|NS|1H|HT|2H|ET|BT|P|INT|LIVE|SUSP|INTERRUPTED|IN_PLAY)
+                echo -e "${fid}\t${fstatus}" >> "$FILTERED"
+                ;;
+              *)
+                :
+                ;;
+            esac
+          done < "$TMPFIX"
+          CAP=${{ steps.defaults.outputs.MAX_EVENTS_PER_RUN }}
+          COUNT=$(wc -l < "$FILTERED" | tr -d " ")
+          if (( COUNT > CAP )); then
+            head -n "$CAP" "$FILTERED" > "${FILTERED}.cap"
+            mv "${FILTERED}.cap" "$FILTERED"
+          fi
+          echo "CANDIDATES_FILE=$FILTERED" >> "$GITHUB_OUTPUT"
+          echo "match_events: Will process up to $(wc -l < "$FILTERED" | tr -d " ") fixtures (cap=${CAP})."
+
+      - name: Fetch events
+        id: fetch
+        if: steps.validate.outputs.changed == 'true'
+        shell: bash
+        env:
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
+          EVENTS_BASE_URL: ${{ steps.defaults.outputs.EVENTS_BASE_URL }}
+          PER_REQUEST_SLEEP_MS: ${{ steps.defaults.outputs.PER_REQUEST_SLEEP_MS }}
+        run: |
+          set -euo pipefail
+          CHANGED=false
+          CFILE="${{ steps.candidates.outputs.CANDIDATES_FILE }}"
+          if [[ -z "${CFILE:-}" || ! -s "$CFILE" ]]; then
+            echo "match_events: No candidates to process."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          per_sleep_ms=${PER_REQUEST_SLEEP_MS:-200}
+          while IFS=$'\t' read -r fid fstatus; do
+            url="${EVENTS_BASE_URL}${fid}"
+            echo "match_events: Fetching events for fixture=${fid} (status=${fstatus}): ${url}"
+            attempt=0
+            max_attempts=3
+            backoff=2
+            http_code=""
+            body_file="$(mktemp)"
+            while (( attempt < max_attempts )); do
+              attempt=$((attempt+1))
+              http_code=$(curl -sS -w "%{http_code}" -o "$body_file" \
+                -H "X-RapidAPI-Key: ${RAPIDAPI_KEY}" \
+                -H "X-RapidAPI-Host: ${RAPIDAPI_HOST}" \
+                "$url" || echo "000")
+              if [[ "$http_code" == "200" ]]; then
+                break
+              elif [[ "$http_code" == "429" && $attempt -lt $max_attempts ]]; then
+                echo "match_events: 429 for ${fid} (attempt ${attempt}). Backing off ${backoff}s."
+                sleep "${backoff}"
+                backoff=$((backoff*2))
+              else
+                break
+              fi
+            done
+            if [[ "$http_code" != "200" ]]; then
+              if [[ "$http_code" == "404" ]]; then
+                echo "match_events: Fixture ${fid} skipped (HTTP 404)."
+              else
+                echo "match_events: Fixture ${fid} failed (HTTP ${http_code})."
+              fi
+              rm -f "$body_file"
+              continue
+            fi
+            events_count=$(jq '.response | length' "$body_file" 2>/dev/null || echo "0")
+            if [[ "$events_count" -gt 0 ]]; then
+              outdir="data/football/premier-league/events"
+              mkdir -p "$outdir"
+              outfile="${outdir}/events_${fid}.json"
+              jq '.' "$body_file" > "$outfile"
+              echo "match_events: Wrote ${outfile} (${events_count} events)."
+              CHANGED=true
+            else
+              echo "match_events: No events returned for fixture ${fid}."
+            fi
+            rm -f "$body_file"
+            if [[ "$per_sleep_ms" =~ ^[0-9]+$ ]] && (( per_sleep_ms > 0 )); then
+              python3 -c "import time; time.sleep(${per_sleep_ms}/1000.0)"
+            fi
+          done < "$CFILE"
+          echo "changed=${CHANGED}" >> "$GITHUB_OUTPUT"
+
+      - name: Commit changes
+        if: steps.fetch.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/football/premier-league/events || true
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(events): update match events [ci skip]"
+            git push
+            echo "match_events: Files written/updated:"
+            git show --stat --oneline -1 || true
+          else
+            echo "match_events: No file changes to commit."
+          fi
+
+      - name: No changes
+        if: steps.fetch.outputs.changed != 'true'
+        run: echo "match_events: Files written/updated: 0"
