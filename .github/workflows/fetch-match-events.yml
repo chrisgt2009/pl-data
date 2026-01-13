@@ -34,11 +34,13 @@ permissions:
 jobs:
   fetch-events:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup jq
+        shell: bash
         run: |
           sudo apt-get update -y
           sudo apt-get install -y jq
@@ -53,11 +55,6 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Fallback chain:
-          # 1) workflow_dispatch input (if set)
-          # 2) repo vars via env (if set)
-          # 3) hard-coded default
-
           EVENTS_WINDOW_DAYS="${INPUT_WINDOW_DAYS:-${EVENTS_WINDOW_DAYS:-7}}"
           MAX_EVENTS_PER_RUN="${INPUT_MAX_PER_RUN:-${MAX_EVENTS_PER_RUN:-20}}"
           PER_REQUEST_SLEEP_MS="${INPUT_SLEEP_MS:-${PER_REQUEST_SLEEP_MS:-200}}"
@@ -67,9 +64,6 @@ jobs:
           echo "MAX_EVENTS_PER_RUN=${MAX_EVENTS_PER_RUN}" >> "$GITHUB_OUTPUT"
           echo "PER_REQUEST_SLEEP_MS=${PER_REQUEST_SLEEP_MS}" >> "$GITHUB_OUTPUT"
           echo "EVENTS_BASE_URL=${EVENTS_BASE_URL}" >> "$GITHUB_OUTPUT"
-
-          echo "match_events: window_days=${EVENTS_WINDOW_DAYS}, max_per_run=${MAX_EVENTS_PER_RUN}, sleep_ms=${PER_REQUEST_SLEEP_MS}"
-          echo "match_events: base_url=${EVENTS_BASE_URL}"
 
       - name: Validate config
         id: validate
@@ -84,31 +78,29 @@ jobs:
           set -euo pipefail
 
           if [[ -z "${EVENTS_BASE_URL:-}" ]]; then
-            echo "match_events: EVENTS_BASE_URL is not set. Skipping all event fetches."
+            echo "match_events: EVENTS_BASE_URL not set. Skipping."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           if [[ -z "${RAPIDAPI_KEY:-}" || -z "${RAPIDAPI_HOST:-}" ]]; then
-            echo "match_events: RAPIDAPI credentials missing. Skipping all event fetches."
+            echo "match_events: RapidAPI secrets missing. Skipping."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          declare -a SOURCES=("$FIXTURES_WEEK" "$FIXTURES_SEASON")
-          FOUND_SOURCE=false
-
-          for SRC in "${SOURCES[@]}"; do
+          FOUND=false
+          for SRC in "$FIXTURES_WEEK" "$FIXTURES_SEASON"; do
             if [[ -f "$SRC" ]]; then
-              echo "match_events: Found source $SRC"
-              FOUND_SOURCE=true
+              echo "match_events: Found fixtures file: $SRC"
+              FOUND=true
             else
-              echo "match_events: Source missing $SRC (ok if not yet generated)"
+              echo "match_events: Missing fixtures file: $SRC (ok)"
             fi
           done
 
-          if [[ "$FOUND_SOURCE" == "false" ]]; then
-            echo "match_events: No source fixtures files present. Skipping."
+          if [[ "$FOUND" != "true" ]]; then
+            echo "match_events: No fixtures sources found. Skipping."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -130,8 +122,6 @@ jobs:
           NOW=$(date -u +%s)
           WINDOW_SEC=$((EVENTS_WINDOW_DAYS*24*3600))
 
-          echo "match_events: Considering fixtures within last ${EVENTS_WINDOW_DAYS} days."
-
           TMPFIX="$(mktemp)"
           > "$TMPFIX"
 
@@ -144,7 +134,6 @@ jobs:
 
           extract "$FIXTURES_WEEK" >> "$TMPFIX"
           extract "$FIXTURES_SEASON" >> "$TMPFIX"
-
           sort -u "$TMPFIX" -o "$TMPFIX"
 
           FILTERED="$(mktemp)"
@@ -157,7 +146,6 @@ jobs:
             age=$(( NOW - ts ))
             (( age < 0 || age > WINDOW_SEC )) && continue
 
-            # Keep these statuses as candidates
             case "$fstatus" in
               FT|AET|PEN|NS|1H|HT|2H|ET|BT|P|INT|LIVE|SUSP)
                 echo -e "${fid}\t${fstatus}" >> "$FILTERED"
@@ -168,7 +156,7 @@ jobs:
           done < "$TMPFIX"
 
           COUNT=$(wc -l < "$FILTERED" | tr -d " ")
-          CAP="${MAX_EVENTS_PER_RUN}"
+          CAP="$MAX_EVENTS_PER_RUN"
 
           if [[ "$CAP" =~ ^[0-9]+$ ]] && (( COUNT > CAP )); then
             head -n "$CAP" "$FILTERED" > "${FILTERED}.cap"
@@ -176,7 +164,7 @@ jobs:
           fi
 
           echo "CANDIDATES_FILE=$FILTERED" >> "$GITHUB_OUTPUT"
-          echo "match_events: Will process $(wc -l < "$FILTERED" | tr -d " ") fixtures (cap=${CAP})."
+          echo "match_events: candidates=$(wc -l < "$FILTERED" | tr -d " ") cap=${CAP}"
 
       - name: Fetch events
         id: fetch
@@ -194,24 +182,23 @@ jobs:
           CFILE="${{ steps.candidates.outputs.CANDIDATES_FILE }}"
 
           if [[ -z "${CFILE:-}" || ! -s "$CFILE" ]]; then
-            echo "match_events: No candidates to process."
+            echo "match_events: No candidates."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          per_sleep_ms=${PER_REQUEST_SLEEP_MS:-200}
-
           outdir="data/football/premier-league/events"
           mkdir -p "$outdir"
 
+          per_sleep_ms=${PER_REQUEST_SLEEP_MS:-200}
+
           while IFS=$'\t' read -r fid fstatus; do
             url="${EVENTS_BASE_URL}${fid}"
-            echo "match_events: Fetching events for fixture=${fid} (status=${fstatus})"
+            echo "match_events: fixture=${fid} status=${fstatus}"
 
             attempt=0
             max_attempts=3
             backoff=2
-
             body_file="$(mktemp)"
             http_code="000"
 
@@ -228,7 +215,7 @@ jobs:
               fi
 
               if [[ "$http_code" == "429" && $attempt -lt $max_attempts ]]; then
-                echo "match_events: 429 for ${fid} (attempt ${attempt}). Backing off ${backoff}s."
+                echo "match_events: 429 (attempt ${attempt}) backoff ${backoff}s"
                 sleep "${backoff}"
                 backoff=$((backoff*2))
               else
@@ -237,20 +224,19 @@ jobs:
             done
 
             if [[ "$http_code" != "200" ]]; then
-              echo "match_events: Fixture ${fid} failed (HTTP ${http_code})."
+              echo "match_events: fixture=${fid} failed HTTP ${http_code}"
               rm -f "$body_file"
               continue
             fi
 
             events_count=$(jq '.response | length' "$body_file" 2>/dev/null || echo "0")
-
             if [[ "$events_count" =~ ^[0-9]+$ ]] && (( events_count > 0 )); then
               outfile="${outdir}/events_${fid}.json"
               jq '.' "$body_file" > "$outfile"
-              echo "match_events: Wrote ${outfile} (${events_count} events)."
+              echo "match_events: wrote ${outfile} events=${events_count}"
               CHANGED=true
             else
-              echo "match_events: No events returned for fixture ${fid}."
+              echo "match_events: fixture=${fid} no events"
             fi
 
             rm -f "$body_file"
@@ -277,7 +263,6 @@ jobs:
           if ! git diff --cached --quiet; then
             git commit -m "chore(events): update match events [ci skip]"
             git push
-            echo "match_events: Files written/updated:"
             git show --stat --oneline -1 || true
           else
             echo "match_events: No file changes to commit."
@@ -285,4 +270,6 @@ jobs:
 
       - name: No changes
         if: steps.fetch.outputs.changed != 'true'
-        run: echo "match_events: Files written/updated: 0"
+        shell: bash
+        run: |
+          echo "match_events: Files written/updated: 0"
