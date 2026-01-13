@@ -18,6 +18,11 @@ permissions:
 jobs:
   core:
     runs-on: ubuntu-latest
+    env:
+      # True when run via Actions > Run workflow (manual dispatch)
+      FORCE_REFRESH: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
+      # If true, on manual dispatch we also force-write outputs (guaranteed commit)
+      FORCE_WRITE_ON_DISPATCH: true
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -41,6 +46,8 @@ jobs:
       - name: Locate workflow and list tree
         run: |
           echo "Workflow path: .github/workflows/refresh_core_pl.yml"
+          echo "FORCE_REFRESH=${FORCE_REFRESH}"
+          echo "FORCE_WRITE_ON_DISPATCH=${FORCE_WRITE_ON_DISPATCH}"
           ls -la .github/workflows || true
           find data -maxdepth 3 -type d -print || true
 
@@ -94,9 +101,9 @@ jobs:
             exit 0
           fi
 
-          # Reuse if recent (60 min)
+          # Reuse if recent unless FORCE_REFRESH
           REUSE_MAX_AGE_MIN=60
-          if [[ -f "$OUT" ]]; then
+          if [[ "${FORCE_REFRESH}" != "true" ]] && [[ -f "$OUT" ]]; then
             MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
@@ -108,7 +115,7 @@ jobs:
               echo "fixtures: Existing data is ${AGE_MIN}m old. Will fetch."
             fi
           else
-            echo "fixtures: No existing file. Will fetch."
+            echo "fixtures: FORCE_REFRESH=${FORCE_REFRESH}. Skipping reuse window check. Will fetch."
           fi
 
           FROM=$(date -u +"%Y-%m-%d")
@@ -122,7 +129,7 @@ jobs:
             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          echo "fixtures: http code=$CODE" >> "$GITHUB_OUTPUT"
+          echo "fixtures: http code=$CODE"
           if [[ "$CODE" != "200" ]]; then
             echo "fixtures: Non-200 ($CODE). Skipping write."
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -140,13 +147,19 @@ jobs:
           NORM=$(mktemp)
           jq --arg ts "$TS" '{matches: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
-          if ! cmp -s "$NORM" "$OUT"; then
-            echo "fixtures: Content changed. Updating $OUT."
+          if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
+            echo "fixtures: FORCE_REFRESH=true and FORCE_WRITE_ON_DISPATCH=true: Writing output regardless of content diff."
             mv "$NORM" "$OUT"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
-            echo "fixtures: No content change. Skipping commit."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
+            if ! cmp -s "$NORM" "$OUT"; then
+              echo "fixtures: Content changed. Updating $OUT."
+              mv "$NORM" "$OUT"
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "fixtures: No content change. Skipping commit."
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+            fi
           fi
 
       # ---------------- STANDINGS ----------------
@@ -177,9 +190,9 @@ jobs:
             exit 0
           fi
 
-          # Reuse if recent (180 min)
+          # Reuse if recent unless FORCE_REFRESH
           REUSE_MAX_AGE_MIN=180
-          if [[ -f "$OUT" ]]; then
+          if [[ "${FORCE_REFRESH}" != "true" ]] && [[ -f "$OUT" ]]; then
             MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
@@ -191,7 +204,7 @@ jobs:
               echo "standings: Existing data is ${AGE_MIN}m old. Will fetch."
             fi
           else
-            echo "standings: No existing file. Will fetch."
+            echo "standings: FORCE_REFRESH=${FORCE_REFRESH}. Skipping reuse window check. Will fetch."
           fi
 
           FINAL_URL="${BASE_URL}&season=${SEASON}&league=${LEAGUE_ID}"
@@ -202,7 +215,7 @@ jobs:
             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          echo "standings: http code=$CODE" >> "$GITHUB_OUTPUT"
+          echo "standings: http code=$CODE"
           if [[ "$CODE" != "200" ]]; then
             echo "standings: Non-200 ($CODE). Skipping write."
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -220,13 +233,19 @@ jobs:
           NORM=$(mktemp)
           jq --arg ts "$TS" '{standings: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
-          if ! cmp -s "$NORM" "$OUT"; then
-            echo "standings: Content changed. Updating $OUT."
+          if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
+            echo "standings: FORCE_REFRESH=true and FORCE_WRITE_ON_DISPATCH=true: Writing output regardless of content diff."
             mv "$NORM" "$OUT"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
-            echo "standings: No content change. Skipping commit."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
+            if ! cmp -s "$NORM" "$OUT"; then
+              echo "standings: Content changed. Updating $OUT."
+              mv "$NORM" "$OUT"
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "standings: No content change. Skipping commit."
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+            fi
           fi
 
       # ---------------- TOP SCORERS ----------------
@@ -257,9 +276,9 @@ jobs:
             exit 0
           fi
 
-          # Reuse if recent (180 min)
+          # Reuse if recent unless FORCE_REFRESH
           REUSE_MAX_AGE_MIN=180
-          if [[ -f "$OUT" ]]; then
+          if [[ "${FORCE_REFRESH}" != "true" ]] && [[ -f "$OUT" ]]; then
             MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
@@ -271,7 +290,7 @@ jobs:
               echo "scorers: Existing data is ${AGE_MIN}m old. Will fetch."
             fi
           else
-            echo "scorers: No existing file. Will fetch."
+            echo "scorers: FORCE_REFRESH=${FORCE_REFRESH}. Skipping reuse window check. Will fetch."
           fi
 
           FINAL_URL="${BASE_URL}&season=${SEASON}&league=${LEAGUE_ID}"
@@ -282,7 +301,7 @@ jobs:
             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          echo "scorers: http code=$CODE" >> "$GITHUB_OUTPUT"
+          echo "scorers: http code=$CODE"
           if [[ "$CODE" != "200" ]]; then
             echo "scorers: Non-200 ($CODE). Skipping write."
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -300,13 +319,19 @@ jobs:
           NORM=$(mktemp)
           jq --arg ts "$TS" '{scorers: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
-          if ! cmp -s "$NORM" "$OUT"; then
-            echo "scorers: Content changed. Updating $OUT."
+          if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
+            echo "scorers: FORCE_REFRESH=true and FORCE_WRITE_ON_DISPATCH=true: Writing output regardless of content diff."
             mv "$NORM" "$OUT"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
-            echo "scorers: No content change. Skipping commit."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
+            if ! cmp -s "$NORM" "$OUT"; then
+              echo "scorers: Content changed. Updating $OUT."
+              mv "$NORM" "$OUT"
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "scorers: No content change. Skipping commit."
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+            fi
           fi
 
       # ---------------- TOP ASSISTS ----------------
@@ -337,9 +362,9 @@ jobs:
             exit 0
           fi
 
-          # Reuse if recent (180 min)
+          # Reuse if recent unless FORCE_REFRESH
           REUSE_MAX_AGE_MIN=180
-          if [[ -f "$OUT" ]]; then
+          if [[ "${FORCE_REFRESH}" != "true" ]] && [[ -f "$OUT" ]]; then
             MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
@@ -351,7 +376,7 @@ jobs:
               echo "assists: Existing data is ${AGE_MIN}m old. Will fetch."
             fi
           else
-            echo "assists: No existing file. Will fetch."
+            echo "assists: FORCE_REFRESH=${FORCE_REFRESH}. Skipping reuse window check. Will fetch."
           fi
 
           FINAL_URL="${BASE_URL}&season=${SEASON}&league=${LEAGUE_ID}"
@@ -362,7 +387,7 @@ jobs:
             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          echo "assists: http code=$CODE" >> "$GITHUB_OUTPUT"
+          echo "assists: http code=$CODE"
           if [[ "$CODE" != "200" ]]; then
             echo "assists: Non-200 ($CODE). Skipping write."
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -380,13 +405,19 @@ jobs:
           NORM=$(mktemp)
           jq --arg ts "$TS" '{assists: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
-          if ! cmp -s "$NORM" "$OUT"; then
-            echo "assists: Content changed. Updating $OUT."
+          if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
+            echo "assists: FORCE_REFRESH=true and FORCE_WRITE_ON_DISPATCH=true: Writing output regardless of content diff."
             mv "$NORM" "$OUT"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
-            echo "assists: No content change. Skipping commit."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
+            if ! cmp -s "$NORM" "$OUT"; then
+              echo "assists: Content changed. Updating $OUT."
+              mv "$NORM" "$OUT"
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "assists: No content change. Skipping commit."
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+            fi
           fi
 
       # ---------------- TOP YELLOW CARDS ----------------
@@ -417,9 +448,9 @@ jobs:
             exit 0
           fi
 
-          # Reuse if recent (180 min)
+          # Reuse if recent unless FORCE_REFRESH
           REUSE_MAX_AGE_MIN=180
-          if [[ -f "$OUT" ]]; then
+          if [[ "${FORCE_REFRESH}" != "true" ]] && [[ -f "$OUT" ]]; then
             MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
@@ -431,7 +462,7 @@ jobs:
               echo "cards_yellow: Existing data is ${AGE_MIN}m old. Will fetch."
             fi
           else
-            echo "cards_yellow: No existing file. Will fetch."
+            echo "cards_yellow: FORCE_REFRESH=${FORCE_REFRESH}. Skipping reuse window check. Will fetch."
           fi
 
           FINAL_URL="${BASE_URL}&season=${SEASON}&league=${LEAGUE_ID}"
@@ -442,7 +473,7 @@ jobs:
             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          echo "cards_yellow: http code=$CODE" >> "$GITHUB_OUTPUT"
+          echo "cards_yellow: http code=$CODE"
           if [[ "$CODE" != "200" ]]; then
             echo "cards_yellow: Non-200 ($CODE). Skipping write."
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -460,13 +491,19 @@ jobs:
           NORM=$(mktemp)
           jq --arg ts "$TS" '{cards_yellow: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
-          if ! cmp -s "$NORM" "$OUT"; then
-            echo "cards_yellow: Content changed. Updating $OUT."
+          if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
+            echo "cards_yellow: FORCE_REFRESH=true and FORCE_WRITE_ON_DISPATCH=true: Writing output regardless of content diff."
             mv "$NORM" "$OUT"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
-            echo "cards_yellow: No content change. Skipping commit."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
+            if ! cmp -s "$NORM" "$OUT"; then
+              echo "cards_yellow: Content changed. Updating $OUT."
+              mv "$NORM" "$OUT"
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "cards_yellow: No content change. Skipping commit."
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+            fi
           fi
 
       # ---------------- TOP RED CARDS ----------------
@@ -497,9 +534,9 @@ jobs:
             exit 0
           fi
 
-          # Reuse if recent (180 min)
+          # Reuse if recent unless FORCE_REFRESH
           REUSE_MAX_AGE_MIN=180
-          if [[ -f "$OUT" ]]; then
+          if [[ "${FORCE_REFRESH}" != "true" ]] && [[ -f "$OUT" ]]; then
             MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
@@ -511,7 +548,7 @@ jobs:
               echo "cards_red: Existing data is ${AGE_MIN}m old. Will fetch."
             fi
           else
-            echo "cards_red: No existing file. Will fetch."
+            echo "cards_red: FORCE_REFRESH=${FORCE_REFRESH}. Skipping reuse window check. Will fetch."
           fi
 
           FINAL_URL="${BASE_URL}&season=${SEASON}&league=${LEAGUE_ID}"
@@ -522,7 +559,7 @@ jobs:
             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          echo "cards_red: http code=$CODE" >> "$GITHUB_OUTPUT"
+          echo "cards_red: http code=$CODE"
           if [[ "$CODE" != "200" ]]; then
             echo "cards_red: Non-200 ($CODE). Skipping write."
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -540,13 +577,19 @@ jobs:
           NORM=$(mktemp)
           jq --arg ts "$TS" '{cards_red: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
-          if ! cmp -s "$NORM" "$OUT"; then
-            echo "cards_red: Content changed. Updating $OUT."
+          if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
+            echo "cards_red: FORCE_REFRESH=true and FORCE_WRITE_ON_DISPATCH=true: Writing output regardless of content diff."
             mv "$NORM" "$OUT"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
-            echo "cards_red: No content change. Skipping commit."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
+            if ! cmp -s "$NORM" "$OUT"; then
+              echo "cards_red: Content changed. Updating $OUT."
+              mv "$NORM" "$OUT"
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "cards_red: No content change. Skipping commit."
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+            fi
           fi
 
       # ---------------- SEASON FIXTURES (full season) ----------------
@@ -577,9 +620,9 @@ jobs:
             exit 0
           fi
 
-          # Reuse if recent (720 min = 12h)
+          # Reuse if recent unless FORCE_REFRESH
           REUSE_MAX_AGE_MIN=720
-          if [[ -f "$OUT" ]]; then
+          if [[ "${FORCE_REFRESH}" != "true" ]] && [[ -f "$OUT" ]]; then
             MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
@@ -591,7 +634,7 @@ jobs:
               echo "fixtures_season: Existing data is ${AGE_MIN}m old. Will fetch."
             fi
           else
-            echo "fixtures_season: No existing file. Will fetch."
+            echo "fixtures_season: FORCE_REFRESH=${FORCE_REFRESH}. Skipping reuse window check. Will fetch."
           fi
 
           FINAL_URL="${BASE_URL}&league=${LEAGUE_ID}&season=${SEASON}"
@@ -602,7 +645,7 @@ jobs:
             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          echo "fixtures_season: http code=$CODE" >> "$GITHUB_OUTPUT"
+          echo "fixtures_season: http code=$CODE"
           if [[ "$CODE" != "200" ]]; then
             echo "fixtures_season: Non-200 ($CODE). Skipping write."
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -620,13 +663,19 @@ jobs:
           NORM=$(mktemp)
           jq --arg ts "$TS" '{matches: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
-          if ! cmp -s "$NORM" "$OUT"; then
-            echo "fixtures_season: Content changed. Updating $OUT."
+          if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
+            echo "fixtures_season: FORCE_REFRESH=true and FORCE_WRITE_ON_DISPATCH=true: Writing output regardless of content diff."
             mv "$NORM" "$OUT"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
-            echo "fixtures_season: No content change. Skipping commit."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
+            if ! cmp -s "$NORM" "$OUT"; then
+              echo "fixtures_season: Content changed. Updating $OUT."
+              mv "$NORM" "$OUT"
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "fixtures_season: No content change. Skipping commit."
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+            fi
           fi
 
       # ---------------- MATCH EVENTS (cards per fixture) ----------------
@@ -675,9 +724,12 @@ jobs:
             exit 0
           fi
 
-          # Build a unique list of finished fixture IDs in the last 7 days (or any window you prefer)
           NOW=$(date -u +%s)
-          WINDOW_SEC=$((7*24*3600)) # 7 days
+          WINDOW_SEC=$((7*24*3600)) # default 7 days
+          if [[ "${FORCE_REFRESH}" == "true" ]]; then
+            WINDOW_SEC=$((30*24*3600)) # expand to 30 days on manual dispatch
+            echo "match_events: FORCE_REFRESH=true, expanding window to $((WINDOW_SEC/86400)) days."
+          fi
           echo "match_events: Considering finished fixtures within the last $((WINDOW_SEC/86400)) days."
 
           TMPFIX="$(mktemp)"
@@ -685,7 +737,6 @@ jobs:
 
           for SRC in "${SOURCES[@]}"; do
             if [[ -f "$SRC" ]]; then
-              # Extract fixture id + date + status.short
               jq -r '.matches[]? | [.fixture.id, .fixture.date, .fixture.status.short] | @tsv' "$SRC" 2>/dev/null || true
             fi
           done | sort -u > "$TMPFIX"
@@ -702,7 +753,6 @@ jobs:
           while IFS=$'\t' read -r FID FDATE STATUS; do
             [[ -z "$FID" ]] && continue
 
-            # Only finished statuses
             case "$STATUS" in
               FT|AET|PEN) ;;
               *)
@@ -711,7 +761,6 @@ jobs:
                 ;;
             esac
 
-            # Filter by recent window if date present
             INCLUDE=1
             if [[ -n "$FDATE" ]]; then
               FTS=$(date -u -d "$FDATE" +%s 2>/dev/null || echo "0")
@@ -755,14 +804,22 @@ jobs:
             NORM="$(mktemp)"
             jq --arg ts "$TS" '{events: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPEVT" > "$NORM"
 
-            if [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then
+            if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
               mkdir -p "$(dirname "$OUT")"
               mv "$NORM" "$OUT"
               CHANGED=true
               PROCESSED=$((PROCESSED+1))
-              echo "match_events: Wrote/updated $OUT"
+              echo "match_events: FORCE write/updated $OUT"
             else
-              echo "match_events: No change for $OUT"
+              if [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then
+                mkdir -p "$(dirname "$OUT")"
+                mv "$NORM" "$OUT"
+                CHANGED=true
+                PROCESSED=$((PROCESSED+1))
+                echo "match_events: Wrote/updated $OUT"
+              else
+                echo "match_events: No change for $OUT"
+              fi
             fi
           done < "$TMPFIX"
 
