@@ -10,12 +10,17 @@ on:
       force_refresh:
         description: "Bypass reuse windows and broaden event window (manual runs)"
         type: boolean
-        default: false
+        default: true
         required: false
       force_write_on_dispatch:
         description: "Force write outputs even if content unchanged (manual runs)"
         type: boolean
-        default: false
+        default: true
+        required: false
+      force_events_even_on_errors:
+        description: "Write placeholder per-match files on 404/429 for visibility (manual runs)"
+        type: boolean
+        default: true
         required: false
   schedule:
     # Standings/scorers/cards/assists every 3 hours
@@ -30,9 +35,9 @@ jobs:
   core:
     runs-on: ubuntu-latest
     env:
-      # Values from inputs (only present on workflow_dispatch). Fallback to 'false'.
       FORCE_REFRESH: ${{ inputs.force_refresh && 'true' || 'false' }}
       FORCE_WRITE_ON_DISPATCH: ${{ inputs.force_write_on_dispatch && 'true' || 'false' }}
+      FORCE_EVENTS_EVEN_ON_ERRORS: ${{ inputs.force_events_even_on_errors && 'true' || 'false' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -45,19 +50,15 @@ jobs:
           mkdir -p data/football/premier-league/core
           mkdir -p data/football/premier-league/fixtures
           mkdir -p data/football/premier-league/live
-          mkdir -p data/ops
-
-      - name: Ensure extra folders
-        run: |
-          mkdir -p data/football/premier-league/teams
           mkdir -p data/football/premier-league/matches
-          mkdir -p data/football/premier-league/media
+          mkdir -p data/ops
 
       - name: Locate workflow and list tree
         run: |
           echo "Workflow path: .github/workflows/refresh_core_pl.yml"
           echo "FORCE_REFRESH=${FORCE_REFRESH}"
           echo "FORCE_WRITE_ON_DISPATCH=${FORCE_WRITE_ON_DISPATCH}"
+          echo "FORCE_EVENTS_EVEN_ON_ERRORS=${FORCE_EVENTS_EVEN_ON_ERRORS}"
           ls -la .github/workflows || true
           find data -maxdepth 3 -type d -print || true
 
@@ -158,7 +159,7 @@ jobs:
           jq --arg ts "$TS" '{matches: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
           if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
-            echo "fixtures: FORCE_REFRESH=true and FORCE_WRITE_ON_DISPATCH=true: Writing output regardless of content diff."
+            echo "fixtures: FORCE write."
             mv "$NORM" "$OUT"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
@@ -244,7 +245,7 @@ jobs:
           jq --arg ts "$TS" '{standings: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
           if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
-            echo "standings: FORCE_REFRESH=true and FORCE_WRITE_ON_DISPATCH=true: Writing output regardless of content diff."
+            echo "standings: FORCE write."
             mv "$NORM" "$OUT"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
@@ -330,7 +331,7 @@ jobs:
           jq --arg ts "$TS" '{scorers: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
           if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
-            echo "scorers: FORCE_REFRESH=true and FORCE_WRITE_ON_DISPATCH=true: Writing output regardless of content diff."
+            echo "scorers: FORCE write."
             mv "$NORM" "$OUT"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
@@ -416,7 +417,7 @@ jobs:
           jq --arg ts "$TS" '{assists: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
           if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
-            echo "assists: FORCE_REFRESH=true and FORCE_WRITE_ON_DISPATCH=true: Writing output regardless of content diff."
+            echo "assists: FORCE write."
             mv "$NORM" "$OUT"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
@@ -502,7 +503,7 @@ jobs:
           jq --arg ts "$TS" '{cards_yellow: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
           if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
-            echo "cards_yellow: FORCE_REFRESH=true and FORCE_WRITE_ON_DISPATCH=true: Writing output regardless of content diff."
+            echo "cards_yellow: FORCE write."
             mv "$NORM" "$OUT"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
@@ -588,7 +589,7 @@ jobs:
           jq --arg ts "$TS" '{cards_red: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
           if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
-            echo "cards_red: FORCE_REFRESH=true and FORCE_WRITE_ON_DISPATCH=true: Writing output regardless of content diff."
+            echo "cards_red: FORCE write."
             mv "$NORM" "$OUT"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
@@ -674,7 +675,7 @@ jobs:
           jq --arg ts "$TS" '{matches: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
           if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
-            echo "fixtures_season: FORCE_REFRESH=true and FORCE_WRITE_ON_DISPATCH=true: Writing output regardless of content diff."
+            echo "fixtures_season: FORCE write."
             mv "$NORM" "$OUT"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
@@ -713,7 +714,6 @@ jobs:
             exit 0
           fi
 
-          # Collect candidate fixture IDs from week + season files
           declare -a SOURCES=(
             "data/football/premier-league/fixtures/fixtures_week.json"
             "data/football/premier-league/fixtures/fixtures_season.json"
@@ -735,9 +735,9 @@ jobs:
           fi
 
           NOW=$(date -u +%s)
-          WINDOW_SEC=$((7*24*3600)) # default 7 days
+          WINDOW_SEC=$((7*24*3600))
           if [[ "${FORCE_REFRESH}" == "true" ]]; then
-            WINDOW_SEC=$((30*24*3600)) # expand to 30 days on manual dispatch
+            WINDOW_SEC=$((30*24*3600))
             echo "match_events: FORCE_REFRESH=true, expanding window to $((WINDOW_SEC/86400)) days."
           fi
           echo "match_events: Considering finished fixtures within the last $((WINDOW_SEC/86400)) days."
@@ -794,19 +794,45 @@ jobs:
             FINAL_URL="${EVENTS_BASE_URL}${FID}"
             echo "match_events: Fetching events for fixture=$FID: $FINAL_URL"
 
+            # Try once; if 429, sleep briefly and try once more
             CODE=$(curl -sS --connect-timeout 5 --max-time 20 -w "%{http_code}" -o "$TMPEVT" \
               -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
               -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
               "$FINAL_URL" || true)
 
+            if [[ "$CODE" == "429" ]]; then
+              echo "match_events: Fixture $FID hit rate limit (429). Backing off 2s and retrying once."
+              sleep 2
+              CODE=$(curl -sS --connect-timeout 5 --max-time 20 -w "%{http_code}" -o "$TMPEVT" \
+                -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
+                -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+                "$FINAL_URL" || true)
+            fi
+
             if [[ "$CODE" != "200" ]]; then
               echo "match_events: Fixture $FID skipped (HTTP $CODE)."
+              if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_EVENTS_EVEN_ON_ERRORS}" == "true" ]]; then
+                echo "match_events: FORCE_EVENTS_EVEN_ON_ERRORS=true: writing placeholder for $FID"
+                mkdir -p "$(dirname "$OUT")"
+                TS=$(date -u +%FT%TZ)
+                echo "{\"events\":[],\"meta\":{\"lastUpdatedUTC\":\"${TS}\",\"note\":\"placeholder due to HTTP ${CODE}\"}}" > "$OUT"
+                CHANGED=true
+                PROCESSED=$((PROCESSED+1))
+              fi
               continue
             fi
 
             OK=$(jq -r '(.response | type) == "array"' "$TMPEVT" 2>/dev/null || echo "false")
             if [[ "$OK" != "true" ]]; then
               echo "match_events: Fixture $FID skipped (unexpected payload, .response not array)."
+              if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_EVENTS_EVEN_ON_ERRORS}" == "true" ]]; then
+                echo "match_events: FORCE_EVENTS_EVEN_ON_ERRORS=true: writing placeholder for $FID (bad payload)"
+                mkdir -p "$(dirname "$OUT")"
+                TS=$(date -u +%FT%TZ)
+                echo "{\"events\":[],\"meta\":{\"lastUpdatedUTC\":\"${TS}\",\"note\":\"placeholder due to unexpected payload\"}}" > "$OUT"
+                CHANGED=true
+                PROCESSED=$((PROCESSED+1))
+              fi
               continue
             fi
 
@@ -842,33 +868,18 @@ jobs:
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Clear post-window flag
-        if: steps.post_window.outputs.trigger == 'true' && (steps.standings.outputs.changed == 'true' || steps.scorers.outputs.changed == 'true' || steps.assists.outputs.changed == 'true' || steps.cards_yellow.outputs.changed == 'true' || steps.cards_red.outputs.changed == 'true' || steps.match_events.outputs.changed == 'true')
-        shell: bash
-        run: |
-          set -euo pipefail
-          FLAG="data/ops/post_window.json"
-          if [[ -f "$FLAG" ]]; then
-            rm -f "$FLAG"
-            git config user.name "pl-bot"
-            git config user.email "pl-bot@users.noreply.github.com"
-            git add -A
-            git commit -m "Clear post-window trigger"
-            git push
-          fi
-
       - name: Commit & push
-        if: steps.fixtures.outputs.changed == 'true' || steps.standings.outputs.changed == 'true' || steps.scorers.outputs.changed == 'true' || steps.assists.outputs.changed == 'true' || steps.cards_yellow.outputs.changed == 'true' || steps.cards_red.outputs.changed == 'true' || steps.fixtures_season.outputs.changed == 'true' || steps.teams.outputs.changed == 'true' || steps.venues.outputs.changed == 'true' || steps.rounds.outputs.changed == 'true' || steps.match_events.outputs.changed == 'true'
+        if: steps.fixtures.outputs.changed == 'true' || steps.standings.outputs.changed == 'true' || steps.scorers.outputs.changed == 'true' || steps.assists.outputs.changed == 'true' || steps.cards_yellow.outputs.changed == 'true' || steps.cards_red.outputs.changed == 'true' || steps.fixtures_season.outputs.changed == 'true' || steps.match_events.outputs.changed == 'true'
         run: |
           git config user.name "pl-bot"
           git config user.email "pl-bot@users.noreply.github.com"
 
-          git add data/football/premier-league/core/*.json
-          git add data/football/premier-league/fixtures/*.json
+          git add data/football/premier-league/core/*.json || true
+          git add data/football/premier-league/fixtures/*.json || true
           git add data/football/premier-league/matches/*.json || true
           git add data/football/premier-league/live/*.json || true
 
-          git commit -m "Update core feeds (fixtures/standings/scorers/assists/cards/teams/venues/rounds/events)"
+          git commit -m "Update core feeds (fixtures/standings/scorers/assists/cards/season/events)"
           git push
 
 
