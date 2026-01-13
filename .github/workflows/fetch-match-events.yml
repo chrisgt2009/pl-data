@@ -19,7 +19,7 @@ on:
     - cron: "12 * * * *" # run hourly at :12
 
 env:
-  # Provide defaults that are always parseable; compute fallbacks in a step
+  # Use simple, parse-safe defaults here. We'll compute fallbacks in a step.
   EVENTS_WINDOW_DAYS: ${{ vars.EVENTS_WINDOW_DAYS }}
   MAX_EVENTS_PER_RUN: ${{ vars.MAX_EVENTS_PER_RUN }}
   PER_REQUEST_SLEEP_MS: ${{ vars.PER_REQUEST_SLEEP_MS }}
@@ -47,7 +47,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # Prefer workflow_dispatch inputs; then vars; then hard-coded fallback
+          # Prefer workflow_dispatch inputs; then env/vars; then hard-coded fallback
           EVENTS_WINDOW_DAYS="${{ github.event.inputs.window_days || env.EVENTS_WINDOW_DAYS || '7' }}"
           MAX_EVENTS_PER_RUN="${{ github.event.inputs.max_per_run || env.MAX_EVENTS_PER_RUN || '20' }}"
           PER_REQUEST_SLEEP_MS="${{ github.event.inputs.per_request_sleep_ms || env.PER_REQUEST_SLEEP_MS || '200' }}"
@@ -70,7 +70,7 @@ jobs:
         run: |
           set -euo pipefail
           if [[ -z "${EVENTS_BASE_URL:-}" ]]; then
-            echo "match_events: URL_EVENTS is not set. Skipping all event fetches."
+            echo "match_events: EVENTS_BASE_URL is not set. Skipping all event fetches."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -136,7 +136,7 @@ jobs:
                 ;;
             esac
           done < "$TMPFIX"
-          CAP=${{ steps.defaults.outputs.MAX_EVENTS_PER_RUN }}
+          CAP="${{ steps.defaults.outputs.MAX_EVENTS_PER_RUN }}"
           COUNT=$(wc -l < "$FILTERED" | tr -d " ")
           if (( COUNT > CAP )); then
             head -n "$CAP" "$FILTERED" > "${FILTERED}.cap"
