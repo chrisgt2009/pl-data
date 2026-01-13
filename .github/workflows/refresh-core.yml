@@ -55,11 +55,14 @@ jobs:
           if [[ -f "$FLAG" ]]; then
             TS=$(jq -r '.ts // 0' "$FLAG")
             if (( NOW_TS - TS <= 5400 )); then
+              echo "Post-window flag present (age <= 90m). Will trigger post-window guarded steps."
               echo "trigger=true" >> "$GITHUB_OUTPUT"
             else
+              echo "Post-window flag present but too old. Skipping post-window guarded steps."
               echo "trigger=false" >> "$GITHUB_OUTPUT"
             fi
           else
+            echo "No post-window flag found. Post-window guarded steps will only run via schedule/dispatch."
             echo "trigger=false" >> "$GITHUB_OUTPUT"
           fi
 
@@ -80,7 +83,16 @@ jobs:
           OUT="data/football/premier-league/fixtures/fixtures_week.json"
           TMPBODY="$(mktemp)"
 
-          [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+          if [[ -z "${BASE_URL:-}" ]]; then
+            echo "fixtures: URL_FIXTURES is not set. Skipping."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [[ -z "${RAPIDAPI_KEY:-}" || -z "${RAPIDAPI_HOST:-}" ]]; then
+            echo "fixtures: RAPIDAPI credentials missing. Skipping."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
 
           # Reuse if recent (60 min)
           REUSE_MAX_AGE_MIN=60
@@ -89,31 +101,37 @@ jobs:
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
             if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then
-              echo "Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m)"
+              echo "fixtures: Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m). No fetch."
               echo "changed=false" >> "$GITHUB_OUTPUT"
               exit 0
+            else
+              echo "fixtures: Existing data is ${AGE_MIN}m old. Will fetch."
             fi
+          else
+            echo "fixtures: No existing file. Will fetch."
           fi
 
           FROM=$(date -u +"%Y-%m-%d")
           TO=$(date -u -d "+14 days" +"%Y-%m-%d")
 
           FINAL_URL="${BASE_URL}&league=${LEAGUE_ID}&season=${SEASON}&from=${FROM}&to=${TO}"
-          echo "Fetching fixtures: $FINAL_URL"
+          echo "fixtures: Fetching $FINAL_URL"
 
           CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          echo "code=$CODE" >> "$GITHUB_OUTPUT"
+          echo "fixtures: http code=$CODE" >> "$GITHUB_OUTPUT"
           if [[ "$CODE" != "200" ]]; then
+            echo "fixtures: Non-200 ($CODE). Skipping write."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
           if [[ "$OK" != "true" ]]; then
+            echo "fixtures: Unexpected payload (.response not array). Skipping write."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -123,9 +141,11 @@ jobs:
           jq --arg ts "$TS" '{matches: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
           if ! cmp -s "$NORM" "$OUT"; then
+            echo "fixtures: Content changed. Updating $OUT."
             mv "$NORM" "$OUT"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
+            echo "fixtures: No content change. Skipping commit."
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
 
@@ -146,7 +166,16 @@ jobs:
           OUT="data/football/premier-league/core/standings.json"
           TMPBODY="$(mktemp)"
 
-          [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+          if [[ -z "${BASE_URL:-}" ]]; then
+            echo "standings: URL_STANDINGS is not set. Skipping."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [[ -z "${RAPIDAPI_KEY:-}" || -z "${RAPIDAPI_HOST:-}" ]]; then
+            echo "standings: RAPIDAPI credentials missing. Skipping."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
 
           # Reuse if recent (180 min)
           REUSE_MAX_AGE_MIN=180
@@ -155,28 +184,34 @@ jobs:
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
             if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then
-              echo "Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m)"
+              echo "standings: Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m). No fetch."
               echo "changed=false" >> "$GITHUB_OUTPUT"
               exit 0
+            else
+              echo "standings: Existing data is ${AGE_MIN}m old. Will fetch."
             fi
+          else
+            echo "standings: No existing file. Will fetch."
           fi
 
           FINAL_URL="${BASE_URL}&season=${SEASON}&league=${LEAGUE_ID}"
-          echo "Fetching standings: $FINAL_URL"
+          echo "standings: Fetching $FINAL_URL"
 
           CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          echo "code=$CODE" >> "$GITHUB_OUTPUT"
+          echo "standings: http code=$CODE" >> "$GITHUB_OUTPUT"
           if [[ "$CODE" != "200" ]]; then
+            echo "standings: Non-200 ($CODE). Skipping write."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
           if [[ "$OK" != "true" ]]; then
+            echo "standings: Unexpected payload (.response not array). Skipping write."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -186,9 +221,11 @@ jobs:
           jq --arg ts "$TS" '{standings: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
           if ! cmp -s "$NORM" "$OUT"; then
+            echo "standings: Content changed. Updating $OUT."
             mv "$NORM" "$OUT"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
+            echo "standings: No content change. Skipping commit."
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
 
@@ -209,7 +246,16 @@ jobs:
           OUT="data/football/premier-league/core/scorers.json"
           TMPBODY="$(mktemp)"
 
-          [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+          if [[ -z "${BASE_URL:-}" ]]; then
+            echo "scorers: URL_SCORERS is not set. Skipping."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [[ -z "${RAPIDAPI_KEY:-}" || -z "${RAPIDAPI_HOST:-}" ]]; then
+            echo "scorers: RAPIDAPI credentials missing. Skipping."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
 
           # Reuse if recent (180 min)
           REUSE_MAX_AGE_MIN=180
@@ -218,28 +264,34 @@ jobs:
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
             if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then
-              echo "Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m)"
+              echo "scorers: Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m). No fetch."
               echo "changed=false" >> "$GITHUB_OUTPUT"
               exit 0
+            else
+              echo "scorers: Existing data is ${AGE_MIN}m old. Will fetch."
             fi
+          else
+            echo "scorers: No existing file. Will fetch."
           fi
 
           FINAL_URL="${BASE_URL}&season=${SEASON}&league=${LEAGUE_ID}"
-          echo "Fetching scorers: $FINAL_URL"
+          echo "scorers: Fetching $FINAL_URL"
 
           CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          echo "code=$CODE" >> "$GITHUB_OUTPUT"
+          echo "scorers: http code=$CODE" >> "$GITHUB_OUTPUT"
           if [[ "$CODE" != "200" ]]; then
+            echo "scorers: Non-200 ($CODE). Skipping write."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
           if [[ "$OK" != "true" ]]; then
+            echo "scorers: Unexpected payload (.response not array). Skipping write."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -249,9 +301,11 @@ jobs:
           jq --arg ts "$TS" '{scorers: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
           if ! cmp -s "$NORM" "$OUT"; then
+            echo "scorers: Content changed. Updating $OUT."
             mv "$NORM" "$OUT"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
+            echo "scorers: No content change. Skipping commit."
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
 
@@ -272,7 +326,16 @@ jobs:
           OUT="data/football/premier-league/core/assists.json"
           TMPBODY="$(mktemp)"
 
-          [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+          if [[ -z "${BASE_URL:-}" ]]; then
+            echo "assists: URL_TOP_ASSISTS is not set. Skipping."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [[ -z "${RAPIDAPI_KEY:-}" || -z "${RAPIDAPI_HOST:-}" ]]; then
+            echo "assists: RAPIDAPI credentials missing. Skipping."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
 
           # Reuse if recent (180 min)
           REUSE_MAX_AGE_MIN=180
@@ -281,28 +344,34 @@ jobs:
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
             if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then
-              echo "Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m)"
+              echo "assists: Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m). No fetch."
               echo "changed=false" >> "$GITHUB_OUTPUT"
               exit 0
+            else
+              echo "assists: Existing data is ${AGE_MIN}m old. Will fetch."
             fi
+          else
+            echo "assists: No existing file. Will fetch."
           fi
 
           FINAL_URL="${BASE_URL}&season=${SEASON}&league=${LEAGUE_ID}"
-          echo "Fetching top assists: $FINAL_URL"
+          echo "assists: Fetching $FINAL_URL"
 
           CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          echo "code=$CODE" >> "$GITHUB_OUTPUT"
+          echo "assists: http code=$CODE" >> "$GITHUB_OUTPUT"
           if [[ "$CODE" != "200" ]]; then
+            echo "assists: Non-200 ($CODE). Skipping write."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
           if [[ "$OK" != "true" ]]; then
+            echo "assists: Unexpected payload (.response not array). Skipping write."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -312,9 +381,11 @@ jobs:
           jq --arg ts "$TS" '{assists: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
           if ! cmp -s "$NORM" "$OUT"; then
+            echo "assists: Content changed. Updating $OUT."
             mv "$NORM" "$OUT"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
+            echo "assists: No content change. Skipping commit."
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
 
@@ -335,7 +406,16 @@ jobs:
           OUT="data/football/premier-league/core/cards_yellow.json"
           TMPBODY="$(mktemp)"
 
-          [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+          if [[ -z "${BASE_URL:-}" ]]; then
+            echo "cards_yellow: URL_TOP_YELLOWS is not set. Skipping."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [[ -z "${RAPIDAPI_KEY:-}" || -z "${RAPIDAPI_HOST:-}" ]]; then
+            echo "cards_yellow: RAPIDAPI credentials missing. Skipping."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
 
           # Reuse if recent (180 min)
           REUSE_MAX_AGE_MIN=180
@@ -344,28 +424,34 @@ jobs:
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
             if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then
-              echo "Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m)"
+              echo "cards_yellow: Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m). No fetch."
               echo "changed=false" >> "$GITHUB_OUTPUT"
               exit 0
+            else
+              echo "cards_yellow: Existing data is ${AGE_MIN}m old. Will fetch."
             fi
+          else
+            echo "cards_yellow: No existing file. Will fetch."
           fi
 
           FINAL_URL="${BASE_URL}&season=${SEASON}&league=${LEAGUE_ID}"
-          echo "Fetching yellow cards leaderboard: $FINAL_URL"
+          echo "cards_yellow: Fetching $FINAL_URL"
 
           CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          echo "code=$CODE" >> "$GITHUB_OUTPUT"
+          echo "cards_yellow: http code=$CODE" >> "$GITHUB_OUTPUT"
           if [[ "$CODE" != "200" ]]; then
+            echo "cards_yellow: Non-200 ($CODE). Skipping write."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
           if [[ "$OK" != "true" ]]; then
+            echo "cards_yellow: Unexpected payload (.response not array). Skipping write."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -375,9 +461,11 @@ jobs:
           jq --arg ts "$TS" '{cards_yellow: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
           if ! cmp -s "$NORM" "$OUT"; then
+            echo "cards_yellow: Content changed. Updating $OUT."
             mv "$NORM" "$OUT"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
+            echo "cards_yellow: No content change. Skipping commit."
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
 
@@ -398,7 +486,16 @@ jobs:
           OUT="data/football/premier-league/core/cards_red.json"
           TMPBODY="$(mktemp)"
 
-          [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+          if [[ -z "${BASE_URL:-}" ]]; then
+            echo "cards_red: URL_TOP_REDS is not set. Skipping."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [[ -z "${RAPIDAPI_KEY:-}" || -z "${RAPIDAPI_HOST:-}" ]]; then
+            echo "cards_red: RAPIDAPI credentials missing. Skipping."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
 
           # Reuse if recent (180 min)
           REUSE_MAX_AGE_MIN=180
@@ -407,28 +504,34 @@ jobs:
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
             if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then
-              echo "Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m)"
+              echo "cards_red: Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m). No fetch."
               echo "changed=false" >> "$GITHUB_OUTPUT"
               exit 0
+            else
+              echo "cards_red: Existing data is ${AGE_MIN}m old. Will fetch."
             fi
+          else
+            echo "cards_red: No existing file. Will fetch."
           fi
 
           FINAL_URL="${BASE_URL}&season=${SEASON}&league=${LEAGUE_ID}"
-          echo "Fetching red cards leaderboard: $FINAL_URL"
+          echo "cards_red: Fetching $FINAL_URL"
 
           CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          echo "code=$CODE" >> "$GITHUB_OUTPUT"
+          echo "cards_red: http code=$CODE" >> "$GITHUB_OUTPUT"
           if [[ "$CODE" != "200" ]]; then
+            echo "cards_red: Non-200 ($CODE). Skipping write."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
           if [[ "$OK" != "true" ]]; then
+            echo "cards_red: Unexpected payload (.response not array). Skipping write."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -438,9 +541,11 @@ jobs:
           jq --arg ts "$TS" '{cards_red: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
           if ! cmp -s "$NORM" "$OUT"; then
+            echo "cards_red: Content changed. Updating $OUT."
             mv "$NORM" "$OUT"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
+            echo "cards_red: No content change. Skipping commit."
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
 
@@ -461,7 +566,16 @@ jobs:
           OUT="data/football/premier-league/fixtures/fixtures_season.json"
           TMPBODY="$(mktemp)"
 
-          [[ -z "${BASE_URL:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+          if [[ -z "${BASE_URL:-}" ]]; then
+            echo "fixtures_season: URL_FIXTURES is not set. Skipping."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [[ -z "${RAPIDAPI_KEY:-}" || -z "${RAPIDAPI_HOST:-}" ]]; then
+            echo "fixtures_season: RAPIDAPI credentials missing. Skipping."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
 
           # Reuse if recent (720 min = 12h)
           REUSE_MAX_AGE_MIN=720
@@ -470,28 +584,34 @@ jobs:
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
             if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then
-              echo "Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m)"
+              echo "fixtures_season: Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m). No fetch."
               echo "changed=false" >> "$GITHUB_OUTPUT"
               exit 0
+            else
+              echo "fixtures_season: Existing data is ${AGE_MIN}m old. Will fetch."
             fi
+          else
+            echo "fixtures_season: No existing file. Will fetch."
           fi
 
           FINAL_URL="${BASE_URL}&league=${LEAGUE_ID}&season=${SEASON}"
-          echo "Fetching full season fixtures: $FINAL_URL"
+          echo "fixtures_season: Fetching $FINAL_URL"
 
           CODE=$(curl -sS --connect-timeout 5 --max-time 35 -w "%{http_code}" -o "$TMPBODY" \
             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          echo "code=$CODE" >> "$GITHUB_OUTPUT"
+          echo "fixtures_season: http code=$CODE" >> "$GITHUB_OUTPUT"
           if [[ "$CODE" != "200" ]]; then
+            echo "fixtures_season: Non-200 ($CODE). Skipping write."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
           if [[ "$OK" != "true" ]]; then
+            echo "fixtures_season: Unexpected payload (.response not array). Skipping write."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -501,9 +621,11 @@ jobs:
           jq --arg ts "$TS" '{matches: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
           if ! cmp -s "$NORM" "$OUT"; then
+            echo "fixtures_season: Content changed. Updating $OUT."
             mv "$NORM" "$OUT"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
+            echo "fixtures_season: No content change. Skipping commit."
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
 
@@ -521,15 +643,42 @@ jobs:
 
           CHANGED=false
 
+          if [[ -z "${EVENTS_BASE_URL:-}" ]]; then
+            echo "match_events: URL_EVENTS is not set. Skipping all event fetches."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [[ -z "${RAPIDAPI_KEY:-}" || -z "${RAPIDAPI_HOST:-}" ]]; then
+            echo "match_events: RAPIDAPI credentials missing. Skipping all event fetches."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           # Collect candidate fixture IDs from week + season files
           declare -a SOURCES=(
             "data/football/premier-league/fixtures/fixtures_week.json"
             "data/football/premier-league/fixtures/fixtures_season.json"
           )
 
+          FOUND_SOURCE=false
+          for SRC in "${SOURCES[@]}"; do
+            if [[ -f "$SRC" ]]; then
+              echo "match_events: Found source $SRC"
+              FOUND_SOURCE=true
+            else
+              echo "match_events: Source missing $SRC (ok if not yet generated)"
+            fi
+          done
+          if [[ "$FOUND_SOURCE" == "false" ]]; then
+            echo "match_events: No source fixtures files present. Skipping."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           # Build a unique list of finished fixture IDs in the last 7 days (or any window you prefer)
           NOW=$(date -u +%s)
           WINDOW_SEC=$((7*24*3600)) # 7 days
+          echo "match_events: Considering finished fixtures within the last $((WINDOW_SEC/86400)) days."
 
           TMPFIX="$(mktemp)"
           > "$TMPFIX"
@@ -541,35 +690,50 @@ jobs:
             fi
           done | sort -u > "$TMPFIX"
 
+          if [[ ! -s "$TMPFIX" ]]; then
+            echo "match_events: No fixtures found in sources. Skipping."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          PROCESSED=0
+          ELIGIBLE=0
+
           while IFS=$'\t' read -r FID FDATE STATUS; do
             [[ -z "$FID" ]] && continue
+
             # Only finished statuses
             case "$STATUS" in
               FT|AET|PEN) ;;
-              *) continue ;;
+              *)
+                echo "match_events: Fixture $FID skipped (status=$STATUS not finished)."
+                continue
+                ;;
             esac
 
             # Filter by recent window if date present
             INCLUDE=1
             if [[ -n "$FDATE" ]]; then
-              # Normalize ISO8601 to epoch seconds via date -d; fallback include if parsing fails
               FTS=$(date -u -d "$FDATE" +%s 2>/dev/null || echo "0")
               if [[ "$FTS" != "0" ]]; then
                 AGE=$(( NOW - FTS ))
                 if (( AGE > WINDOW_SEC )); then
                   INCLUDE=0
+                  echo "match_events: Fixture $FID skipped (older than window)."
                 fi
+              else
+                echo "match_events: Fixture $FID date parse failed; including by default."
               fi
             fi
             [[ "$INCLUDE" -eq 0 ]] && continue
 
+            ELIGIBLE=$((ELIGIBLE+1))
+
             OUT="data/football/premier-league/matches/${FID}.json"
             TMPEVT="$(mktemp)"
 
-            [[ -z "${EVENTS_BASE_URL:-}" ]] && continue
-
             FINAL_URL="${EVENTS_BASE_URL}${FID}"
-            echo "Fetching events for fixture=${FID}: ${FINAL_URL}"
+            echo "match_events: Fetching events for fixture=$FID: $FINAL_URL"
 
             CODE=$(curl -sS --connect-timeout 5 --max-time 20 -w "%{http_code}" -o "$TMPEVT" \
               -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
@@ -577,13 +741,13 @@ jobs:
               "$FINAL_URL" || true)
 
             if [[ "$CODE" != "200" ]]; then
-              echo "Skip fixture ${FID}: HTTP $CODE"
+              echo "match_events: Fixture $FID skipped (HTTP $CODE)."
               continue
             fi
 
             OK=$(jq -r '(.response | type) == "array"' "$TMPEVT" 2>/dev/null || echo "false")
             if [[ "$OK" != "true" ]]; then
-              echo "Skip fixture ${FID}: unexpected payload"
+              echo "match_events: Fixture $FID skipped (unexpected payload, .response not array)."
               continue
             fi
 
@@ -595,8 +759,15 @@ jobs:
               mkdir -p "$(dirname "$OUT")"
               mv "$NORM" "$OUT"
               CHANGED=true
+              PROCESSED=$((PROCESSED+1))
+              echo "match_events: Wrote/updated $OUT"
+            else
+              echo "match_events: No change for $OUT"
             fi
           done < "$TMPFIX"
+
+          echo "match_events: Eligible finished fixtures in window: $ELIGIBLE"
+          echo "match_events: Files written/updated: $PROCESSED"
 
           if [[ "$CHANGED" == "true" ]]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
