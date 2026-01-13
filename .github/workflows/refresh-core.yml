@@ -23,7 +23,7 @@ on:
         default: false
         required: false
       max_events_per_run:
-        description: "Max finished fixtures to process for events this run (cap)"
+        description: "Max finished/live fixtures to process for events this run (cap)"
         type: number
         default: 20
         required: false
@@ -31,6 +31,11 @@ on:
         description: "Sleep between event requests (milliseconds)"
         type: number
         default: 200
+        required: false
+      events_window_days:
+        description: "Days window for events (finished/live). Use 7 for schedules, 30 for manual if needed."
+        type: number
+        default: 7
         required: false
   schedule:
     # Standings/scorers/cards/assists every 3 hours
@@ -50,12 +55,15 @@ jobs:
       FORCE_EVENTS_EVEN_ON_ERRORS: ${{ inputs.force_events_even_on_errors && 'true' || 'false' }}
       MAX_EVENTS_PER_RUN: ${{ inputs.max_events_per_run != '' && inputs.max_events_per_run || 20 }}
       PER_REQUEST_SLEEP_MS: ${{ inputs.per_request_sleep_ms != '' && inputs.per_request_sleep_ms || 200 }}
+      EVENTS_WINDOW_DAYS: ${{ inputs.events_window_days != '' && inputs.events_window_days || 7 }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq
+      - name: Install jq and perl
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq perl
 
       - name: Ensure folders
         run: |
@@ -73,6 +81,7 @@ jobs:
           echo "FORCE_EVENTS_EVEN_ON_ERRORS=${FORCE_EVENTS_EVEN_ON_ERRORS}"
           echo "MAX_EVENTS_PER_RUN=${MAX_EVENTS_PER_RUN}"
           echo "PER_REQUEST_SLEEP_MS=${PER_REQUEST_SLEEP_MS}"
+          echo "EVENTS_WINDOW_DAYS=${EVENTS_WINDOW_DAYS}"
           ls -la .github/workflows || true
           find data -maxdepth 3 -type d -print || true
 
@@ -99,6 +108,7 @@ jobs:
           fi
 
       # ---------------- FIXTURES (next 14 days) ----------------
+      # If you truly don't need upcoming fixtures at all, you can comment this step out entirely.
       - id: fixtures
         name: Refresh upcoming fixtures (API-Football)
         if: github.event.schedule == '0 7 * * *' || github.event.schedule == '0 23 * * *' || github.event_name == 'workflow_dispatch'
@@ -703,7 +713,7 @@ jobs:
             fi
           fi
 
-      # ---------------- MATCH EVENTS (cards per fixture) ----------------
+      # ---------------- MATCH EVENTS (finished + live only) ----------------
       - id: match_events
         name: Refresh match events (API-Football)
         if: steps.post_window.outputs.trigger == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.event.schedule, '5 ')
@@ -749,11 +759,8 @@ jobs:
           fi
 
           NOW=$(date -u +%s)
-          WINDOW_SEC=$((7*24*3600))
-          if [[ "${FORCE_REFRESH}" == "true" ]]; then
-            WINDOW_SEC=$((30*24*3600))
-            echo "match_events: FORCE_REFRESH=true, expanding window to $((WINDOW_SEC/86400)) days."
-          fi
+          WINDOW_SEC=$((EVENTS_WINDOW_DAYS*24*3600))
+          echo "match_events: Considering finished/live fixtures within the last ${EVENTS_WINDOW_DAYS} days."
 
           TMPFIX="$(mktemp)"
           > "$TMPFIX"
@@ -770,42 +777,57 @@ jobs:
             exit 0
           fi
 
-          # Filter eligible finished fixtures, then sort by date desc, then cap to MAX_EVENTS_PER_RUN
+          # Finished + live statuses
+          is_allowed_status() {
+            case "$1" in
+              FT|AET|PEN|1H|HT|2H|ET|BT|LIVE) return 0 ;;
+              *) return 1 ;;
+            esac
+          }
+
           TMP_ELIG="$(mktemp)"
           > "$TMP_ELIG"
 
           while IFS=$'\t' read -r FID FDATE STATUS; do
             [[ -z "$FID" ]] && continue
-            case "$STATUS" in
-              FT|AET|PEN) ;;
-              *) continue ;;
-            esac
-            INCLUDE=1
+            if ! is_allowed_status "$STATUS"; then
+              continue
+            fi
+            FTS=0
             if [[ -n "$FDATE" ]]; then
               FTS=$(date -u -d "$FDATE" +%s 2>/dev/null || echo "0")
-              if [[ "$FTS" != "0" ]]; then
-                AGE=$(( NOW - FTS ))
-                if (( AGE > WINDOW_SEC )); then
-                  INCLUDE=0
-                fi
+            fi
+            if (( FTS > 0 )); then
+              AGE=$(( NOW - FTS ))
+              if (( AGE > WINDOW_SEC )); then
+                continue
               fi
             fi
-            [[ "$INCLUDE" -eq 0 ]] && continue
             echo -e "${FTS}\t${FID}\t${FDATE}\t${STATUS}" >> "$TMP_ELIG"
           done < "$TMPFIX"
 
           if [[ ! -s "$TMP_ELIG" ]]; then
-            echo "match_events: No eligible finished fixtures within window. Skipping."
+            echo "match_events: No eligible finished/live fixtures within window. Skipping."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          # Sort by epoch desc (newest first), cap to MAX_EVENTS_PER_RUN
           TMP_BATCH="$(mktemp)"
           sort -nr "$TMP_ELIG" | head -n "${MAX_EVENTS_PER_RUN}" > "$TMP_BATCH"
-
           COUNT=$(wc -l < "$TMP_BATCH" | tr -d ' ')
           echo "match_events: Will process up to ${COUNT} fixtures (cap=${MAX_EVENTS_PER_RUN})."
+
+          # Helper: millisecond sleep using perl; fallback to seconds if perl not available
+          ms_sleep() {
+            local ms="$1"
+            if command -v perl >/dev/null 2>&1; then
+              perl -e "select(undef, undef, undef, ${ms}/1000.0);"
+            else
+              # Fallback: round up to nearest second
+              local sec=$(( (ms + 999) / 1000 ))
+              sleep "${sec}"
+            fi
+          }
 
           PROCESSED=0
           while IFS=$'\t' read -r FTS FID FDATE STATUS; do
@@ -813,14 +835,11 @@ jobs:
             TMPEVT="$(mktemp)"
             FINAL_URL="${EVENTS_BASE_URL}${FID}"
 
-            echo "match_events: Fetching events for fixture=$FID: $FINAL_URL"
+            echo "match_events: Fetching events for fixture=$FID (status=$STATUS): $FINAL_URL"
 
-            # Sleep between requests to pace calls
+            # Pace between requests
             if [[ "${PER_REQUEST_SLEEP_MS}" -gt 0 ]]; then
-              python3 - <<PY
-import time
-time.sleep(${PER_REQUEST_SLEEP_MS}/1000.0)
-PY
+              ms_sleep "${PER_REQUEST_SLEEP_MS}"
             fi
 
             # Try up to 3 attempts on 429 with exponential backoff 2s, 4s
@@ -910,7 +929,7 @@ PY
           git add data/football/premier-league/matches/*.json || true
           git add data/football/premier-league/live/*.json || true
 
-          git commit -m "Update core feeds (fixtures/standings/scorers/assists/cards/season/events with pacing and cap)"
+          git commit -m "Update core feeds (fixtures/standings/scorers/assists/cards/season/events with pacing, cap, and live+finished only)"
           git push
 
 
