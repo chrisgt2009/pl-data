@@ -6,6 +6,17 @@ concurrency:
 
 on:
   workflow_dispatch:
+    inputs:
+      force_refresh:
+        description: "Bypass reuse windows and broaden event window (manual runs)"
+        type: boolean
+        default: false
+        required: false
+      force_write_on_dispatch:
+        description: "Force write outputs even if content unchanged (manual runs)"
+        type: boolean
+        default: false
+        required: false
   schedule:
     # Standings/scorers/cards/assists every 3 hours
     - cron: "5 */3 * * *"
@@ -19,10 +30,9 @@ jobs:
   core:
     runs-on: ubuntu-latest
     env:
-      # True when run via Actions > Run workflow (manual dispatch)
-      FORCE_REFRESH: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
-      # If true, on manual dispatch we also force-write outputs (guaranteed commit)
-      FORCE_WRITE_ON_DISPATCH: true
+      # Values from inputs (only present on workflow_dispatch). Fallback to 'false'.
+      FORCE_REFRESH: ${{ inputs.force_refresh && 'true' || 'false' }}
+      FORCE_WRITE_ON_DISPATCH: ${{ inputs.force_write_on_dispatch && 'true' || 'false' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
