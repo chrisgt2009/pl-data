@@ -532,76 +532,76 @@ jobs:
           WINDOW_SEC=$((7*24*3600)) # 7 days
 
           TMPFIX="$(mktemp)"
-          > \"$TMPFIX\"
+          > "$TMPFIX"
 
-          for SRC in \"${SOURCES[@]}\"; do
-            if [[ -f \"$SRC\" ]]; then
+          for SRC in "${SOURCES[@]}"; do
+            if [[ -f "$SRC" ]]; then
               # Extract fixture id + date + status.short
-              jq -r '.matches[]? | [.fixture.id, .fixture.date, .fixture.status.short] | @tsv' \"$SRC\" 2>/dev/null || true
+              jq -r '.matches[]? | [.fixture.id, .fixture.date, .fixture.status.short] | @tsv' "$SRC" 2>/dev/null || true
             fi
-          done | sort -u > \"$TMPFIX\"
+          done | sort -u > "$TMPFIX"
 
-          while IFS=$'\\t' read -r FID FDATE STATUS; do
-            [[ -z \"$FID\" ]] && continue
+          while IFS=$'\t' read -r FID FDATE STATUS; do
+            [[ -z "$FID" ]] && continue
             # Only finished statuses
-            case \"$STATUS\" in
+            case "$STATUS" in
               FT|AET|PEN) ;;
               *) continue ;;
             esac
 
             # Filter by recent window if date present
             INCLUDE=1
-            if [[ -n \"$FDATE\" ]]; then
+            if [[ -n "$FDATE" ]]; then
               # Normalize ISO8601 to epoch seconds via date -d; fallback include if parsing fails
-              FTS=$(date -u -d \"$FDATE\" +%s 2>/dev/null || echo \"0\")
-              if [[ \"$FTS\" != \"0\" ]]; then
+              FTS=$(date -u -d "$FDATE" +%s 2>/dev/null || echo "0")
+              if [[ "$FTS" != "0" ]]; then
                 AGE=$(( NOW - FTS ))
                 if (( AGE > WINDOW_SEC )); then
                   INCLUDE=0
                 fi
               fi
             fi
-            [[ \"$INCLUDE\" -eq 0 ]] && continue
+            [[ "$INCLUDE" -eq 0 ]] && continue
 
-            OUT=\"data/football/premier-league/matches/${FID}.json\"
-            TMPEVT=\"$(mktemp)\"
+            OUT="data/football/premier-league/matches/${FID}.json"
+            TMPEVT="$(mktemp)"
 
-            [[ -z \"${EVENTS_BASE_URL:-}\" ]] && continue
+            [[ -z "${EVENTS_BASE_URL:-}" ]] && continue
 
-            FINAL_URL=\"${EVENTS_BASE_URL}${FID}\"
-            echo \"Fetching events for fixture=${FID}: ${FINAL_URL}\"
+            FINAL_URL="${EVENTS_BASE_URL}${FID}"
+            echo "Fetching events for fixture=${FID}: ${FINAL_URL}"
 
-            CODE=$(curl -sS --connect-timeout 5 --max-time 20 -w \"%{http_code}\" -o \"$TMPEVT\" \
-              -H \"x-rapidapi-key: ${RAPIDAPI_KEY}\" \
-              -H \"x-rapidapi-host: ${RAPIDAPI_HOST}\" \
-              \"$FINAL_URL\" || true)
+            CODE=$(curl -sS --connect-timeout 5 --max-time 20 -w "%{http_code}" -o "$TMPEVT" \
+              -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
+              -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+              "$FINAL_URL" || true)
 
-            if [[ \"$CODE\" != \"200\" ]]; then
-              echo \"Skip fixture ${FID}: HTTP $CODE\"
+            if [[ "$CODE" != "200" ]]; then
+              echo "Skip fixture ${FID}: HTTP $CODE"
               continue
             fi
 
-            OK=$(jq -r '(.response | type) == \"array\"' \"$TMPEVT\" 2>/dev/null || echo \"false\")
-            if [[ \"$OK\" != \"true\" ]]; then
-              echo \"Skip fixture ${FID}: unexpected payload\"
+            OK=$(jq -r '(.response | type) == "array"' "$TMPEVT" 2>/dev/null || echo "false")
+            if [[ "$OK" != "true" ]]; then
+              echo "Skip fixture ${FID}: unexpected payload"
               continue
             fi
 
             TS=$(date -u +%FT%TZ)
-            NORM=\"$(mktemp)\"
-            jq --arg ts \"$TS\" '{events: .response, meta: { lastUpdatedUTC: $ts }}' \"$TMPEVT\" > \"$NORM\"
+            NORM="$(mktemp)"
+            jq --arg ts "$TS" '{events: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPEVT" > "$NORM"
 
-            if [[ ! -f \"$OUT\" ]] || ! cmp -s \"$NORM\" \"$OUT\"; then
-              mkdir -p \"$(dirname \"$OUT\")\"
-              mv \"$NORM\" \"$OUT\"
+            if [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then
+              mkdir -p "$(dirname "$OUT")"
+              mv "$NORM" "$OUT"
               CHANGED=true
             fi
-          done < \"$TMPFIX\"
+          done < "$TMPFIX"
 
-          if [[ \"$CHANGED\" == \"true\" ]]; then
-            echo \"changed=true\" >> \"$GITHUB_OUTPUT\"
+          if [[ "$CHANGED" == "true" ]]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           else
-            echo \"changed=false\" >> \"$GITHUB_OUTPUT\"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Clear post-window flag
@@ -632,9 +632,6 @@ jobs:
 
           git commit -m "Update core feeds (fixtures/standings/scorers/assists/cards/teams/venues/rounds/events)"
           git push
-
-
-
 
 
 # name: Refresh Core (PL)
