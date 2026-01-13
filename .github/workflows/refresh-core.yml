@@ -20,7 +20,17 @@ on:
       force_events_even_on_errors:
         description: "Write placeholder per-match files on 404/429 for visibility (manual runs)"
         type: boolean
-        default: true
+        default: false
+        required: false
+      max_events_per_run:
+        description: "Max finished fixtures to process for events this run (cap)"
+        type: number
+        default: 20
+        required: false
+      per_request_sleep_ms:
+        description: "Sleep between event requests (milliseconds)"
+        type: number
+        default: 200
         required: false
   schedule:
     # Standings/scorers/cards/assists every 3 hours
@@ -38,6 +48,8 @@ jobs:
       FORCE_REFRESH: ${{ inputs.force_refresh && 'true' || 'false' }}
       FORCE_WRITE_ON_DISPATCH: ${{ inputs.force_write_on_dispatch && 'true' || 'false' }}
       FORCE_EVENTS_EVEN_ON_ERRORS: ${{ inputs.force_events_even_on_errors && 'true' || 'false' }}
+      MAX_EVENTS_PER_RUN: ${{ inputs.max_events_per_run != '' && inputs.max_events_per_run || 20 }}
+      PER_REQUEST_SLEEP_MS: ${{ inputs.per_request_sleep_ms != '' && inputs.per_request_sleep_ms || 200 }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -59,6 +71,8 @@ jobs:
           echo "FORCE_REFRESH=${FORCE_REFRESH}"
           echo "FORCE_WRITE_ON_DISPATCH=${FORCE_WRITE_ON_DISPATCH}"
           echo "FORCE_EVENTS_EVEN_ON_ERRORS=${FORCE_EVENTS_EVEN_ON_ERRORS}"
+          echo "MAX_EVENTS_PER_RUN=${MAX_EVENTS_PER_RUN}"
+          echo "PER_REQUEST_SLEEP_MS=${PER_REQUEST_SLEEP_MS}"
           ls -la .github/workflows || true
           find data -maxdepth 3 -type d -print || true
 
@@ -740,7 +754,6 @@ jobs:
             WINDOW_SEC=$((30*24*3600))
             echo "match_events: FORCE_REFRESH=true, expanding window to $((WINDOW_SEC/86400)) days."
           fi
-          echo "match_events: Considering finished fixtures within the last $((WINDOW_SEC/86400)) days."
 
           TMPFIX="$(mktemp)"
           > "$TMPFIX"
@@ -757,20 +770,16 @@ jobs:
             exit 0
           fi
 
-          PROCESSED=0
-          ELIGIBLE=0
+          # Filter eligible finished fixtures, then sort by date desc, then cap to MAX_EVENTS_PER_RUN
+          TMP_ELIG="$(mktemp)"
+          > "$TMP_ELIG"
 
           while IFS=$'\t' read -r FID FDATE STATUS; do
             [[ -z "$FID" ]] && continue
-
             case "$STATUS" in
               FT|AET|PEN) ;;
-              *)
-                echo "match_events: Fixture $FID skipped (status=$STATUS not finished)."
-                continue
-                ;;
+              *) continue ;;
             esac
-
             INCLUDE=1
             if [[ -n "$FDATE" ]]; then
               FTS=$(date -u -d "$FDATE" +%s 2>/dev/null || echo "0")
@@ -778,36 +787,59 @@ jobs:
                 AGE=$(( NOW - FTS ))
                 if (( AGE > WINDOW_SEC )); then
                   INCLUDE=0
-                  echo "match_events: Fixture $FID skipped (older than window)."
                 fi
-              else
-                echo "match_events: Fixture $FID date parse failed; including by default."
               fi
             fi
             [[ "$INCLUDE" -eq 0 ]] && continue
+            echo -e "${FTS}\t${FID}\t${FDATE}\t${STATUS}" >> "$TMP_ELIG"
+          done < "$TMPFIX"
 
-            ELIGIBLE=$((ELIGIBLE+1))
+          if [[ ! -s "$TMP_ELIG" ]]; then
+            echo "match_events: No eligible finished fixtures within window. Skipping."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
 
+          # Sort by epoch desc (newest first), cap to MAX_EVENTS_PER_RUN
+          TMP_BATCH="$(mktemp)"
+          sort -nr "$TMP_ELIG" | head -n "${MAX_EVENTS_PER_RUN}" > "$TMP_BATCH"
+
+          COUNT=$(wc -l < "$TMP_BATCH" | tr -d ' ')
+          echo "match_events: Will process up to ${COUNT} fixtures (cap=${MAX_EVENTS_PER_RUN})."
+
+          PROCESSED=0
+          while IFS=$'\t' read -r FTS FID FDATE STATUS; do
             OUT="data/football/premier-league/matches/${FID}.json"
             TMPEVT="$(mktemp)"
-
             FINAL_URL="${EVENTS_BASE_URL}${FID}"
+
             echo "match_events: Fetching events for fixture=$FID: $FINAL_URL"
 
-            # Try once; if 429, sleep briefly and try once more
-            CODE=$(curl -sS --connect-timeout 5 --max-time 20 -w "%{http_code}" -o "$TMPEVT" \
-              -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
-              -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
-              "$FINAL_URL" || true)
+            # Sleep between requests to pace calls
+            if [[ "${PER_REQUEST_SLEEP_MS}" -gt 0 ]]; then
+              python3 - <<PY
+import time
+time.sleep(${PER_REQUEST_SLEEP_MS}/1000.0)
+PY
+            fi
 
-            if [[ "$CODE" == "429" ]]; then
-              echo "match_events: Fixture $FID hit rate limit (429). Backing off 2s and retrying once."
-              sleep 2
-              CODE=$(curl -sS --connect-timeout 5 --max-time 20 -w "%{http_code}" -o "$TMPEVT" \
+            # Try up to 3 attempts on 429 with exponential backoff 2s, 4s
+            ATTEMPT=1
+            CODE=""
+            while (( ATTEMPT <= 3 )); do
+              CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPEVT" \
                 -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
                 -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
                 "$FINAL_URL" || true)
-            fi
+              if [[ "$CODE" == "429" && "$ATTEMPT" -lt 3 ]]; then
+                BACKOFF=$((2**ATTEMPT))
+                echo "match_events: 429 for $FID (attempt ${ATTEMPT}). Backing off ${BACKOFF}s."
+                sleep "${BACKOFF}"
+                ATTEMPT=$((ATTEMPT+1))
+                continue
+              fi
+              break
+            done
 
             if [[ "$CODE" != "200" ]]; then
               echo "match_events: Fixture $FID skipped (HTTP $CODE)."
@@ -857,9 +889,8 @@ jobs:
                 echo "match_events: No change for $OUT"
               fi
             fi
-          done < "$TMPFIX"
+          done < "$TMP_BATCH"
 
-          echo "match_events: Eligible finished fixtures in window: $ELIGIBLE"
           echo "match_events: Files written/updated: $PROCESSED"
 
           if [[ "$CHANGED" == "true" ]]; then
@@ -879,7 +910,7 @@ jobs:
           git add data/football/premier-league/matches/*.json || true
           git add data/football/premier-league/live/*.json || true
 
-          git commit -m "Update core feeds (fixtures/standings/scorers/assists/cards/season/events)"
+          git commit -m "Update core feeds (fixtures/standings/scorers/assists/cards/season/events with pacing and cap)"
           git push
 
 
