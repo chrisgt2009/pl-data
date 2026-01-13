@@ -121,23 +121,13 @@ jobs:
           > "$FILTERED"
 
           while IFS=$'\t' read -r fid fdate fstatus; do
-            # If date is ISO8601, convert to seconds since epoch
-            if [[ -n "$fdate" ]]; then
-              ts=$(date -u -d "$fdate" +%s 2>/dev/null || echo "")
-            else
-              ts=""
-            fi
-
-            if [[ -z "$ts" ]]; then
-              continue
-            fi
+            # Convert ISO8601 to epoch seconds
+            ts=$(date -u -d "$fdate" +%s 2>/dev/null || echo "")
+            [[ -z "$ts" ]] && continue
 
             age=$(( NOW - ts ))
-            if (( age < 0 || age > WINDOW_SEC )); then
-              continue
-            fi
+            (( age < 0 || age > WINDOW_SEC )) && continue
 
-            # Keep finished or in-progress statuses
             case "$fstatus" in
               FT|AET|PEN|NS|1H|HT|2H|ET|BT|P|INT|LIVE|SUSP|INTERRUPTED|IN_PLAY)
                 echo -e "${fid}\t${fstatus}" >> "$FILTERED"
@@ -183,6 +173,7 @@ jobs:
             url="${EVENTS_BASE_URL}${fid}"
             echo "match_events: Fetching events for fixture=${fid} (status=${fstatus}): ${url}"
 
+            # Retry with exponential backoff on 429 (two retries)
             attempt=0
             max_attempts=3
             backoff=2
@@ -217,12 +208,14 @@ jobs:
               continue
             fi
 
+            # Parse response; if events exist, write to a deterministic path
             events_count=$(jq '.response | length' "$body_file" 2>/dev/null || echo "0")
             if [[ "$events_count" -gt 0 ]]; then
               outdir="data/football/premier-league/events"
               mkdir -p "$outdir"
               outfile="${outdir}/events_${fid}.json"
 
+              # Pretty print and stable format
               jq '.' "$body_file" > "$outfile"
               echo "match_events: Wrote ${outfile} (${events_count} events)."
               CHANGED=true
@@ -232,11 +225,9 @@ jobs:
 
             rm -f "$body_file"
 
+            # Throttle between requests (one-liner to avoid heredoc YAML issues)
             if [[ "$per_sleep_ms" =~ ^[0-9]+$ ]] && (( per_sleep_ms > 0 )); then
-              python3 - <<PY
-import time
-time.sleep(${per_sleep_ms}/1000.0)
-PY
+              python3 -c "import time; time.sleep(${per_sleep_ms}/1000.0)"
             fi
           done < "$CFILE"
 
