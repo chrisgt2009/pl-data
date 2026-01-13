@@ -19,13 +19,10 @@ on:
     - cron: "12 * * * *" # run hourly at :12
 
 env:
-  # Defaults; can be overridden by repository Variables or workflow_dispatch inputs
   EVENTS_WINDOW_DAYS: ${{ inputs.window_days || vars.EVENTS_WINDOW_DAYS || '7' }}
   MAX_EVENTS_PER_RUN: ${{ inputs.max_per_run || vars.MAX_EVENTS_PER_RUN || '20' }}
   PER_REQUEST_SLEEP_MS: ${{ inputs.per_request_sleep_ms || vars.PER_REQUEST_SLEEP_MS || '200' }}
   EVENTS_BASE_URL: ${{ vars.EVENTS_BASE_URL || 'https://api-football-v1.p.rapidapi.com/v3/fixtures/events?fixture=' }}
-
-  # Paths to source fixtures JSON
   FIXTURES_WEEK: data/football/premier-league/fixtures/fixtures_week.json
   FIXTURES_SEASON: data/football/premier-league/fixtures/fixtures_season.json
 
@@ -35,7 +32,6 @@ permissions:
 jobs:
   fetch-events:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -66,11 +62,7 @@ jobs:
             exit 0
           fi
 
-          declare -a SOURCES=(
-            "$FIXTURES_WEEK"
-            "$FIXTURES_SEASON"
-          )
-
+          declare -a SOURCES=("$FIXTURES_WEEK" "$FIXTURES_SEASON")
           FOUND_SOURCE=false
           for SRC in "${SOURCES[@]}"; do
             if [[ -f "$SRC" ]]; then
@@ -106,7 +98,6 @@ jobs:
           extract() {
             local file="$1"
             if [[ -f "$file" ]]; then
-              # TSV: id, date, status.short
               jq -r '.matches[]? | [.fixture.id, .fixture.date, .fixture.status.short] | @tsv' "$file" 2>/dev/null || true
             fi
           }
@@ -116,12 +107,10 @@ jobs:
 
           sort -u "$TMPFIX" -o "$TMPFIX"
 
-          # Filter by time window and status (FT or live-ish)
           FILTERED="$(mktemp)"
           > "$FILTERED"
 
           while IFS=$'\t' read -r fid fdate fstatus; do
-            # Convert ISO8601 to epoch seconds
             ts=$(date -u -d "$fdate" +%s 2>/dev/null || echo "")
             [[ -z "$ts" ]] && continue
 
@@ -138,7 +127,6 @@ jobs:
             esac
           done < "$TMPFIX"
 
-          # Cap results
           CAP=${MAX_EVENTS_PER_RUN}
           COUNT=$(wc -l < "$FILTERED" | tr -d " ")
           if (( COUNT > CAP )); then
@@ -173,7 +161,6 @@ jobs:
             url="${EVENTS_BASE_URL}${fid}"
             echo "match_events: Fetching events for fixture=${fid} (status=${fstatus}): ${url}"
 
-            # Retry with exponential backoff on 429 (two retries)
             attempt=0
             max_attempts=3
             backoff=2
@@ -208,14 +195,12 @@ jobs:
               continue
             fi
 
-            # Parse response; if events exist, write to a deterministic path
             events_count=$(jq '.response | length' "$body_file" 2>/dev/null || echo "0")
             if [[ "$events_count" -gt 0 ]]; then
               outdir="data/football/premier-league/events"
               mkdir -p "$outdir"
               outfile="${outdir}/events_${fid}.json"
 
-              # Pretty print and stable format
               jq '.' "$body_file" > "$outfile"
               echo "match_events: Wrote ${outfile} (${events_count} events)."
               CHANGED=true
@@ -225,7 +210,6 @@ jobs:
 
             rm -f "$body_file"
 
-            # Throttle between requests (one-liner to avoid heredoc YAML issues)
             if [[ "$per_sleep_ms" =~ ^[0-9]+$ ]] && (( per_sleep_ms > 0 )); then
               python3 -c "import time; time.sleep(${per_sleep_ms}/1000.0)"
             fi
@@ -245,7 +229,8 @@ jobs:
           if ! git diff --cached --quiet; then
             git commit -m "chore(events): update match events [ci skip]"
             git push
-            echo "match_events: Files written/updated: $(git show --stat --oneline -1)"
+            echo "match_events: Files written/updated:"
+            git show --stat --oneline -1 || true
           else
             echo "match_events: No file changes to commit."
           fi
@@ -253,7 +238,6 @@ jobs:
       - name: No changes
         if: steps.fetch.outputs.changed != 'true'
         run: echo "match_events: Files written/updated: 0"
-
 
 
 
