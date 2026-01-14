@@ -1,0 +1,337 @@
+{
+  "data": [
+    {
+      "time": {
+        "elapsed": 14,
+        "extra": null
+      },
+      "team": {
+        "id": 49,
+        "name": "Chelsea",
+        "logo": "https://media.api-sports.io/football/teams/49.png"
+      },
+      "player": {
+        "id": 116117,
+        "name": "M. Caicedo"
+      },
+      "assist": {
+        "id": 161907,
+        "name": "M. Gusto"
+      },
+      "type": "Goal",
+      "detail": "Normal Goal",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 34,
+        "extra": null
+      },
+      "team": {
+        "id": 40,
+        "name": "Liverpool",
+        "logo": "https://media.api-sports.io/football/teams/40.png"
+      },
+      "player": {
+        "id": 180317,
+        "name": "Conor Bradley"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Card",
+      "detail": "Yellow Card",
+      "comments": "Foul"
+    },
+    {
+      "time": {
+        "elapsed": 46,
+        "extra": null
+      },
+      "team": {
+        "id": 40,
+        "name": "Liverpool",
+        "logo": "https://media.api-sports.io/football/teams/40.png"
+      },
+      "player": {
+        "id": 180317,
+        "name": "C. Bradley"
+      },
+      "assist": {
+        "id": 203224,
+        "name": "F. Wirtz"
+      },
+      "type": "subst",
+      "detail": "Substitution 1",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 55,
+        "extra": null
+      },
+      "team": {
+        "id": 49,
+        "name": "Chelsea",
+        "logo": "https://media.api-sports.io/football/teams/49.png"
+      },
+      "player": {
+        "id": 95,
+        "name": "B. Badiashile"
+      },
+      "assist": {
+        "id": 282125,
+        "name": "R. Lavia"
+      },
+      "type": "subst",
+      "detail": "Substitution 1",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 55,
+        "extra": null
+      },
+      "team": {
+        "id": 40,
+        "name": "Liverpool",
+        "logo": "https://media.api-sports.io/football/teams/40.png"
+      },
+      "player": {
+        "id": 206254,
+        "name": "M. Kerkez"
+      },
+      "assist": {
+        "id": 289,
+        "name": "A. Robertson"
+      },
+      "type": "subst",
+      "detail": "Substitution 2",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 56,
+        "extra": null
+      },
+      "team": {
+        "id": 40,
+        "name": "Liverpool",
+        "logo": "https://media.api-sports.io/football/teams/40.png"
+      },
+      "player": {
+        "id": 1145,
+        "name": "I. Konate"
+      },
+      "assist": {
+        "id": 293,
+        "name": "C. Jones"
+      },
+      "type": "subst",
+      "detail": "Substitution 3",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 63,
+        "extra": null
+      },
+      "team": {
+        "id": 40,
+        "name": "Liverpool",
+        "logo": "https://media.api-sports.io/football/teams/40.png"
+      },
+      "player": {
+        "id": 247,
+        "name": "C. Gakpo"
+      },
+      "assist": {
+        "id": 2864,
+        "name": "A. Isak"
+      },
+      "type": "Goal",
+      "detail": "Normal Goal",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 68,
+        "extra": null
+      },
+      "team": {
+        "id": 49,
+        "name": "Chelsea",
+        "logo": "https://media.api-sports.io/football/teams/49.png"
+      },
+      "player": {
+        "id": 366735,
+        "name": "J. Acheampong"
+      },
+      "assist": {
+        "id": 341642,
+        "name": "J. Hato"
+      },
+      "type": "subst",
+      "detail": "Substitution 2",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 74,
+        "extra": null
+      },
+      "team": {
+        "id": 49,
+        "name": "Chelsea",
+        "logo": "https://media.api-sports.io/football/teams/49.png"
+      },
+      "player": {
+        "id": 10329,
+        "name": "Joao Pedro"
+      },
+      "assist": {
+        "id": 392270,
+        "name": "M. Guiu"
+      },
+      "type": "subst",
+      "detail": "Substitution 3",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 74,
+        "extra": null
+      },
+      "team": {
+        "id": 40,
+        "name": "Liverpool",
+        "logo": "https://media.api-sports.io/football/teams/40.png"
+      },
+      "player": {
+        "id": 2864,
+        "name": "A. Isak"
+      },
+      "assist": {
+        "id": 174565,
+        "name": "H. Ekitike"
+      },
+      "type": "subst",
+      "detail": "Substitution 4",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 75,
+        "extra": null
+      },
+      "team": {
+        "id": 49,
+        "name": "Chelsea",
+        "logo": "https://media.api-sports.io/football/teams/49.png"
+      },
+      "player": {
+        "id": 284324,
+        "name": "A. Garnacho"
+      },
+      "assist": {
+        "id": 286894,
+        "name": "J. Gittens"
+      },
+      "type": "subst",
+      "detail": "Substitution 4",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 75,
+        "extra": null
+      },
+      "team": {
+        "id": 49,
+        "name": "Chelsea",
+        "logo": "https://media.api-sports.io/football/teams/49.png"
+      },
+      "player": {
+        "id": 1864,
+        "name": "P. Neto"
+      },
+      "assist": {
+        "id": 425733,
+        "name": "Estêvão"
+      },
+      "type": "subst",
+      "detail": "Substitution 5",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 79,
+        "extra": null
+      },
+      "team": {
+        "id": 40,
+        "name": "Liverpool",
+        "logo": "https://media.api-sports.io/football/teams/40.png"
+      },
+      "player": {
+        "id": 1096,
+        "name": "Dominik Szoboszlai"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Card",
+      "detail": "Yellow Card",
+      "comments": "Foul"
+    },
+    {
+      "time": {
+        "elapsed": 86,
+        "extra": null
+      },
+      "team": {
+        "id": 40,
+        "name": "Liverpool",
+        "logo": "https://media.api-sports.io/football/teams/40.png"
+      },
+      "player": {
+        "id": 6716,
+        "name": "A. Mac Allister"
+      },
+      "assist": {
+        "id": 8500,
+        "name": "W. Endo"
+      },
+      "type": "subst",
+      "detail": "Substitution 5",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 90,
+        "extra": null
+      },
+      "team": {
+        "id": 49,
+        "name": "Chelsea",
+        "logo": "https://media.api-sports.io/football/teams/49.png"
+      },
+      "player": {
+        "id": 425733,
+        "name": "Estevao"
+      },
+      "assist": {
+        "id": 47380,
+        "name": "M. Cucurella"
+      },
+      "type": "Goal",
+      "detail": "Normal Goal",
+      "comments": null
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-14T18:52:49Z"
+  }
+}

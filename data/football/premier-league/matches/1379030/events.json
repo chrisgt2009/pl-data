@@ -1,0 +1,403 @@
+{
+  "data": [
+    {
+      "time": {
+        "elapsed": 17,
+        "extra": null
+      },
+      "team": {
+        "id": 44,
+        "name": "Burnley",
+        "logo": "https://media.api-sports.io/football/teams/44.png"
+      },
+      "player": {
+        "id": 98936,
+        "name": "Lyle Foster"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Card",
+      "detail": "Yellow Card",
+      "comments": "Foul"
+    },
+    {
+      "time": {
+        "elapsed": 25,
+        "extra": null
+      },
+      "team": {
+        "id": 66,
+        "name": "Aston Villa",
+        "logo": "https://media.api-sports.io/football/teams/66.png"
+      },
+      "player": {
+        "id": 249,
+        "name": "D. Malen"
+      },
+      "assist": {
+        "id": 1904,
+        "name": "B. Kamara"
+      },
+      "type": "Goal",
+      "detail": "Normal Goal",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 53,
+        "extra": null
+      },
+      "team": {
+        "id": 66,
+        "name": "Aston Villa",
+        "logo": "https://media.api-sports.io/football/teams/66.png"
+      },
+      "player": {
+        "id": 2724,
+        "name": "Lucas Digne"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Card",
+      "detail": "Yellow Card",
+      "comments": "Foul"
+    },
+    {
+      "time": {
+        "elapsed": 59,
+        "extra": null
+      },
+      "team": {
+        "id": 44,
+        "name": "Burnley",
+        "logo": "https://media.api-sports.io/football/teams/44.png"
+      },
+      "player": {
+        "id": 161621,
+        "name": "L. Tchaouna"
+      },
+      "assist": {
+        "id": 22,
+        "name": "J. Bruun Larsen"
+      },
+      "type": "subst",
+      "detail": "Substitution 1",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 59,
+        "extra": null
+      },
+      "team": {
+        "id": 44,
+        "name": "Burnley",
+        "logo": "https://media.api-sports.io/football/teams/44.png"
+      },
+      "player": {
+        "id": 196855,
+        "name": "J. Anthony"
+      },
+      "assist": {
+        "id": 138822,
+        "name": "A. Broja"
+      },
+      "type": "subst",
+      "detail": "Substitution 2",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 63,
+        "extra": null
+      },
+      "team": {
+        "id": 66,
+        "name": "Aston Villa",
+        "logo": "https://media.api-sports.io/football/teams/66.png"
+      },
+      "player": {
+        "id": 249,
+        "name": "D. Malen"
+      },
+      "assist": {
+        "id": 19170,
+        "name": "M. Rogers"
+      },
+      "type": "Goal",
+      "detail": "Normal Goal",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 67,
+        "extra": null
+      },
+      "team": {
+        "id": 66,
+        "name": "Aston Villa",
+        "logo": "https://media.api-sports.io/football/teams/66.png"
+      },
+      "player": {
+        "id": 19366,
+        "name": "O. Watkins"
+      },
+      "assist": {
+        "id": 19071,
+        "name": "E. Buendia"
+      },
+      "type": "subst",
+      "detail": "Substitution 1",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 67,
+        "extra": null
+      },
+      "team": {
+        "id": 66,
+        "name": "Aston Villa",
+        "logo": "https://media.api-sports.io/football/teams/66.png"
+      },
+      "player": {
+        "id": 19191,
+        "name": "J. McGinn"
+      },
+      "assist": {
+        "id": 137303,
+        "name": "E. Guessand"
+      },
+      "type": "subst",
+      "detail": "Substitution 2",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 69,
+        "extra": null
+      },
+      "team": {
+        "id": 44,
+        "name": "Burnley",
+        "logo": "https://media.api-sports.io/football/teams/44.png"
+      },
+      "player": {
+        "id": 98936,
+        "name": "L. Foster"
+      },
+      "assist": {
+        "id": 270508,
+        "name": "L. Ugochukwu"
+      },
+      "type": "subst",
+      "detail": "Substitution 3",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 78,
+        "extra": null
+      },
+      "team": {
+        "id": 44,
+        "name": "Burnley",
+        "logo": "https://media.api-sports.io/football/teams/44.png"
+      },
+      "player": {
+        "id": 270508,
+        "name": "L. Ugochukwu"
+      },
+      "assist": {
+        "id": 375915,
+        "name": "Q. Hartman"
+      },
+      "type": "Goal",
+      "detail": "Normal Goal",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 82,
+        "extra": null
+      },
+      "team": {
+        "id": 44,
+        "name": "Burnley",
+        "logo": "https://media.api-sports.io/football/teams/44.png"
+      },
+      "player": {
+        "id": 20303,
+        "name": "J. Laurent"
+      },
+      "assist": {
+        "id": 36927,
+        "name": "Z. Flemming"
+      },
+      "type": "subst",
+      "detail": "Substitution 4",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 84,
+        "extra": null
+      },
+      "team": {
+        "id": 66,
+        "name": "Aston Villa",
+        "logo": "https://media.api-sports.io/football/teams/66.png"
+      },
+      "player": {
+        "id": 19298,
+        "name": "M. Cash"
+      },
+      "assist": {
+        "id": 889,
+        "name": "V. Lindelof"
+      },
+      "type": "subst",
+      "detail": "Substitution 3",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 84,
+        "extra": null
+      },
+      "team": {
+        "id": 66,
+        "name": "Aston Villa",
+        "logo": "https://media.api-sports.io/football/teams/66.png"
+      },
+      "player": {
+        "id": 249,
+        "name": "D. Malen"
+      },
+      "assist": {
+        "id": 2287,
+        "name": "R. Barkley"
+      },
+      "type": "subst",
+      "detail": "Substitution 4",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 90,
+        "extra": 3
+      },
+      "team": {
+        "id": 66,
+        "name": "Aston Villa",
+        "logo": "https://media.api-sports.io/football/teams/66.png"
+      },
+      "player": {
+        "id": 19599,
+        "name": "Emiliano Martínez"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Card",
+      "detail": "Yellow Card",
+      "comments": "Argument"
+    },
+    {
+      "time": {
+        "elapsed": 90,
+        "extra": 1
+      },
+      "team": {
+        "id": 66,
+        "name": "Aston Villa",
+        "logo": "https://media.api-sports.io/football/teams/66.png"
+      },
+      "player": {
+        "id": 19071,
+        "name": "Emiliano Buendía"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Card",
+      "detail": "Yellow Card",
+      "comments": "Foul"
+    },
+    {
+      "time": {
+        "elapsed": 90,
+        "extra": 10
+      },
+      "team": {
+        "id": 66,
+        "name": "Aston Villa",
+        "logo": "https://media.api-sports.io/football/teams/66.png"
+      },
+      "player": {
+        "id": null,
+        "name": null
+      },
+      "assist": {
+        "id": 138816,
+        "name": "I. Maatsen"
+      },
+      "type": "subst",
+      "detail": "Substitution 5",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 90,
+        "extra": null
+      },
+      "team": {
+        "id": 66,
+        "name": "Aston Villa",
+        "logo": "https://media.api-sports.io/football/teams/66.png"
+      },
+      "player": {
+        "id": 284457,
+        "name": "L. Bogarde"
+      },
+      "assist": {
+        "id": 162714,
+        "name": "A. Onana"
+      },
+      "type": "subst",
+      "detail": "Substitution 6",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 90,
+        "extra": 10
+      },
+      "team": {
+        "id": 44,
+        "name": "Burnley",
+        "logo": "https://media.api-sports.io/football/teams/44.png"
+      },
+      "player": {
+        "id": 179400,
+        "name": "M. Esteve"
+      },
+      "assist": {
+        "id": 1746,
+        "name": "J. Worrall"
+      },
+      "type": "subst",
+      "detail": "Substitution 5",
+      "comments": null
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-14T18:52:50Z"
+  }
+}

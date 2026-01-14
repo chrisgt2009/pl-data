@@ -1,0 +1,227 @@
+{
+  "data": [
+    {
+      "time": {
+        "elapsed": 16,
+        "extra": null
+      },
+      "team": {
+        "id": 746,
+        "name": "Sunderland",
+        "logo": "https://media.api-sports.io/football/teams/746.png"
+      },
+      "player": {
+        "id": 1146,
+        "name": "N. Mukiele"
+      },
+      "assist": {
+        "id": 119121,
+        "name": "T. Hume"
+      },
+      "type": "Goal",
+      "detail": "Normal Goal",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 63,
+        "extra": null
+      },
+      "team": {
+        "id": 746,
+        "name": "Sunderland",
+        "logo": "https://media.api-sports.io/football/teams/746.png"
+      },
+      "player": {
+        "id": 671,
+        "name": "B. Traore"
+      },
+      "assist": {
+        "id": 336659,
+        "name": "C. Talbi"
+      },
+      "type": "subst",
+      "detail": "Substitution 1",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 67,
+        "extra": null
+      },
+      "team": {
+        "id": 39,
+        "name": "Wolves",
+        "logo": "https://media.api-sports.io/football/teams/39.png"
+      },
+      "player": {
+        "id": 18742,
+        "name": "M. Doherty"
+      },
+      "assist": {
+        "id": 285,
+        "name": "K. Hoever"
+      },
+      "type": "subst",
+      "detail": "Substitution 1",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 76,
+        "extra": null
+      },
+      "team": {
+        "id": 746,
+        "name": "Sunderland",
+        "logo": "https://media.api-sports.io/football/teams/746.png"
+      },
+      "player": {
+        "id": 84087,
+        "name": "W. Isidor"
+      },
+      "assist": {
+        "id": 349799,
+        "name": "E. Mayenda"
+      },
+      "type": "subst",
+      "detail": "Substitution 2",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 76,
+        "extra": null
+      },
+      "team": {
+        "id": 746,
+        "name": "Sunderland",
+        "logo": "https://media.api-sports.io/football/teams/746.png"
+      },
+      "player": {
+        "id": 339201,
+        "name": "C. Rigg"
+      },
+      "assist": {
+        "id": 37143,
+        "name": "L. Geertruida"
+      },
+      "type": "subst",
+      "detail": "Substitution 3",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 76,
+        "extra": null
+      },
+      "team": {
+        "id": 39,
+        "name": "Wolves",
+        "logo": "https://media.api-sports.io/football/teams/39.png"
+      },
+      "player": {
+        "id": 282770,
+        "name": "R. Gomes"
+      },
+      "assist": {
+        "id": 110153,
+        "name": "T. Arokodare"
+      },
+      "type": "subst",
+      "detail": "Substitution 2",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 76,
+        "extra": null
+      },
+      "team": {
+        "id": 39,
+        "name": "Wolves",
+        "logo": "https://media.api-sports.io/football/teams/39.png"
+      },
+      "player": {
+        "id": 195103,
+        "name": "Joao Gomes"
+      },
+      "assist": {
+        "id": 391822,
+        "name": "F. Lopez"
+      },
+      "type": "subst",
+      "detail": "Substitution 3",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 77,
+        "extra": null
+      },
+      "team": {
+        "id": 39,
+        "name": "Wolves",
+        "logo": "https://media.api-sports.io/football/teams/39.png"
+      },
+      "player": {
+        "id": 13708,
+        "name": "J. Arias"
+      },
+      "assist": {
+        "id": 296560,
+        "name": "J. Tchatchoua"
+      },
+      "type": "subst",
+      "detail": "Substitution 4",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 90,
+        "extra": 5
+      },
+      "team": {
+        "id": 746,
+        "name": "Sunderland",
+        "logo": "https://media.api-sports.io/football/teams/746.png"
+      },
+      "player": {
+        "id": 365331,
+        "name": "N. Sadiki"
+      },
+      "assist": {
+        "id": 19910,
+        "name": "D. Neil"
+      },
+      "type": "subst",
+      "detail": "Substitution 4",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 90,
+        "extra": null
+      },
+      "team": {
+        "id": 746,
+        "name": "Sunderland",
+        "logo": "https://media.api-sports.io/football/teams/746.png"
+      },
+      "player": {
+        "id": 66407,
+        "name": "L. Krejci"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Goal",
+      "detail": "Own Goal",
+      "comments": null
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-14T18:53:03Z"
+  }
+}
