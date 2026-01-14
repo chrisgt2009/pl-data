@@ -1,0 +1,425 @@
+{
+  "data": [
+    {
+      "team": {
+        "id": 42,
+        "name": "Arsenal",
+        "logo": "https://media.api-sports.io/football/teams/42.png",
+        "colors": {
+          "player": {
+            "primary": "e10000",
+            "number": "ffffff",
+            "border": "e10000"
+          },
+          "goalkeeper": {
+            "primary": "f5e85a",
+            "number": "d6222c",
+            "border": "f5e85a"
+          }
+        }
+      },
+      "coach": {
+        "id": 7248,
+        "name": "Mikel Arteta",
+        "photo": "https://media.api-sports.io/football/coachs/7248.png"
+      },
+      "formation": "4-3-3",
+      "startXI": [
+        {
+          "player": {
+            "id": 19465,
+            "name": "D. Raya",
+            "number": 1,
+            "pos": "G",
+            "grid": "1:1"
+          }
+        },
+        {
+          "player": {
+            "id": 19959,
+            "name": "B. White",
+            "number": 4,
+            "pos": "D",
+            "grid": "2:4"
+          }
+        },
+        {
+          "player": {
+            "id": 38746,
+            "name": "J. Timber",
+            "number": 12,
+            "pos": "D",
+            "grid": "2:3"
+          }
+        },
+        {
+          "player": {
+            "id": 22090,
+            "name": "W. Saliba",
+            "number": 2,
+            "pos": "D",
+            "grid": "2:2"
+          }
+        },
+        {
+          "player": {
+            "id": 127817,
+            "name": "P. Hincapie",
+            "number": 5,
+            "pos": "D",
+            "grid": "2:1"
+          }
+        },
+        {
+          "player": {
+            "id": 19586,
+            "name": "E. Eze",
+            "number": 10,
+            "pos": "M",
+            "grid": "3:3"
+          }
+        },
+        {
+          "player": {
+            "id": 47315,
+            "name": "M. Zubimendi",
+            "number": 36,
+            "pos": "M",
+            "grid": "3:2"
+          }
+        },
+        {
+          "player": {
+            "id": 2937,
+            "name": "D. Rice",
+            "number": 41,
+            "pos": "M",
+            "grid": "3:1"
+          }
+        },
+        {
+          "player": {
+            "id": 1460,
+            "name": "B. Saka",
+            "number": 7,
+            "pos": "F",
+            "grid": "4:3"
+          }
+        },
+        {
+          "player": {
+            "id": 18979,
+            "name": "V. Gyökeres",
+            "number": 14,
+            "pos": "F",
+            "grid": "4:2"
+          }
+        },
+        {
+          "player": {
+            "id": 127769,
+            "name": "G. Martinelli",
+            "number": 11,
+            "pos": "F",
+            "grid": "4:1"
+          }
+        }
+      ],
+      "substitutes": [
+        {
+          "player": {
+            "id": 2273,
+            "name": "K. Arrizabalaga",
+            "number": 13,
+            "pos": "G",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 37127,
+            "name": "M. Odegaard",
+            "number": 8,
+            "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 643,
+            "name": "Gabriel Jesus",
+            "number": 9,
+            "pos": "F",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 30407,
+            "name": "C. Norgaard",
+            "number": 16,
+            "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 1946,
+            "name": "L. Trossard",
+            "number": 19,
+            "pos": "F",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 136723,
+            "name": "N. Madueke",
+            "number": 20,
+            "pos": "F",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 313236,
+            "name": "E. Nwaneri",
+            "number": 22,
+            "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 47311,
+            "name": "M. Merino",
+            "number": 23,
+            "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 313245,
+            "name": "M. Lewis-Skelly",
+            "number": 49,
+            "pos": "D",
+            "grid": null
+          }
+        }
+      ]
+    },
+    {
+      "team": {
+        "id": 39,
+        "name": "Wolves",
+        "logo": "https://media.api-sports.io/football/teams/39.png",
+        "colors": {
+          "player": {
+            "primary": "87e4de",
+            "number": "3e5b5d",
+            "border": "87e4de"
+          },
+          "goalkeeper": {
+            "primary": "01010e",
+            "number": "ffffff",
+            "border": "01010e"
+          }
+        }
+      },
+      "coach": {
+        "id": 13624,
+        "name": "Jamie Collins",
+        "photo": "https://media.api-sports.io/football/coachs/13624.png"
+      },
+      "formation": "3-5-2",
+      "startXI": [
+        {
+          "player": {
+            "id": 19143,
+            "name": "S. Johnstone",
+            "number": 31,
+            "pos": "G",
+            "grid": "1:1"
+          }
+        },
+        {
+          "player": {
+            "id": 195717,
+            "name": "Y. Mosquera",
+            "number": 15,
+            "pos": "D",
+            "grid": "2:3"
+          }
+        },
+        {
+          "player": {
+            "id": 135068,
+            "name": "E. Agbadou",
+            "number": 12,
+            "pos": "D",
+            "grid": "2:2"
+          }
+        },
+        {
+          "player": {
+            "id": 41606,
+            "name": "Toti",
+            "number": 24,
+            "pos": "D",
+            "grid": "2:1"
+          }
+        },
+        {
+          "player": {
+            "id": 18742,
+            "name": "M. Doherty",
+            "number": 2,
+            "pos": "M",
+            "grid": "3:5"
+          }
+        },
+        {
+          "player": {
+            "id": 195103,
+            "name": "Joao Gomes",
+            "number": 8,
+            "pos": "M",
+            "grid": "3:4"
+          }
+        },
+        {
+          "player": {
+            "id": 265784,
+            "name": "Andre",
+            "number": 7,
+            "pos": "M",
+            "grid": "3:3"
+          }
+        },
+        {
+          "player": {
+            "id": 66407,
+            "name": "L. Krejci",
+            "number": 37,
+            "pos": "M",
+            "grid": "3:2"
+          }
+        },
+        {
+          "player": {
+            "id": 265782,
+            "name": "D. M. Wolfe",
+            "number": 6,
+            "pos": "M",
+            "grid": "3:1"
+          }
+        },
+        {
+          "player": {
+            "id": 2032,
+            "name": "J. S. Larsen",
+            "number": 9,
+            "pos": "F",
+            "grid": "4:2"
+          }
+        },
+        {
+          "player": {
+            "id": 24888,
+            "name": "Hwang Hee-Chan",
+            "number": 11,
+            "pos": "F",
+            "grid": "4:1"
+          }
+        }
+      ],
+      "substitutes": [
+        {
+          "player": {
+            "id": 1590,
+            "name": "J. Sa",
+            "number": 1,
+            "pos": "G",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 135334,
+            "name": "S. Bueno",
+            "number": 4,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 13708,
+            "name": "J. Arias",
+            "number": 10,
+            "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 110153,
+            "name": "T. Arokodare",
+            "number": 14,
+            "pos": "F",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 171035,
+            "name": "T. Chirewa",
+            "number": 23,
+            "pos": "F",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 285,
+            "name": "K. Hoever",
+            "number": 26,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 391822,
+            "name": "F. Lopez",
+            "number": 28,
+            "pos": "F",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 456206,
+            "name": "M. Mane",
+            "number": 36,
+            "pos": "F",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 296560,
+            "name": "J. Tchatchoua",
+            "number": 38,
+            "pos": "D",
+            "grid": null
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-14T20:38:52Z"
+  }
+}
