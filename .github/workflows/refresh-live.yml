@@ -7,6 +7,12 @@ on:
     - cron: "*/5 11-23 * * *"
     - cron: "*/10 0-3 * * *"
   workflow_dispatch:
+    inputs:
+      force_fetch:
+        description: "Force run even if preflight would skip (manual only)"
+        type: boolean
+        default: false
+        required: false
 
 permissions:
   contents: write
@@ -57,6 +63,15 @@ jobs:
           mkdir -p data/football/premier-league/live/events
           mkdir -p data/football/premier-league/fixtures
           mkdir -p data/ops
+
+      # Minimal change: always write a heartbeat so you can see the workflow ran
+      - name: Write heartbeat
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p data/football/premier-league/live
+          TS=$(date -u +%FT%TZ)
+          echo "{\"meta\":{\"lastRunUTC\":\"${TS}\"}}" > data/football/premier-league/live/heartbeat.json
 
       # -----------------------------
       # Load & normalize quota state
@@ -174,10 +189,12 @@ jobs:
       # - plus post-window fixture events if triggered
       # - counts calls properly against daily cap
       # - writes only when content changes
+      #
+      # Minimal change: allow manual "force_fetch" to bypass preflight
       # ---------------------------------------------------------
       - id: fetch
         name: Fetch live fixtures + events (with post-window extension)
-        if: steps.preflight.outputs.should_fetch == 'yes' && steps.cap.outputs.over != 'true'
+        if: (steps.preflight.outputs.should_fetch == 'yes' || inputs.force_fetch == true) && steps.cap.outputs.over != 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -193,7 +210,6 @@ jobs:
           # Load quota count
           COUNT=$(jq -r '.count // 0' "$STATE")
           DAILY=${DAILY_CAP}
-          SOFT=${SOFT_CAP}
 
           CALLS_USED=0
           ANY_CHANGED="false"
@@ -242,7 +258,6 @@ jobs:
             if [[ "$out_file" == "$LIVE_OUT" ]]; then
               jq --arg ts "$ts" '{matches: .response, meta: { lastUpdatedUTC: $ts }}' "$tmpbody" > "$norm"
             else
-              # events files include fixtureId in filename already; store events consistently
               jq --arg ts "$ts" '{events: .response, meta: { lastUpdatedUTC: $ts }}' "$tmpbody" > "$norm"
             fi
 
@@ -271,9 +286,7 @@ jobs:
           api_get "$FINAL_LIVE_URL" "$LIVE_OUT" || true
 
           # Identify live fixture IDs from LIVE_OUT
-          if [[ ! -f "$LIVE_OUT" ]]; then
-            echo "No live output generated; skipping events."
-          else
+          if [[ -f "$LIVE_OUT" ]]; then
             mapfile -t LIVE_FIXTURE_IDS < <(jq -r '
               .matches[]
               | select((.fixture.status.short // "" | ascii_upcase) as $s
@@ -294,8 +307,7 @@ jobs:
             fi
           fi
 
-          # 3) Post-window extension: if post_window.json exists and fresh,
-          #    also refresh events for those fixture IDs (even if live=all is now empty).
+          # 3) Post-window extension: refresh events for finished fixture IDs
           if [[ -f "$POST" ]]; then
             NOW=$(date -u +%s)
             TS=$(jq -r '.ts // 0' "$POST")
@@ -321,9 +333,7 @@ jobs:
           echo "changed=$ANY_CHANGED" >> "$GITHUB_OUTPUT"
 
       # ---------------------------------------------------------
-      # Update post-window trigger:
-      # If no live statuses remain, but FT exists in the last live payload,
-      # write a post_window.json containing those fixture IDs.
+      # Update post-window trigger when fixtures finish
       # ---------------------------------------------------------
       - id: post
         name: Update post-window trigger (extend duration after FT)
@@ -349,7 +359,6 @@ jobs:
           if [[ "$LIVE" == "false" && "$HAS_FT" == "true" ]]; then
             NOW_TS=$(date -u +%s)
 
-            # Collect finished fixture IDs from last payload
             jq -n --argjson ts "$NOW_TS" --argfile live "$OUT" '
               {
                 ts: $ts,
@@ -364,25 +373,26 @@ jobs:
 
             echo "Post-window set with finished fixtures."
           else
-            # If post-window file exists but no longer relevant, keep it; it auto-expires by age.
             echo "No post-window update needed."
           fi
 
       # ---------------------------------------------------------
-      # Commit & push (single commit)
-      # IMPORTANT: We must commit quota state too, otherwise the count resets next run.
+      # Commit & push (minimal: include heartbeat too)
       # ---------------------------------------------------------
       - name: Commit & push
-        if: steps.fetch.outputs.calls_used != '0'
+        # Commit if heartbeat changed (always new timestamp) OR fetch changed data OR quota changed.
+        # Keep it simple: always attempt commit; commit will be no-op if nothing staged.
+        shell: bash
         run: |
           set -euo pipefail
           git config user.name "pl-bot"
           git config user.email "pl-bot@users.noreply.github.com"
 
+          git add data/football/premier-league/live/heartbeat.json || true
           git add data/football/premier-league/live/live_today.json || true
           git add data/football/premier-league/live/events/*.json || true
           git add data/ops/live_usage.json || true
           git add data/ops/post_window.json || true
 
-          git commit -m "Live PL refresh (calls=${{ steps.fetch.outputs.calls_used }})" || true
+          git commit -m "Live PL refresh" || true
           git push || true
