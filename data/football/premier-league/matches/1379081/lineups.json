@@ -1,0 +1,425 @@
+{
+  "data": [
+    {
+      "team": {
+        "id": 51,
+        "name": "Brighton",
+        "logo": "https://media.api-sports.io/football/teams/51.png",
+        "colors": {
+          "player": {
+            "primary": "ffffff",
+            "number": "e6e4e9",
+            "border": "ffffff"
+          },
+          "goalkeeper": {
+            "primary": "fbaf54",
+            "number": "030303",
+            "border": "fbaf54"
+          }
+        }
+      },
+      "coach": {
+        "id": 19253,
+        "name": "Fabian Marc Hürzeler",
+        "photo": "https://media.api-sports.io/football/coachs/19253.png"
+      },
+      "formation": "4-2-3-1",
+      "startXI": [
+        {
+          "player": {
+            "id": 129058,
+            "name": "B. Verbruggen",
+            "number": 1,
+            "pos": "G",
+            "grid": "1:1"
+          }
+        },
+        {
+          "player": {
+            "id": 92993,
+            "name": "M. Wieffer",
+            "number": 27,
+            "pos": "D",
+            "grid": "2:4"
+          }
+        },
+        {
+          "player": {
+            "id": 38695,
+            "name": "J. P. van Hecke",
+            "number": 6,
+            "pos": "D",
+            "grid": "2:3"
+          }
+        },
+        {
+          "player": {
+            "id": 22160,
+            "name": "O. Boscagli",
+            "number": 21,
+            "pos": "D",
+            "grid": "2:2"
+          }
+        },
+        {
+          "player": {
+            "id": 1361,
+            "name": "F. Kadioglu",
+            "number": 24,
+            "pos": "D",
+            "grid": "2:1"
+          }
+        },
+        {
+          "player": {
+            "id": 356041,
+            "name": "C. Baleba",
+            "number": 17,
+            "pos": "M",
+            "grid": "3:2"
+          }
+        },
+        {
+          "player": {
+            "id": 265820,
+            "name": "Y. Ayari",
+            "number": 26,
+            "pos": "M",
+            "grid": "3:1"
+          }
+        },
+        {
+          "player": {
+            "id": 383685,
+            "name": "Y. Minteh",
+            "number": 11,
+            "pos": "M",
+            "grid": "4:3"
+          }
+        },
+        {
+          "player": {
+            "id": 90590,
+            "name": "G. Rutter",
+            "number": 10,
+            "pos": "M",
+            "grid": "4:2"
+          }
+        },
+        {
+          "player": {
+            "id": 278370,
+            "name": "D. Gomez",
+            "number": 25,
+            "pos": "M",
+            "grid": "4:1"
+          }
+        },
+        {
+          "player": {
+            "id": 1469,
+            "name": "D. Welbeck",
+            "number": 18,
+            "pos": "F",
+            "grid": "5:1"
+          }
+        }
+      ],
+      "substitutes": [
+        {
+          "player": {
+            "id": 18960,
+            "name": "J. Steele",
+            "number": 23,
+            "pos": "G",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 18963,
+            "name": "L. Dunk",
+            "number": 5,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 328225,
+            "name": "B. Gruda",
+            "number": 8,
+            "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 343311,
+            "name": "S. Tzimas",
+            "number": 9,
+            "pos": "F",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 305730,
+            "name": "J. Hinshelwood",
+            "number": 13,
+            "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 392482,
+            "name": "C. Kostoulas",
+            "number": 19,
+            "pos": "F",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 162007,
+            "name": "M. De Cuyper",
+            "number": 29,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 537,
+            "name": "J. Veltman",
+            "number": 34,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 342063,
+            "name": "D. Coppola",
+            "number": 42,
+            "pos": "D",
+            "grid": null
+          }
+        }
+      ]
+    },
+    {
+      "team": {
+        "id": 55,
+        "name": "Brentford",
+        "logo": "https://media.api-sports.io/football/teams/55.png",
+        "colors": {
+          "player": {
+            "primary": "ff0000",
+            "number": "000000",
+            "border": "ff0000"
+          },
+          "goalkeeper": {
+            "primary": "fa7699",
+            "number": "080808",
+            "border": "fa7699"
+          }
+        }
+      },
+      "coach": {
+        "id": 25364,
+        "name": "Keith Andrews",
+        "photo": "https://media.api-sports.io/football/coachs/25364.png"
+      },
+      "formation": "4-2-3-1",
+      "startXI": [
+        {
+          "player": {
+            "id": 281,
+            "name": "C. Kelleher",
+            "number": 1,
+            "pos": "G",
+            "grid": "1:1"
+          }
+        },
+        {
+          "player": {
+            "id": 342022,
+            "name": "M. Kayode",
+            "number": 33,
+            "pos": "D",
+            "grid": "2:4"
+          }
+        },
+        {
+          "player": {
+            "id": 19495,
+            "name": "N. Collins",
+            "number": 22,
+            "pos": "D",
+            "grid": "2:3"
+          }
+        },
+        {
+          "player": {
+            "id": 36922,
+            "name": "S. van den Berg",
+            "number": 4,
+            "pos": "D",
+            "grid": "2:2"
+          }
+        },
+        {
+          "player": {
+            "id": 1119,
+            "name": "K. Ajer",
+            "number": 20,
+            "pos": "D",
+            "grid": "2:1"
+          }
+        },
+        {
+          "player": {
+            "id": 292,
+            "name": "J. Henderson",
+            "number": 6,
+            "pos": "M",
+            "grid": "3:2"
+          }
+        },
+        {
+          "player": {
+            "id": 263538,
+            "name": "Y. Yarmolyuk",
+            "number": 18,
+            "pos": "M",
+            "grid": "3:1"
+          }
+        },
+        {
+          "player": {
+            "id": 284797,
+            "name": "D. Ouattara",
+            "number": 19,
+            "pos": "M",
+            "grid": "4:3"
+          }
+        },
+        {
+          "player": {
+            "id": 15908,
+            "name": "M. Damsgaard",
+            "number": 24,
+            "pos": "M",
+            "grid": "4:2"
+          }
+        },
+        {
+          "player": {
+            "id": 178077,
+            "name": "K. Schade",
+            "number": 7,
+            "pos": "M",
+            "grid": "4:1"
+          }
+        },
+        {
+          "player": {
+            "id": 196156,
+            "name": "I. Thiago",
+            "number": 9,
+            "pos": "F",
+            "grid": "5:1"
+          }
+        }
+      ],
+      "substitutes": [
+        {
+          "player": {
+            "id": 61742,
+            "name": "H. R. Valdimarsson",
+            "number": 12,
+            "pos": "G",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 44871,
+            "name": "A. Hickey",
+            "number": 2,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 19346,
+            "name": "R. Henry",
+            "number": 3,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 19789,
+            "name": "E. Pinnock",
+            "number": 5,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 47438,
+            "name": "M. Jensen",
+            "number": 8,
+            "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 727,
+            "name": "R. Nelson",
+            "number": 11,
+            "pos": "F",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 15799,
+            "name": "F. Onyeka",
+            "number": 15,
+            "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 106725,
+            "name": "K. Lewis-Potter",
+            "number": 23,
+            "pos": "F",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 25073,
+            "name": "V. Janelt",
+            "number": 27,
+            "pos": "M",
+            "grid": null
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-14T19:33:34Z"
+  }
+}
