@@ -1,14 +1,14 @@
 name: Refresh Core (PL)
 
 concurrency:
-  group: pl-data-commit
-  cancel-in-progress: false
+  group: pl-core-refresh
+  cancel-in-progress: true
 
 on:
   workflow_dispatch:
     inputs:
       force_refresh:
-        description: "Bypass reuse windows and broaden event window (manual runs)"
+        description: "Bypass reuse windows and broaden match window (manual runs)"
         type: boolean
         default: true
         required: false
@@ -17,31 +17,33 @@ on:
         type: boolean
         default: true
         required: false
-      force_events_even_on_errors:
+      force_matches_even_on_errors:
         description: "Write placeholder per-match files on 404/429 for visibility (manual runs)"
         type: boolean
         default: false
         required: false
-      max_events_per_run:
-        description: "Max finished/live fixtures to process for events this run (cap)"
+      max_matches_per_run:
+        description: "Max finished fixtures to process for match details this run (cap)"
         type: number
         default: 20
         required: false
       per_request_sleep_ms:
-        description: "Sleep between event requests (milliseconds)"
+        description: "Sleep between match-detail requests (milliseconds)"
         type: number
         default: 200
         required: false
-      events_window_days:
-        description: "Days window for events (finished/live). Use 7 for schedules, 30 for manual if needed."
+      matches_window_days:
+        description: "Days window for match details (finished only). Use 7 scheduled, 30 manual if needed."
         type: number
         default: 7
         required: false
+
   schedule:
     # Standings/scorers/cards/assists every 3 hours
     - cron: "5 */3 * * *"
-    # Fixtures twice a day (London morning and late evening)
-    - cron: "0 7,23 * * *"
+    # Fixtures twice a day (London morning and late evening) — split so github.event.schedule checks work
+    - cron: "0 7 * * *"
+    - cron: "0 23 * * *"
 
 permissions:
   contents: write
@@ -49,13 +51,34 @@ permissions:
 jobs:
   core:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+
     env:
       FORCE_REFRESH: ${{ inputs.force_refresh && 'true' || 'false' }}
       FORCE_WRITE_ON_DISPATCH: ${{ inputs.force_write_on_dispatch && 'true' || 'false' }}
-      FORCE_EVENTS_EVEN_ON_ERRORS: ${{ inputs.force_events_even_on_errors && 'true' || 'false' }}
-      MAX_EVENTS_PER_RUN: ${{ inputs.max_events_per_run != '' && inputs.max_events_per_run || 20 }}
+      FORCE_MATCHES_EVEN_ON_ERRORS: ${{ inputs.force_matches_even_on_errors && 'true' || 'false' }}
+      MAX_MATCHES_PER_RUN: ${{ inputs.max_matches_per_run != '' && inputs.max_matches_per_run || 20 }}
       PER_REQUEST_SLEEP_MS: ${{ inputs.per_request_sleep_ms != '' && inputs.per_request_sleep_ms || 200 }}
-      EVENTS_WINDOW_DAYS: ${{ inputs.events_window_days != '' && inputs.events_window_days || 7 }}
+      MATCHES_WINDOW_DAYS: ${{ inputs.matches_window_days != '' && inputs.matches_window_days || 7 }}
+
+      RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+      RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
+
+      LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}
+      SEASON: ${{ vars.SEASON_PL }}
+
+      URL_FIXTURES: ${{ vars.URL_FIXTURES }}
+      URL_STANDINGS: ${{ vars.URL_STANDINGS }}
+      URL_SCORERS: ${{ vars.URL_SCORERS }}
+      URL_TOP_ASSISTS: ${{ vars.URL_TOP_ASSISTS }}
+      URL_TOP_YELLOWS: ${{ vars.URL_TOP_YELLOWS }}
+      URL_TOP_REDS: ${{ vars.URL_TOP_REDS }}
+
+      # Exact API-Sports endpoints for match details (no vars required)
+      EVENTS_BASE_URL: "https://v3.football.api-sports.io/fixtures/events?fixture="
+      LINEUPS_BASE_URL: "https://v3.football.api-sports.io/fixtures/lineups?fixture="
+      STATS_BASE_URL: "https://v3.football.api-sports.io/fixtures/statistics?fixture="
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -69,21 +92,8 @@ jobs:
         run: |
           mkdir -p data/football/premier-league/core
           mkdir -p data/football/premier-league/fixtures
-          mkdir -p data/football/premier-league/live
           mkdir -p data/football/premier-league/matches
           mkdir -p data/ops
-
-      - name: Locate workflow and list tree
-        run: |
-          echo "Workflow path: .github/workflows/refresh_core_pl.yml"
-          echo "FORCE_REFRESH=${FORCE_REFRESH}"
-          echo "FORCE_WRITE_ON_DISPATCH=${FORCE_WRITE_ON_DISPATCH}"
-          echo "FORCE_EVENTS_EVEN_ON_ERRORS=${FORCE_EVENTS_EVEN_ON_ERRORS}"
-          echo "MAX_EVENTS_PER_RUN=${MAX_EVENTS_PER_RUN}"
-          echo "PER_REQUEST_SLEEP_MS=${PER_REQUEST_SLEEP_MS}"
-          echo "EVENTS_WINDOW_DAYS=${EVENTS_WINDOW_DAYS}"
-          ls -la .github/workflows || true
-          find data -maxdepth 3 -type d -print || true
 
       - id: post_window
         name: Check post-window trigger
@@ -96,84 +106,70 @@ jobs:
           if [[ -f "$FLAG" ]]; then
             TS=$(jq -r '.ts // 0' "$FLAG")
             if (( NOW_TS - TS <= 5400 )); then
-              echo "Post-window flag present (age <= 90m). Will trigger post-window guarded steps."
+              echo "Post-window flag present (age <= 90m)."
               echo "trigger=true" >> "$GITHUB_OUTPUT"
             else
-              echo "Post-window flag present but too old. Skipping post-window guarded steps."
+              echo "Post-window flag present but too old."
               echo "trigger=false" >> "$GITHUB_OUTPUT"
             fi
           else
-            echo "No post-window flag found. Post-window guarded steps will only run via schedule/dispatch."
+            echo "No post-window flag found."
             echo "trigger=false" >> "$GITHUB_OUTPUT"
           fi
 
       # ---------------- FIXTURES (next 14 days) ----------------
-      # If you truly don't need upcoming fixtures at all, you can comment this step out entirely.
       - id: fixtures
-        name: Refresh upcoming fixtures (API-Football)
+        name: Refresh upcoming fixtures (next 14 days)
         if: github.event.schedule == '0 7 * * *' || github.event.schedule == '0 23 * * *' || github.event_name == 'workflow_dispatch'
         shell: bash
-        env:
-          BASE_URL: ${{ vars.URL_FIXTURES }}
-          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
-          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
-          LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}
-          SEASON: ${{ vars.SEASON_PL }}
         run: |
           set -euo pipefail
-
           OUT="data/football/premier-league/fixtures/fixtures_week.json"
           TMPBODY="$(mktemp)"
 
-          if [[ -z "${BASE_URL:-}" ]]; then
-            echo "fixtures: URL_FIXTURES is not set. Skipping."
+          if [[ -z "${URL_FIXTURES:-}" ]]; then
+            echo "fixtures: URL_FIXTURES not set. Skipping."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           if [[ -z "${RAPIDAPI_KEY:-}" || -z "${RAPIDAPI_HOST:-}" ]]; then
-            echo "fixtures: RAPIDAPI credentials missing. Skipping."
+            echo "fixtures: credentials missing. Skipping."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          # Reuse if recent unless FORCE_REFRESH
           REUSE_MAX_AGE_MIN=60
           if [[ "${FORCE_REFRESH}" != "true" ]] && [[ -f "$OUT" ]]; then
             MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
             if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then
-              echo "fixtures: Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m). No fetch."
+              echo "fixtures: Reusing (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m)."
               echo "changed=false" >> "$GITHUB_OUTPUT"
               exit 0
-            else
-              echo "fixtures: Existing data is ${AGE_MIN}m old. Will fetch."
             fi
-          else
-            echo "fixtures: FORCE_REFRESH=${FORCE_REFRESH}. Skipping reuse window check. Will fetch."
           fi
 
           FROM=$(date -u +"%Y-%m-%d")
           TO=$(date -u -d "+14 days" +"%Y-%m-%d")
-
-          FINAL_URL="${BASE_URL}&league=${LEAGUE_ID}&season=${SEASON}&from=${FROM}&to=${TO}"
+          FINAL_URL="${URL_FIXTURES}&league=${LEAGUE_ID}&season=${SEASON}&from=${FROM}&to=${TO}"
           echo "fixtures: Fetching $FINAL_URL"
 
-          CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
+          CODE=$(curl -sS --retry 3 --retry-delay 2 --retry-all-errors \
+            --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          echo "fixtures: http code=$CODE"
           if [[ "$CODE" != "200" ]]; then
-            echo "fixtures: Non-200 ($CODE). Skipping write."
+            echo "fixtures: Non-200 ($CODE)."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
           if [[ "$OK" != "true" ]]; then
-            echo "fixtures: Unexpected payload (.response not array). Skipping write."
+            echo "fixtures: Bad payload."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -183,616 +179,310 @@ jobs:
           jq --arg ts "$TS" '{matches: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
           if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
-            echo "fixtures: FORCE write."
             mv "$NORM" "$OUT"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
-            if ! cmp -s "$NORM" "$OUT"; then
-              echo "fixtures: Content changed. Updating $OUT."
+            if [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then
               mv "$NORM" "$OUT"
               echo "changed=true" >> "$GITHUB_OUTPUT"
             else
-              echo "fixtures: No content change. Skipping commit."
               echo "changed=false" >> "$GITHUB_OUTPUT"
             fi
           fi
 
       # ---------------- STANDINGS ----------------
       - id: standings
-        name: Refresh standings (API-Football)
+        name: Refresh standings
         if: steps.post_window.outputs.trigger == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.event.schedule, '5 ')
         shell: bash
-        env:
-          BASE_URL: ${{ vars.URL_STANDINGS }}
-          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
-          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
-          LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}
-          SEASON: ${{ vars.SEASON_PL }}
         run: |
           set -euo pipefail
-
           OUT="data/football/premier-league/core/standings.json"
           TMPBODY="$(mktemp)"
 
-          if [[ -z "${BASE_URL:-}" ]]; then
-            echo "standings: URL_STANDINGS is not set. Skipping."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          if [[ -z "${RAPIDAPI_KEY:-}" || -z "${RAPIDAPI_HOST:-}" ]]; then
-            echo "standings: RAPIDAPI credentials missing. Skipping."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
+          if [[ -z "${URL_STANDINGS:-}" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
 
-          # Reuse if recent unless FORCE_REFRESH
           REUSE_MAX_AGE_MIN=180
           if [[ "${FORCE_REFRESH}" != "true" ]] && [[ -f "$OUT" ]]; then
             MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
-            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then
-              echo "standings: Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m). No fetch."
-              echo "changed=false" >> "$GITHUB_OUTPUT"
-              exit 0
-            else
-              echo "standings: Existing data is ${AGE_MIN}m old. Will fetch."
-            fi
-          else
-            echo "standings: FORCE_REFRESH=${FORCE_REFRESH}. Skipping reuse window check. Will fetch."
+            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
           fi
 
-          FINAL_URL="${BASE_URL}&season=${SEASON}&league=${LEAGUE_ID}"
-          echo "standings: Fetching $FINAL_URL"
-
-          CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
-            -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
-            -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+          FINAL_URL="${URL_STANDINGS}&season=${SEASON}&league=${LEAGUE_ID}"
+          CODE=$(curl -sS --retry 3 --retry-delay 2 --retry-all-errors \
+            --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
+            -H "x-rapidapi-key: ${RAPIDAPI_KEY}" -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          echo "standings: http code=$CODE"
-          if [[ "$CODE" != "200" ]]; then
-            echo "standings: Non-200 ($CODE). Skipping write."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
-          if [[ "$OK" != "true" ]]; then
-            echo "standings: Unexpected payload (.response not array). Skipping write."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
+          if [[ "$CODE" != "200" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY"); if [[ "$OK" != "true" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
 
           TS=$(date -u +%FT%TZ)
           NORM=$(mktemp)
           jq --arg ts "$TS" '{standings: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
           if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
-            echo "standings: FORCE write."
-            mv "$NORM" "$OUT"
-            echo "changed=true" >> "$GITHUB_OUTPUT"
+            mv "$NORM" "$OUT"; echo "changed=true" >> "$GITHUB_OUTPUT"
           else
-            if ! cmp -s "$NORM" "$OUT"; then
-              echo "standings: Content changed. Updating $OUT."
-              mv "$NORM" "$OUT"
-              echo "changed=true" >> "$GITHUB_OUTPUT"
-            else
-              echo "standings: No content change. Skipping commit."
-              echo "changed=false" >> "$GITHUB_OUTPUT"
-            fi
+            if [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then mv "$NORM" "$OUT"; echo "changed=true" >> "$GITHUB_OUTPUT"; else echo "changed=false" >> "$GITHUB_OUTPUT"; fi
           fi
 
       # ---------------- TOP SCORERS ----------------
       - id: scorers
-        name: Refresh top scorers (API-Football)
+        name: Refresh top scorers
         if: steps.post_window.outputs.trigger == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.event.schedule, '5 ')
         shell: bash
-        env:
-          BASE_URL: ${{ vars.URL_SCORERS }}
-          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
-          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
-          LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}
-          SEASON: ${{ vars.SEASON_PL }}
         run: |
           set -euo pipefail
-
           OUT="data/football/premier-league/core/scorers.json"
           TMPBODY="$(mktemp)"
+          if [[ -z "${URL_SCORERS:-}" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
 
-          if [[ -z "${BASE_URL:-}" ]]; then
-            echo "scorers: URL_SCORERS is not set. Skipping."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          if [[ -z "${RAPIDAPI_KEY:-}" || -z "${RAPIDAPI_HOST:-}" ]]; then
-            echo "scorers: RAPIDAPI credentials missing. Skipping."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          # Reuse if recent unless FORCE_REFRESH
           REUSE_MAX_AGE_MIN=180
           if [[ "${FORCE_REFRESH}" != "true" ]] && [[ -f "$OUT" ]]; then
             MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
-            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then
-              echo "scorers: Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m). No fetch."
-              echo "changed=false" >> "$GITHUB_OUTPUT"
-              exit 0
-            else
-              echo "scorers: Existing data is ${AGE_MIN}m old. Will fetch."
-            fi
-          else
-            echo "scorers: FORCE_REFRESH=${FORCE_REFRESH}. Skipping reuse window check. Will fetch."
+            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
           fi
 
-          FINAL_URL="${BASE_URL}&season=${SEASON}&league=${LEAGUE_ID}"
-          echo "scorers: Fetching $FINAL_URL"
-
-          CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
-            -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
-            -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+          FINAL_URL="${URL_SCORERS}&season=${SEASON}&league=${LEAGUE_ID}"
+          CODE=$(curl -sS --retry 3 --retry-delay 2 --retry-all-errors \
+            --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
+            -H "x-rapidapi-key: ${RAPIDAPI_KEY}" -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          echo "scorers: http code=$CODE"
-          if [[ "$CODE" != "200" ]]; then
-            echo "scorers: Non-200 ($CODE). Skipping write."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
-          if [[ "$OK" != "true" ]]; then
-            echo "scorers: Unexpected payload (.response not array). Skipping write."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
+          if [[ "$CODE" != "200" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY"); if [[ "$OK" != "true" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
 
           TS=$(date -u +%FT%TZ)
           NORM=$(mktemp)
           jq --arg ts "$TS" '{scorers: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
           if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
-            echo "scorers: FORCE write."
-            mv "$NORM" "$OUT"
-            echo "changed=true" >> "$GITHUB_OUTPUT"
+            mv "$NORM" "$OUT"; echo "changed=true" >> "$GITHUB_OUTPUT"
           else
-            if ! cmp -s "$NORM" "$OUT"; then
-              echo "scorers: Content changed. Updating $OUT."
-              mv "$NORM" "$OUT"
-              echo "changed=true" >> "$GITHUB_OUTPUT"
-            else
-              echo "scorers: No content change. Skipping commit."
-              echo "changed=false" >> "$GITHUB_OUTPUT"
-            fi
+            if [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then mv "$NORM" "$OUT"; echo "changed=true" >> "$GITHUB_OUTPUT"; else echo "changed=false" >> "$GITHUB_OUTPUT"; fi
           fi
 
       # ---------------- TOP ASSISTS ----------------
       - id: assists
-        name: Refresh top assists (API-Football)
+        name: Refresh top assists
         if: steps.post_window.outputs.trigger == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.event.schedule, '5 ')
         shell: bash
-        env:
-          BASE_URL: ${{ vars.URL_TOP_ASSISTS }}
-          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
-          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
-          LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}
-          SEASON: ${{ vars.SEASON_PL }}
         run: |
           set -euo pipefail
-
           OUT="data/football/premier-league/core/assists.json"
           TMPBODY="$(mktemp)"
+          if [[ -z "${URL_TOP_ASSISTS:-}" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
 
-          if [[ -z "${BASE_URL:-}" ]]; then
-            echo "assists: URL_TOP_ASSISTS is not set. Skipping."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          if [[ -z "${RAPIDAPI_KEY:-}" || -z "${RAPIDAPI_HOST:-}" ]]; then
-            echo "assists: RAPIDAPI credentials missing. Skipping."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          # Reuse if recent unless FORCE_REFRESH
           REUSE_MAX_AGE_MIN=180
           if [[ "${FORCE_REFRESH}" != "true" ]] && [[ -f "$OUT" ]]; then
             MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
-            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then
-              echo "assists: Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m). No fetch."
-              echo "changed=false" >> "$GITHUB_OUTPUT"
-              exit 0
-            else
-              echo "assists: Existing data is ${AGE_MIN}m old. Will fetch."
-            fi
-          else
-            echo "assists: FORCE_REFRESH=${FORCE_REFRESH}. Skipping reuse window check. Will fetch."
+            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
           fi
 
-          FINAL_URL="${BASE_URL}&season=${SEASON}&league=${LEAGUE_ID}"
-          echo "assists: Fetching $FINAL_URL"
-
-          CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
-            -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
-            -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+          FINAL_URL="${URL_TOP_ASSISTS}&season=${SEASON}&league=${LEAGUE_ID}"
+          CODE=$(curl -sS --retry 3 --retry-delay 2 --retry-all-errors \
+            --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
+            -H "x-rapidapi-key: ${RAPIDAPI_KEY}" -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          echo "assists: http code=$CODE"
-          if [[ "$CODE" != "200" ]]; then
-            echo "assists: Non-200 ($CODE). Skipping write."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
-          if [[ "$OK" != "true" ]]; then
-            echo "assists: Unexpected payload (.response not array). Skipping write."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
+          if [[ "$CODE" != "200" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY"); if [[ "$OK" != "true" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
 
           TS=$(date -u +%FT%TZ)
           NORM=$(mktemp)
           jq --arg ts "$TS" '{assists: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
           if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
-            echo "assists: FORCE write."
-            mv "$NORM" "$OUT"
-            echo "changed=true" >> "$GITHUB_OUTPUT"
+            mv "$NORM" "$OUT"; echo "changed=true" >> "$GITHUB_OUTPUT"
           else
-            if ! cmp -s "$NORM" "$OUT"; then
-              echo "assists: Content changed. Updating $OUT."
-              mv "$NORM" "$OUT"
-              echo "changed=true" >> "$GITHUB_OUTPUT"
-            else
-              echo "assists: No content change. Skipping commit."
-              echo "changed=false" >> "$GITHUB_OUTPUT"
-            fi
+            if [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then mv "$NORM" "$OUT"; echo "changed=true" >> "$GITHUB_OUTPUT"; else echo "changed=false" >> "$GITHUB_OUTPUT"; fi
           fi
 
       # ---------------- TOP YELLOW CARDS ----------------
       - id: cards_yellow
-        name: Refresh top yellow cards (API-Football)
+        name: Refresh top yellow cards
         if: steps.post_window.outputs.trigger == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.event.schedule, '5 ')
         shell: bash
-        env:
-          BASE_URL: ${{ vars.URL_TOP_YELLOWS }}
-          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
-          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
-          LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}
-          SEASON: ${{ vars.SEASON_PL }}
         run: |
           set -euo pipefail
-
           OUT="data/football/premier-league/core/cards_yellow.json"
           TMPBODY="$(mktemp)"
+          if [[ -z "${URL_TOP_YELLOWS:-}" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
 
-          if [[ -z "${BASE_URL:-}" ]]; then
-            echo "cards_yellow: URL_TOP_YELLOWS is not set. Skipping."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          if [[ -z "${RAPIDAPI_KEY:-}" || -z "${RAPIDAPI_HOST:-}" ]]; then
-            echo "cards_yellow: RAPIDAPI credentials missing. Skipping."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          # Reuse if recent unless FORCE_REFRESH
           REUSE_MAX_AGE_MIN=180
           if [[ "${FORCE_REFRESH}" != "true" ]] && [[ -f "$OUT" ]]; then
             MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
-            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then
-              echo "cards_yellow: Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m). No fetch."
-              echo "changed=false" >> "$GITHUB_OUTPUT"
-              exit 0
-            else
-              echo "cards_yellow: Existing data is ${AGE_MIN}m old. Will fetch."
-            fi
-          else
-            echo "cards_yellow: FORCE_REFRESH=${FORCE_REFRESH}. Skipping reuse window check. Will fetch."
+            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
           fi
 
-          FINAL_URL="${BASE_URL}&season=${SEASON}&league=${LEAGUE_ID}"
-          echo "cards_yellow: Fetching $FINAL_URL"
-
-          CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
-            -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
-            -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+          FINAL_URL="${URL_TOP_YELLOWS}&season=${SEASON}&league=${LEAGUE_ID}"
+          CODE=$(curl -sS --retry 3 --retry-delay 2 --retry-all-errors \
+            --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
+            -H "x-rapidapi-key: ${RAPIDAPI_KEY}" -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          echo "cards_yellow: http code=$CODE"
-          if [[ "$CODE" != "200" ]]; then
-            echo "cards_yellow: Non-200 ($CODE). Skipping write."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
-          if [[ "$OK" != "true" ]]; then
-            echo "cards_yellow: Unexpected payload (.response not array). Skipping write."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
+          if [[ "$CODE" != "200" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY"); if [[ "$OK" != "true" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
 
           TS=$(date -u +%FT%TZ)
           NORM=$(mktemp)
           jq --arg ts "$TS" '{cards_yellow: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
           if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
-            echo "cards_yellow: FORCE write."
-            mv "$NORM" "$OUT"
-            echo "changed=true" >> "$GITHUB_OUTPUT"
+            mv "$NORM" "$OUT"; echo "changed=true" >> "$GITHUB_OUTPUT"
           else
-            if ! cmp -s "$NORM" "$OUT"; then
-              echo "cards_yellow: Content changed. Updating $OUT."
-              mv "$NORM" "$OUT"
-              echo "changed=true" >> "$GITHUB_OUTPUT"
-            else
-              echo "cards_yellow: No content change. Skipping commit."
-              echo "changed=false" >> "$GITHUB_OUTPUT"
-            fi
+            if [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then mv "$NORM" "$OUT"; echo "changed=true" >> "$GITHUB_OUTPUT"; else echo "changed=false" >> "$GITHUB_OUTPUT"; fi
           fi
 
       # ---------------- TOP RED CARDS ----------------
       - id: cards_red
-        name: Refresh top red cards (API-Football)
+        name: Refresh top red cards
         if: steps.post_window.outputs.trigger == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.event.schedule, '5 ')
         shell: bash
-        env:
-          BASE_URL: ${{ vars.URL_TOP_REDS }}
-          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
-          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
-          LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}
-          SEASON: ${{ vars.SEASON_PL }}
         run: |
           set -euo pipefail
-
           OUT="data/football/premier-league/core/cards_red.json"
           TMPBODY="$(mktemp)"
+          if [[ -z "${URL_TOP_REDS:-}" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
 
-          if [[ -z "${BASE_URL:-}" ]]; then
-            echo "cards_red: URL_TOP_REDS is not set. Skipping."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          if [[ -z "${RAPIDAPI_KEY:-}" || -z "${RAPIDAPI_HOST:-}" ]]; then
-            echo "cards_red: RAPIDAPI credentials missing. Skipping."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          # Reuse if recent unless FORCE_REFRESH
           REUSE_MAX_AGE_MIN=180
           if [[ "${FORCE_REFRESH}" != "true" ]] && [[ -f "$OUT" ]]; then
             MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
-            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then
-              echo "cards_red: Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m). No fetch."
-              echo "changed=false" >> "$GITHUB_OUTPUT"
-              exit 0
-            else
-              echo "cards_red: Existing data is ${AGE_MIN}m old. Will fetch."
-            fi
-          else
-            echo "cards_red: FORCE_REFRESH=${FORCE_REFRESH}. Skipping reuse window check. Will fetch."
+            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
           fi
 
-          FINAL_URL="${BASE_URL}&season=${SEASON}&league=${LEAGUE_ID}"
-          echo "cards_red: Fetching $FINAL_URL"
-
-          CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
-            -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
-            -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+          FINAL_URL="${URL_TOP_REDS}&season=${SEASON}&league=${LEAGUE_ID}"
+          CODE=$(curl -sS --retry 3 --retry-delay 2 --retry-all-errors \
+            --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
+            -H "x-rapidapi-key: ${RAPIDAPI_KEY}" -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          echo "cards_red: http code=$CODE"
-          if [[ "$CODE" != "200" ]]; then
-            echo "cards_red: Non-200 ($CODE). Skipping write."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
-          if [[ "$OK" != "true" ]]; then
-            echo "cards_red: Unexpected payload (.response not array). Skipping write."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
+          if [[ "$CODE" != "200" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY"); if [[ "$OK" != "true" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
 
           TS=$(date -u +%FT%TZ)
           NORM=$(mktemp)
           jq --arg ts "$TS" '{cards_red: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
           if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
-            echo "cards_red: FORCE write."
-            mv "$NORM" "$OUT"
-            echo "changed=true" >> "$GITHUB_OUTPUT"
+            mv "$NORM" "$OUT"; echo "changed=true" >> "$GITHUB_OUTPUT"
           else
-            if ! cmp -s "$NORM" "$OUT"; then
-              echo "cards_red: Content changed. Updating $OUT."
-              mv "$NORM" "$OUT"
-              echo "changed=true" >> "$GITHUB_OUTPUT"
-            else
-              echo "cards_red: No content change. Skipping commit."
-              echo "changed=false" >> "$GITHUB_OUTPUT"
-            fi
+            if [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then mv "$NORM" "$OUT"; echo "changed=true" >> "$GITHUB_OUTPUT"; else echo "changed=false" >> "$GITHUB_OUTPUT"; fi
           fi
 
       # ---------------- SEASON FIXTURES (full season) ----------------
       - id: fixtures_season
-        name: Refresh full season fixtures (API-Football)
+        name: Refresh full season fixtures
         if: steps.post_window.outputs.trigger == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.event.schedule, '5 ')
         shell: bash
-        env:
-          BASE_URL: ${{ vars.URL_FIXTURES }}
-          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
-          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
-          LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}
-          SEASON: ${{ vars.SEASON_PL }}
         run: |
           set -euo pipefail
-
           OUT="data/football/premier-league/fixtures/fixtures_season.json"
           TMPBODY="$(mktemp)"
+          if [[ -z "${URL_FIXTURES:-}" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
 
-          if [[ -z "${BASE_URL:-}" ]]; then
-            echo "fixtures_season: URL_FIXTURES is not set. Skipping."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          if [[ -z "${RAPIDAPI_KEY:-}" || -z "${RAPIDAPI_HOST:-}" ]]; then
-            echo "fixtures_season: RAPIDAPI credentials missing. Skipping."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          # Reuse if recent unless FORCE_REFRESH
           REUSE_MAX_AGE_MIN=720
           if [[ "${FORCE_REFRESH}" != "true" ]] && [[ -f "$OUT" ]]; then
             MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
-            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then
-              echo "fixtures_season: Reusing existing $OUT (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m). No fetch."
-              echo "changed=false" >> "$GITHUB_OUTPUT"
-              exit 0
-            else
-              echo "fixtures_season: Existing data is ${AGE_MIN}m old. Will fetch."
-            fi
-          else
-            echo "fixtures_season: FORCE_REFRESH=${FORCE_REFRESH}. Skipping reuse window check. Will fetch."
+            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
           fi
 
-          FINAL_URL="${BASE_URL}&league=${LEAGUE_ID}&season=${SEASON}"
-          echo "fixtures_season: Fetching $FINAL_URL"
-
-          CODE=$(curl -sS --connect-timeout 5 --max-time 35 -w "%{http_code}" -o "$TMPBODY" \
-            -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
-            -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+          FINAL_URL="${URL_FIXTURES}&league=${LEAGUE_ID}&season=${SEASON}"
+          CODE=$(curl -sS --retry 3 --retry-delay 2 --retry-all-errors \
+            --connect-timeout 5 --max-time 35 -w "%{http_code}" -o "$TMPBODY" \
+            -H "x-rapidapi-key: ${RAPIDAPI_KEY}" -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          echo "fixtures_season: http code=$CODE"
-          if [[ "$CODE" != "200" ]]; then
-            echo "fixtures_season: Non-200 ($CODE). Skipping write."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
-          if [[ "$OK" != "true" ]]; then
-            echo "fixtures_season: Unexpected payload (.response not array). Skipping write."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
+          if [[ "$CODE" != "200" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY"); if [[ "$OK" != "true" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
 
           TS=$(date -u +%FT%TZ)
           NORM=$(mktemp)
           jq --arg ts "$TS" '{matches: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
           if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
-            echo "fixtures_season: FORCE write."
-            mv "$NORM" "$OUT"
-            echo "changed=true" >> "$GITHUB_OUTPUT"
+            mv "$NORM" "$OUT"; echo "changed=true" >> "$GITHUB_OUTPUT"
           else
-            if ! cmp -s "$NORM" "$OUT"; then
-              echo "fixtures_season: Content changed. Updating $OUT."
-              mv "$NORM" "$OUT"
-              echo "changed=true" >> "$GITHUB_OUTPUT"
-            else
-              echo "fixtures_season: No content change. Skipping commit."
-              echo "changed=false" >> "$GITHUB_OUTPUT"
-            fi
+            if [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then mv "$NORM" "$OUT"; echo "changed=true" >> "$GITHUB_OUTPUT"; else echo "changed=false" >> "$GITHUB_OUTPUT"; fi
           fi
 
-      # ---------------- MATCH EVENTS (finished + live only) ----------------
-      - id: match_events
-        name: Refresh match events (API-Football)
+      # ---------------- MATCH DETAILS (FINISHED ONLY): timeline + lineups + stats ----------------
+      - id: match_details
+        name: Refresh match details for finished fixtures (events + lineups + stats)
         if: steps.post_window.outputs.trigger == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.event.schedule, '5 ')
         shell: bash
-        env:
-          EVENTS_BASE_URL: ${{ vars.URL_EVENTS }} # e.g. https://api-football-v1.p.rapidapi.com/v3/fixtures/events?fixture=
-          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
-          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
         run: |
           set -euo pipefail
 
           CHANGED=false
+          NOW=$(date -u +%s)
+          WINDOW_SEC=$((MATCHES_WINDOW_DAYS*24*3600))
 
-          if [[ -z "${EVENTS_BASE_URL:-}" ]]; then
-            echo "match_events: URL_EVENTS is not set. Skipping all event fetches."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          if [[ -z "${RAPIDAPI_KEY:-}" || -z "${RAPIDAPI_HOST:-}" ]]; then
-            echo "match_events: RAPIDAPI credentials missing. Skipping all event fetches."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
+          # Helper: millisecond sleep using perl; fallback to seconds
+          ms_sleep() {
+            local ms="$1"
+            if command -v perl >/dev/null 2>&1; then
+              perl -e "select(undef, undef, undef, ${ms}/1000.0);"
+            else
+              local sec=$(( (ms + 999) / 1000 ))
+              sleep "${sec}"
+            fi
+          }
 
+          # Finished-only statuses to avoid duplicating Live workflow
+          is_finished_status() {
+            case "$1" in
+              FT|AET|PEN) return 0 ;;
+              *) return 1 ;;
+            esac
+          }
+
+          # Collect candidates from fixtures sources
           declare -a SOURCES=(
             "data/football/premier-league/fixtures/fixtures_week.json"
             "data/football/premier-league/fixtures/fixtures_season.json"
           )
 
-          FOUND_SOURCE=false
-          for SRC in "${SOURCES[@]}"; do
-            if [[ -f "$SRC" ]]; then
-              echo "match_events: Found source $SRC"
-              FOUND_SOURCE=true
-            else
-              echo "match_events: Source missing $SRC (ok if not yet generated)"
-            fi
-          done
-          if [[ "$FOUND_SOURCE" == "false" ]]; then
-            echo "match_events: No source fixtures files present. Skipping."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          NOW=$(date -u +%s)
-          WINDOW_SEC=$((EVENTS_WINDOW_DAYS*24*3600))
-          echo "match_events: Considering finished/live fixtures within the last ${EVENTS_WINDOW_DAYS} days."
-
           TMPFIX="$(mktemp)"
           > "$TMPFIX"
 
+          FOUND=false
           for SRC in "${SOURCES[@]}"; do
             if [[ -f "$SRC" ]]; then
+              FOUND=true
               jq -r '.matches[]? | [.fixture.id, .fixture.date, .fixture.status.short] | @tsv' "$SRC" 2>/dev/null || true
             fi
           done | sort -u > "$TMPFIX"
 
-          if [[ ! -s "$TMPFIX" ]]; then
-            echo "match_events: No fixtures found in sources. Skipping."
+          if [[ "$FOUND" != "true" ]] || [[ ! -s "$TMPFIX" ]]; then
+            echo "match_details: No fixtures sources present or empty."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-
-          # Finished + live statuses
-          is_allowed_status() {
-            case "$1" in
-              FT|AET|PEN|1H|HT|2H|ET|BT|LIVE) return 0 ;;
-              *) return 1 ;;
-            esac
-          }
 
           TMP_ELIG="$(mktemp)"
           > "$TMP_ELIG"
 
           while IFS=$'\t' read -r FID FDATE STATUS; do
             [[ -z "$FID" ]] && continue
-            if ! is_allowed_status "$STATUS"; then
+            STATUS_UP=$(echo "$STATUS" | tr '[:lower:]' '[:upper:]')
+            if ! is_finished_status "$STATUS_UP"; then
               continue
             fi
+
             FTS=0
             if [[ -n "$FDATE" ]]; then
               FTS=$(date -u -d "$FDATE" +%s 2>/dev/null || echo "0")
@@ -803,132 +493,167 @@ jobs:
                 continue
               fi
             fi
-            echo -e "${FTS}\t${FID}\t${FDATE}\t${STATUS}" >> "$TMP_ELIG"
+
+            echo -e "${FTS}\t${FID}\t${FDATE}\t${STATUS_UP}" >> "$TMP_ELIG"
           done < "$TMPFIX"
 
           if [[ ! -s "$TMP_ELIG" ]]; then
-            echo "match_events: No eligible finished/live fixtures within window. Skipping."
+            echo "match_details: No eligible finished fixtures within window."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           TMP_BATCH="$(mktemp)"
-          sort -nr "$TMP_ELIG" | head -n "${MAX_EVENTS_PER_RUN}" > "$TMP_BATCH"
+          sort -nr "$TMP_ELIG" | head -n "${MAX_MATCHES_PER_RUN}" > "$TMP_BATCH"
           COUNT=$(wc -l < "$TMP_BATCH" | tr -d ' ')
-          echo "match_events: Will process up to ${COUNT} fixtures (cap=${MAX_EVENTS_PER_RUN})."
+          echo "match_details: Processing up to ${COUNT} finished fixtures (cap=${MAX_MATCHES_PER_RUN})."
 
-          # Helper: millisecond sleep using perl; fallback to seconds if perl not available
-          ms_sleep() {
-            local ms="$1"
-            if command -v perl >/dev/null 2>&1; then
-              perl -e "select(undef, undef, undef, ${ms}/1000.0);"
-            else
-              # Fallback: round up to nearest second
-              local sec=$(( (ms + 999) / 1000 ))
-              sleep "${sec}"
-            fi
-          }
+          fetch_one() {
+            local url="$1"
+            local out="$2"
 
-          PROCESSED=0
-          while IFS=$'\t' read -r FTS FID FDATE STATUS; do
-            OUT="data/football/premier-league/matches/${FID}.json"
-            TMPEVT="$(mktemp)"
-            FINAL_URL="${EVENTS_BASE_URL}${FID}"
+            local tmp="$(mktemp)"
+            local attempt=1
+            local code=""
 
-            echo "match_events: Fetching events for fixture=$FID (status=$STATUS): $FINAL_URL"
-
-            # Pace between requests
-            if [[ "${PER_REQUEST_SLEEP_MS}" -gt 0 ]]; then
-              ms_sleep "${PER_REQUEST_SLEEP_MS}"
-            fi
-
-            # Try up to 3 attempts on 429 with exponential backoff 2s, 4s
-            ATTEMPT=1
-            CODE=""
-            while (( ATTEMPT <= 3 )); do
-              CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPEVT" \
+            # up to 3 attempts on 429
+            while (( attempt <= 3 )); do
+              code=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$tmp" \
                 -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
                 -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
-                "$FINAL_URL" || true)
-              if [[ "$CODE" == "429" && "$ATTEMPT" -lt 3 ]]; then
-                BACKOFF=$((2**ATTEMPT))
-                echo "match_events: 429 for $FID (attempt ${ATTEMPT}). Backing off ${BACKOFF}s."
-                sleep "${BACKOFF}"
-                ATTEMPT=$((ATTEMPT+1))
+                "$url" || true)
+
+              if [[ "$code" == "429" && "$attempt" -lt 3 ]]; then
+                backoff=$((2**attempt))
+                echo "429 -> backoff ${backoff}s (attempt ${attempt})"
+                sleep "${backoff}"
+                attempt=$((attempt+1))
                 continue
               fi
               break
             done
 
-            if [[ "$CODE" != "200" ]]; then
-              echo "match_events: Fixture $FID skipped (HTTP $CODE)."
-              if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_EVENTS_EVEN_ON_ERRORS}" == "true" ]]; then
-                echo "match_events: FORCE_EVENTS_EVEN_ON_ERRORS=true: writing placeholder for $FID"
-                mkdir -p "$(dirname "$OUT")"
-                TS=$(date -u +%FT%TZ)
-                echo "{\"events\":[],\"meta\":{\"lastUpdatedUTC\":\"${TS}\",\"note\":\"placeholder due to HTTP ${CODE}\"}}" > "$OUT"
-                CHANGED=true
-                PROCESSED=$((PROCESSED+1))
-              fi
-              continue
+            if [[ "$code" != "200" ]]; then
+              rm -f "$tmp"
+              return 2
             fi
 
-            OK=$(jq -r '(.response | type) == "array"' "$TMPEVT" 2>/dev/null || echo "false")
-            if [[ "$OK" != "true" ]]; then
-              echo "match_events: Fixture $FID skipped (unexpected payload, .response not array)."
-              if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_EVENTS_EVEN_ON_ERRORS}" == "true" ]]; then
-                echo "match_events: FORCE_EVENTS_EVEN_ON_ERRORS=true: writing placeholder for $FID (bad payload)"
-                mkdir -p "$(dirname "$OUT")"
-                TS=$(date -u +%FT%TZ)
-                echo "{\"events\":[],\"meta\":{\"lastUpdatedUTC\":\"${TS}\",\"note\":\"placeholder due to unexpected payload\"}}" > "$OUT"
-                CHANGED=true
-                PROCESSED=$((PROCESSED+1))
-              fi
-              continue
+            local ok
+            ok=$(jq -r '(.response | type) == "array"' "$tmp" 2>/dev/null || echo "false")
+            if [[ "$ok" != "true" ]]; then
+              rm -f "$tmp"
+              return 3
             fi
 
-            TS=$(date -u +%FT%TZ)
-            NORM="$(mktemp)"
-            jq --arg ts "$TS" '{events: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPEVT" > "$NORM"
+            local ts norm
+            ts=$(date -u +%FT%TZ)
+            norm="$(mktemp)"
 
+            # Wrap already-normalized per file type
+            jq --arg ts "$ts" '{data: .response, meta: { lastUpdatedUTC: $ts }}' "$tmp" > "$norm"
+
+            mkdir -p "$(dirname "$out")"
             if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
-              mkdir -p "$(dirname "$OUT")"
-              mv "$NORM" "$OUT"
+              mv "$norm" "$out"
               CHANGED=true
-              PROCESSED=$((PROCESSED+1))
-              echo "match_events: FORCE write/updated $OUT"
             else
-              if [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then
-                mkdir -p "$(dirname "$OUT")"
-                mv "$NORM" "$OUT"
+              if [[ ! -f "$out" ]] || ! cmp -s "$norm" "$out"; then
+                mv "$norm" "$out"
                 CHANGED=true
-                PROCESSED=$((PROCESSED+1))
-                echo "match_events: Wrote/updated $OUT"
               else
-                echo "match_events: No change for $OUT"
+                rm -f "$norm"
               fi
             fi
+
+            rm -f "$tmp"
+            return 0
+          }
+
+          PROCESSED=0
+          while IFS=$'\t' read -r FTS FID FDATE STATUS; do
+            # Per-fixture folder
+            DIR="data/football/premier-league/matches/${FID}"
+            EVT_OUT="${DIR}/events.json"
+            LUP_OUT="${DIR}/lineups.json"
+            STA_OUT="${DIR}/stats.json"
+
+            echo "match_details: fixture=$FID status=$STATUS date=$FDATE"
+
+            # Pace between requests (applies to each call)
+            if [[ "${PER_REQUEST_SLEEP_MS}" -gt 0 ]]; then ms_sleep "${PER_REQUEST_SLEEP_MS}"; fi
+            if ! fetch_one "${EVENTS_BASE_URL}${FID}" "$EVT_OUT"; then
+              if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_MATCHES_EVEN_ON_ERRORS}" == "true" ]]; then
+                TS=$(date -u +%FT%TZ)
+                mkdir -p "$DIR"
+                echo "{\"data\":[],\"meta\":{\"lastUpdatedUTC\":\"${TS}\",\"note\":\"placeholder due to events fetch error\"}}" > "$EVT_OUT"
+                CHANGED=true
+              fi
+            fi
+
+            if [[ "${PER_REQUEST_SLEEP_MS}" -gt 0 ]]; then ms_sleep "${PER_REQUEST_SLEEP_MS}"; fi
+            if ! fetch_one "${LINEUPS_BASE_URL}${FID}" "$LUP_OUT"; then
+              if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_MATCHES_EVEN_ON_ERRORS}" == "true" ]]; then
+                TS=$(date -u +%FT%TZ)
+                mkdir -p "$DIR"
+                echo "{\"data\":[],\"meta\":{\"lastUpdatedUTC\":\"${TS}\",\"note\":\"placeholder due to lineups fetch error\"}}" > "$LUP_OUT"
+                CHANGED=true
+              fi
+            fi
+
+            if [[ "${PER_REQUEST_SLEEP_MS}" -gt 0 ]]; then ms_sleep "${PER_REQUEST_SLEEP_MS}"; fi
+            if ! fetch_one "${STATS_BASE_URL}${FID}" "$STA_OUT"; then
+              if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_MATCHES_EVEN_ON_ERRORS}" == "true" ]]; then
+                TS=$(date -u +%FT%TZ)
+                mkdir -p "$DIR"
+                echo "{\"data\":[],\"meta\":{\"lastUpdatedUTC\":\"${TS}\",\"note\":\"placeholder due to stats fetch error\"}}" > "$STA_OUT"
+                CHANGED=true
+              fi
+            fi
+
+            PROCESSED=$((PROCESSED+1))
           done < "$TMP_BATCH"
 
-          echo "match_events: Files written/updated: $PROCESSED"
+          echo "match_details: Processed fixtures: $PROCESSED"
+          echo "changed=${CHANGED}" >> "$GITHUB_OUTPUT"
 
-          if [[ "$CHANGED" == "true" ]]; then
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          fi
+      # ---------------- OPS SUMMARY ----------------
+      - id: ops_summary
+        name: Write ops summary
+        shell: bash
+        run: |
+          set -euo pipefail
+          TS=$(date -u +%FT%TZ)
+          jq -n \
+            --arg ts "$TS" \
+            --arg force "${FORCE_REFRESH}" \
+            --arg window "${MATCHES_WINDOW_DAYS}" \
+            --arg max "${MAX_MATCHES_PER_RUN}" \
+            '{
+              lastRunUTC: $ts,
+              forceRefresh: $force,
+              matchesWindowDays: ($window|tonumber),
+              maxMatchesPerRun: ($max|tonumber)
+            }' > data/ops/core_last_run.json
 
       - name: Commit & push
-        if: steps.fixtures.outputs.changed == 'true' || steps.standings.outputs.changed == 'true' || steps.scorers.outputs.changed == 'true' || steps.assists.outputs.changed == 'true' || steps.cards_yellow.outputs.changed == 'true' || steps.cards_red.outputs.changed == 'true' || steps.fixtures_season.outputs.changed == 'true' || steps.match_events.outputs.changed == 'true'
+        if: steps.fixtures.outputs.changed == 'true' ||
+            steps.standings.outputs.changed == 'true' ||
+            steps.scorers.outputs.changed == 'true' ||
+            steps.assists.outputs.changed == 'true' ||
+            steps.cards_yellow.outputs.changed == 'true' ||
+            steps.cards_red.outputs.changed == 'true' ||
+            steps.fixtures_season.outputs.changed == 'true' ||
+            steps.match_details.outputs.changed == 'true'
+        shell: bash
         run: |
+          set -euo pipefail
           git config user.name "pl-bot"
           git config user.email "pl-bot@users.noreply.github.com"
 
           git add data/football/premier-league/core/*.json || true
           git add data/football/premier-league/fixtures/*.json || true
-          git add data/football/premier-league/matches/*.json || true
-          git add data/football/premier-league/live/*.json || true
+          git add data/football/premier-league/matches/** || true
+          git add data/ops/core_last_run.json || true
 
-          git commit -m "Update core feeds (fixtures/standings/scorers/assists/cards/season/events with pacing, cap, and live+finished only)"
-          git push
-
+          git commit -m "Update core feeds + finished match details (events/lineups/stats)" || true
+          git push || true
