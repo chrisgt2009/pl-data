@@ -28,10 +28,11 @@ on:
         default: 7200
         required: false
       only_missing:
-        description: "Only fetch/write files that are missing (recommended for incremental enrichers)"
+        description: "Only fetch files that are missing (recommended)"
         type: boolean
         default: true
         required: false
+
   schedule:
     # Runs itself until done; safe cadence
     - cron: "17 */1 * * *"
@@ -45,7 +46,7 @@ jobs:
     timeout-minutes: 25
 
     env:
-      # Fixed target per your request
+      # Fixed target
       LEAGUE_ID: "39"
       SEASON: "2025"
 
@@ -230,7 +231,7 @@ jobs:
           SOFT="${{ inputs.soft_cap }}"
           if [[ -z "$SOFT" ]]; then SOFT=7200; fi
 
-          # Finished fixtures list (stable order oldest->newest)
+          # Build finished fixtures list (oldest->newest)
           LIST="$(mktemp)"
           jq -r '
             .matches[]?
@@ -266,16 +267,18 @@ jobs:
             perl -e "select(undef, undef, undef, ${ms}/1000.0);"
           }
 
-          # Returns:
-          #   0 => wrote/updated file (content changed)
-          #   1 => no change (file existed and identical)
-          #   10 => skipped because ONLY_MISSING and file exists
-          #   98 => soft cap reached
-          #   2/3 => error (http/payload)
+          # return codes:
+          #   0 = wrote/updated (changed)
+          #   1 = no change (already same)
+          #   10 = skipped (only_missing and file exists)
+          #   98 = soft cap reached
+          #   2 = http error
+          #   3 = payload error
           api_get_wrap() {
             local url="$1"
             local out="$2"
 
+            # skip if only_missing and file exists
             if [[ "$ONLY_MISSING" == "true" && -f "$out" ]]; then
               return 10
             fi
@@ -336,6 +339,26 @@ jobs:
           PROCESSED=0
           ADVANCED=0
 
+          call_and_handle() {
+            local url="$1"
+            local out="$2"
+            local label="$3"
+
+            local rc=0
+            api_get_wrap "$url" "$out" || rc=$?
+
+            case "$rc" in
+              0) ANY_CHANGED="true" ;;
+              1) : ;;      # unchanged
+              10) : ;;     # skipped (only_missing)
+              98) return 98 ;;
+              2) echo "WARN: $label HTTP error (skipping)";;
+              3) echo "WARN: $label bad payload (skipping)";;
+              *) echo "WARN: $label unexpected rc=$rc (skipping)";;
+            esac
+            return 0
+          }
+
           while IFS=$'\t' read -r FDATE FID; do
             [[ -z "$FID" ]] && continue
 
@@ -347,33 +370,25 @@ jobs:
 
             echo "Backfilling fixture=$FID date=$FDATE"
 
-            # events
             ms_sleep "$SLEEP_MS"
-            api_get_wrap "${EVENTS_BASE_URL}${FID}" "$EVT"
+            call_and_handle "${EVENTS_BASE_URL}${FID}" "$EVT" "events"
             rc=$?
             if [[ "$rc" == "98" ]]; then break; fi
-            if [[ "$rc" == "0" ]]; then ANY_CHANGED="true"; fi
 
-            # lineups
             ms_sleep "$SLEEP_MS"
-            api_get_wrap "${LINEUPS_BASE_URL}${FID}" "$LUP"
+            call_and_handle "${LINEUPS_BASE_URL}${FID}" "$LUP" "lineups"
             rc=$?
             if [[ "$rc" == "98" ]]; then break; fi
-            if [[ "$rc" == "0" ]]; then ANY_CHANGED="true"; fi
 
-            # stats
             ms_sleep "$SLEEP_MS"
-            api_get_wrap "${STATS_BASE_URL}${FID}" "$STA"
+            call_and_handle "${STATS_BASE_URL}${FID}" "$STA" "stats"
             rc=$?
             if [[ "$rc" == "98" ]]; then break; fi
-            if [[ "$rc" == "0" ]]; then ANY_CHANGED="true"; fi
 
-            # players statistics (per match)
             ms_sleep "$SLEEP_MS"
-            api_get_wrap "${PLAYERS_BASE_URL}${FID}" "$PLY"
+            call_and_handle "${PLAYERS_BASE_URL}${FID}" "$PLY" "players"
             rc=$?
             if [[ "$rc" == "98" ]]; then break; fi
-            if [[ "$rc" == "0" ]]; then ANY_CHANGED="true"; fi
 
             PROCESSED=$((PROCESSED + 1))
             ADVANCED=$((ADVANCED + 1))
@@ -409,6 +424,7 @@ jobs:
 
           git commit -m "Backfill PL 39/2025 finished match details (events/lineups/stats/players)" || true
           git push || true
+
 
 
 
