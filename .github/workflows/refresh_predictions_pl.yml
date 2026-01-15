@@ -1,0 +1,300 @@
+name: Refresh Predictions (Premier League)
+
+concurrency:
+  group: pl-data-commit
+  cancel-in-progress: false
+
+on:
+  workflow_dispatch:
+    inputs:
+      force_refresh:
+        description: "Force refresh even if predictions file is recent"
+        type: boolean
+        default: false
+        required: false
+      force_write_on_dispatch:
+        description: "Write outputs even if content unchanged (manual runs)"
+        type: boolean
+        default: false
+        required: false
+      lookahead_days:
+        description: "How many days ahead to fetch predictions for"
+        type: number
+        default: 7
+        required: false
+      max_fixtures_per_run:
+        description: "Safety cap: max fixtures to process in one run"
+        type: number
+        default: 25
+        required: false
+      per_request_sleep_ms:
+        description: "Sleep between requests (milliseconds)"
+        type: number
+        default: 250
+        required: false
+      reuse_max_age_min:
+        description: "Reuse predictions file if newer than this (minutes)"
+        type: number
+        default: 360
+        required: false
+  schedule:
+    # Every 6 hours
+    - cron: "15 */6 * * *"
+    # Optional: add an hourly window on matchdays if you want later
+    # - cron: "35 10-23 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  predictions:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_REFRESH: ${{ inputs.force_refresh && 'true' || 'false' }}
+      FORCE_WRITE_ON_DISPATCH: ${{ inputs.force_write_on_dispatch && 'true' || 'false' }}
+      LOOKAHEAD_DAYS: ${{ inputs.lookahead_days != '' && inputs.lookahead_days || 7 }}
+      MAX_FIXTURES_PER_RUN: ${{ inputs.max_fixtures_per_run != '' && inputs.max_fixtures_per_run || 25 }}
+      PER_REQUEST_SLEEP_MS: ${{ inputs.per_request_sleep_ms != '' && inputs.per_request_sleep_ms || 250 }}
+      REUSE_MAX_AGE_MIN: ${{ inputs.reuse_max_age_min != '' && inputs.reuse_max_age_min || 360 }}
+
+      # API credentials
+      RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+      RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
+
+      # PL identifiers
+      LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}     # 39
+      SEASON: ${{ vars.SEASON_PL }}           # 2025
+
+      # Base endpoint (API-Sports)
+      PREDICTIONS_URL: "https://v3.football.api-sports.io/predictions?fixture="
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install jq and perl
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq perl
+
+      - name: Ensure folders
+        run: |
+          mkdir -p data/football/premier-league/fixtures
+          mkdir -p data/football/premier-league/matches
+          mkdir -p data/ops
+
+      - id: ensure_source
+        name: Ensure fixtures source exists
+        shell: bash
+        run: |
+          set -euo pipefail
+          FIX="data/football/premier-league/fixtures/fixtures_week.json"
+          if [[ ! -f "$FIX" ]]; then
+            echo "fixtures_week.json not found. Run Refresh Core (PL) first or ensure it is committed."
+            echo "has_source=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "has_source=true" >> "$GITHUB_OUTPUT"
+
+      - id: select_fixtures
+        name: Select upcoming PL fixtures to enrich (next N days)
+        if: steps.ensure_source.outputs.has_source == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          FIX="data/football/premier-league/fixtures/fixtures_week.json"
+          OUTLIST="data/ops/predictions_targets_pl.txt"
+
+          NOW_UTC=$(date -u +%s)
+          END_UTC=$(( NOW_UTC + (LOOKAHEAD_DAYS * 24 * 3600) ))
+
+          # Make a stable list of fixture IDs within lookahead window
+          # statuses included: NS (not started), TBD, PST (postponed) etc. but we only care that it's upcoming by date.
+          jq -r --argjson now "$NOW_UTC" --argjson end "$END_UTC" '
+            def to_ts($s):
+              (try ($s
+                    | sub("\\.[0-9]{3}Z$"; "Z")
+                    | strptime("%Y-%m-%dT%H:%M:%S%z")
+                    | mktime) catch null);
+
+            [.matches[]?
+              | select(.league.id == (env.LEAGUE_ID|tonumber))
+              | .fixture.date as $d
+              | to_ts($d) as $ts
+              | select($ts != null and $ts >= $now and $ts <= $end)
+              | [$ts, (.fixture.id|tostring)]
+            ]
+            | sort_by(.[0])
+            | .[]
+            | .[1]
+          ' "$FIX" | head -n "${MAX_FIXTURES_PER_RUN}" > "$OUTLIST"
+
+          COUNT=$(wc -l < "$OUTLIST" | tr -d ' ')
+          echo "Selected $COUNT fixtures for predictions."
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+          echo "list=$OUTLIST" >> "$GITHUB_OUTPUT"
+
+      - id: fetch_predictions
+        name: Fetch predictions per fixture (with reuse window + backoff)
+        if: steps.select_fixtures.outputs.count != '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          LIST="${{ steps.select_fixtures.outputs.list }}"
+          CHANGED=false
+
+          ms_sleep() {
+            local ms="$1"
+            if command -v perl >/dev/null 2>&1; then
+              perl -e "select(undef, undef, undef, ${ms}/1000.0);"
+            else
+              local sec=$(( (ms + 999) / 1000 ))
+              sleep "${sec}"
+            fi
+          }
+
+          should_reuse() {
+            local f="$1"
+            local max_age_min="$2"
+            [[ ! -f "$f" ]] && return 1
+            local mtime now age_min
+            mtime=$(stat -c %Y "$f" 2>/dev/null || stat -f %m "$f" 2>/dev/null || echo 0)
+            now=$(date +%s)
+            age_min=$(( (now - mtime) / 60 ))
+            (( age_min < max_age_min ))
+          }
+
+          trim_payload() {
+            # Reads full API body from stdin, outputs trimmed JSON to stdout
+            # Keep only what you need for UI + meta timestamp.
+            local ts="$1"
+            jq --arg ts "$ts" '
+              .response[0] as $r
+              | {
+                  fixture: {
+                    id: ($r.h2h[0].fixture.id? // null)
+                  },
+                  predictions: {
+                    winner: ($r.predictions.winner // null),
+                    win_or_draw: ($r.predictions.win_or_draw // null),
+                    under_over: ($r.predictions.under_over // null),
+                    goals: ($r.predictions.goals // null),
+                    advice: ($r.predictions.advice // null),
+                    percent: ($r.predictions.percent // null)
+                  },
+                  teams: {
+                    home: {
+                      id: ($r.teams.home.id // null),
+                      name: ($r.teams.home.name // null),
+                      last_5: ($r.teams.home.last_5 // null)
+                    },
+                    away: {
+                      id: ($r.teams.away.id // null),
+                      name: ($r.teams.away.name // null),
+                      last_5: ($r.teams.away.last_5 // null)
+                    }
+                  },
+                  comparison: ($r.comparison // null),
+                  h2h_last3: (
+                    ($r.h2h // [])
+                    | sort_by(.fixture.timestamp // 0)
+                    | reverse
+                    | .[0:3]
+                    | map({
+                        fixture_id: .fixture.id,
+                        date: .fixture.date,
+                        status: .fixture.status.short,
+                        home: { id: .teams.home.id, name: .teams.home.name, goals: .goals.home, winner: .teams.home.winner },
+                        away: { id: .teams.away.id, name: .teams.away.name, goals: .goals.away, winner: .teams.away.winner }
+                      })
+                  ),
+                  meta: { lastUpdatedUTC: $ts }
+                }
+            '
+          }
+
+          while read -r FID; do
+            [[ -z "$FID" ]] && continue
+
+            OUTDIR="data/football/premier-league/matches/${FID}"
+            OUTFILE="${OUTDIR}/predictions.json"
+
+            # reuse window
+            if [[ "${FORCE_REFRESH}" != "true" ]] && should_reuse "$OUTFILE" "${REUSE_MAX_AGE_MIN}"; then
+              echo "predictions: Reusing $OUTFILE (younger than ${REUSE_MAX_AGE_MIN}m)"
+              continue
+            fi
+
+            mkdir -p "$OUTDIR"
+
+            URL="${PREDICTIONS_URL}${FID}"
+            echo "predictions: Fetching fixture=$FID -> $URL"
+
+            ms_sleep "${PER_REQUEST_SLEEP_MS}"
+
+            TMPBODY="$(mktemp)"
+            CODE=""
+            ATTEMPT=1
+            while (( ATTEMPT <= 3 )); do
+              CODE=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$TMPBODY" \
+                -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
+                -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+                "$URL" || true)
+
+              if [[ "$CODE" == "429" && "$ATTEMPT" -lt 3 ]]; then
+                BACKOFF=$((2**ATTEMPT))
+                echo "predictions: 429 for $FID (attempt $ATTEMPT). Backoff ${BACKOFF}s."
+                sleep "$BACKOFF"
+                ATTEMPT=$((ATTEMPT+1))
+                continue
+              fi
+              break
+            done
+
+            if [[ "$CODE" != "200" ]]; then
+              echo "predictions: HTTP $CODE for fixture=$FID. Skipping."
+              continue
+            fi
+
+            OK=$(jq -r '(.response | type) == "array" and (.response | length) > 0' "$TMPBODY" 2>/dev/null || echo "false")
+            if [[ "$OK" != "true" ]]; then
+              echo "predictions: No prediction available for fixture=$FID (.response empty). Skipping."
+              continue
+            fi
+
+            TS=$(date -u +%FT%TZ)
+            NORM="$(mktemp)"
+            cat "$TMPBODY" | trim_payload "$TS" > "$NORM"
+
+            if [[ "${FORCE_WRITE_ON_DISPATCH}" == "true" && "${GITHUB_EVENT_NAME:-}" == "workflow_dispatch" ]]; then
+              mv "$NORM" "$OUTFILE"
+              CHANGED=true
+              echo "predictions: FORCE wrote $OUTFILE"
+            else
+              if [[ ! -f "$OUTFILE" ]] || ! cmp -s "$NORM" "$OUTFILE"; then
+                mv "$NORM" "$OUTFILE"
+                CHANGED=true
+                echo "predictions: Wrote/updated $OUTFILE"
+              else
+                echo "predictions: No change for $OUTFILE"
+                rm -f "$NORM"
+              fi
+            fi
+          done < "$LIST"
+
+          echo "changed=$CHANGED" >> "$GITHUB_OUTPUT"
+
+      - name: Commit & push
+        if: steps.fetch_predictions.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "pl-bot"
+          git config user.email "pl-bot@users.noreply.github.com"
+
+          git add data/football/premier-league/matches/**/predictions.json || true
+          git add data/ops/predictions_targets_pl.txt || true
+
+          git commit -m "Update PL predictions (next ${LOOKAHEAD_DAYS} days)" || true
+          git push || true
