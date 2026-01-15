@@ -27,6 +27,11 @@ on:
         type: number
         default: 7200
         required: false
+      only_missing:
+        description: "Only fetch/write files that are missing (recommended for incremental enrichers)"
+        type: boolean
+        default: true
+        required: false
   schedule:
     # Runs itself until done; safe cadence
     - cron: "17 */1 * * *"
@@ -49,10 +54,11 @@ jobs:
       RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
       RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
 
-      # Exact API-Sports endpoints for match details
+      # API-Sports endpoints for match details
       EVENTS_BASE_URL: "https://v3.football.api-sports.io/fixtures/events?fixture="
       LINEUPS_BASE_URL: "https://v3.football.api-sports.io/fixtures/lineups?fixture="
       STATS_BASE_URL: "https://v3.football.api-sports.io/fixtures/statistics?fixture="
+      PLAYERS_BASE_URL: "https://v3.football.api-sports.io/fixtures/players?fixture="
 
     steps:
       - name: Checkout repository
@@ -196,7 +202,7 @@ jobs:
           fi
 
       - id: backfill_batch
-        name: Backfill finished fixtures batch (events + lineups + stats)
+        name: Backfill finished fixtures batch (events + lineups + stats + players)
         if: steps.guard.outputs.skip != 'true'
         shell: bash
         run: |
@@ -215,6 +221,8 @@ jobs:
           if [[ -z "$BATCH" ]]; then BATCH=40; fi
           SLEEP_MS="${{ inputs.per_request_sleep_ms }}"
           if [[ -z "$SLEEP_MS" ]]; then SLEEP_MS=200; fi
+          ONLY_MISSING="${{ inputs.only_missing }}"
+          if [[ -z "$ONLY_MISSING" ]]; then ONLY_MISSING="true"; fi
 
           # state
           CURSOR=$(jq -r '.cursor // 0' "$STATE")
@@ -222,8 +230,7 @@ jobs:
           SOFT="${{ inputs.soft_cap }}"
           if [[ -z "$SOFT" ]]; then SOFT=7200; fi
 
-          # Build finished fixtures list in stable order (oldest->newest by date)
-          # Finished statuses only: FT/AET/PEN
+          # Finished fixtures list (stable order oldest->newest)
           LIST="$(mktemp)"
           jq -r '
             .matches[]?
@@ -245,7 +252,6 @@ jobs:
             exit 0
           fi
 
-          # Take batch slice starting at CURSOR
           SLICE="$(mktemp)"
           tail -n +$((CURSOR + 1)) "$LIST" | head -n "$BATCH" > "$SLICE"
           N=$(wc -l < "$SLICE" | tr -d " ")
@@ -253,33 +259,41 @@ jobs:
           echo "TOTAL finished fixtures: $TOTAL"
           echo "Cursor: $CURSOR"
           echo "Batch size: $N"
+          echo "ONLY_MISSING: $ONLY_MISSING"
 
           ms_sleep() {
             local ms="$1"
             perl -e "select(undef, undef, undef, ${ms}/1000.0);"
           }
 
+          # Returns:
+          #   0 => wrote/updated file (content changed)
+          #   1 => no change (file existed and identical)
+          #   10 => skipped because ONLY_MISSING and file exists
+          #   98 => soft cap reached
+          #   2/3 => error (http/payload)
           api_get_wrap() {
             local url="$1"
             local out="$2"
 
-            # soft cap guard mid-run
+            if [[ "$ONLY_MISSING" == "true" && -f "$out" ]]; then
+              return 10
+            fi
+
             if (( COUNT >= SOFT )); then
               return 98
             fi
 
             local tmpbody; tmpbody="$(mktemp)"
             local code=""
-
-            # 429 backoff attempts
             local attempt=1
+
             while (( attempt <= 3 )); do
               code=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$tmpbody" \
                 -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
                 -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
                 "$url" || true)
 
-              # increment call count for every request attempt that returns an HTTP code
               COUNT=$((COUNT + 1))
 
               if [[ "$code" == "429" && "$attempt" -lt 3 ]]; then
@@ -329,29 +343,37 @@ jobs:
             EVT="${DIR}/events.json"
             LUP="${DIR}/lineups.json"
             STA="${DIR}/stats.json"
+            PLY="${DIR}/players.json"
 
             echo "Backfilling fixture=$FID date=$FDATE"
 
             # events
             ms_sleep "$SLEEP_MS"
-            if api_get_wrap "${EVENTS_BASE_URL}${FID}" "$EVT"; then
-              ANY_CHANGED="true"
-            fi
-            if [[ "$?" == "98" ]]; then break; fi
+            api_get_wrap "${EVENTS_BASE_URL}${FID}" "$EVT"
+            rc=$?
+            if [[ "$rc" == "98" ]]; then break; fi
+            if [[ "$rc" == "0" ]]; then ANY_CHANGED="true"; fi
 
             # lineups
             ms_sleep "$SLEEP_MS"
-            if api_get_wrap "${LINEUPS_BASE_URL}${FID}" "$LUP"; then
-              ANY_CHANGED="true"
-            fi
-            if [[ "$?" == "98" ]]; then break; fi
+            api_get_wrap "${LINEUPS_BASE_URL}${FID}" "$LUP"
+            rc=$?
+            if [[ "$rc" == "98" ]]; then break; fi
+            if [[ "$rc" == "0" ]]; then ANY_CHANGED="true"; fi
 
             # stats
             ms_sleep "$SLEEP_MS"
-            if api_get_wrap "${STATS_BASE_URL}${FID}" "$STA"; then
-              ANY_CHANGED="true"
-            fi
-            if [[ "$?" == "98" ]]; then break; fi
+            api_get_wrap "${STATS_BASE_URL}${FID}" "$STA"
+            rc=$?
+            if [[ "$rc" == "98" ]]; then break; fi
+            if [[ "$rc" == "0" ]]; then ANY_CHANGED="true"; fi
+
+            # players statistics (per match)
+            ms_sleep "$SLEEP_MS"
+            api_get_wrap "${PLAYERS_BASE_URL}${FID}" "$PLY"
+            rc=$?
+            if [[ "$rc" == "98" ]]; then break; fi
+            if [[ "$rc" == "0" ]]; then ANY_CHANGED="true"; fi
 
             PROCESSED=$((PROCESSED + 1))
             ADVANCED=$((ADVANCED + 1))
@@ -385,5 +407,403 @@ jobs:
           git add data/football/premier-league/matches/** || true
           git add data/ops/backfill_pl_39_2025.json || true
 
-          git commit -m "Backfill PL 39/2025 finished match details (batch)" || true
+          git commit -m "Backfill PL 39/2025 finished match details (events/lineups/stats/players)" || true
           git push || true
+
+
+
+
+
+
+
+
+
+# name: Backfill PL Season 39/2025 (Finished Match Details)
+
+# concurrency:
+#   group: pl-season-backfill-39-2025
+#   cancel-in-progress: true
+
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       reset_cursor:
+#         description: "Reset cursor to start from the beginning (does not delete files)"
+#         type: boolean
+#         default: false
+#         required: false
+#       batch_fixtures:
+#         description: "How many fixtures to process per run"
+#         type: number
+#         default: 40
+#         required: false
+#       per_request_sleep_ms:
+#         description: "Sleep between API requests (milliseconds)"
+#         type: number
+#         default: 200
+#         required: false
+#       soft_cap:
+#         description: "Daily soft cap for API calls (<= 7500/day)"
+#         type: number
+#         default: 7200
+#         required: false
+#   schedule:
+#     # Runs itself until done; safe cadence
+#     - cron: "17 */1 * * *"
+
+# permissions:
+#   contents: write
+
+# jobs:
+#   backfill:
+#     runs-on: ubuntu-latest
+#     timeout-minutes: 25
+
+#     env:
+#       # Fixed target per your request
+#       LEAGUE_ID: "39"
+#       SEASON: "2025"
+
+#       # Your existing vars/secrets
+#       URL_FIXTURES: ${{ vars.URL_FIXTURES }}
+#       RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+#       RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
+
+#       # Exact API-Sports endpoints for match details
+#       EVENTS_BASE_URL: "https://v3.football.api-sports.io/fixtures/events?fixture="
+#       LINEUPS_BASE_URL: "https://v3.football.api-sports.io/fixtures/lineups?fixture="
+#       STATS_BASE_URL: "https://v3.football.api-sports.io/fixtures/statistics?fixture="
+
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+
+#       - name: Install jq and perl
+#         run: |
+#           sudo apt-get update
+#           sudo apt-get install -y jq perl
+
+#       - name: Ensure folders
+#         run: |
+#           mkdir -p data/football/premier-league/fixtures
+#           mkdir -p data/football/premier-league/matches
+#           mkdir -p data/ops
+
+#       - id: load_state
+#         name: Load/reset backfill state
+#         shell: bash
+#         run: |
+#           set -euo pipefail
+
+#           STATE="data/ops/backfill_pl_39_2025.json"
+#           TODAY=$(TZ=Europe/London date +%F)
+
+#           if [[ -f "$STATE" ]]; then
+#             CURSOR=$(jq -r '.cursor // 0' "$STATE")
+#             COUNT=$(jq -r '.count // 0' "$STATE")
+#             DATE=$(jq -r '.date // ""' "$STATE")
+#             DONE=$(jq -r '.done // false' "$STATE")
+#           else
+#             CURSOR=0
+#             COUNT=0
+#             DATE="$TODAY"
+#             DONE="false"
+#           fi
+
+#           # reset daily counter if date changed
+#           if [[ "$DATE" != "$TODAY" ]]; then
+#             COUNT=0
+#             DATE="$TODAY"
+#           fi
+
+#           # optional cursor reset (manual)
+#           if [[ "${{ inputs.reset_cursor }}" == "true" ]]; then
+#             CURSOR=0
+#             DONE="false"
+#           fi
+
+#           jq -n \
+#             --arg date "$DATE" \
+#             --argjson count "$COUNT" \
+#             --argjson cursor "$CURSOR" \
+#             --argjson done "$DONE" \
+#             '{
+#               date: $date,
+#               count: $count,
+#               cursor: $cursor,
+#               done: $done
+#             }' > "$STATE"
+
+#           echo "state_file=$STATE" >> "$GITHUB_OUTPUT"
+#           echo "cursor=$CURSOR" >> "$GITHUB_OUTPUT"
+#           echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+#           echo "done=$DONE" >> "$GITHUB_OUTPUT"
+
+#       - id: guard
+#         name: Stop if already done or over soft cap
+#         shell: bash
+#         run: |
+#           set -euo pipefail
+#           STATE="${{ steps.load_state.outputs.state_file }}"
+#           COUNT=$(jq -r '.count // 0' "$STATE")
+#           DONE=$(jq -r '.done // false' "$STATE")
+
+#           SOFT="${{ inputs.soft_cap }}"
+#           if [[ -z "$SOFT" ]]; then SOFT=7200; fi
+
+#           if [[ "$DONE" == "true" ]]; then
+#             echo "skip=true" >> "$GITHUB_OUTPUT"
+#             echo "Backfill already marked done."
+#             exit 0
+#           fi
+
+#           if (( COUNT >= SOFT )); then
+#             echo "skip=true" >> "$GITHUB_OUTPUT"
+#             echo "Daily soft cap reached (count=$COUNT soft=$SOFT)."
+#             exit 0
+#           fi
+
+#           echo "skip=false" >> "$GITHUB_OUTPUT"
+
+#       - id: refresh_fixtures_season
+#         name: Refresh full season fixtures (source list)
+#         if: steps.guard.outputs.skip != 'true'
+#         shell: bash
+#         run: |
+#           set -euo pipefail
+
+#           OUT="data/football/premier-league/fixtures/fixtures_season.json"
+#           TMPBODY="$(mktemp)"
+
+#           if [[ -z "${URL_FIXTURES:-}" ]]; then
+#             echo "URL_FIXTURES not set; cannot backfill without season fixture list."
+#             exit 1
+#           fi
+#           if [[ -z "${RAPIDAPI_KEY:-}" || -z "${RAPIDAPI_HOST:-}" ]]; then
+#             echo "RapidAPI credentials missing."
+#             exit 1
+#           fi
+
+#           FINAL_URL="${URL_FIXTURES}&league=${LEAGUE_ID}&season=${SEASON}"
+#           echo "Fetching: $FINAL_URL"
+
+#           CODE=$(curl -sS --retry 3 --retry-delay 2 --retry-all-errors \
+#             --connect-timeout 5 --max-time 35 -w "%{http_code}" -o "$TMPBODY" \
+#             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
+#             -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+#             "$FINAL_URL" || true)
+
+#           if [[ "$CODE" != "200" ]]; then
+#             echo "fixtures_season: Non-200 ($CODE)"
+#             exit 1
+#           fi
+
+#           OK=$(jq -r '(.response | type) == "array"' "$TMPBODY")
+#           if [[ "$OK" != "true" ]]; then
+#             echo "fixtures_season: Bad payload (.response not array)"
+#             exit 1
+#           fi
+
+#           TS=$(date -u +%FT%TZ)
+#           NORM=$(mktemp)
+#           jq --arg ts "$TS" '{matches: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
+
+#           if [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then
+#             mv "$NORM" "$OUT"
+#             echo "changed=true" >> "$GITHUB_OUTPUT"
+#           else
+#             echo "changed=false" >> "$GITHUB_OUTPUT"
+#           fi
+
+#       - id: backfill_batch
+#         name: Backfill finished fixtures batch (events + lineups + stats)
+#         if: steps.guard.outputs.skip != 'true'
+#         shell: bash
+#         run: |
+#           set -euo pipefail
+
+#           STATE="${{ steps.load_state.outputs.state_file }}"
+#           FIX="data/football/premier-league/fixtures/fixtures_season.json"
+
+#           if [[ ! -f "$FIX" ]]; then
+#             echo "Missing $FIX"
+#             exit 1
+#           fi
+
+#           # inputs
+#           BATCH="${{ inputs.batch_fixtures }}"
+#           if [[ -z "$BATCH" ]]; then BATCH=40; fi
+#           SLEEP_MS="${{ inputs.per_request_sleep_ms }}"
+#           if [[ -z "$SLEEP_MS" ]]; then SLEEP_MS=200; fi
+
+#           # state
+#           CURSOR=$(jq -r '.cursor // 0' "$STATE")
+#           COUNT=$(jq -r '.count // 0' "$STATE")
+#           SOFT="${{ inputs.soft_cap }}"
+#           if [[ -z "$SOFT" ]]; then SOFT=7200; fi
+
+#           # Build finished fixtures list in stable order (oldest->newest by date)
+#           # Finished statuses only: FT/AET/PEN
+#           LIST="$(mktemp)"
+#           jq -r '
+#             .matches[]?
+#             | select((.fixture.status.short // "" | ascii_upcase) as $s | ($s=="FT" or $s=="AET" or $s=="PEN"))
+#             | [.fixture.date, (.fixture.id|tostring)] | @tsv
+#           ' "$FIX" | sort > "$LIST"
+
+#           TOTAL=$(wc -l < "$LIST" | tr -d " ")
+#           if (( TOTAL == 0 )); then
+#             echo "No finished fixtures found in season file yet."
+#             echo "changed=false" >> "$GITHUB_OUTPUT"
+#             exit 0
+#           fi
+
+#           if (( CURSOR >= TOTAL )); then
+#             jq '.done = true' "$STATE" > "$STATE.tmp" && mv "$STATE.tmp" "$STATE"
+#             echo "Reached end of finished fixture list. Marking done."
+#             echo "changed=true" >> "$GITHUB_OUTPUT"
+#             exit 0
+#           fi
+
+#           # Take batch slice starting at CURSOR
+#           SLICE="$(mktemp)"
+#           tail -n +$((CURSOR + 1)) "$LIST" | head -n "$BATCH" > "$SLICE"
+#           N=$(wc -l < "$SLICE" | tr -d " ")
+
+#           echo "TOTAL finished fixtures: $TOTAL"
+#           echo "Cursor: $CURSOR"
+#           echo "Batch size: $N"
+
+#           ms_sleep() {
+#             local ms="$1"
+#             perl -e "select(undef, undef, undef, ${ms}/1000.0);"
+#           }
+
+#           api_get_wrap() {
+#             local url="$1"
+#             local out="$2"
+
+#             # soft cap guard mid-run
+#             if (( COUNT >= SOFT )); then
+#               return 98
+#             fi
+
+#             local tmpbody; tmpbody="$(mktemp)"
+#             local code=""
+
+#             # 429 backoff attempts
+#             local attempt=1
+#             while (( attempt <= 3 )); do
+#               code=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$tmpbody" \
+#                 -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
+#                 -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+#                 "$url" || true)
+
+#               # increment call count for every request attempt that returns an HTTP code
+#               COUNT=$((COUNT + 1))
+
+#               if [[ "$code" == "429" && "$attempt" -lt 3 ]]; then
+#                 backoff=$((2**attempt))
+#                 sleep "$backoff"
+#                 attempt=$((attempt + 1))
+#                 continue
+#               fi
+#               break
+#             done
+
+#             if [[ "$code" != "200" ]]; then
+#               rm -f "$tmpbody"
+#               return 2
+#             fi
+
+#             local ok
+#             ok=$(jq -r '(.response | type) == "array"' "$tmpbody" 2>/dev/null || echo "false")
+#             if [[ "$ok" != "true" ]]; then
+#               rm -f "$tmpbody"
+#               return 3
+#             fi
+
+#             local ts norm
+#             ts=$(date -u +%FT%TZ)
+#             norm="$(mktemp)"
+#             jq --arg ts "$ts" '{data: .response, meta: { lastUpdatedUTC: $ts }}' "$tmpbody" > "$norm"
+
+#             mkdir -p "$(dirname "$out")"
+#             if [[ ! -f "$out" ]] || ! cmp -s "$norm" "$out"; then
+#               mv "$norm" "$out"
+#               return 0
+#             else
+#               rm -f "$norm"
+#               return 1
+#             fi
+#           }
+
+#           ANY_CHANGED="false"
+#           PROCESSED=0
+#           ADVANCED=0
+
+#           while IFS=$'\t' read -r FDATE FID; do
+#             [[ -z "$FID" ]] && continue
+
+#             DIR="data/football/premier-league/matches/${FID}"
+#             EVT="${DIR}/events.json"
+#             LUP="${DIR}/lineups.json"
+#             STA="${DIR}/stats.json"
+
+#             echo "Backfilling fixture=$FID date=$FDATE"
+
+#             # events
+#             ms_sleep "$SLEEP_MS"
+#             if api_get_wrap "${EVENTS_BASE_URL}${FID}" "$EVT"; then
+#               ANY_CHANGED="true"
+#             fi
+#             if [[ "$?" == "98" ]]; then break; fi
+
+#             # lineups
+#             ms_sleep "$SLEEP_MS"
+#             if api_get_wrap "${LINEUPS_BASE_URL}${FID}" "$LUP"; then
+#               ANY_CHANGED="true"
+#             fi
+#             if [[ "$?" == "98" ]]; then break; fi
+
+#             # stats
+#             ms_sleep "$SLEEP_MS"
+#             if api_get_wrap "${STATS_BASE_URL}${FID}" "$STA"; then
+#               ANY_CHANGED="true"
+#             fi
+#             if [[ "$?" == "98" ]]; then break; fi
+
+#             PROCESSED=$((PROCESSED + 1))
+#             ADVANCED=$((ADVANCED + 1))
+#           done < "$SLICE"
+
+#           NEW_CURSOR=$((CURSOR + ADVANCED))
+#           DONE=false
+#           if (( NEW_CURSOR >= TOTAL )); then DONE=true; fi
+
+#           jq \
+#             --argjson count "$COUNT" \
+#             --argjson cursor "$NEW_CURSOR" \
+#             --argjson done "$DONE" \
+#             '.count=$count | .cursor=$cursor | .done=$done' \
+#             "$STATE" > "$STATE.tmp" && mv "$STATE.tmp" "$STATE"
+
+#           echo "Processed fixtures: $PROCESSED"
+#           echo "New cursor: $NEW_CURSOR / $TOTAL"
+#           echo "API calls today (count): $COUNT"
+#           echo "changed=$ANY_CHANGED" >> "$GITHUB_OUTPUT"
+
+#       - name: Commit & push
+#         if: steps.guard.outputs.skip != 'true'
+#         shell: bash
+#         run: |
+#           set -euo pipefail
+#           git config user.name "pl-bot"
+#           git config user.email "pl-bot@users.noreply.github.com"
+
+#           git add data/football/premier-league/fixtures/fixtures_season.json || true
+#           git add data/football/premier-league/matches/** || true
+#           git add data/ops/backfill_pl_39_2025.json || true
+
+#           git commit -m "Backfill PL 39/2025 finished match details (batch)" || true
+#           git push || true
