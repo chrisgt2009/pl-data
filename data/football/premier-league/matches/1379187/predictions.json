@@ -1,0 +1,152 @@
+{
+  "fixture": {
+    "id": 1379008
+  },
+  "predictions": {
+    "winner": {
+      "id": 47,
+      "name": "Tottenham",
+      "comment": "Win or draw"
+    },
+    "win_or_draw": true,
+    "under_over": null,
+    "goals": {
+      "home": "-2.5",
+      "away": "-1.5"
+    },
+    "advice": "Double chance : Tottenham or draw",
+    "percent": {
+      "home": "50%",
+      "draw": "50%",
+      "away": "0%"
+    }
+  },
+  "teams": {
+    "home": {
+      "id": 47,
+      "name": "Tottenham",
+      "last_5": {
+        "played": 5,
+        "form": "33%",
+        "att": "31%",
+        "def": "63%",
+        "goals": {
+          "for": {
+            "total": 5,
+            "average": "1.0"
+          },
+          "against": {
+            "total": 6,
+            "average": "1.2"
+          }
+        }
+      }
+    },
+    "away": {
+      "id": 48,
+      "name": "West Ham",
+      "last_5": {
+        "played": 5,
+        "form": "7%",
+        "att": "19%",
+        "def": "31%",
+        "goals": {
+          "for": {
+            "total": 3,
+            "average": "0.6"
+          },
+          "against": {
+            "total": 11,
+            "average": "2.2"
+          }
+        }
+      }
+    }
+  },
+  "comparison": {
+    "form": {
+      "home": "83%",
+      "away": "17%"
+    },
+    "att": {
+      "home": "63%",
+      "away": "38%"
+    },
+    "def": {
+      "home": "65%",
+      "away": "35%"
+    },
+    "poisson_distribution": {
+      "home": "61%",
+      "away": "39%"
+    },
+    "h2h": {
+      "home": "62%",
+      "away": "38%"
+    },
+    "goals": {
+      "home": "67%",
+      "away": "33%"
+    },
+    "total": {
+      "home": "66.8%",
+      "away": "33.3%"
+    }
+  },
+  "h2h_last3": [
+    {
+      "fixture_id": 1379008,
+      "date": "2025-09-13T16:30:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 48,
+        "name": "West Ham",
+        "goals": 0,
+        "winner": false
+      },
+      "away": {
+        "id": 47,
+        "name": "Tottenham",
+        "goals": 3,
+        "winner": true
+      }
+    },
+    {
+      "fixture_id": 1208372,
+      "date": "2025-05-04T13:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 48,
+        "name": "West Ham",
+        "goals": 1,
+        "winner": null
+      },
+      "away": {
+        "id": 47,
+        "name": "Tottenham",
+        "goals": 1,
+        "winner": null
+      }
+    },
+    {
+      "fixture_id": 1208099,
+      "date": "2024-10-19T11:30:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 47,
+        "name": "Tottenham",
+        "goals": 4,
+        "winner": true
+      },
+      "away": {
+        "id": 48,
+        "name": "West Ham",
+        "goals": 1,
+        "winner": false
+      }
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-15T19:52:22Z"
+  }
+}

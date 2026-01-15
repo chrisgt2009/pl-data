@@ -1,0 +1,152 @@
+{
+  "fixture": {
+    "id": 1379004
+  },
+  "predictions": {
+    "winner": {
+      "id": 66,
+      "name": "Aston Villa",
+      "comment": "Win or draw"
+    },
+    "win_or_draw": true,
+    "under_over": null,
+    "goals": {
+      "home": "-2.5",
+      "away": "-1.5"
+    },
+    "advice": "Double chance : Aston Villa or draw",
+    "percent": {
+      "home": "45%",
+      "draw": "45%",
+      "away": "10%"
+    }
+  },
+  "teams": {
+    "home": {
+      "id": 66,
+      "name": "Aston Villa",
+      "last_5": {
+        "played": 5,
+        "form": "67%",
+        "att": "50%",
+        "def": "56%",
+        "goals": {
+          "for": {
+            "total": 8,
+            "average": "1.6"
+          },
+          "against": {
+            "total": 7,
+            "average": "1.4"
+          }
+        }
+      }
+    },
+    "away": {
+      "id": 45,
+      "name": "Everton",
+      "last_5": {
+        "played": 5,
+        "form": "33%",
+        "att": "31%",
+        "def": "63%",
+        "goals": {
+          "for": {
+            "total": 5,
+            "average": "1.0"
+          },
+          "against": {
+            "total": 6,
+            "average": "1.2"
+          }
+        }
+      }
+    }
+  },
+  "comparison": {
+    "form": {
+      "home": "67%",
+      "away": "33%"
+    },
+    "att": {
+      "home": "62%",
+      "away": "38%"
+    },
+    "def": {
+      "home": "46%",
+      "away": "54%"
+    },
+    "poisson_distribution": {
+      "home": "66%",
+      "away": "34%"
+    },
+    "h2h": {
+      "home": "62%",
+      "away": "38%"
+    },
+    "goals": {
+      "home": "56%",
+      "away": "44%"
+    },
+    "total": {
+      "home": "59.8%",
+      "away": "40.2%"
+    }
+  },
+  "h2h_last3": [
+    {
+      "fixture_id": 1379004,
+      "date": "2025-09-13T14:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 45,
+        "name": "Everton",
+        "goals": 0,
+        "winner": null
+      },
+      "away": {
+        "id": 66,
+        "name": "Aston Villa",
+        "goals": 0,
+        "winner": null
+      }
+    },
+    {
+      "fixture_id": 1208225,
+      "date": "2025-01-15T19:30:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 45,
+        "name": "Everton",
+        "goals": 0,
+        "winner": false
+      },
+      "away": {
+        "id": 66,
+        "name": "Aston Villa",
+        "goals": 1,
+        "winner": true
+      }
+    },
+    {
+      "fixture_id": 1208052,
+      "date": "2024-09-14T16:30:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 66,
+        "name": "Aston Villa",
+        "goals": 3,
+        "winner": true
+      },
+      "away": {
+        "id": 45,
+        "name": "Everton",
+        "goals": 2,
+        "winner": false
+      }
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-15T19:52:25Z"
+  }
+}

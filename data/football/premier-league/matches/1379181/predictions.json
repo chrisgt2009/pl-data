@@ -1,0 +1,152 @@
+{
+  "fixture": {
+    "id": 1379001
+  },
+  "predictions": {
+    "winner": {
+      "id": 55,
+      "name": "Brentford",
+      "comment": "Win or draw"
+    },
+    "win_or_draw": true,
+    "under_over": null,
+    "goals": {
+      "home": "-2.5",
+      "away": "-2.5"
+    },
+    "advice": "Double chance : draw or Brentford",
+    "percent": {
+      "home": "10%",
+      "draw": "45%",
+      "away": "45%"
+    }
+  },
+  "teams": {
+    "home": {
+      "id": 49,
+      "name": "Chelsea",
+      "last_5": {
+        "played": 5,
+        "form": "20%",
+        "att": "44%",
+        "def": "44%",
+        "goals": {
+          "for": {
+            "total": 7,
+            "average": "1.4"
+          },
+          "against": {
+            "total": 9,
+            "average": "1.8"
+          }
+        }
+      }
+    },
+    "away": {
+      "id": 55,
+      "name": "Brentford",
+      "last_5": {
+        "played": 5,
+        "form": "87%",
+        "att": "81%",
+        "def": "81%",
+        "goals": {
+          "for": {
+            "total": 13,
+            "average": "2.6"
+          },
+          "against": {
+            "total": 3,
+            "average": "0.6"
+          }
+        }
+      }
+    }
+  },
+  "comparison": {
+    "form": {
+      "home": "19%",
+      "away": "81%"
+    },
+    "att": {
+      "home": "35%",
+      "away": "65%"
+    },
+    "def": {
+      "home": "25%",
+      "away": "75%"
+    },
+    "poisson_distribution": {
+      "home": "61%",
+      "away": "39%"
+    },
+    "h2h": {
+      "home": "50%",
+      "away": "50%"
+    },
+    "goals": {
+      "home": "46%",
+      "away": "54%"
+    },
+    "total": {
+      "home": "39.3%",
+      "away": "60.7%"
+    }
+  },
+  "h2h_last3": [
+    {
+      "fixture_id": 1379001,
+      "date": "2025-09-13T19:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 55,
+        "name": "Brentford",
+        "goals": 2,
+        "winner": null
+      },
+      "away": {
+        "id": 49,
+        "name": "Chelsea",
+        "goals": 2,
+        "winner": null
+      }
+    },
+    {
+      "fixture_id": 1208324,
+      "date": "2025-04-06T13:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 55,
+        "name": "Brentford",
+        "goals": 0,
+        "winner": null
+      },
+      "away": {
+        "id": 49,
+        "name": "Chelsea",
+        "goals": 0,
+        "winner": null
+      }
+    },
+    {
+      "fixture_id": 1208176,
+      "date": "2024-12-15T19:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 49,
+        "name": "Chelsea",
+        "goals": 2,
+        "winner": true
+      },
+      "away": {
+        "id": 55,
+        "name": "Brentford",
+        "goals": 1,
+        "winner": false
+      }
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-15T19:52:23Z"
+  }
+}

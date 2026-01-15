@@ -1,0 +1,152 @@
+{
+  "fixture": {
+    "id": 1379007
+  },
+  "predictions": {
+    "winner": {
+      "id": 34,
+      "name": "Newcastle",
+      "comment": null
+    },
+    "win_or_draw": null,
+    "under_over": null,
+    "goals": {
+      "home": "-1.5",
+      "away": "-3.5"
+    },
+    "advice": "Winner : Newcastle",
+    "percent": {
+      "home": "10%",
+      "draw": "45%",
+      "away": "45%"
+    }
+  },
+  "teams": {
+    "home": {
+      "id": 39,
+      "name": "Wolves",
+      "last_5": {
+        "played": 5,
+        "form": "33%",
+        "att": "38%",
+        "def": "63%",
+        "goals": {
+          "for": {
+            "total": 6,
+            "average": "1.2"
+          },
+          "against": {
+            "total": 6,
+            "average": "1.2"
+          }
+        }
+      }
+    },
+    "away": {
+      "id": 34,
+      "name": "Newcastle",
+      "last_5": {
+        "played": 5,
+        "form": "67%",
+        "att": "69%",
+        "def": "56%",
+        "goals": {
+          "for": {
+            "total": 11,
+            "average": "2.2"
+          },
+          "against": {
+            "total": 7,
+            "average": "1.4"
+          }
+        }
+      }
+    }
+  },
+  "comparison": {
+    "form": {
+      "home": "33%",
+      "away": "67%"
+    },
+    "att": {
+      "home": "35%",
+      "away": "65%"
+    },
+    "def": {
+      "home": "54%",
+      "away": "46%"
+    },
+    "poisson_distribution": {
+      "home": "29%",
+      "away": "71%"
+    },
+    "h2h": {
+      "home": "7%",
+      "away": "93%"
+    },
+    "goals": {
+      "home": "21%",
+      "away": "79%"
+    },
+    "total": {
+      "home": "29.8%",
+      "away": "70.2%"
+    }
+  },
+  "h2h_last3": [
+    {
+      "fixture_id": 1379007,
+      "date": "2025-09-13T14:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 34,
+        "name": "Newcastle",
+        "goals": 1,
+        "winner": true
+      },
+      "away": {
+        "id": 39,
+        "name": "Wolves",
+        "goals": 0,
+        "winner": false
+      }
+    },
+    {
+      "fixture_id": 1208231,
+      "date": "2025-01-15T19:30:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 34,
+        "name": "Newcastle",
+        "goals": 3,
+        "winner": true
+      },
+      "away": {
+        "id": 39,
+        "name": "Wolves",
+        "goals": 0,
+        "winner": false
+      }
+    },
+    {
+      "fixture_id": 1208060,
+      "date": "2024-09-15T15:30:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 39,
+        "name": "Wolves",
+        "goals": 1,
+        "winner": false
+      },
+      "away": {
+        "id": 34,
+        "name": "Newcastle",
+        "goals": 2,
+        "winner": true
+      }
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-15T19:52:24Z"
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "fixture": {
+    "id": 1379002
+  },
+  "predictions": {
+    "winner": {
+      "id": 40,
+      "name": "Liverpool",
+      "comment": "Win or draw"
+    },
+    "win_or_draw": true,
+    "under_over": null,
+    "goals": {
+      "home": "-2.5",
+      "away": "-1.5"
+    },
+    "advice": "Double chance : Liverpool or draw",
+    "percent": {
+      "home": "50%",
+      "draw": "50%",
+      "away": "0%"
+    }
+  },
+  "teams": {
+    "home": {
+      "id": 40,
+      "name": "Liverpool",
+      "last_5": {
+        "played": 5,
+        "form": "60%",
+        "att": "38%",
+        "def": "75%",
+        "goals": {
+          "for": {
+            "total": 6,
+            "average": "1.2"
+          },
+          "against": {
+            "total": 4,
+            "average": "0.8"
+          }
+        }
+      }
+    },
+    "away": {
+      "id": 44,
+      "name": "Burnley",
+      "last_5": {
+        "played": 5,
+        "form": "20%",
+        "att": "25%",
+        "def": "50%",
+        "goals": {
+          "for": {
+            "total": 4,
+            "average": "0.8"
+          },
+          "against": {
+            "total": 8,
+            "average": "1.6"
+          }
+        }
+      }
+    }
+  },
+  "comparison": {
+    "form": {
+      "home": "75%",
+      "away": "25%"
+    },
+    "att": {
+      "home": "60%",
+      "away": "40%"
+    },
+    "def": {
+      "home": "67%",
+      "away": "33%"
+    },
+    "poisson_distribution": {
+      "home": "71%",
+      "away": "29%"
+    },
+    "h2h": {
+      "home": "100%",
+      "away": "0%"
+    },
+    "goals": {
+      "home": "90%",
+      "away": "10%"
+    },
+    "total": {
+      "home": "72.6%",
+      "away": "27.4%"
+    }
+  },
+  "h2h_last3": [
+    {
+      "fixture_id": 1379002,
+      "date": "2025-09-14T13:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 44,
+        "name": "Burnley",
+        "goals": 0,
+        "winner": false
+      },
+      "away": {
+        "id": 40,
+        "name": "Liverpool",
+        "goals": 1,
+        "winner": true
+      }
+    },
+    {
+      "fixture_id": 1035407,
+      "date": "2024-02-10T15:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 40,
+        "name": "Liverpool",
+        "goals": 3,
+        "winner": true
+      },
+      "away": {
+        "id": 44,
+        "name": "Burnley",
+        "goals": 1,
+        "winner": false
+      }
+    },
+    {
+      "fixture_id": 1035358,
+      "date": "2023-12-26T17:30:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 44,
+        "name": "Burnley",
+        "goals": 0,
+        "winner": false
+      },
+      "away": {
+        "id": 40,
+        "name": "Liverpool",
+        "goals": 2,
+        "winner": true
+      }
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-15T19:52:22Z"
+  }
+}
