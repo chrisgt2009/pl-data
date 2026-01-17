@@ -2,24 +2,24 @@
   "matches": [
     {
       "fixture": {
-        "id": 1379183,
-        "referee": "Andy Madley, England",
+        "id": 1379185,
+        "referee": "Michael Oliver, England",
         "timezone": "UTC",
-        "date": "2026-01-17T15:00:00+00:00",
-        "timestamp": 1768662000,
+        "date": "2026-01-17T17:30:00+00:00",
+        "timestamp": 1768671000,
         "periods": {
-          "first": 1768662000,
-          "second": null
+          "first": 1768671000,
+          "second": 1768674600
         },
         "venue": {
-          "id": 550,
-          "name": "Anfield",
-          "city": "Liverpool"
+          "id": 566,
+          "name": "City Ground",
+          "city": "Nottingham"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 20,
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 90,
           "extra": null
         }
       },
@@ -35,295 +35,15 @@
       },
       "teams": {
         "home": {
-          "id": 40,
-          "name": "Liverpool",
-          "logo": "https://media.api-sports.io/football/teams/40.png",
+          "id": 65,
+          "name": "Nottingham Forest",
+          "logo": "https://media.api-sports.io/football/teams/65.png",
           "winner": null
         },
         "away": {
-          "id": 44,
-          "name": "Burnley",
-          "logo": "https://media.api-sports.io/football/teams/44.png",
-          "winner": null
-        }
-      },
-      "goals": {
-        "home": 0,
-        "away": 0
-      },
-      "score": {
-        "halftime": {
-          "home": 0,
-          "away": 0
-        },
-        "fulltime": {
-          "home": null,
-          "away": null
-        },
-        "extratime": {
-          "home": null,
-          "away": null
-        },
-        "penalty": {
-          "home": null,
-          "away": null
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1379187,
-        "referee": "Jarred Gillett, Australia",
-        "timezone": "UTC",
-        "date": "2026-01-17T15:00:00+00:00",
-        "timestamp": 1768662000,
-        "periods": {
-          "first": 1768662000,
-          "second": null
-        },
-        "venue": {
-          "id": 593,
-          "name": "Tottenham Hotspur Stadium",
-          "city": "London"
-        },
-        "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 20,
-          "extra": null
-        }
-      },
-      "league": {
-        "id": 39,
-        "name": "Premier League",
-        "country": "England",
-        "logo": "https://media.api-sports.io/football/leagues/39.png",
-        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-        "season": 2025,
-        "round": "Regular Season - 22",
-        "standings": true
-      },
-      "teams": {
-        "home": {
-          "id": 47,
-          "name": "Tottenham",
-          "logo": "https://media.api-sports.io/football/teams/47.png",
-          "winner": false
-        },
-        "away": {
-          "id": 48,
-          "name": "West Ham",
-          "logo": "https://media.api-sports.io/football/teams/48.png",
-          "winner": true
-        }
-      },
-      "goals": {
-        "home": 0,
-        "away": 1
-      },
-      "score": {
-        "halftime": {
-          "home": 0,
-          "away": 1
-        },
-        "fulltime": {
-          "home": null,
-          "away": null
-        },
-        "extratime": {
-          "home": null,
-          "away": null
-        },
-        "penalty": {
-          "home": null,
-          "away": null
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1379181,
-        "referee": "John Brooks, England",
-        "timezone": "UTC",
-        "date": "2026-01-17T15:00:00+00:00",
-        "timestamp": 1768662000,
-        "periods": {
-          "first": 1768662000,
-          "second": null
-        },
-        "venue": {
-          "id": 519,
-          "name": "Stamford Bridge",
-          "city": "London"
-        },
-        "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 19,
-          "extra": null
-        }
-      },
-      "league": {
-        "id": 39,
-        "name": "Premier League",
-        "country": "England",
-        "logo": "https://media.api-sports.io/football/leagues/39.png",
-        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-        "season": 2025,
-        "round": "Regular Season - 22",
-        "standings": true
-      },
-      "teams": {
-        "home": {
-          "id": 49,
-          "name": "Chelsea",
-          "logo": "https://media.api-sports.io/football/teams/49.png",
-          "winner": null
-        },
-        "away": {
-          "id": 55,
-          "name": "Brentford",
-          "logo": "https://media.api-sports.io/football/teams/55.png",
-          "winner": null
-        }
-      },
-      "goals": {
-        "home": 0,
-        "away": 0
-      },
-      "score": {
-        "halftime": {
-          "home": 0,
-          "away": 0
-        },
-        "fulltime": {
-          "home": null,
-          "away": null
-        },
-        "extratime": {
-          "home": null,
-          "away": null
-        },
-        "penalty": {
-          "home": null,
-          "away": null
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1379182,
-        "referee": "Chris Kavanagh, England",
-        "timezone": "UTC",
-        "date": "2026-01-17T15:00:00+00:00",
-        "timestamp": 1768662000,
-        "periods": {
-          "first": 1768662000,
-          "second": null
-        },
-        "venue": {
-          "id": 546,
-          "name": "Elland Road",
-          "city": "Leeds"
-        },
-        "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 19,
-          "extra": null
-        }
-      },
-      "league": {
-        "id": 39,
-        "name": "Premier League",
-        "country": "England",
-        "logo": "https://media.api-sports.io/football/leagues/39.png",
-        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-        "season": 2025,
-        "round": "Regular Season - 22",
-        "standings": true
-      },
-      "teams": {
-        "home": {
-          "id": 63,
-          "name": "Leeds",
-          "logo": "https://media.api-sports.io/football/teams/63.png",
-          "winner": null
-        },
-        "away": {
-          "id": 36,
-          "name": "Fulham",
-          "logo": "https://media.api-sports.io/football/teams/36.png",
-          "winner": null
-        }
-      },
-      "goals": {
-        "home": 0,
-        "away": 0
-      },
-      "score": {
-        "halftime": {
-          "home": 0,
-          "away": 0
-        },
-        "fulltime": {
-          "home": null,
-          "away": null
-        },
-        "extratime": {
-          "home": null,
-          "away": null
-        },
-        "penalty": {
-          "home": null,
-          "away": null
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1379186,
-        "referee": "Robert Jones, England",
-        "timezone": "UTC",
-        "date": "2026-01-17T15:00:00+00:00",
-        "timestamp": 1768662000,
-        "periods": {
-          "first": 1768662000,
-          "second": null
-        },
-        "venue": {
-          "id": 589,
-          "name": "Stadium of Light",
-          "city": "Sunderland"
-        },
-        "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 20,
-          "extra": null
-        }
-      },
-      "league": {
-        "id": 39,
-        "name": "Premier League",
-        "country": "England",
-        "logo": "https://media.api-sports.io/football/leagues/39.png",
-        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-        "season": 2025,
-        "round": "Regular Season - 22",
-        "standings": true
-      },
-      "teams": {
-        "home": {
-          "id": 746,
-          "name": "Sunderland",
-          "logo": "https://media.api-sports.io/football/teams/746.png",
-          "winner": null
-        },
-        "away": {
-          "id": 52,
-          "name": "Crystal Palace",
-          "logo": "https://media.api-sports.io/football/teams/52.png",
+          "id": 42,
+          "name": "Arsenal",
+          "logo": "https://media.api-sports.io/football/teams/42.png",
           "winner": null
         }
       },
@@ -15122,25 +14842,25 @@
     },
     {
       "fixture": {
-        "id": 1379185,
-        "referee": null,
+        "id": 1379183,
+        "referee": "Andy Madley, England",
         "timezone": "UTC",
-        "date": "2026-01-17T17:30:00+00:00",
-        "timestamp": 1768671000,
+        "date": "2026-01-17T15:00:00+00:00",
+        "timestamp": 1768662000,
         "periods": {
-          "first": null,
-          "second": null
+          "first": 1768662000,
+          "second": 1768665600
         },
         "venue": {
-          "id": 566,
-          "name": "City Ground",
-          "city": "Nottingham"
+          "id": 550,
+          "name": "Anfield",
+          "city": "Liverpool"
         },
         "status": {
-          "long": "Not Started",
-          "short": "NS",
-          "elapsed": null,
-          "extra": null
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
+          "extra": 8
         }
       },
       "league": {
@@ -15155,30 +14875,310 @@
       },
       "teams": {
         "home": {
-          "id": 65,
-          "name": "Nottingham Forest",
-          "logo": "https://media.api-sports.io/football/teams/65.png",
+          "id": 40,
+          "name": "Liverpool",
+          "logo": "https://media.api-sports.io/football/teams/40.png",
           "winner": null
         },
         "away": {
-          "id": 42,
-          "name": "Arsenal",
-          "logo": "https://media.api-sports.io/football/teams/42.png",
+          "id": 44,
+          "name": "Burnley",
+          "logo": "https://media.api-sports.io/football/teams/44.png",
           "winner": null
         }
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 1,
+        "away": 1
       },
       "score": {
         "halftime": {
+          "home": 1,
+          "away": 0
+        },
+        "fulltime": {
+          "home": 1,
+          "away": 1
+        },
+        "extratime": {
           "home": null,
           "away": null
         },
-        "fulltime": {
+        "penalty": {
           "home": null,
           "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1379187,
+        "referee": "Jarred Gillett, Australia",
+        "timezone": "UTC",
+        "date": "2026-01-17T15:00:00+00:00",
+        "timestamp": 1768662000,
+        "periods": {
+          "first": 1768662000,
+          "second": 1768665600
+        },
+        "venue": {
+          "id": 593,
+          "name": "Tottenham Hotspur Stadium",
+          "city": "London"
+        },
+        "status": {
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
+          "extra": 9
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 22",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 47,
+          "name": "Tottenham",
+          "logo": "https://media.api-sports.io/football/teams/47.png",
+          "winner": false
+        },
+        "away": {
+          "id": 48,
+          "name": "West Ham",
+          "logo": "https://media.api-sports.io/football/teams/48.png",
+          "winner": true
+        }
+      },
+      "goals": {
+        "home": 1,
+        "away": 2
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 1
+        },
+        "fulltime": {
+          "home": 1,
+          "away": 2
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1379181,
+        "referee": "John Brooks, England",
+        "timezone": "UTC",
+        "date": "2026-01-17T15:00:00+00:00",
+        "timestamp": 1768662000,
+        "periods": {
+          "first": 1768662000,
+          "second": 1768665600
+        },
+        "venue": {
+          "id": 519,
+          "name": "Stamford Bridge",
+          "city": "London"
+        },
+        "status": {
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
+          "extra": 8
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 22",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 49,
+          "name": "Chelsea",
+          "logo": "https://media.api-sports.io/football/teams/49.png",
+          "winner": true
+        },
+        "away": {
+          "id": 55,
+          "name": "Brentford",
+          "logo": "https://media.api-sports.io/football/teams/55.png",
+          "winner": false
+        }
+      },
+      "goals": {
+        "home": 2,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 1,
+          "away": 0
+        },
+        "fulltime": {
+          "home": 2,
+          "away": 0
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1379182,
+        "referee": "Chris Kavanagh, England",
+        "timezone": "UTC",
+        "date": "2026-01-17T15:00:00+00:00",
+        "timestamp": 1768662000,
+        "periods": {
+          "first": 1768662000,
+          "second": 1768665600
+        },
+        "venue": {
+          "id": 546,
+          "name": "Elland Road",
+          "city": "Leeds"
+        },
+        "status": {
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
+          "extra": 6
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 22",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 63,
+          "name": "Leeds",
+          "logo": "https://media.api-sports.io/football/teams/63.png",
+          "winner": true
+        },
+        "away": {
+          "id": 36,
+          "name": "Fulham",
+          "logo": "https://media.api-sports.io/football/teams/36.png",
+          "winner": false
+        }
+      },
+      "goals": {
+        "home": 1,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 0
+        },
+        "fulltime": {
+          "home": 1,
+          "away": 0
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1379186,
+        "referee": "Robert Jones, England",
+        "timezone": "UTC",
+        "date": "2026-01-17T15:00:00+00:00",
+        "timestamp": 1768662000,
+        "periods": {
+          "first": 1768662000,
+          "second": 1768665600
+        },
+        "venue": {
+          "id": 589,
+          "name": "Stadium of Light",
+          "city": "Sunderland"
+        },
+        "status": {
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
+          "extra": 5
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 22",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 746,
+          "name": "Sunderland",
+          "logo": "https://media.api-sports.io/football/teams/746.png",
+          "winner": true
+        },
+        "away": {
+          "id": 52,
+          "name": "Crystal Palace",
+          "logo": "https://media.api-sports.io/football/teams/52.png",
+          "winner": false
+        }
+      },
+      "goals": {
+        "home": 2,
+        "away": 1
+      },
+      "score": {
+        "halftime": {
+          "home": 1,
+          "away": 1
+        },
+        "fulltime": {
+          "home": 2,
+          "away": 1
         },
         "extratime": {
           "home": null,
@@ -26602,6 +26602,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-17T15:20:11Z"
+    "lastUpdatedUTC": "2026-01-17T19:20:55Z"
   }
 }
