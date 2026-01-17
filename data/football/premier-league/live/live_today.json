@@ -9,7 +9,7 @@
         "timestamp": 1768653000,
         "periods": {
           "first": 1768653000,
-          "second": null
+          "second": 1768656600
         },
         "venue": {
           "id": 556,
@@ -17,10 +17,10 @@
           "city": "Manchester"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 45,
-          "extra": 1
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 53,
+          "extra": null
         }
       },
       "league": {
@@ -157,11 +157,99 @@
           "type": "Var",
           "detail": "Goal Disallowed - offside",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 45,
+            "extra": 2
+          },
+          "team": {
+            "id": 50,
+            "name": "Manchester City",
+            "logo": "https://media.api-sports.io/football/teams/50.png"
+          },
+          "player": {
+            "id": 44,
+            "name": "Rodri"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Tripping"
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 50,
+            "name": "Manchester City",
+            "logo": "https://media.api-sports.io/football/teams/50.png"
+          },
+          "player": {
+            "id": 293168,
+            "name": "M. Alleyne"
+          },
+          "assist": {
+            "id": 307123,
+            "name": "N. O'Reilly"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 50,
+            "name": "Manchester City",
+            "logo": "https://media.api-sports.io/football/teams/50.png"
+          },
+          "player": {
+            "id": 631,
+            "name": "P. Foden"
+          },
+          "assist": {
+            "id": 156477,
+            "name": "R. Cherki"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 48,
+            "extra": null
+          },
+          "team": {
+            "id": 50,
+            "name": "Manchester City",
+            "logo": "https://media.api-sports.io/football/teams/50.png"
+          },
+          "player": {
+            "id": 307123,
+            "name": "N. O'Reilly"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Holding"
         }
       ]
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-17T13:16:38Z"
+    "lastUpdatedUTC": "2026-01-17T13:42:08Z"
   }
 }
