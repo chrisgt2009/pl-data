@@ -19,7 +19,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 6,
+          "elapsed": 8,
           "extra": null
         }
       },
@@ -73,6 +73,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-17T12:36:28Z"
+    "lastUpdatedUTC": "2026-01-17T12:38:39Z"
   }
 }
