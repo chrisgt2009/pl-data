@@ -156,7 +156,7 @@
     },
     {
       "time": {
-        "elapsed": 79,
+        "elapsed": 78,
         "extra": null
       },
       "team": {
@@ -178,7 +178,7 @@
     },
     {
       "time": {
-        "elapsed": 79,
+        "elapsed": 78,
         "extra": null
       },
       "team": {
@@ -197,9 +197,141 @@
       "type": "subst",
       "detail": "Substitution 3",
       "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 85,
+        "extra": null
+      },
+      "team": {
+        "id": 44,
+        "name": "Burnley",
+        "logo": "https://media.api-sports.io/football/teams/44.png"
+      },
+      "player": {
+        "id": 270508,
+        "name": "L. Ugochukwu"
+      },
+      "assist": {
+        "id": 20303,
+        "name": "J. Laurent"
+      },
+      "type": "subst",
+      "detail": "Substitution 3",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 87,
+        "extra": null
+      },
+      "team": {
+        "id": 40,
+        "name": "Liverpool",
+        "logo": "https://media.api-sports.io/football/teams/40.png"
+      },
+      "player": {
+        "id": 293,
+        "name": "C. Jones"
+      },
+      "assist": {
+        "id": 30410,
+        "name": "F. Chiesa"
+      },
+      "type": "subst",
+      "detail": "Substitution 4",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 90,
+        "extra": null
+      },
+      "team": {
+        "id": 44,
+        "name": "Burnley",
+        "logo": "https://media.api-sports.io/football/teams/44.png"
+      },
+      "player": {
+        "id": 575,
+        "name": "Florentino"
+      },
+      "assist": {
+        "id": 161621,
+        "name": "L. Tchaouna"
+      },
+      "type": "subst",
+      "detail": "Substitution 4",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 90,
+        "extra": null
+      },
+      "team": {
+        "id": 44,
+        "name": "Burnley",
+        "logo": "https://media.api-sports.io/football/teams/44.png"
+      },
+      "player": {
+        "id": 37882,
+        "name": "M. Edwards"
+      },
+      "assist": {
+        "id": 180560,
+        "name": "H. Mejbri"
+      },
+      "type": "subst",
+      "detail": "Substitution 5",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 90,
+        "extra": 1
+      },
+      "team": {
+        "id": 44,
+        "name": "Burnley",
+        "logo": "https://media.api-sports.io/football/teams/44.png"
+      },
+      "player": {
+        "id": 18927,
+        "name": "A. Barnes"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Card",
+      "detail": "Yellow Card",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 90,
+        "extra": 2
+      },
+      "team": {
+        "id": 44,
+        "name": "Burnley",
+        "logo": "https://media.api-sports.io/football/teams/44.png"
+      },
+      "player": {
+        "id": 181797,
+        "name": "B. Humphreys"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Card",
+      "detail": "Yellow Card",
+      "comments": "Foul"
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-17T16:41:06Z"
+    "lastUpdatedUTC": "2026-01-17T16:53:28Z"
   }
 }

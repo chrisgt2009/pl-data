@@ -235,8 +235,8 @@
         "name": "C. Romero"
       },
       "assist": {
-        "id": 336564,
-        "name": "W. Odobert"
+        "id": 47519,
+        "name": "P. Porro"
       },
       "type": "Goal",
       "detail": "Normal Goal",
@@ -263,9 +263,53 @@
       "type": "Card",
       "detail": "Yellow Card",
       "comments": "Holding"
+    },
+    {
+      "time": {
+        "elapsed": 78,
+        "extra": null
+      },
+      "team": {
+        "id": 47,
+        "name": "Tottenham",
+        "logo": "https://media.api-sports.io/football/teams/47.png"
+      },
+      "player": {
+        "id": 19235,
+        "name": "D. Spence"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Card",
+      "detail": "Yellow Card",
+      "comments": "Roughing"
+    },
+    {
+      "time": {
+        "elapsed": 79,
+        "extra": null
+      },
+      "team": {
+        "id": 48,
+        "name": "West Ham",
+        "logo": "https://media.api-sports.io/football/teams/48.png"
+      },
+      "player": {
+        "id": 301187,
+        "name": "Pablo"
+      },
+      "assist": {
+        "id": 2476,
+        "name": "G. Rodriguez"
+      },
+      "type": "subst",
+      "detail": "Substitution 1",
+      "comments": null
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-17T16:41:06Z"
+    "lastUpdatedUTC": "2026-01-17T16:53:28Z"
   }
 }
