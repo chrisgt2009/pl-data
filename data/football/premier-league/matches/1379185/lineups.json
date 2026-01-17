@@ -1,0 +1,425 @@
+{
+  "data": [
+    {
+      "team": {
+        "id": 65,
+        "name": "Nottingham Forest",
+        "logo": "https://media.api-sports.io/football/teams/65.png",
+        "colors": {
+          "player": {
+            "primary": "e4232c",
+            "number": "ffffff",
+            "border": "e4232c"
+          },
+          "goalkeeper": {
+            "primary": "f3f353",
+            "number": "d2403e",
+            "border": "f3f353"
+          }
+        }
+      },
+      "formation": "4-2-3-1",
+      "startXI": [
+        {
+          "player": {
+            "id": 2919,
+            "name": "Matz Sels",
+            "number": 26,
+            "pos": "G",
+            "grid": "1:1"
+          }
+        },
+        {
+          "player": {
+            "id": 2771,
+            "name": "Ola Aina",
+            "number": 34,
+            "pos": "D",
+            "grid": "2:4"
+          }
+        },
+        {
+          "player": {
+            "id": 2817,
+            "name": "Nikola Milenković",
+            "number": 31,
+            "pos": "D",
+            "grid": "2:3"
+          }
+        },
+        {
+          "player": {
+            "id": 363695,
+            "name": "Murillo",
+            "number": 5,
+            "pos": "D",
+            "grid": "2:2"
+          }
+        },
+        {
+          "player": {
+            "id": 138780,
+            "name": "Neco Williams",
+            "number": 3,
+            "pos": "D",
+            "grid": "2:1"
+          }
+        },
+        {
+          "player": {
+            "id": 22149,
+            "name": "Ibrahim Sangaré",
+            "number": 6,
+            "pos": "M",
+            "grid": "3:2"
+          }
+        },
+        {
+          "player": {
+            "id": 138908,
+            "name": "Elliot Anderson",
+            "number": 8,
+            "pos": "M",
+            "grid": "3:1"
+          }
+        },
+        {
+          "player": {
+            "id": 2298,
+            "name": "Callum Hudson-Odoi",
+            "number": 7,
+            "pos": "M",
+            "grid": "4:3"
+          }
+        },
+        {
+          "player": {
+            "id": 18746,
+            "name": "Morgan Gibbs-White",
+            "number": 10,
+            "pos": "M",
+            "grid": "4:2"
+          }
+        },
+        {
+          "player": {
+            "id": 6056,
+            "name": "Nicolás Domínguez",
+            "number": 16,
+            "pos": "M",
+            "grid": "4:1"
+          }
+        },
+        {
+          "player": {
+            "id": 9366,
+            "name": "Igor Jesus",
+            "number": 19,
+            "pos": "F",
+            "grid": "5:1"
+          }
+        }
+      ],
+      "substitutes": [
+        {
+          "player": {
+            "id": 18933,
+            "name": "Angus Gunn",
+            "number": 18,
+            "pos": "G",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 67943,
+            "name": "Morato",
+            "number": 4,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 181806,
+            "name": "Nicolò Savona",
+            "number": 37,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 47522,
+            "name": "Douglas Luiz",
+            "number": 12,
+            "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 48648,
+            "name": "Dan Ndoye",
+            "number": 14,
+            "pos": "F",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 284428,
+            "name": "Omari Hutchinson",
+            "number": 21,
+            "pos": "F",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 158697,
+            "name": "James McAtee",
+            "number": 24,
+            "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 19305,
+            "name": "Ryan Yates",
+            "number": 22,
+            "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 8598,
+            "name": "Taiwo Awoniyi",
+            "number": 9,
+            "pos": "F",
+            "grid": null
+          }
+        }
+      ],
+      "coach": {
+        "id": 7,
+        "name": "Sean Dyche",
+        "photo": "https://media.api-sports.io/football/coachs/7.png"
+      }
+    },
+    {
+      "team": {
+        "id": 42,
+        "name": "Arsenal",
+        "logo": "https://media.api-sports.io/football/teams/42.png",
+        "colors": {
+          "player": {
+            "primary": "5a77b2",
+            "number": "ffffff",
+            "border": "5a77b2"
+          },
+          "goalkeeper": {
+            "primary": "f5e85a",
+            "number": "d6222c",
+            "border": "f5e85a"
+          }
+        }
+      },
+      "formation": "4-3-3",
+      "startXI": [
+        {
+          "player": {
+            "id": 19465,
+            "name": "David Raya",
+            "number": 1,
+            "pos": "G",
+            "grid": "1:1"
+          }
+        },
+        {
+          "player": {
+            "id": 19959,
+            "name": "Ben White",
+            "number": 4,
+            "pos": "D",
+            "grid": "2:4"
+          }
+        },
+        {
+          "player": {
+            "id": 22090,
+            "name": "William Saliba",
+            "number": 2,
+            "pos": "D",
+            "grid": "2:3"
+          }
+        },
+        {
+          "player": {
+            "id": 22224,
+            "name": "Gabriel Magalhães",
+            "number": 6,
+            "pos": "D",
+            "grid": "2:2"
+          }
+        },
+        {
+          "player": {
+            "id": 38746,
+            "name": "Jurriën Timber",
+            "number": 12,
+            "pos": "D",
+            "grid": "2:1"
+          }
+        },
+        {
+          "player": {
+            "id": 37127,
+            "name": "Martin Ødegaard",
+            "number": 8,
+            "pos": "M",
+            "grid": "3:3"
+          }
+        },
+        {
+          "player": {
+            "id": 47315,
+            "name": "Martín Zubimendi",
+            "number": 36,
+            "pos": "M",
+            "grid": "3:2"
+          }
+        },
+        {
+          "player": {
+            "id": 2937,
+            "name": "Declan Rice",
+            "number": 41,
+            "pos": "M",
+            "grid": "3:1"
+          }
+        },
+        {
+          "player": {
+            "id": 136723,
+            "name": "Noni Madueke",
+            "number": 20,
+            "pos": "F",
+            "grid": "4:3"
+          }
+        },
+        {
+          "player": {
+            "id": 18979,
+            "name": "Viktor Gyökeres",
+            "number": 14,
+            "pos": "F",
+            "grid": "4:2"
+          }
+        },
+        {
+          "player": {
+            "id": 127769,
+            "name": "Gabriel Martinelli",
+            "number": 11,
+            "pos": "F",
+            "grid": "4:1"
+          }
+        }
+      ],
+      "substitutes": [
+        {
+          "player": {
+            "id": 1946,
+            "name": "Leandro Trossard",
+            "number": 19,
+            "pos": "F",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 2273,
+            "name": "Kepa Arrizabalaga",
+            "number": 13,
+            "pos": "G",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 313245,
+            "name": "Myles Lewis-Skelly",
+            "number": 49,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 333682,
+            "name": "Cristhian Mosquera",
+            "number": 3,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 47311,
+            "name": "Mikel Merino",
+            "number": 23,
+            "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 19586,
+            "name": "Eberechi Eze",
+            "number": 10,
+            "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 1460,
+            "name": "Bukayo Saka",
+            "number": 7,
+            "pos": "F",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 643,
+            "name": "Gabriel Jesus",
+            "number": 9,
+            "pos": "F",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 978,
+            "name": "Kai Havertz",
+            "number": 29,
+            "pos": "F",
+            "grid": null
+          }
+        }
+      ],
+      "coach": {
+        "id": 7248,
+        "name": "Mikel Arteta",
+        "photo": "https://media.api-sports.io/football/coachs/7248.png"
+      }
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-17T19:13:20Z"
+  }
+}
