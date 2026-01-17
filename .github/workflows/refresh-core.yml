@@ -39,11 +39,9 @@ on:
         required: false
 
   schedule:
-    # Standings/scorers/cards/assists every 3 hours
-    - cron: "5 */3 * * *"
-    # Fixtures twice a day (London morning and late evening) — split so github.event.schedule checks work
-    - cron: "0 7 * * *"
-    - cron: "0 23 * * *"
+    - cron: "5 */3 * * *"   # core tables every 3 hours (UTC)
+    - cron: "0 7 * * *"     # fixtures window (UTC)
+    - cron: "0 23 * * *"    # fixtures window (UTC)
 
 permissions:
   contents: write
@@ -74,10 +72,11 @@ jobs:
       URL_TOP_YELLOWS: ${{ vars.URL_TOP_YELLOWS }}
       URL_TOP_REDS: ${{ vars.URL_TOP_REDS }}
 
-      # Exact API-Sports endpoints for match details (no vars required)
+      # Match details (fixed endpoints)
       EVENTS_BASE_URL: "https://v3.football.api-sports.io/fixtures/events?fixture="
       LINEUPS_BASE_URL: "https://v3.football.api-sports.io/fixtures/lineups?fixture="
       STATS_BASE_URL: "https://v3.football.api-sports.io/fixtures/statistics?fixture="
+      PLAYERS_BASE_URL: "https://v3.football.api-sports.io/fixtures/players?fixture="
 
     steps:
       - name: Checkout repository
@@ -95,6 +94,16 @@ jobs:
           mkdir -p data/football/premier-league/matches
           mkdir -p data/ops
 
+      # Always write a heartbeat so you can see it ran.
+      - id: heartbeat
+        name: Write ops heartbeat
+        shell: bash
+        run: |
+          set -euo pipefail
+          TS=$(date -u +%FT%TZ)
+          echo "{\"meta\":{\"lastRunUTC\":\"${TS}\"}}" > data/ops/core_heartbeat.json
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
       - id: post_window
         name: Check post-window trigger
         shell: bash
@@ -106,21 +115,37 @@ jobs:
           if [[ -f "$FLAG" ]]; then
             TS=$(jq -r '.ts // 0' "$FLAG")
             if (( NOW_TS - TS <= 5400 )); then
-              echo "Post-window flag present (age <= 90m)."
               echo "trigger=true" >> "$GITHUB_OUTPUT"
             else
-              echo "Post-window flag present but too old."
               echo "trigger=false" >> "$GITHUB_OUTPUT"
             fi
           else
-            echo "No post-window flag found."
             echo "trigger=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Decide whether to refresh upcoming fixtures based on London hour
+      - id: fixtures_window
+        name: Decide fixtures window (London time)
+        shell: bash
+        run: |
+          set -euo pipefail
+          H=$(TZ=Europe/London date +%H)
+          # run fixtures around morning and late evening London time
+          if [[ "$H" == "07" || "$H" == "23" ]]; then
+            echo "do_fixtures=true" >> "$GITHUB_OUTPUT"
+          else
+            # allow manual dispatch always
+            if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+              echo "do_fixtures=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "do_fixtures=false" >> "$GITHUB_OUTPUT"
+            fi
           fi
 
       # ---------------- FIXTURES (next 14 days) ----------------
       - id: fixtures
         name: Refresh upcoming fixtures (next 14 days)
-        if: github.event.schedule == '0 7 * * *' || github.event.schedule == '0 23 * * *' || github.event_name == 'workflow_dispatch'
+        if: steps.fixtures_window.outputs.do_fixtures == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -128,12 +153,7 @@ jobs:
           TMPBODY="$(mktemp)"
 
           if [[ -z "${URL_FIXTURES:-}" ]]; then
-            echo "fixtures: URL_FIXTURES not set. Skipping."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          if [[ -z "${RAPIDAPI_KEY:-}" || -z "${RAPIDAPI_HOST:-}" ]]; then
-            echo "fixtures: credentials missing. Skipping."
+            echo "fixtures: URL_FIXTURES not set."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -144,7 +164,7 @@ jobs:
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
             if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then
-              echo "fixtures: Reusing (age ${AGE_MIN}m < ${REUSE_MAX_AGE_MIN}m)."
+              echo "fixtures: Reusing (age ${AGE_MIN}m)."
               echo "changed=false" >> "$GITHUB_OUTPUT"
               exit 0
             fi
@@ -178,7 +198,7 @@ jobs:
           NORM=$(mktemp)
           jq --arg ts "$TS" '{matches: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
-          if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
+          if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" && "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             mv "$NORM" "$OUT"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
@@ -190,7 +210,14 @@ jobs:
             fi
           fi
 
-      # ---------------- STANDINGS ----------------
+      # Helper: generic core fetcher
+      - id: core_helpers
+        name: Define core helper (noop)
+        shell: bash
+        run: |
+          echo "ok"
+
+      # ---------------- STANDINGS / SCORERS / ASSISTS / CARDS ----------------
       - id: standings
         name: Refresh standings
         if: steps.post_window.outputs.trigger == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.event.schedule, '5 ')
@@ -199,15 +226,14 @@ jobs:
           set -euo pipefail
           OUT="data/football/premier-league/core/standings.json"
           TMPBODY="$(mktemp)"
-
-          if [[ -z "${URL_STANDINGS:-}" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          [[ -z "${URL_STANDINGS:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
           REUSE_MAX_AGE_MIN=180
-          if [[ "${FORCE_REFRESH}" != "true" ]] && [[ -f "$OUT" ]]; then
+          if [[ "${FORCE_REFRESH}" != "true" && -f "$OUT" ]]; then
             MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
-            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+            (( AGE_MIN < REUSE_MAX_AGE_MIN )) && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
           fi
 
           FINAL_URL="${URL_STANDINGS}&season=${SEASON}&league=${LEAGUE_ID}"
@@ -216,20 +242,19 @@ jobs:
             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          if [[ "$CODE" != "200" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
-          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY"); if [[ "$OK" != "true" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          [[ "$CODE" != "200" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY"); [[ "$OK" != "true" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
           TS=$(date -u +%FT%TZ)
           NORM=$(mktemp)
           jq --arg ts "$TS" '{standings: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
-          if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
+          if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" && "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             mv "$NORM" "$OUT"; echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             if [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then mv "$NORM" "$OUT"; echo "changed=true" >> "$GITHUB_OUTPUT"; else echo "changed=false" >> "$GITHUB_OUTPUT"; fi
           fi
 
-      # ---------------- TOP SCORERS ----------------
       - id: scorers
         name: Refresh top scorers
         if: steps.post_window.outputs.trigger == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.event.schedule, '5 ')
@@ -238,14 +263,14 @@ jobs:
           set -euo pipefail
           OUT="data/football/premier-league/core/scorers.json"
           TMPBODY="$(mktemp)"
-          if [[ -z "${URL_SCORERS:-}" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          [[ -z "${URL_SCORERS:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
           REUSE_MAX_AGE_MIN=180
-          if [[ "${FORCE_REFRESH}" != "true" ]] && [[ -f "$OUT" ]]; then
+          if [[ "${FORCE_REFRESH}" != "true" && -f "$OUT" ]]; then
             MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
-            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+            (( AGE_MIN < REUSE_MAX_AGE_MIN )) && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
           fi
 
           FINAL_URL="${URL_SCORERS}&season=${SEASON}&league=${LEAGUE_ID}"
@@ -254,20 +279,19 @@ jobs:
             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          if [[ "$CODE" != "200" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
-          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY"); if [[ "$OK" != "true" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          [[ "$CODE" != "200" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY"); [[ "$OK" != "true" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
           TS=$(date -u +%FT%TZ)
           NORM=$(mktemp)
           jq --arg ts "$TS" '{scorers: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
-          if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
+          if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" && "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             mv "$NORM" "$OUT"; echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             if [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then mv "$NORM" "$OUT"; echo "changed=true" >> "$GITHUB_OUTPUT"; else echo "changed=false" >> "$GITHUB_OUTPUT"; fi
           fi
 
-      # ---------------- TOP ASSISTS ----------------
       - id: assists
         name: Refresh top assists
         if: steps.post_window.outputs.trigger == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.event.schedule, '5 ')
@@ -276,14 +300,14 @@ jobs:
           set -euo pipefail
           OUT="data/football/premier-league/core/assists.json"
           TMPBODY="$(mktemp)"
-          if [[ -z "${URL_TOP_ASSISTS:-}" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          [[ -z "${URL_TOP_ASSISTS:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
           REUSE_MAX_AGE_MIN=180
-          if [[ "${FORCE_REFRESH}" != "true" ]] && [[ -f "$OUT" ]]; then
+          if [[ "${FORCE_REFRESH}" != "true" && -f "$OUT" ]]; then
             MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
-            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+            (( AGE_MIN < REUSE_MAX_AGE_MIN )) && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
           fi
 
           FINAL_URL="${URL_TOP_ASSISTS}&season=${SEASON}&league=${LEAGUE_ID}"
@@ -292,20 +316,19 @@ jobs:
             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          if [[ "$CODE" != "200" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
-          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY"); if [[ "$OK" != "true" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          [[ "$CODE" != "200" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY"); [[ "$OK" != "true" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
           TS=$(date -u +%FT%TZ)
           NORM=$(mktemp)
           jq --arg ts "$TS" '{assists: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
-          if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
+          if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" && "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             mv "$NORM" "$OUT"; echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             if [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then mv "$NORM" "$OUT"; echo "changed=true" >> "$GITHUB_OUTPUT"; else echo "changed=false" >> "$GITHUB_OUTPUT"; fi
           fi
 
-      # ---------------- TOP YELLOW CARDS ----------------
       - id: cards_yellow
         name: Refresh top yellow cards
         if: steps.post_window.outputs.trigger == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.event.schedule, '5 ')
@@ -314,14 +337,14 @@ jobs:
           set -euo pipefail
           OUT="data/football/premier-league/core/cards_yellow.json"
           TMPBODY="$(mktemp)"
-          if [[ -z "${URL_TOP_YELLOWS:-}" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          [[ -z "${URL_TOP_YELLOWS:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
           REUSE_MAX_AGE_MIN=180
-          if [[ "${FORCE_REFRESH}" != "true" ]] && [[ -f "$OUT" ]]; then
+          if [[ "${FORCE_REFRESH}" != "true" && -f "$OUT" ]]; then
             MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
-            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+            (( AGE_MIN < REUSE_MAX_AGE_MIN )) && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
           fi
 
           FINAL_URL="${URL_TOP_YELLOWS}&season=${SEASON}&league=${LEAGUE_ID}"
@@ -330,20 +353,19 @@ jobs:
             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          if [[ "$CODE" != "200" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
-          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY"); if [[ "$OK" != "true" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          [[ "$CODE" != "200" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY"); [[ "$OK" != "true" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
           TS=$(date -u +%FT%TZ)
           NORM=$(mktemp)
           jq --arg ts "$TS" '{cards_yellow: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
-          if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
+          if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" && "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             mv "$NORM" "$OUT"; echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             if [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then mv "$NORM" "$OUT"; echo "changed=true" >> "$GITHUB_OUTPUT"; else echo "changed=false" >> "$GITHUB_OUTPUT"; fi
           fi
 
-      # ---------------- TOP RED CARDS ----------------
       - id: cards_red
         name: Refresh top red cards
         if: steps.post_window.outputs.trigger == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.event.schedule, '5 ')
@@ -352,14 +374,14 @@ jobs:
           set -euo pipefail
           OUT="data/football/premier-league/core/cards_red.json"
           TMPBODY="$(mktemp)"
-          if [[ -z "${URL_TOP_REDS:-}" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          [[ -z "${URL_TOP_REDS:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
           REUSE_MAX_AGE_MIN=180
-          if [[ "${FORCE_REFRESH}" != "true" ]] && [[ -f "$OUT" ]]; then
+          if [[ "${FORCE_REFRESH}" != "true" && -f "$OUT" ]]; then
             MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
-            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+            (( AGE_MIN < REUSE_MAX_AGE_MIN )) && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
           fi
 
           FINAL_URL="${URL_TOP_REDS}&season=${SEASON}&league=${LEAGUE_ID}"
@@ -368,14 +390,14 @@ jobs:
             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          if [[ "$CODE" != "200" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
-          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY"); if [[ "$OK" != "true" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          [[ "$CODE" != "200" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY"); [[ "$OK" != "true" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
           TS=$(date -u +%FT%TZ)
           NORM=$(mktemp)
           jq --arg ts "$TS" '{cards_red: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
-          if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
+          if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" && "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             mv "$NORM" "$OUT"; echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             if [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then mv "$NORM" "$OUT"; echo "changed=true" >> "$GITHUB_OUTPUT"; else echo "changed=false" >> "$GITHUB_OUTPUT"; fi
@@ -390,14 +412,14 @@ jobs:
           set -euo pipefail
           OUT="data/football/premier-league/fixtures/fixtures_season.json"
           TMPBODY="$(mktemp)"
-          if [[ -z "${URL_FIXTURES:-}" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          [[ -z "${URL_FIXTURES:-}" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
           REUSE_MAX_AGE_MIN=720
-          if [[ "${FORCE_REFRESH}" != "true" ]] && [[ -f "$OUT" ]]; then
+          if [[ "${FORCE_REFRESH}" != "true" && -f "$OUT" ]]; then
             MTIME=$(stat -c %Y "$OUT" 2>/dev/null || stat -f %m "$OUT" 2>/dev/null || echo 0)
             NOW=$(date +%s)
             AGE_MIN=$(( (NOW - MTIME) / 60 ))
-            if (( AGE_MIN < REUSE_MAX_AGE_MIN )); then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+            (( AGE_MIN < REUSE_MAX_AGE_MIN )) && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
           fi
 
           FINAL_URL="${URL_FIXTURES}&league=${LEAGUE_ID}&season=${SEASON}"
@@ -406,52 +428,41 @@ jobs:
             -H "x-rapidapi-key: ${RAPIDAPI_KEY}" -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
             "$FINAL_URL" || true)
 
-          if [[ "$CODE" != "200" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
-          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY"); if [[ "$OK" != "true" ]]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          [[ "$CODE" != "200" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
+          OK=$(jq -r '(.response | type) == "array"' "$TMPBODY"); [[ "$OK" != "true" ]] && { echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; }
 
           TS=$(date -u +%FT%TZ)
           NORM=$(mktemp)
           jq --arg ts "$TS" '{matches: .response, meta: { lastUpdatedUTC: $ts }}' "$TMPBODY" > "$NORM"
 
-          if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
+          if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" && "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             mv "$NORM" "$OUT"; echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             if [[ ! -f "$OUT" ]] || ! cmp -s "$NORM" "$OUT"; then mv "$NORM" "$OUT"; echo "changed=true" >> "$GITHUB_OUTPUT"; else echo "changed=false" >> "$GITHUB_OUTPUT"; fi
           fi
 
-      # ---------------- MATCH DETAILS (FINISHED ONLY): timeline + lineups + stats ----------------
+      # ---------------- MATCH DETAILS (FINISHED ONLY): events + lineups + stats + players ----------------
       - id: match_details
-        name: Refresh match details for finished fixtures (events + lineups + stats)
+        name: Refresh finished match details (events + lineups + stats + players)
         if: steps.post_window.outputs.trigger == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.event.schedule, '5 ')
         shell: bash
         run: |
           set -euo pipefail
 
-          CHANGED=false
           NOW=$(date -u +%s)
           WINDOW_SEC=$((MATCHES_WINDOW_DAYS*24*3600))
 
-          # Helper: millisecond sleep using perl; fallback to seconds
-          ms_sleep() {
-            local ms="$1"
-            if command -v perl >/dev/null 2>&1; then
-              perl -e "select(undef, undef, undef, ${ms}/1000.0);"
-            else
-              local sec=$(( (ms + 999) / 1000 ))
-              sleep "${sec}"
-            fi
-          }
+          ms_sleep() { perl -e "select(undef, undef, undef, $1/1000.0);" 2>/dev/null || sleep 1; }
 
-          # Finished-only statuses to avoid duplicating Live workflow
-          is_finished_status() {
+          is_finished() {
             case "$1" in
               FT|AET|PEN) return 0 ;;
               *) return 1 ;;
             esac
           }
 
-          # Collect candidates from fixtures sources
-          declare -a SOURCES=(
+          # sources
+          SOURCES=(
             "data/football/premier-league/fixtures/fixtures_week.json"
             "data/football/premier-league/fixtures/fixtures_season.json"
           )
@@ -459,16 +470,16 @@ jobs:
           TMPFIX="$(mktemp)"
           > "$TMPFIX"
 
-          FOUND=false
+          found="false"
           for SRC in "${SOURCES[@]}"; do
             if [[ -f "$SRC" ]]; then
-              FOUND=true
+              found="true"
               jq -r '.matches[]? | [.fixture.id, .fixture.date, .fixture.status.short] | @tsv' "$SRC" 2>/dev/null || true
             fi
           done | sort -u > "$TMPFIX"
 
-          if [[ "$FOUND" != "true" ]] || [[ ! -s "$TMPFIX" ]]; then
-            echo "match_details: No fixtures sources present or empty."
+          if [[ "$found" != "true" || ! -s "$TMPFIX" ]]; then
+            echo "match_details: No fixture sources."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -478,23 +489,22 @@ jobs:
 
           while IFS=$'\t' read -r FID FDATE STATUS; do
             [[ -z "$FID" ]] && continue
-            STATUS_UP=$(echo "$STATUS" | tr '[:lower:]' '[:upper:]')
-            if ! is_finished_status "$STATUS_UP"; then
+            S=$(echo "${STATUS:-}" | tr '[:lower:]' '[:upper:]')
+
+            if ! is_finished "$S"; then
               continue
             fi
 
             FTS=0
-            if [[ -n "$FDATE" ]]; then
+            if [[ -n "${FDATE:-}" ]]; then
               FTS=$(date -u -d "$FDATE" +%s 2>/dev/null || echo "0")
             fi
             if (( FTS > 0 )); then
               AGE=$(( NOW - FTS ))
-              if (( AGE > WINDOW_SEC )); then
-                continue
-              fi
+              (( AGE > WINDOW_SEC )) && continue
             fi
 
-            echo -e "${FTS}\t${FID}\t${FDATE}\t${STATUS_UP}" >> "$TMP_ELIG"
+            echo -e "${FTS}\t${FID}\t${FDATE}\t${S}" >> "$TMP_ELIG"
           done < "$TMPFIX"
 
           if [[ ! -s "$TMP_ELIG" ]]; then
@@ -505,18 +515,51 @@ jobs:
 
           TMP_BATCH="$(mktemp)"
           sort -nr "$TMP_ELIG" | head -n "${MAX_MATCHES_PER_RUN}" > "$TMP_BATCH"
-          COUNT=$(wc -l < "$TMP_BATCH" | tr -d ' ')
-          echo "match_details: Processing up to ${COUNT} finished fixtures (cap=${MAX_MATCHES_PER_RUN})."
+          n=$(wc -l < "$TMP_BATCH" | tr -d ' ')
+          echo "match_details: Processing $n fixtures (cap=${MAX_MATCHES_PER_RUN})."
+
+          CHANGED="false"
+
+          # wrapper-specific writers
+          write_norm() {
+            local wrapper="$1"   # events|lineups|stats|players
+            local tmp="$2"
+            local out="$3"
+            local ts
+            ts=$(date -u +%FT%TZ)
+
+            local norm; norm="$(mktemp)"
+            case "$wrapper" in
+              events)   jq --arg ts "$ts" '{events: .response, meta: { lastUpdatedUTC: $ts }}' "$tmp" > "$norm" ;;
+              lineups)  jq --arg ts "$ts" '{lineups: .response, meta: { lastUpdatedUTC: $ts }}' "$tmp" > "$norm" ;;
+              stats)    jq --arg ts "$ts" '{stats: .response, meta: { lastUpdatedUTC: $ts }}' "$tmp" > "$norm" ;;
+              players)  jq --arg ts "$ts" '{players: .response, meta: { lastUpdatedUTC: $ts }}' "$tmp" > "$norm" ;;
+              *)        jq --arg ts "$ts" '{data: .response, meta: { lastUpdatedUTC: $ts }}' "$tmp" > "$norm" ;;
+            esac
+
+            mkdir -p "$(dirname "$out")"
+            if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" && "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+              mv "$norm" "$out"
+              CHANGED="true"
+            else
+              if [[ ! -f "$out" ]] || ! cmp -s "$norm" "$out"; then
+                mv "$norm" "$out"
+                CHANGED="true"
+              else
+                rm -f "$norm"
+              fi
+            fi
+          }
 
           fetch_one() {
             local url="$1"
             local out="$2"
+            local wrapper="$3"
 
-            local tmp="$(mktemp)"
+            local tmp; tmp="$(mktemp)"
             local attempt=1
             local code=""
 
-            # up to 3 attempts on 429
             while (( attempt <= 3 )); do
               code=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$tmp" \
                 -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
@@ -525,8 +568,7 @@ jobs:
 
               if [[ "$code" == "429" && "$attempt" -lt 3 ]]; then
                 backoff=$((2**attempt))
-                echo "429 -> backoff ${backoff}s (attempt ${attempt})"
-                sleep "${backoff}"
+                sleep "$backoff"
                 attempt=$((attempt+1))
                 continue
               fi
@@ -545,78 +587,61 @@ jobs:
               return 3
             fi
 
-            local ts norm
-            ts=$(date -u +%FT%TZ)
-            norm="$(mktemp)"
-
-            # Wrap already-normalized per file type
-            jq --arg ts "$ts" '{data: .response, meta: { lastUpdatedUTC: $ts }}' "$tmp" > "$norm"
-
-            mkdir -p "$(dirname "$out")"
-            if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_WRITE_ON_DISPATCH}" == "true" ]]; then
-              mv "$norm" "$out"
-              CHANGED=true
-            else
-              if [[ ! -f "$out" ]] || ! cmp -s "$norm" "$out"; then
-                mv "$norm" "$out"
-                CHANGED=true
-              else
-                rm -f "$norm"
-              fi
-            fi
-
+            write_norm "$wrapper" "$tmp" "$out"
             rm -f "$tmp"
             return 0
           }
 
-          PROCESSED=0
           while IFS=$'\t' read -r FTS FID FDATE STATUS; do
-            # Per-fixture folder
             DIR="data/football/premier-league/matches/${FID}"
+
             EVT_OUT="${DIR}/events.json"
             LUP_OUT="${DIR}/lineups.json"
             STA_OUT="${DIR}/stats.json"
+            PLY_OUT="${DIR}/players.json"
 
-            echo "match_details: fixture=$FID status=$STATUS date=$FDATE"
+            echo "match_details: fixture=$FID ($STATUS) $FDATE"
 
-            # Pace between requests (applies to each call)
-            if [[ "${PER_REQUEST_SLEEP_MS}" -gt 0 ]]; then ms_sleep "${PER_REQUEST_SLEEP_MS}"; fi
-            if ! fetch_one "${EVENTS_BASE_URL}${FID}" "$EVT_OUT"; then
-              if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_MATCHES_EVEN_ON_ERRORS}" == "true" ]]; then
-                TS=$(date -u +%FT%TZ)
-                mkdir -p "$DIR"
-                echo "{\"data\":[],\"meta\":{\"lastUpdatedUTC\":\"${TS}\",\"note\":\"placeholder due to events fetch error\"}}" > "$EVT_OUT"
-                CHANGED=true
+            ms_sleep "${PER_REQUEST_SLEEP_MS}"
+            if ! fetch_one "${EVENTS_BASE_URL}${FID}" "$EVT_OUT" "events"; then
+              if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_MATCHES_EVEN_ON_ERRORS}" == "true" && "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+                ts=$(date -u +%FT%TZ); mkdir -p "$DIR"
+                echo "{\"events\":[],\"meta\":{\"lastUpdatedUTC\":\"${ts}\",\"note\":\"placeholder events\"}}" > "$EVT_OUT"
+                CHANGED="true"
               fi
             fi
 
-            if [[ "${PER_REQUEST_SLEEP_MS}" -gt 0 ]]; then ms_sleep "${PER_REQUEST_SLEEP_MS}"; fi
-            if ! fetch_one "${LINEUPS_BASE_URL}${FID}" "$LUP_OUT"; then
-              if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_MATCHES_EVEN_ON_ERRORS}" == "true" ]]; then
-                TS=$(date -u +%FT%TZ)
-                mkdir -p "$DIR"
-                echo "{\"data\":[],\"meta\":{\"lastUpdatedUTC\":\"${TS}\",\"note\":\"placeholder due to lineups fetch error\"}}" > "$LUP_OUT"
-                CHANGED=true
+            ms_sleep "${PER_REQUEST_SLEEP_MS}"
+            if ! fetch_one "${LINEUPS_BASE_URL}${FID}" "$LUP_OUT" "lineups"; then
+              if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_MATCHES_EVEN_ON_ERRORS}" == "true" && "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+                ts=$(date -u +%FT%TZ); mkdir -p "$DIR"
+                echo "{\"lineups\":[],\"meta\":{\"lastUpdatedUTC\":\"${ts}\",\"note\":\"placeholder lineups\"}}" > "$LUP_OUT"
+                CHANGED="true"
               fi
             fi
 
-            if [[ "${PER_REQUEST_SLEEP_MS}" -gt 0 ]]; then ms_sleep "${PER_REQUEST_SLEEP_MS}"; fi
-            if ! fetch_one "${STATS_BASE_URL}${FID}" "$STA_OUT"; then
-              if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_MATCHES_EVEN_ON_ERRORS}" == "true" ]]; then
-                TS=$(date -u +%FT%TZ)
-                mkdir -p "$DIR"
-                echo "{\"data\":[],\"meta\":{\"lastUpdatedUTC\":\"${TS}\",\"note\":\"placeholder due to stats fetch error\"}}" > "$STA_OUT"
-                CHANGED=true
+            ms_sleep "${PER_REQUEST_SLEEP_MS}"
+            if ! fetch_one "${STATS_BASE_URL}${FID}" "$STA_OUT" "stats"; then
+              if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_MATCHES_EVEN_ON_ERRORS}" == "true" && "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+                ts=$(date -u +%FT%TZ); mkdir -p "$DIR"
+                echo "{\"stats\":[],\"meta\":{\"lastUpdatedUTC\":\"${ts}\",\"note\":\"placeholder stats\"}}" > "$STA_OUT"
+                CHANGED="true"
               fi
             fi
 
-            PROCESSED=$((PROCESSED+1))
+            ms_sleep "${PER_REQUEST_SLEEP_MS}"
+            if ! fetch_one "${PLAYERS_BASE_URL}${FID}" "$PLY_OUT" "players"; then
+              if [[ "${FORCE_REFRESH}" == "true" && "${FORCE_MATCHES_EVEN_ON_ERRORS}" == "true" && "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+                ts=$(date -u +%FT%TZ); mkdir -p "$DIR"
+                echo "{\"players\":[],\"meta\":{\"lastUpdatedUTC\":\"${ts}\",\"note\":\"placeholder players\"}}" > "$PLY_OUT"
+                CHANGED="true"
+              fi
+            fi
+
           done < "$TMP_BATCH"
 
-          echo "match_details: Processed fixtures: $PROCESSED"
           echo "changed=${CHANGED}" >> "$GITHUB_OUTPUT"
 
-      # ---------------- OPS SUMMARY ----------------
       - id: ops_summary
         name: Write ops summary
         shell: bash
@@ -634,16 +659,19 @@ jobs:
               matchesWindowDays: ($window|tonumber),
               maxMatchesPerRun: ($max|tonumber)
             }' > data/ops/core_last_run.json
+          echo "changed=true" >> "$GITHUB_OUTPUT"
 
       - name: Commit & push
-        if: steps.fixtures.outputs.changed == 'true' ||
+        if: steps.heartbeat.outputs.changed == 'true' ||
+            steps.fixtures.outputs.changed == 'true' ||
             steps.standings.outputs.changed == 'true' ||
             steps.scorers.outputs.changed == 'true' ||
             steps.assists.outputs.changed == 'true' ||
             steps.cards_yellow.outputs.changed == 'true' ||
             steps.cards_red.outputs.changed == 'true' ||
             steps.fixtures_season.outputs.changed == 'true' ||
-            steps.match_details.outputs.changed == 'true'
+            steps.match_details.outputs.changed == 'true' ||
+            steps.ops_summary.outputs.changed == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -654,6 +682,7 @@ jobs:
           git add data/football/premier-league/fixtures/*.json || true
           git add data/football/premier-league/matches/** || true
           git add data/ops/core_last_run.json || true
+          git add data/ops/core_heartbeat.json || true
 
-          git commit -m "Update core feeds + finished match details (events/lineups/stats)" || true
+          git commit -m "Update PL core feeds + finished match details (events/lineups/stats/players)" || true
           git push || true
