@@ -43,9 +43,53 @@
       "type": "Card",
       "detail": "Yellow Card",
       "comments": "Tripping"
+    },
+    {
+      "time": {
+        "elapsed": 34,
+        "extra": null
+      },
+      "team": {
+        "id": 33,
+        "name": "Manchester United",
+        "logo": "https://media.api-sports.io/football/teams/33.png"
+      },
+      "player": {
+        "id": 157997,
+        "name": "A. Diallo"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Var",
+      "detail": "Goal Disallowed - offside",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 41,
+        "extra": null
+      },
+      "team": {
+        "id": 33,
+        "name": "Manchester United",
+        "logo": "https://media.api-sports.io/football/teams/33.png"
+      },
+      "player": {
+        "id": 1485,
+        "name": "B. Fernandes"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Var",
+      "detail": "Goal Disallowed - offside",
+      "comments": null
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-17T12:59:45Z"
+    "lastUpdatedUTC": "2026-01-17T13:16:38Z"
   }
 }
