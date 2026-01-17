@@ -2,83 +2,13 @@
   "matches": [
     {
       "fixture": {
-        "id": 1379184,
-        "referee": "Anthony Taylor, England",
-        "timezone": "UTC",
-        "date": "2026-01-17T12:30:00+00:00",
-        "timestamp": 1768653000,
-        "periods": {
-          "first": 1768653000,
-          "second": null
-        },
-        "venue": {
-          "id": 556,
-          "name": "Old Trafford",
-          "city": "Manchester"
-        },
-        "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 14,
-          "extra": null
-        }
-      },
-      "league": {
-        "id": 39,
-        "name": "Premier League",
-        "country": "England",
-        "logo": "https://media.api-sports.io/football/leagues/39.png",
-        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-        "season": 2025,
-        "round": "Regular Season - 22",
-        "standings": true
-      },
-      "teams": {
-        "home": {
-          "id": 33,
-          "name": "Manchester United",
-          "logo": "https://media.api-sports.io/football/teams/33.png",
-          "winner": null
-        },
-        "away": {
-          "id": 50,
-          "name": "Manchester City",
-          "logo": "https://media.api-sports.io/football/teams/50.png",
-          "winner": null
-        }
-      },
-      "goals": {
-        "home": 0,
-        "away": 0
-      },
-      "score": {
-        "halftime": {
-          "home": 0,
-          "away": 0
-        },
-        "fulltime": {
-          "home": null,
-          "away": null
-        },
-        "extratime": {
-          "home": null,
-          "away": null
-        },
-        "penalty": {
-          "home": null,
-          "away": null
-        }
-      }
-    },
-    {
-      "fixture": {
         "id": 1379183,
-        "referee": null,
+        "referee": "Andy Madley, England",
         "timezone": "UTC",
         "date": "2026-01-17T15:00:00+00:00",
         "timestamp": 1768662000,
         "periods": {
-          "first": null,
+          "first": 1768662000,
           "second": null
         },
         "venue": {
@@ -87,9 +17,9 @@
           "city": "Liverpool"
         },
         "status": {
-          "long": "Not Started",
-          "short": "NS",
-          "elapsed": null,
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 20,
           "extra": null
         }
       },
@@ -118,13 +48,13 @@
         }
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       },
       "score": {
         "halftime": {
-          "home": null,
-          "away": null
+          "home": 0,
+          "away": 0
         },
         "fulltime": {
           "home": null,
@@ -143,12 +73,12 @@
     {
       "fixture": {
         "id": 1379187,
-        "referee": null,
+        "referee": "Jarred Gillett, Australia",
         "timezone": "UTC",
         "date": "2026-01-17T15:00:00+00:00",
         "timestamp": 1768662000,
         "periods": {
-          "first": null,
+          "first": 1768662000,
           "second": null
         },
         "venue": {
@@ -157,9 +87,9 @@
           "city": "London"
         },
         "status": {
-          "long": "Not Started",
-          "short": "NS",
-          "elapsed": null,
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 20,
           "extra": null
         }
       },
@@ -178,23 +108,23 @@
           "id": 47,
           "name": "Tottenham",
           "logo": "https://media.api-sports.io/football/teams/47.png",
-          "winner": null
+          "winner": false
         },
         "away": {
           "id": 48,
           "name": "West Ham",
           "logo": "https://media.api-sports.io/football/teams/48.png",
-          "winner": null
+          "winner": true
         }
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 1
       },
       "score": {
         "halftime": {
-          "home": null,
-          "away": null
+          "home": 0,
+          "away": 1
         },
         "fulltime": {
           "home": null,
@@ -213,12 +143,12 @@
     {
       "fixture": {
         "id": 1379181,
-        "referee": null,
+        "referee": "John Brooks, England",
         "timezone": "UTC",
         "date": "2026-01-17T15:00:00+00:00",
         "timestamp": 1768662000,
         "periods": {
-          "first": null,
+          "first": 1768662000,
           "second": null
         },
         "venue": {
@@ -227,9 +157,9 @@
           "city": "London"
         },
         "status": {
-          "long": "Not Started",
-          "short": "NS",
-          "elapsed": null,
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 19,
           "extra": null
         }
       },
@@ -258,13 +188,13 @@
         }
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       },
       "score": {
         "halftime": {
-          "home": null,
-          "away": null
+          "home": 0,
+          "away": 0
         },
         "fulltime": {
           "home": null,
@@ -283,12 +213,12 @@
     {
       "fixture": {
         "id": 1379182,
-        "referee": null,
+        "referee": "Chris Kavanagh, England",
         "timezone": "UTC",
         "date": "2026-01-17T15:00:00+00:00",
         "timestamp": 1768662000,
         "periods": {
-          "first": null,
+          "first": 1768662000,
           "second": null
         },
         "venue": {
@@ -297,9 +227,9 @@
           "city": "Leeds"
         },
         "status": {
-          "long": "Not Started",
-          "short": "NS",
-          "elapsed": null,
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 19,
           "extra": null
         }
       },
@@ -328,13 +258,13 @@
         }
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       },
       "score": {
         "halftime": {
-          "home": null,
-          "away": null
+          "home": 0,
+          "away": 0
         },
         "fulltime": {
           "home": null,
@@ -353,12 +283,12 @@
     {
       "fixture": {
         "id": 1379186,
-        "referee": null,
+        "referee": "Robert Jones, England",
         "timezone": "UTC",
         "date": "2026-01-17T15:00:00+00:00",
         "timestamp": 1768662000,
         "periods": {
-          "first": null,
+          "first": 1768662000,
           "second": null
         },
         "venue": {
@@ -367,9 +297,9 @@
           "city": "Sunderland"
         },
         "status": {
-          "long": "Not Started",
-          "short": "NS",
-          "elapsed": null,
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 20,
           "extra": null
         }
       },
@@ -398,17 +328,87 @@
         }
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       },
       "score": {
         "halftime": {
-          "home": null,
-          "away": null
+          "home": 0,
+          "away": 0
         },
         "fulltime": {
           "home": null,
           "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
+        "id": 1379184,
+        "referee": "Anthony Taylor, England",
+        "timezone": "UTC",
+        "date": "2026-01-17T12:30:00+00:00",
+        "timestamp": 1768653000,
+        "periods": {
+          "first": 1768653000,
+          "second": 1768656600
+        },
+        "venue": {
+          "id": 556,
+          "name": "Old Trafford",
+          "city": "Manchester"
+        },
+        "status": {
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
+          "extra": 7
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 22",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 33,
+          "name": "Manchester United",
+          "logo": "https://media.api-sports.io/football/teams/33.png",
+          "winner": true
+        },
+        "away": {
+          "id": 50,
+          "name": "Manchester City",
+          "logo": "https://media.api-sports.io/football/teams/50.png",
+          "winner": false
+        }
+      },
+      "goals": {
+        "home": 2,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 0
+        },
+        "fulltime": {
+          "home": 2,
+          "away": 0
         },
         "extratime": {
           "home": null,
@@ -1752,6 +1752,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-17T12:44:29Z"
+    "lastUpdatedUTC": "2026-01-17T15:20:08Z"
   }
 }
