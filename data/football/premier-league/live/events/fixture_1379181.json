@@ -1,0 +1,73 @@
+{
+  "events": [
+    {
+      "time": {
+        "elapsed": 26,
+        "extra": null
+      },
+      "team": {
+        "id": 49,
+        "name": "Chelsea",
+        "logo": "https://media.api-sports.io/football/teams/49.png"
+      },
+      "player": {
+        "id": 10329,
+        "name": "Joao Pedro"
+      },
+      "assist": {
+        "id": 5996,
+        "name": "E. Fernandez"
+      },
+      "type": "Goal",
+      "detail": "Normal Goal",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 36,
+        "extra": null
+      },
+      "team": {
+        "id": 55,
+        "name": "Brentford",
+        "logo": "https://media.api-sports.io/football/teams/55.png"
+      },
+      "player": {
+        "id": 178077,
+        "name": "K. Schade"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Card",
+      "detail": "Yellow Card",
+      "comments": "Unsportsmanlike conduct"
+    },
+    {
+      "time": {
+        "elapsed": 45,
+        "extra": 3
+      },
+      "team": {
+        "id": 55,
+        "name": "Brentford",
+        "logo": "https://media.api-sports.io/football/teams/55.png"
+      },
+      "player": {
+        "id": 25073,
+        "name": "V. Janelt"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Card",
+      "detail": "Yellow Card",
+      "comments": "Unsportsmanlike conduct"
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-17T16:16:36Z"
+  }
+}

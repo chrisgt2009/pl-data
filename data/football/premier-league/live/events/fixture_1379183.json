@@ -1,0 +1,73 @@
+{
+  "events": [
+    {
+      "time": {
+        "elapsed": 32,
+        "extra": null
+      },
+      "team": {
+        "id": 40,
+        "name": "Liverpool",
+        "logo": "https://media.api-sports.io/football/teams/40.png"
+      },
+      "player": {
+        "id": 1096,
+        "name": "D. Szoboszlai"
+      },
+      "assist": {
+        "id": 1096,
+        "name": "D. Szoboszlai"
+      },
+      "type": "Goal",
+      "detail": "Missed Penalty",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 40,
+        "extra": null
+      },
+      "team": {
+        "id": 40,
+        "name": "Liverpool",
+        "logo": "https://media.api-sports.io/football/teams/40.png"
+      },
+      "player": {
+        "id": 206254,
+        "name": "M. Kerkez"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Card",
+      "detail": "Yellow Card",
+      "comments": "Roughing"
+    },
+    {
+      "time": {
+        "elapsed": 42,
+        "extra": null
+      },
+      "team": {
+        "id": 40,
+        "name": "Liverpool",
+        "logo": "https://media.api-sports.io/football/teams/40.png"
+      },
+      "player": {
+        "id": 203224,
+        "name": "F. Wirtz"
+      },
+      "assist": {
+        "id": 293,
+        "name": "C. Jones"
+      },
+      "type": "Goal",
+      "detail": "Normal Goal",
+      "comments": null
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-17T16:16:35Z"
+  }
+}

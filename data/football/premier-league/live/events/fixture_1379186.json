@@ -1,0 +1,117 @@
+{
+  "events": [
+    {
+      "time": {
+        "elapsed": 17,
+        "extra": null
+      },
+      "team": {
+        "id": 52,
+        "name": "Crystal Palace",
+        "logo": "https://media.api-sports.io/football/teams/52.png"
+      },
+      "player": {
+        "id": 126949,
+        "name": "C. Richards"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Card",
+      "detail": "Yellow Card",
+      "comments": "Tripping"
+    },
+    {
+      "time": {
+        "elapsed": 30,
+        "extra": null
+      },
+      "team": {
+        "id": 52,
+        "name": "Crystal Palace",
+        "logo": "https://media.api-sports.io/football/teams/52.png"
+      },
+      "player": {
+        "id": 184226,
+        "name": "Y. Pino"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Goal",
+      "detail": "Normal Goal",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 33,
+        "extra": null
+      },
+      "team": {
+        "id": 746,
+        "name": "Sunderland",
+        "logo": "https://media.api-sports.io/football/teams/746.png"
+      },
+      "player": {
+        "id": 20638,
+        "name": "E. Le Fee"
+      },
+      "assist": {
+        "id": 1146,
+        "name": "N. Mukiele"
+      },
+      "type": "Goal",
+      "detail": "Normal Goal",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 36,
+        "extra": null
+      },
+      "team": {
+        "id": 52,
+        "name": "Crystal Palace",
+        "logo": "https://media.api-sports.io/football/teams/52.png"
+      },
+      "player": {
+        "id": 288102,
+        "name": "A. Wharton"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Card",
+      "detail": "Yellow Card",
+      "comments": "Holding"
+    },
+    {
+      "time": {
+        "elapsed": 48,
+        "extra": null
+      },
+      "team": {
+        "id": 746,
+        "name": "Sunderland",
+        "logo": "https://media.api-sports.io/football/teams/746.png"
+      },
+      "player": {
+        "id": 119121,
+        "name": "T. Hume"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Card",
+      "detail": "Yellow Card",
+      "comments": "Holding"
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-17T16:16:36Z"
+  }
+}
