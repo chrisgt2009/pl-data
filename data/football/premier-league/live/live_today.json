@@ -19,7 +19,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 8,
+          "elapsed": 12,
           "extra": null
         }
       },
@@ -69,10 +69,33 @@
           "away": null
         }
       },
-      "events": []
+      "events": [
+        {
+          "time": {
+            "elapsed": 11,
+            "extra": null
+          },
+          "team": {
+            "id": 33,
+            "name": "Manchester United",
+            "logo": "https://media.api-sports.io/football/teams/33.png"
+          },
+          "player": {
+            "id": 886,
+            "name": "D. Dalot"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Roughing"
+        }
+      ]
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-17T12:38:39Z"
+    "lastUpdatedUTC": "2026-01-17T12:42:16Z"
   }
 }
