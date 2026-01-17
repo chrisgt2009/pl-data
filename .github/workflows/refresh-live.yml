@@ -2,10 +2,8 @@ name: Refresh Live (Premier League)
 
 on:
   schedule:
-    # GitHub minimum granularity is 5 minutes.
-    # We run frequently, but preflight will prevent wasted calls when nothing is live/near.
-    - cron: "*/5 11-23 * * *"
-    - cron: "*/10 0-3 * * *"
+    # GitHub minimum granularity is 5 minutes; cron is UTC
+    - cron: "*/5 * * * *"
   workflow_dispatch:
     inputs:
       force_fetch:
@@ -27,57 +25,52 @@ jobs:
     timeout-minutes: 15
 
     env:
-      # You confirmed this var:
       URL_LIVE: ${{ vars.URL_LIVE }} # https://v3.football.api-sports.io/fixtures?live=all
 
-      # These already exist in your repo:
       RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
       RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
 
       LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}  # 39
-      SEASON: ${{ vars.SEASON_PL }}        # e.g. 2025
+      SEASON: ${{ vars.SEASON_PL }}        # 2025
 
-      # Exact endpoint you provided (no guessing):
-      EVENTS_BASE: "https://v3.football.api-sports.io/fixtures/events?fixture="
+      EVENTS_URL: "https://v3.football.api-sports.io/fixtures/events?fixture="
+      LINEUPS_URL: "https://v3.football.api-sports.io/fixtures/lineups?fixture="
+      STATS_URL: "https://v3.football.api-sports.io/fixtures/statistics?fixture="
 
-      # Quota controls (you told us 7500/day)
+      # Your quota
       DAILY_CAP: "7500"
-      # Safety margin to avoid hard-failing at the cap:
       SOFT_CAP: "7200"
 
-      # Post-window duration: keep updating events after FT (seconds)
-      POST_WINDOW_SECONDS: "5400" # 90 minutes
+      # Keep updating after FT
+      POST_WINDOW_SECONDS: "5400" # 90m
 
-      # If fixtures start within this window, consider it "near kickoff" (seconds)
-      NEAR_KICKOFF_SECONDS: "5400" # 90 minutes
+      # Pull data if kickoff is near (helps lineups show up pre-match)
+      NEAR_KICKOFF_SECONDS: "5400" # 90m
+
+      # Pacing
+      PER_REQUEST_SLEEP_MS: "200"
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq
+      - name: Install jq and perl
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq perl
 
       - name: Ensure folders
         run: |
-          mkdir -p data/football/premier-league/live/events
+          mkdir -p data/football/premier-league/live
           mkdir -p data/football/premier-league/fixtures
+          mkdir -p data/football/premier-league/matches
           mkdir -p data/ops
 
-      # Minimal change: always write a heartbeat so you can see the workflow ran
-      - name: Write heartbeat
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p data/football/premier-league/live
-          TS=$(date -u +%FT%TZ)
-          echo "{\"meta\":{\"lastRunUTC\":\"${TS}\"}}" > data/football/premier-league/live/heartbeat.json
-
       # -----------------------------
-      # Load & normalize quota state
+      # Quota state (reset per day)
       # -----------------------------
       - id: quota
-        name: Quota state (load / reset per day)
+        name: Quota state (load/reset per day)
         shell: bash
         run: |
           set -euo pipefail
@@ -97,14 +90,22 @@ jobs:
 
           jq -n --arg date "$LONDON_DATE" --argjson count "$COUNT" '{date:$date, count:$count}' > "$STATE"
 
-          echo "date=$LONDON_DATE" >> "$GITHUB_OUTPUT"
           echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+
+      - id: cap
+        name: Quota guard (soft cap)
+        shell: bash
+        run: |
+          set -euo pipefail
+          COUNT=${{ steps.quota.outputs.count }}
+          if (( COUNT >= SOFT_CAP )); then
+            echo "over=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "over=false" >> "$GITHUB_OUTPUT"
+          fi
 
       # ---------------------------------------------------------
       # Preflight: decide whether to fetch at all
-      # - YES if existing live file has live statuses
-      # - OR if post-window trigger active (<= 90m old)
-      # - OR if fixtures_week exists & a match is near kickoff
       # ---------------------------------------------------------
       - id: preflight
         name: Preflight (should we fetch?)
@@ -112,30 +113,14 @@ jobs:
         run: |
           set -euo pipefail
 
-          OUT="data/football/premier-league/live/live_today.json"
+          LIVE_OUT="data/football/premier-league/live/live_today.json"
           FIX="data/football/premier-league/fixtures/fixtures_week.json"
           POST="data/ops/post_window.json"
 
           SHOULD="no"
 
-          # Helper: are there live statuses in live_today.json?
-          has_live_now() {
-            jq -r '
-              [.matches[]? | .fixture.status.short // "" | ascii_upcase]
-              | any(.=="1H" or .=="HT" or .=="2H" or .=="ET" or .=="P" or .=="LIVE")
-            ' "$1"
-          }
-
-          # 1) If we already have live_today.json and it shows live -> fetch
-          if [[ -f "$OUT" ]]; then
-            LIVE=$(has_live_now "$OUT" || echo "false")
-            if [[ "$LIVE" == "true" ]]; then
-              SHOULD="yes"
-            fi
-          fi
-
-          # 2) If post-window trigger exists and is fresh -> fetch (to extend duration after FT)
-          if [[ "$SHOULD" == "no" && -f "$POST" ]]; then
+          # 1) If post-window flag is fresh -> yes
+          if [[ -f "$POST" ]]; then
             NOW=$(date -u +%s)
             TS=$(jq -r '.ts // 0' "$POST")
             AGE=$((NOW - TS))
@@ -144,7 +129,7 @@ jobs:
             fi
           fi
 
-          # 3) If fixtures_week exists and a kickoff is within NEAR_KICKOFF_SECONDS -> fetch
+          # 2) If fixtures_week exists and a kickoff is within NEAR window -> yes
           if [[ "$SHOULD" == "no" && -f "$FIX" ]]; then
             NOW=$(date -u +%s)
             NEAR=$(jq --argjson now "$NOW" --argjson win "${NEAR_KICKOFF_SECONDS}" '
@@ -163,89 +148,88 @@ jobs:
             fi
           fi
 
-          echo "should_fetch=$SHOULD" >> "$GITHUB_OUTPUT"
-
-      # -----------------------------
-      # Guard: soft cap
-      # -----------------------------
-      - id: cap
-        name: Quota guard (soft cap)
-        shell: bash
-        run: |
-          set -euo pipefail
-          COUNT=${{ steps.quota.outputs.count }}
-          SOFT=${SOFT_CAP}
-
-          if (( COUNT >= SOFT )); then
-            echo "over=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "over=false" >> "$GITHUB_OUTPUT"
+          # 3) If we already have live_today.json and it showed live last time -> yes
+          if [[ "$SHOULD" == "no" && -f "$LIVE_OUT" ]]; then
+            LIVE=$(jq -r '
+              [.matches[]? | .fixture.status.short // "" | ascii_upcase]
+              | any(.=="1H" or .=="HT" or .=="2H" or .=="ET" or .=="P" or .=="LIVE")
+            ' "$LIVE_OUT" || echo "false")
+            if [[ "$LIVE" == "true" ]]; then
+              SHOULD="yes"
+            fi
           fi
 
+          echo "should_fetch=$SHOULD" >> "$GITHUB_OUTPUT"
+
       # ---------------------------------------------------------
-      # Main fetch step:
-      # - 1 call to fixtures live list
-      # - N calls to events per live fixture
-      # - plus post-window fixture events if triggered
-      # - counts calls properly against daily cap
-      # - writes only when content changes
-      #
-      # Minimal change: allow manual "force_fetch" to bypass preflight
+      # Fetch live list + per-fixture details (events/lineups/stats)
+      # Writes into matches/<fixtureId>/...
       # ---------------------------------------------------------
       - id: fetch
-        name: Fetch live fixtures + events (with post-window extension)
+        name: Fetch live list + match detail refresh (events/lineups/stats)
         if: (steps.preflight.outputs.should_fetch == 'yes' || inputs.force_fetch == true) && steps.cap.outputs.over != 'true'
         shell: bash
         run: |
           set -euo pipefail
 
-          # Paths
           LIVE_OUT="data/football/premier-league/live/live_today.json"
-          EVENTS_DIR="data/football/premier-league/live/events"
-          STATE="data/ops/live_usage.json"
+          FIX="data/football/premier-league/fixtures/fixtures_week.json"
           POST="data/ops/post_window.json"
+          STATE="data/ops/live_usage.json"
 
-          mkdir -p "$EVENTS_DIR"
-
-          # Load quota count
           COUNT=$(jq -r '.count // 0' "$STATE")
-          DAILY=${DAILY_CAP}
-
           CALLS_USED=0
           ANY_CHANGED="false"
 
-          api_get() {
+          ms_sleep() {
+            local ms="$1"
+            if command -v perl >/dev/null 2>&1; then
+              perl -e "select(undef, undef, undef, ${ms}/1000.0);"
+            else
+              sleep 1
+            fi
+          }
+
+          # Generic API GET with 429 backoff; wraps output with meta; writes only if changed
+          api_get_wrap() {
             local url="$1"
             local out_file="$2"
+            local wrap_key="$3" # matches|events|lineups|stats
 
-            # Hard stop before the official cap
-            if (( COUNT + CALLS_USED >= DAILY )); then
-              echo "Quota hard cap reached (count=$COUNT used=$CALLS_USED daily=$DAILY)."
+            # Hard cap check
+            if (( COUNT + CALLS_USED >= DAILY_CAP )); then
               return 99
             fi
 
-            local tmpbody
-            tmpbody="$(mktemp)"
+            local tmpbody; tmpbody="$(mktemp)"
+            local code=""
+            local attempt=1
 
-            local code
-            code=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$tmpbody" \
-              -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
-              -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
-              "$url" || true)
+            while (( attempt <= 3 )); do
+              code=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$tmpbody" \
+                -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
+                -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+                "$url" || true)
 
-            CALLS_USED=$((CALLS_USED + 1))
+              CALLS_USED=$((CALLS_USED + 1))
+
+              if [[ "$code" == "429" && "$attempt" -lt 3 ]]; then
+                backoff=$((2**attempt))
+                sleep "$backoff"
+                attempt=$((attempt + 1))
+                continue
+              fi
+              break
+            done
 
             if [[ "$code" != "200" ]]; then
-              echo "HTTP $code for $url"
               rm -f "$tmpbody"
               return 2
             fi
 
-            # Validate expected shape: .response is array
             local ok
             ok=$(jq -r '(.response | type) == "array"' "$tmpbody" 2>/dev/null || echo "false")
             if [[ "$ok" != "true" ]]; then
-              echo "Bad payload for $url (.response not array)"
               rm -f "$tmpbody"
               return 3
             fi
@@ -254,14 +238,11 @@ jobs:
             ts=$(date -u +%FT%TZ)
             norm="$(mktemp)"
 
-            # Wrap depending on the target
-            if [[ "$out_file" == "$LIVE_OUT" ]]; then
-              jq --arg ts "$ts" '{matches: .response, meta: { lastUpdatedUTC: $ts }}' "$tmpbody" > "$norm"
-            else
-              jq --arg ts "$ts" '{events: .response, meta: { lastUpdatedUTC: $ts }}' "$tmpbody" > "$norm"
-            fi
+            jq --arg ts "$ts" --arg key "$wrap_key" '
+              { ($key): .response, meta: { lastUpdatedUTC: $ts } }
+            ' "$tmpbody" > "$norm"
 
-            # Write only on change
+            mkdir -p "$(dirname "$out_file")"
             if [[ ! -f "$out_file" ]] || ! cmp -s "$norm" "$out_file"; then
               mv "$norm" "$out_file"
               ANY_CHANGED="true"
@@ -273,57 +254,81 @@ jobs:
             return 0
           }
 
-          # 1) Fetch live fixtures list (1 call)
+          # 1) Always fetch live list once (it’s the source of truth for what is live)
           if [[ -z "${URL_LIVE:-}" ]]; then
-            echo "URL_LIVE not set. Exiting."
+            echo "URL_LIVE not set."
             echo "calls_used=0" >> "$GITHUB_OUTPUT"
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          FINAL_LIVE_URL="${URL_LIVE}&league=${LEAGUE_ID}&season=${SEASON}"
-          echo "Fetching LIVE fixtures: $FINAL_LIVE_URL"
-          api_get "$FINAL_LIVE_URL" "$LIVE_OUT" || true
+          LIVE_URL="${URL_LIVE}&league=${LEAGUE_ID}&season=${SEASON}"
+          api_get_wrap "$LIVE_URL" "$LIVE_OUT" "matches" || true
 
-          # Identify live fixture IDs from LIVE_OUT
+          # 2) Build target fixture ids:
+          #    - all live fixtures from LIVE_OUT
+          #    - plus near kickoff fixtures from fixtures_week
+          #    - plus post-window finished fixtures for up to 90m
+          TMP_TARGETS="$(mktemp)"
+          > "$TMP_TARGETS"
+
           if [[ -f "$LIVE_OUT" ]]; then
-            mapfile -t LIVE_FIXTURE_IDS < <(jq -r '
-              .matches[]
+            jq -r '
+              .matches[]?
               | select((.fixture.status.short // "" | ascii_upcase) as $s
                   | ($s=="1H" or $s=="HT" or $s=="2H" or $s=="ET" or $s=="P" or $s=="LIVE"))
               | .fixture.id
-            ' "$LIVE_OUT")
-
-            # 2) Fetch events per live fixture (N calls)
-            if (( ${#LIVE_FIXTURE_IDS[@]} > 0 )); then
-              echo "Live fixtures count: ${#LIVE_FIXTURE_IDS[@]}"
-              for fid in "${LIVE_FIXTURE_IDS[@]}"; do
-                url="${EVENTS_BASE}${fid}"
-                out="${EVENTS_DIR}/fixture_${fid}.json"
-                api_get "$url" "$out" || true
-              done
-            else
-              echo "No fixtures currently live by status."
-            fi
+            ' "$LIVE_OUT" >> "$TMP_TARGETS" || true
           fi
 
-          # 3) Post-window extension: refresh events for finished fixture IDs
+          if [[ -f "$FIX" ]]; then
+            NOW=$(date -u +%s)
+            jq -r --argjson now "$NOW" --argjson win "${NEAR_KICKOFF_SECONDS}" '
+              def to_ts($s):
+                (try ($s
+                  | sub("\\.[0-9]{3}Z$"; "Z")
+                  | strptime("%Y-%m-%dT%H:%M:%S%z")
+                  | mktime) catch null);
+
+              .matches[]?
+              | .fixture.date as $d
+              | to_ts($d) as $ts
+              | select($ts != null and ($ts - $now) >= 0 and ($ts - $now) <= $win)
+              | .fixture.id
+            ' "$FIX" >> "$TMP_TARGETS" || true
+          fi
+
           if [[ -f "$POST" ]]; then
             NOW=$(date -u +%s)
             TS=$(jq -r '.ts // 0' "$POST")
             AGE=$((NOW - TS))
             if (( AGE >= 0 && AGE <= ${POST_WINDOW_SECONDS} )); then
-              mapfile -t POST_FIXTURE_IDS < <(jq -r '.fixtures[]? // empty' "$POST")
-              if (( ${#POST_FIXTURE_IDS[@]} > 0 )); then
-                echo "Post-window active for ${#POST_FIXTURE_IDS[@]} fixtures."
-                for fid in "${POST_FIXTURE_IDS[@]}"; do
-                  url="${EVENTS_BASE}${fid}"
-                  out="${EVENTS_DIR}/fixture_${fid}.json"
-                  api_get "$url" "$out" || true
-                done
-              fi
+              jq -r '.fixtures[]? // empty' "$POST" >> "$TMP_TARGETS" || true
             fi
           fi
+
+          sort -u "$TMP_TARGETS" > "$TMP_TARGETS.uniq"
+          mapfile -t TARGET_FIXTURES < "$TMP_TARGETS.uniq"
+
+          echo "Target fixtures: ${#TARGET_FIXTURES[@]}"
+
+          # 3) For each target fixture, refresh events+lineups+stats into matches/<id>/
+          for fid in "${TARGET_FIXTURES[@]}"; do
+            [[ -z "$fid" ]] && continue
+            DIR="data/football/premier-league/matches/${fid}"
+
+            ms_sleep "${PER_REQUEST_SLEEP_MS}"
+            api_get_wrap "${EVENTS_URL}${fid}"   "${DIR}/events.json"  "events"  || true
+            if [[ "$?" == "99" ]]; then break; fi
+
+            ms_sleep "${PER_REQUEST_SLEEP_MS}"
+            api_get_wrap "${LINEUPS_URL}${fid}"  "${DIR}/lineups.json" "lineups" || true
+            if [[ "$?" == "99" ]]; then break; fi
+
+            ms_sleep "${PER_REQUEST_SLEEP_MS}"
+            api_get_wrap "${STATS_URL}${fid}"    "${DIR}/stats.json"   "stats"   || true
+            if [[ "$?" == "99" ]]; then break; fi
+          done
 
           # Update quota state
           NEW_COUNT=$((COUNT + CALLS_USED))
@@ -333,10 +338,12 @@ jobs:
           echo "changed=$ANY_CHANGED" >> "$GITHUB_OUTPUT"
 
       # ---------------------------------------------------------
-      # Update post-window trigger when fixtures finish
+      # Update post-window trigger:
+      # store FT/AET/PEN fixtures that exist in live_today.json
+      # (so we keep refreshing their match detail for 90m)
       # ---------------------------------------------------------
       - id: post
-        name: Update post-window trigger (extend duration after FT)
+        name: Update post-window trigger
         if: steps.fetch.outcome == 'success'
         shell: bash
         run: |
@@ -346,19 +353,17 @@ jobs:
 
           [[ ! -f "$OUT" ]] && exit 0
 
-          LIVE=$(jq -r '
-            [.matches[]? | .fixture.status.short // "" | ascii_upcase]
-            | any(.=="1H" or .=="HT" or .=="2H" or .=="ET" or .=="P" or .=="LIVE")
-          ' "$OUT")
+          NOW_TS=$(date -u +%s)
 
-          HAS_FT=$(jq -r '
-            [.matches[]? | .fixture.status.short // "" | ascii_upcase]
-            | any(.=="FT" or .=="AET" or .=="PEN")
-          ' "$OUT")
+          FINISHED_IDS=$(jq -r '
+            [.matches[]?
+              | select((.fixture.status.short // "" | ascii_upcase) as $s | ($s=="FT" or $s=="AET" or $s=="PEN"))
+              | .fixture.id
+            ] | unique | .[]
+          ' "$OUT" || true)
 
-          if [[ "$LIVE" == "false" && "$HAS_FT" == "true" ]]; then
-            NOW_TS=$(date -u +%s)
-
+          # If there are finished fixtures in this live snapshot, keep them in post window list
+          if [[ -n "${FINISHED_IDS:-}" ]]; then
             jq -n --argjson ts "$NOW_TS" --argfile live "$OUT" '
               {
                 ts: $ts,
@@ -370,29 +375,22 @@ jobs:
                 )
               }
             ' > "$POST"
-
-            echo "Post-window set with finished fixtures."
-          else
-            echo "No post-window update needed."
           fi
 
-      # ---------------------------------------------------------
-      # Commit & push (minimal: include heartbeat too)
-      # ---------------------------------------------------------
       - name: Commit & push
-        # Commit if heartbeat changed (always new timestamp) OR fetch changed data OR quota changed.
-        # Keep it simple: always attempt commit; commit will be no-op if nothing staged.
+        if: steps.fetch.outputs.changed == 'true'
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "pl-bot"
           git config user.email "pl-bot@users.noreply.github.com"
 
-          git add data/football/premier-league/live/heartbeat.json || true
           git add data/football/premier-league/live/live_today.json || true
-          git add data/football/premier-league/live/events/*.json || true
+          git add data/football/premier-league/matches/**/events.json || true
+          git add data/football/premier-league/matches/**/lineups.json || true
+          git add data/football/premier-league/matches/**/stats.json || true
           git add data/ops/live_usage.json || true
           git add data/ops/post_window.json || true
 
-          git commit -m "Live PL refresh" || true
+          git commit -m "Live PL refresh (live list + events/lineups/stats)" || true
           git push || true
