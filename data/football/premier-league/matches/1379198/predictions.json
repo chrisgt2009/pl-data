@@ -1,0 +1,152 @@
+{
+  "fixture": {
+    "id": 1378973
+  },
+  "predictions": {
+    "winner": {
+      "id": 48,
+      "name": "West Ham",
+      "comment": "Win or draw"
+    },
+    "win_or_draw": true,
+    "under_over": null,
+    "goals": {
+      "home": "-1.5",
+      "away": "-1.5"
+    },
+    "advice": "Double chance : West Ham or draw",
+    "percent": {
+      "home": "35%",
+      "draw": "35%",
+      "away": "30%"
+    }
+  },
+  "teams": {
+    "home": {
+      "id": 48,
+      "name": "West Ham",
+      "last_5": {
+        "played": 5,
+        "form": "7%",
+        "att": "19%",
+        "def": "31%",
+        "goals": {
+          "for": {
+            "total": 3,
+            "average": "0.6"
+          },
+          "against": {
+            "total": 11,
+            "average": "2.2"
+          }
+        }
+      }
+    },
+    "away": {
+      "id": 746,
+      "name": "Sunderland",
+      "last_5": {
+        "played": 5,
+        "form": "27%",
+        "att": "13%",
+        "def": "69%",
+        "goals": {
+          "for": {
+            "total": 2,
+            "average": "0.4"
+          },
+          "against": {
+            "total": 5,
+            "average": "1.0"
+          }
+        }
+      }
+    }
+  },
+  "comparison": {
+    "form": {
+      "home": "20%",
+      "away": "80%"
+    },
+    "att": {
+      "home": "60%",
+      "away": "40%"
+    },
+    "def": {
+      "home": "31%",
+      "away": "69%"
+    },
+    "poisson_distribution": {
+      "home": "53%",
+      "away": "47%"
+    },
+    "h2h": {
+      "home": "62%",
+      "away": "38%"
+    },
+    "goals": {
+      "home": "46%",
+      "away": "54%"
+    },
+    "total": {
+      "home": "45.3%",
+      "away": "54.7%"
+    }
+  },
+  "h2h_last3": [
+    {
+      "fixture_id": 1378973,
+      "date": "2025-08-16T14:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 746,
+        "name": "Sunderland",
+        "goals": 3,
+        "winner": true
+      },
+      "away": {
+        "id": 48,
+        "name": "West Ham",
+        "goals": 0,
+        "winner": false
+      }
+    },
+    {
+      "fixture_id": 17381,
+      "date": "2017-04-15T14:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 746,
+        "name": "Sunderland",
+        "goals": 2,
+        "winner": null
+      },
+      "away": {
+        "id": 48,
+        "name": "West Ham",
+        "goals": 2,
+        "winner": null
+      }
+    },
+    {
+      "fixture_id": 17615,
+      "date": "2016-10-22T14:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 48,
+        "name": "West Ham",
+        "goals": 1,
+        "winner": true
+      },
+      "away": {
+        "id": 746,
+        "name": "Sunderland",
+        "goals": 0,
+        "winner": false
+      }
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-17T12:46:04Z"
+  }
+}
