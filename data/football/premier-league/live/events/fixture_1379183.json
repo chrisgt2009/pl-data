@@ -65,9 +65,141 @@
       "type": "Goal",
       "detail": "Normal Goal",
       "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 65,
+        "extra": null
+      },
+      "team": {
+        "id": 44,
+        "name": "Burnley",
+        "logo": "https://media.api-sports.io/football/teams/44.png"
+      },
+      "player": {
+        "id": 37882,
+        "name": "M. Edwards"
+      },
+      "assist": {
+        "id": 575,
+        "name": "Florentino"
+      },
+      "type": "Goal",
+      "detail": "Normal Goal",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 74,
+        "extra": null
+      },
+      "team": {
+        "id": 44,
+        "name": "Burnley",
+        "logo": "https://media.api-sports.io/football/teams/44.png"
+      },
+      "player": {
+        "id": 179400,
+        "name": "M. Esteve"
+      },
+      "assist": {
+        "id": 47903,
+        "name": "H. Ekdal"
+      },
+      "type": "subst",
+      "detail": "Substitution 1",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 74,
+        "extra": null
+      },
+      "team": {
+        "id": 44,
+        "name": "Burnley",
+        "logo": "https://media.api-sports.io/football/teams/44.png"
+      },
+      "player": {
+        "id": 138822,
+        "name": "A. Broja"
+      },
+      "assist": {
+        "id": 98936,
+        "name": "L. Foster"
+      },
+      "type": "subst",
+      "detail": "Substitution 2",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 78,
+        "extra": null
+      },
+      "team": {
+        "id": 40,
+        "name": "Liverpool",
+        "logo": "https://media.api-sports.io/football/teams/40.png"
+      },
+      "player": {
+        "id": 247,
+        "name": "C. Gakpo"
+      },
+      "assist": {
+        "id": 452685,
+        "name": "R. Ngumoha"
+      },
+      "type": "subst",
+      "detail": "Substitution 1",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 79,
+        "extra": null
+      },
+      "team": {
+        "id": 40,
+        "name": "Liverpool",
+        "logo": "https://media.api-sports.io/football/teams/40.png"
+      },
+      "player": {
+        "id": 542,
+        "name": "R. Gravenberch"
+      },
+      "assist": {
+        "id": 6716,
+        "name": "A. Mac Allister"
+      },
+      "type": "subst",
+      "detail": "Substitution 2",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 79,
+        "extra": null
+      },
+      "team": {
+        "id": 40,
+        "name": "Liverpool",
+        "logo": "https://media.api-sports.io/football/teams/40.png"
+      },
+      "player": {
+        "id": 206254,
+        "name": "M. Kerkez"
+      },
+      "assist": {
+        "id": 289,
+        "name": "A. Robertson"
+      },
+      "type": "subst",
+      "detail": "Substitution 3",
+      "comments": null
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-17T16:16:35Z"
+    "lastUpdatedUTC": "2026-01-17T16:41:06Z"
   }
 }
