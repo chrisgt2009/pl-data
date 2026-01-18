@@ -1,6 +1,78 @@
 {
-  "matches": [],
+  "matches": [
+    {
+      "fixture": {
+        "id": 1379179,
+        "referee": "Tony Harrington, England",
+        "timezone": "UTC",
+        "date": "2026-01-18T16:30:00+00:00",
+        "timestamp": 1768753800,
+        "periods": {
+          "first": 1768753800,
+          "second": null
+        },
+        "venue": {
+          "id": 495,
+          "name": "Villa Park",
+          "city": "Birmingham"
+        },
+        "status": {
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 15,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 22",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 66,
+          "name": "Aston Villa",
+          "logo": "https://media.api-sports.io/football/teams/66.png",
+          "winner": null
+        },
+        "away": {
+          "id": 45,
+          "name": "Everton",
+          "logo": "https://media.api-sports.io/football/teams/45.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": 0,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      },
+      "events": []
+    }
+  ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-18T16:23:50Z"
+    "lastUpdatedUTC": "2026-01-18T16:44:43Z"
   }
 }

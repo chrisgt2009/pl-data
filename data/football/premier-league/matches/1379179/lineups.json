@@ -1,0 +1,416 @@
+{
+  "data": [
+    {
+      "team": {
+        "id": 66,
+        "name": "Aston Villa",
+        "logo": "https://media.api-sports.io/football/teams/66.png",
+        "colors": {
+          "player": {
+            "primary": "88002d",
+            "number": "ffffff",
+            "border": "88002d"
+          },
+          "goalkeeper": {
+            "primary": "f23a3a",
+            "number": "ffffff",
+            "border": "f23a3a"
+          }
+        }
+      },
+      "formation": "4-2-3-1",
+      "startXI": [
+        {
+          "player": {
+            "id": 19599,
+            "name": "Emiliano Martínez",
+            "number": 23,
+            "pos": "G",
+            "grid": "1:1"
+          }
+        },
+        {
+          "player": {
+            "id": 19298,
+            "name": "Matty Cash",
+            "number": 2,
+            "pos": "D",
+            "grid": "2:4"
+          }
+        },
+        {
+          "player": {
+            "id": 19354,
+            "name": "Ezri Konsa",
+            "number": 4,
+            "pos": "D",
+            "grid": "2:3"
+          }
+        },
+        {
+          "player": {
+            "id": 46815,
+            "name": "Pau Torres",
+            "number": 14,
+            "pos": "D",
+            "grid": "2:2"
+          }
+        },
+        {
+          "player": {
+            "id": 138816,
+            "name": "Ian Maatsen",
+            "number": 22,
+            "pos": "D",
+            "grid": "2:1"
+          }
+        },
+        {
+          "player": {
+            "id": 284457,
+            "name": "Lamare Bogarde",
+            "number": 26,
+            "pos": "M",
+            "grid": "3:2"
+          }
+        },
+        {
+          "player": {
+            "id": 2926,
+            "name": "Youri Tielemans",
+            "number": 8,
+            "pos": "M",
+            "grid": "3:1"
+          }
+        },
+        {
+          "player": {
+            "id": 19191,
+            "name": "John McGinn",
+            "number": 7,
+            "pos": "M",
+            "grid": "4:3"
+          }
+        },
+        {
+          "player": {
+            "id": 19170,
+            "name": "Morgan Rogers",
+            "number": 27,
+            "pos": "M",
+            "grid": "4:2"
+          }
+        },
+        {
+          "player": {
+            "id": 19071,
+            "name": "Emiliano Buendía",
+            "number": 10,
+            "pos": "M",
+            "grid": "4:1"
+          }
+        },
+        {
+          "player": {
+            "id": 19366,
+            "name": "Ollie Watkins",
+            "number": 11,
+            "pos": "F",
+            "grid": "5:1"
+          }
+        }
+      ],
+      "substitutes": [
+        {
+          "player": {
+            "id": 36878,
+            "name": "Marco Bizot",
+            "number": 40,
+            "pos": "G",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 284390,
+            "name": "James Wright",
+            "number": 64,
+            "pos": "G",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 889,
+            "name": "Victor Lindelöf",
+            "number": 3,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 2724,
+            "name": "Lucas Digne",
+            "number": 12,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 388013,
+            "name": "Andrés García",
+            "number": 16,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 19179,
+            "name": "Tyrone Mings",
+            "number": 5,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 364566,
+            "name": "George Hemmings",
+            "number": 53,
+            "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 360268,
+            "name": "Jamaldeen Jimoh",
+            "number": 20,
+            "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 137303,
+            "name": "Evann Guessand",
+            "number": 29,
+            "pos": "F",
+            "grid": null
+          }
+        }
+      ],
+      "coach": {
+        "id": 18,
+        "name": "Unai Emery",
+        "photo": "https://media.api-sports.io/football/coachs/18.png"
+      }
+    },
+    {
+      "team": {
+        "id": 45,
+        "name": "Everton",
+        "logo": "https://media.api-sports.io/football/teams/45.png",
+        "colors": {
+          "player": {
+            "primary": "0237ab",
+            "number": "ffffff",
+            "border": "0237ab"
+          },
+          "goalkeeper": {
+            "primary": "2dd77a",
+            "number": "ffffff",
+            "border": "2dd77a"
+          }
+        }
+      },
+      "formation": "4-2-3-1",
+      "startXI": [
+        {
+          "player": {
+            "id": 2932,
+            "name": "Jordan Pickford",
+            "number": 1,
+            "pos": "G",
+            "grid": "1:1"
+          }
+        },
+        {
+          "player": {
+            "id": 138417,
+            "name": "Nathan Patterson",
+            "number": 2,
+            "pos": "D",
+            "grid": "2:4"
+          }
+        },
+        {
+          "player": {
+            "id": 2936,
+            "name": "James Tarkowski",
+            "number": 6,
+            "pos": "D",
+            "grid": "2:3"
+          }
+        },
+        {
+          "player": {
+            "id": 270139,
+            "name": "Jake O'Brien",
+            "number": 15,
+            "pos": "D",
+            "grid": "2:2"
+          }
+        },
+        {
+          "player": {
+            "id": 2165,
+            "name": "Vitaliy Mykolenko",
+            "number": 16,
+            "pos": "D",
+            "grid": "2:1"
+          }
+        },
+        {
+          "player": {
+            "id": 202854,
+            "name": "Merlin Röhl",
+            "number": 34,
+            "pos": "M",
+            "grid": "3:2"
+          }
+        },
+        {
+          "player": {
+            "id": 895,
+            "name": "James Garner",
+            "number": 37,
+            "pos": "M",
+            "grid": "3:1"
+          }
+        },
+        {
+          "player": {
+            "id": 18929,
+            "name": "Dwight McNeil",
+            "number": 7,
+            "pos": "M",
+            "grid": "4:3"
+          }
+        },
+        {
+          "player": {
+            "id": 405360,
+            "name": "Harrison Armstrong",
+            "number": 45,
+            "pos": "M",
+            "grid": "4:2"
+          }
+        },
+        {
+          "player": {
+            "id": 19187,
+            "name": "Jack Grealish",
+            "number": 18,
+            "pos": "M",
+            "grid": "4:1"
+          }
+        },
+        {
+          "player": {
+            "id": 343684,
+            "name": "Thierno Barry",
+            "number": 11,
+            "pos": "F",
+            "grid": "5:1"
+          }
+        }
+      ],
+      "substitutes": [
+        {
+          "player": {
+            "id": 18860,
+            "name": "Mark Travers",
+            "number": 12,
+            "pos": "G",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 82855,
+            "name": "Tom King",
+            "number": 31,
+            "pos": "G",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 18758,
+            "name": "Séamus Coleman",
+            "number": 23,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 431921,
+            "name": "Adam Aznou",
+            "number": 39,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 284327,
+            "name": "Reece Welch",
+            "number": 64,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 284385,
+            "name": "Elijah Campbell",
+            "number": 73,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 304317,
+            "name": "Tyler Dibling",
+            "number": 20,
+            "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 125743,
+            "name": "Beto",
+            "number": 9,
+            "pos": "F",
+            "grid": null
+          }
+        }
+      ],
+      "coach": {
+        "id": 17953,
+        "name": "Leighton Baines",
+        "photo": "https://media.api-sports.io/football/coachs/17953.png"
+      }
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-18T16:44:44Z"
+  }
+}
