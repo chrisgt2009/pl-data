@@ -9,7 +9,7 @@
         "timestamp": 1768744800,
         "periods": {
           "first": 1768744800,
-          "second": null
+          "second": 1768748400
         },
         "venue": {
           "id": 600,
@@ -17,10 +17,10 @@
           "city": "Wolverhampton"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 1
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 51,
+          "extra": null
         }
       },
       "league": {
@@ -73,6 +73,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-18T14:53:59Z"
+    "lastUpdatedUTC": "2026-01-18T15:09:05Z"
   }
 }

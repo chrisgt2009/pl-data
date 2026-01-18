@@ -13,11 +13,11 @@
         },
         {
           "type": "Shots off Goal",
-          "value": 0
+          "value": 1
         },
         {
           "type": "Total Shots",
-          "value": 3
+          "value": 4
         },
         {
           "type": "Blocked Shots",
@@ -25,7 +25,7 @@
         },
         {
           "type": "Shots insidebox",
-          "value": 3
+          "value": 4
         },
         {
           "type": "Shots outsidebox",
@@ -33,7 +33,7 @@
         },
         {
           "type": "Fouls",
-          "value": 6
+          "value": 7
         },
         {
           "type": "Corner Kicks",
@@ -61,19 +61,19 @@
         },
         {
           "type": "Total passes",
-          "value": 177
+          "value": 191
         },
         {
           "type": "Passes accurate",
-          "value": 153
+          "value": 163
         },
         {
           "type": "Passes %",
-          "value": "86%"
+          "value": "85%"
         },
         {
           "type": "expected_goals",
-          "value": "0.11"
+          "value": "0.22"
         },
         {
           "type": "goals_prevented",
@@ -94,7 +94,7 @@
         },
         {
           "type": "Shots off Goal",
-          "value": 4
+          "value": 3
         },
         {
           "type": "Total Shots",
@@ -102,7 +102,7 @@
         },
         {
           "type": "Blocked Shots",
-          "value": 1
+          "value": 2
         },
         {
           "type": "Shots insidebox",
@@ -142,19 +142,19 @@
         },
         {
           "type": "Total passes",
-          "value": 354
+          "value": 375
         },
         {
           "type": "Passes accurate",
-          "value": 334
+          "value": 350
         },
         {
           "type": "Passes %",
-          "value": "94%"
+          "value": "93%"
         },
         {
           "type": "expected_goals",
-          "value": "0.36"
+          "value": "0.26"
         },
         {
           "type": "goals_prevented",
@@ -164,6 +164,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-18T14:54:01Z"
+    "lastUpdatedUTC": "2026-01-18T15:09:06Z"
   }
 }
