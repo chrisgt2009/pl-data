@@ -1,0 +1,152 @@
+{
+  "fixture": {
+    "id": 1378974
+  },
+  "predictions": {
+    "winner": {
+      "id": 47,
+      "name": "Tottenham",
+      "comment": "Win or draw"
+    },
+    "win_or_draw": true,
+    "under_over": null,
+    "goals": {
+      "home": "-1.5",
+      "away": "-2.5"
+    },
+    "advice": "Double chance : draw or Tottenham",
+    "percent": {
+      "home": "10%",
+      "draw": "45%",
+      "away": "45%"
+    }
+  },
+  "teams": {
+    "home": {
+      "id": 44,
+      "name": "Burnley",
+      "last_5": {
+        "played": 5,
+        "form": "20%",
+        "att": "25%",
+        "def": "50%",
+        "goals": {
+          "for": {
+            "total": 4,
+            "average": "0.8"
+          },
+          "against": {
+            "total": 8,
+            "average": "1.6"
+          }
+        }
+      }
+    },
+    "away": {
+      "id": 47,
+      "name": "Tottenham",
+      "last_5": {
+        "played": 5,
+        "form": "33%",
+        "att": "31%",
+        "def": "63%",
+        "goals": {
+          "for": {
+            "total": 5,
+            "average": "1.0"
+          },
+          "against": {
+            "total": 6,
+            "average": "1.2"
+          }
+        }
+      }
+    }
+  },
+  "comparison": {
+    "form": {
+      "home": "38%",
+      "away": "63%"
+    },
+    "att": {
+      "home": "44%",
+      "away": "56%"
+    },
+    "def": {
+      "home": "43%",
+      "away": "57%"
+    },
+    "poisson_distribution": {
+      "home": "30%",
+      "away": "70%"
+    },
+    "h2h": {
+      "home": "0%",
+      "away": "100%"
+    },
+    "goals": {
+      "home": "20%",
+      "away": "80%"
+    },
+    "total": {
+      "home": "35.0%",
+      "away": "65.2%"
+    }
+  },
+  "h2h_last3": [
+    {
+      "fixture_id": 1378974,
+      "date": "2025-08-16T14:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 47,
+        "name": "Tottenham",
+        "goals": 3,
+        "winner": true
+      },
+      "away": {
+        "id": 44,
+        "name": "Burnley",
+        "goals": 0,
+        "winner": false
+      }
+    },
+    {
+      "fixture_id": 1035541,
+      "date": "2024-05-11T14:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 47,
+        "name": "Tottenham",
+        "goals": 2,
+        "winner": true
+      },
+      "away": {
+        "id": 44,
+        "name": "Burnley",
+        "goals": 1,
+        "winner": false
+      }
+    },
+    {
+      "fixture_id": 1145553,
+      "date": "2024-01-05T20:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 47,
+        "name": "Tottenham",
+        "goals": 1,
+        "winner": true
+      },
+      "away": {
+        "id": 44,
+        "name": "Burnley",
+        "goals": 0,
+        "winner": false
+      }
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-18T02:38:29Z"
+  }
+}

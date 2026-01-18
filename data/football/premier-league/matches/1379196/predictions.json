@@ -1,0 +1,152 @@
+{
+  "fixture": {
+    "id": 1378975
+  },
+  "predictions": {
+    "winner": {
+      "id": 50,
+      "name": "Manchester City",
+      "comment": "Win or draw"
+    },
+    "win_or_draw": true,
+    "under_over": null,
+    "goals": {
+      "home": "-2.5",
+      "away": "-1.5"
+    },
+    "advice": "Double chance : Manchester City or draw",
+    "percent": {
+      "home": "45%",
+      "draw": "45%",
+      "away": "10%"
+    }
+  },
+  "teams": {
+    "home": {
+      "id": 50,
+      "name": "Manchester City",
+      "last_5": {
+        "played": 5,
+        "form": "40%",
+        "att": "44%",
+        "def": "44%",
+        "goals": {
+          "for": {
+            "total": 4,
+            "average": "0.8"
+          },
+          "against": {
+            "total": 5,
+            "average": "1.0"
+          }
+        }
+      }
+    },
+    "away": {
+      "id": 39,
+      "name": "Wolves",
+      "last_5": {
+        "played": 5,
+        "form": "33%",
+        "att": "67%",
+        "def": "33%",
+        "goals": {
+          "for": {
+            "total": 6,
+            "average": "1.2"
+          },
+          "against": {
+            "total": 6,
+            "average": "1.2"
+          }
+        }
+      }
+    }
+  },
+  "comparison": {
+    "form": {
+      "home": "55%",
+      "away": "45%"
+    },
+    "att": {
+      "home": "40%",
+      "away": "60%"
+    },
+    "def": {
+      "home": "55%",
+      "away": "45%"
+    },
+    "poisson_distribution": {
+      "home": "90%",
+      "away": "10%"
+    },
+    "h2h": {
+      "home": "80%",
+      "away": "20%"
+    },
+    "goals": {
+      "home": "76%",
+      "away": "24%"
+    },
+    "total": {
+      "home": "66.0%",
+      "away": "34.0%"
+    }
+  },
+  "h2h_last3": [
+    {
+      "fixture_id": 1378975,
+      "date": "2025-08-16T16:30:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 39,
+        "name": "Wolves",
+        "goals": 0,
+        "winner": false
+      },
+      "away": {
+        "id": 50,
+        "name": "Manchester City",
+        "goals": 4,
+        "winner": true
+      }
+    },
+    {
+      "fixture_id": 1208371,
+      "date": "2025-05-02T19:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 50,
+        "name": "Manchester City",
+        "goals": 1,
+        "winner": true
+      },
+      "away": {
+        "id": 39,
+        "name": "Wolves",
+        "goals": 0,
+        "winner": false
+      }
+    },
+    {
+      "fixture_id": 1208100,
+      "date": "2024-10-20T13:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 39,
+        "name": "Wolves",
+        "goals": 1,
+        "winner": false
+      },
+      "away": {
+        "id": 50,
+        "name": "Manchester City",
+        "goals": 2,
+        "winner": true
+      }
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-18T02:38:29Z"
+  }
+}
