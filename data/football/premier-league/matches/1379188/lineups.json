@@ -123,6 +123,24 @@
       "substitutes": [
         {
           "player": {
+            "id": 2032,
+            "name": "Jørgen Strand Larsen",
+            "number": 9,
+            "pos": "F",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 13708,
+            "name": "Jhon Arias",
+            "number": 10,
+            "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
             "id": 19143,
             "name": "Sam Johnstone",
             "number": 31,
@@ -168,15 +186,6 @@
         },
         {
           "player": {
-            "id": 13708,
-            "name": "Jhon Arias",
-            "number": 10,
-            "pos": "M",
-            "grid": null
-          }
-        },
-        {
-          "player": {
             "id": 282770,
             "name": "Rodrigo Gomes",
             "number": 21,
@@ -189,15 +198,6 @@
             "id": 391822,
             "name": "Fer López",
             "number": 28,
-            "pos": "F",
-            "grid": null
-          }
-        },
-        {
-          "player": {
-            "id": 2032,
-            "name": "Jørgen Strand Larsen",
-            "number": 9,
             "pos": "F",
             "grid": null
           }
@@ -332,6 +332,33 @@
       "substitutes": [
         {
           "player": {
+            "id": 153430,
+            "name": "Anthony Elanga",
+            "number": 20,
+            "pos": "F",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 328105,
+            "name": "Lewis Miley",
+            "number": 67,
+            "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 20649,
+            "name": "Yoane Wissa",
+            "number": 9,
+            "pos": "F",
+            "grid": null
+          }
+        },
+        {
+          "player": {
             "id": 20355,
             "name": "Aaron Ramsdale",
             "number": 32,
@@ -359,15 +386,6 @@
         },
         {
           "player": {
-            "id": 153430,
-            "name": "Anthony Elanga",
-            "number": 20,
-            "pos": "F",
-            "grid": null
-          }
-        },
-        {
-          "player": {
             "id": 1463,
             "name": "Joe Willock",
             "number": 28,
@@ -381,24 +399,6 @@
             "name": "Jacob Ramsey",
             "number": 41,
             "pos": "M",
-            "grid": null
-          }
-        },
-        {
-          "player": {
-            "id": 328105,
-            "name": "Lewis Miley",
-            "number": 67,
-            "pos": "M",
-            "grid": null
-          }
-        },
-        {
-          "player": {
-            "id": 20649,
-            "name": "Yoane Wissa",
-            "number": 9,
-            "pos": "F",
             "grid": null
           }
         },
@@ -420,6 +420,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-18T15:42:43Z"
+    "lastUpdatedUTC": "2026-01-18T15:50:45Z"
   }
 }
