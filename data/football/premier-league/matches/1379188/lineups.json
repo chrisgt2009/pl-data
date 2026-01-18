@@ -216,9 +216,9 @@
         "logo": "https://media.api-sports.io/football/teams/34.png",
         "colors": {
           "player": {
-            "primary": "ffffff",
-            "number": "ffffff",
-            "border": "000000"
+            "primary": "253275",
+            "number": "fb993b",
+            "border": "253275"
           },
           "goalkeeper": {
             "primary": "fff04b",
@@ -420,6 +420,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-18T14:15:33Z"
+    "lastUpdatedUTC": "2026-01-18T14:34:24Z"
   }
 }
