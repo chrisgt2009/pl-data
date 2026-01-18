@@ -19,8 +19,8 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 34,
-          "extra": null
+          "elapsed": 45,
+          "extra": 1
         }
       },
       "league": {
@@ -73,6 +73,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-18T14:34:23Z"
+    "lastUpdatedUTC": "2026-01-18T14:46:28Z"
   }
 }
