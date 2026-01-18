@@ -1,0 +1,152 @@
+{
+  "fixture": {
+    "id": 1378977
+  },
+  "predictions": {
+    "winner": {
+      "id": 42,
+      "name": "Arsenal",
+      "comment": "Win or draw"
+    },
+    "win_or_draw": true,
+    "under_over": null,
+    "goals": {
+      "home": "-3.5",
+      "away": "-2.5"
+    },
+    "advice": "Double chance : Arsenal or draw",
+    "percent": {
+      "home": "45%",
+      "draw": "45%",
+      "away": "10%"
+    }
+  },
+  "teams": {
+    "home": {
+      "id": 42,
+      "name": "Arsenal",
+      "last_5": {
+        "played": 5,
+        "form": "73%",
+        "att": "100%",
+        "def": "56%",
+        "goals": {
+          "for": {
+            "total": 9,
+            "average": "1.8"
+          },
+          "against": {
+            "total": 4,
+            "average": "0.8"
+          }
+        }
+      }
+    },
+    "away": {
+      "id": 33,
+      "name": "Manchester United",
+      "last_5": {
+        "played": 5,
+        "form": "60%",
+        "att": "78%",
+        "def": "56%",
+        "goals": {
+          "for": {
+            "total": 7,
+            "average": "1.4"
+          },
+          "against": {
+            "total": 4,
+            "average": "0.8"
+          }
+        }
+      }
+    }
+  },
+  "comparison": {
+    "form": {
+      "home": "55%",
+      "away": "45%"
+    },
+    "att": {
+      "home": "56%",
+      "away": "44%"
+    },
+    "def": {
+      "home": "50%",
+      "away": "50%"
+    },
+    "poisson_distribution": {
+      "home": "81%",
+      "away": "19%"
+    },
+    "h2h": {
+      "home": "85%",
+      "away": "15%"
+    },
+    "goals": {
+      "home": "70%",
+      "away": "30%"
+    },
+    "total": {
+      "home": "66.2%",
+      "away": "33.8%"
+    }
+  },
+  "h2h_last3": [
+    {
+      "fixture_id": 1378977,
+      "date": "2025-08-17T15:30:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 33,
+        "name": "Manchester United",
+        "goals": 0,
+        "winner": false
+      },
+      "away": {
+        "id": 42,
+        "name": "Arsenal",
+        "goals": 1,
+        "winner": true
+      }
+    },
+    {
+      "fixture_id": 1208298,
+      "date": "2025-03-09T16:30:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 33,
+        "name": "Manchester United",
+        "goals": 1,
+        "winner": null
+      },
+      "away": {
+        "id": 42,
+        "name": "Arsenal",
+        "goals": 1,
+        "winner": null
+      }
+    },
+    {
+      "fixture_id": 1318838,
+      "date": "2025-01-12T15:00:00+00:00",
+      "status": "PEN",
+      "home": {
+        "id": 42,
+        "name": "Arsenal",
+        "goals": 1,
+        "winner": false
+      },
+      "away": {
+        "id": 33,
+        "name": "Manchester United",
+        "goals": 1,
+        "winner": true
+      }
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-18T18:44:19Z"
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "fixture": {
+    "id": 1378970
+  },
+  "predictions": {
+    "winner": {
+      "id": 34,
+      "name": "Newcastle",
+      "comment": "Win or draw"
+    },
+    "win_or_draw": true,
+    "under_over": null,
+    "goals": {
+      "home": "-3.5",
+      "away": "-2.5"
+    },
+    "advice": "Double chance : Newcastle or draw",
+    "percent": {
+      "home": "45%",
+      "draw": "45%",
+      "away": "10%"
+    }
+  },
+  "teams": {
+    "home": {
+      "id": 34,
+      "name": "Newcastle",
+      "last_5": {
+        "played": 5,
+        "form": "67%",
+        "att": "100%",
+        "def": "22%",
+        "goals": {
+          "for": {
+            "total": 11,
+            "average": "2.2"
+          },
+          "against": {
+            "total": 7,
+            "average": "1.4"
+          }
+        }
+      }
+    },
+    "away": {
+      "id": 66,
+      "name": "Aston Villa",
+      "last_5": {
+        "played": 5,
+        "form": "67%",
+        "att": "89%",
+        "def": "22%",
+        "goals": {
+          "for": {
+            "total": 8,
+            "average": "1.6"
+          },
+          "against": {
+            "total": 7,
+            "average": "1.4"
+          }
+        }
+      }
+    }
+  },
+  "comparison": {
+    "form": {
+      "home": "50%",
+      "away": "50%"
+    },
+    "att": {
+      "home": "58%",
+      "away": "42%"
+    },
+    "def": {
+      "home": "50%",
+      "away": "50%"
+    },
+    "poisson_distribution": {
+      "home": "54%",
+      "away": "46%"
+    },
+    "h2h": {
+      "home": "71%",
+      "away": "29%"
+    },
+    "goals": {
+      "home": "67%",
+      "away": "33%"
+    },
+    "total": {
+      "home": "58.3%",
+      "away": "41.7%"
+    }
+  },
+  "h2h_last3": [
+    {
+      "fixture_id": 1378970,
+      "date": "2025-08-16T11:30:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 66,
+        "name": "Aston Villa",
+        "goals": 0,
+        "winner": null
+      },
+      "away": {
+        "id": 34,
+        "name": "Newcastle",
+        "goals": 0,
+        "winner": null
+      }
+    },
+    {
+      "fixture_id": 1208343,
+      "date": "2025-04-19T16:30:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 66,
+        "name": "Aston Villa",
+        "goals": 4,
+        "winner": true
+      },
+      "away": {
+        "id": 34,
+        "name": "Newcastle",
+        "goals": 1,
+        "winner": false
+      }
+    },
+    {
+      "fixture_id": 1208199,
+      "date": "2024-12-26T15:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 34,
+        "name": "Newcastle",
+        "goals": 3,
+        "winner": true
+      },
+      "away": {
+        "id": 66,
+        "name": "Aston Villa",
+        "goals": 0,
+        "winner": false
+      }
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-18T18:44:17Z"
+  }
+}

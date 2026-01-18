@@ -1,0 +1,152 @@
+{
+  "fixture": {
+    "id": 1378976
+  },
+  "predictions": {
+    "winner": {
+      "id": 49,
+      "name": "Chelsea",
+      "comment": "Win or draw"
+    },
+    "win_or_draw": true,
+    "under_over": null,
+    "goals": {
+      "home": "-1.5",
+      "away": "-2.5"
+    },
+    "advice": "Double chance : draw or Chelsea",
+    "percent": {
+      "home": "10%",
+      "draw": "45%",
+      "away": "45%"
+    }
+  },
+  "teams": {
+    "home": {
+      "id": 52,
+      "name": "Crystal Palace",
+      "last_5": {
+        "played": 5,
+        "form": "13%",
+        "att": "22%",
+        "def": "33%",
+        "goals": {
+          "for": {
+            "total": 2,
+            "average": "0.4"
+          },
+          "against": {
+            "total": 6,
+            "average": "1.2"
+          }
+        }
+      }
+    },
+    "away": {
+      "id": 49,
+      "name": "Chelsea",
+      "last_5": {
+        "played": 5,
+        "form": "33%",
+        "att": "78%",
+        "def": "22%",
+        "goals": {
+          "for": {
+            "total": 7,
+            "average": "1.4"
+          },
+          "against": {
+            "total": 7,
+            "average": "1.4"
+          }
+        }
+      }
+    }
+  },
+  "comparison": {
+    "form": {
+      "home": "29%",
+      "away": "71%"
+    },
+    "att": {
+      "home": "22%",
+      "away": "78%"
+    },
+    "def": {
+      "home": "54%",
+      "away": "46%"
+    },
+    "poisson_distribution": {
+      "home": "30%",
+      "away": "70%"
+    },
+    "h2h": {
+      "home": "25%",
+      "away": "75%"
+    },
+    "goals": {
+      "home": "36%",
+      "away": "64%"
+    },
+    "total": {
+      "home": "32.7%",
+      "away": "67.3%"
+    }
+  },
+  "h2h_last3": [
+    {
+      "fixture_id": 1378976,
+      "date": "2025-08-17T13:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 49,
+        "name": "Chelsea",
+        "goals": 0,
+        "winner": null
+      },
+      "away": {
+        "id": 52,
+        "name": "Crystal Palace",
+        "goals": 0,
+        "winner": null
+      }
+    },
+    {
+      "fixture_id": 1208216,
+      "date": "2025-01-04T15:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 52,
+        "name": "Crystal Palace",
+        "goals": 1,
+        "winner": null
+      },
+      "away": {
+        "id": 49,
+        "name": "Chelsea",
+        "goals": 1,
+        "winner": null
+      }
+    },
+    {
+      "fixture_id": 1208043,
+      "date": "2024-09-01T12:30:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 49,
+        "name": "Chelsea",
+        "goals": 1,
+        "winner": null
+      },
+      "away": {
+        "id": 52,
+        "name": "Crystal Palace",
+        "goals": 1,
+        "winner": null
+      }
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-18T18:44:18Z"
+  }
+}

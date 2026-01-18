@@ -1,0 +1,152 @@
+{
+  "fixture": {
+    "id": 1378972
+  },
+  "predictions": {
+    "winner": {
+      "id": 55,
+      "name": "Brentford",
+      "comment": null
+    },
+    "win_or_draw": null,
+    "under_over": null,
+    "goals": {
+      "home": "-3.5",
+      "away": "-1.5"
+    },
+    "advice": "Winner : Brentford",
+    "percent": {
+      "home": "45%",
+      "draw": "45%",
+      "away": "10%"
+    }
+  },
+  "teams": {
+    "home": {
+      "id": 55,
+      "name": "Brentford",
+      "last_5": {
+        "played": 5,
+        "form": "67%",
+        "att": "100%",
+        "def": "44%",
+        "goals": {
+          "for": {
+            "total": 11,
+            "average": "2.2"
+          },
+          "against": {
+            "total": 5,
+            "average": "1.0"
+          }
+        }
+      }
+    },
+    "away": {
+      "id": 65,
+      "name": "Nottingham Forest",
+      "last_5": {
+        "played": 5,
+        "form": "27%",
+        "att": "44%",
+        "def": "11%",
+        "goals": {
+          "for": {
+            "total": 4,
+            "average": "0.8"
+          },
+          "against": {
+            "total": 8,
+            "average": "1.6"
+          }
+        }
+      }
+    }
+  },
+  "comparison": {
+    "form": {
+      "home": "71%",
+      "away": "29%"
+    },
+    "att": {
+      "home": "73%",
+      "away": "27%"
+    },
+    "def": {
+      "home": "62%",
+      "away": "38%"
+    },
+    "poisson_distribution": {
+      "home": "77%",
+      "away": "23%"
+    },
+    "h2h": {
+      "home": "50%",
+      "away": "50%"
+    },
+    "goals": {
+      "home": "47%",
+      "away": "53%"
+    },
+    "total": {
+      "home": "63.3%",
+      "away": "36.7%"
+    }
+  },
+  "h2h_last3": [
+    {
+      "fixture_id": 1378972,
+      "date": "2025-08-17T13:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 65,
+        "name": "Nottingham Forest",
+        "goals": 3,
+        "winner": true
+      },
+      "away": {
+        "id": 55,
+        "name": "Brentford",
+        "goals": 1,
+        "winner": false
+      }
+    },
+    {
+      "fixture_id": 1208360,
+      "date": "2025-05-01T18:30:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 65,
+        "name": "Nottingham Forest",
+        "goals": 0,
+        "winner": false
+      },
+      "away": {
+        "id": 55,
+        "name": "Brentford",
+        "goals": 2,
+        "winner": true
+      }
+    },
+    {
+      "fixture_id": 1208184,
+      "date": "2024-12-21T15:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 55,
+        "name": "Brentford",
+        "goals": 0,
+        "winner": false
+      },
+      "away": {
+        "id": 65,
+        "name": "Nottingham Forest",
+        "goals": 2,
+        "winner": true
+      }
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-18T18:44:18Z"
+  }
+}
