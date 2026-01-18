@@ -17,10 +17,10 @@
           "city": "Birmingham"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 41,
-          "extra": null
+          "long": "Halftime",
+          "short": "HT",
+          "elapsed": 45,
+          "extra": 4
         }
       },
       "league": {
@@ -140,6 +140,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-18T17:11:44Z"
+    "lastUpdatedUTC": "2026-01-18T17:31:31Z"
   }
 }
