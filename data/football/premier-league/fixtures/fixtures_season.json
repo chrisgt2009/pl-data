@@ -2,76 +2,6 @@
   "matches": [
     {
       "fixture": {
-        "id": 1379185,
-        "referee": "Michael Oliver, England",
-        "timezone": "UTC",
-        "date": "2026-01-17T17:30:00+00:00",
-        "timestamp": 1768671000,
-        "periods": {
-          "first": 1768671000,
-          "second": 1768674600
-        },
-        "venue": {
-          "id": 566,
-          "name": "City Ground",
-          "city": "Nottingham"
-        },
-        "status": {
-          "long": "Second Half",
-          "short": "2H",
-          "elapsed": 90,
-          "extra": null
-        }
-      },
-      "league": {
-        "id": 39,
-        "name": "Premier League",
-        "country": "England",
-        "logo": "https://media.api-sports.io/football/leagues/39.png",
-        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-        "season": 2025,
-        "round": "Regular Season - 22",
-        "standings": true
-      },
-      "teams": {
-        "home": {
-          "id": 65,
-          "name": "Nottingham Forest",
-          "logo": "https://media.api-sports.io/football/teams/65.png",
-          "winner": null
-        },
-        "away": {
-          "id": 42,
-          "name": "Arsenal",
-          "logo": "https://media.api-sports.io/football/teams/42.png",
-          "winner": null
-        }
-      },
-      "goals": {
-        "home": 0,
-        "away": 0
-      },
-      "score": {
-        "halftime": {
-          "home": 0,
-          "away": 0
-        },
-        "fulltime": {
-          "home": null,
-          "away": null
-        },
-        "extratime": {
-          "home": null,
-          "away": null
-        },
-        "penalty": {
-          "home": null,
-          "away": null
-        }
-      }
-    },
-    {
-      "fixture": {
         "id": 1378969,
         "referee": "Anthony Taylor, England",
         "timezone": "UTC",
@@ -15192,14 +15122,84 @@
     },
     {
       "fixture": {
+        "id": 1379185,
+        "referee": "Michael Oliver, England",
+        "timezone": "UTC",
+        "date": "2026-01-17T17:30:00+00:00",
+        "timestamp": 1768671000,
+        "periods": {
+          "first": 1768671000,
+          "second": 1768674600
+        },
+        "venue": {
+          "id": 566,
+          "name": "City Ground",
+          "city": "Nottingham"
+        },
+        "status": {
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
+          "extra": 5
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 22",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 65,
+          "name": "Nottingham Forest",
+          "logo": "https://media.api-sports.io/football/teams/65.png",
+          "winner": null
+        },
+        "away": {
+          "id": 42,
+          "name": "Arsenal",
+          "logo": "https://media.api-sports.io/football/teams/42.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": 0,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 0
+        },
+        "fulltime": {
+          "home": 0,
+          "away": 0
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1379188,
-        "referee": null,
+        "referee": "Samuel Barrott, England",
         "timezone": "UTC",
         "date": "2026-01-18T14:00:00+00:00",
         "timestamp": 1768744800,
         "periods": {
-          "first": null,
-          "second": null
+          "first": 1768744800,
+          "second": 1768748400
         },
         "venue": {
           "id": 600,
@@ -15207,9 +15207,9 @@
           "city": "Wolverhampton"
         },
         "status": {
-          "long": "Not Started",
-          "short": "NS",
-          "elapsed": null,
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
           "extra": null
         }
       },
@@ -15238,17 +15238,17 @@
         }
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       },
       "score": {
         "halftime": {
-          "home": null,
-          "away": null
+          "home": 0,
+          "away": 0
         },
         "fulltime": {
-          "home": null,
-          "away": null
+          "home": 0,
+          "away": 0
         },
         "extratime": {
           "home": null,
@@ -15263,13 +15263,13 @@
     {
       "fixture": {
         "id": 1379179,
-        "referee": null,
+        "referee": "Tony Harrington, England",
         "timezone": "UTC",
         "date": "2026-01-18T16:30:00+00:00",
         "timestamp": 1768753800,
         "periods": {
-          "first": null,
-          "second": null
+          "first": 1768753800,
+          "second": 1768757400
         },
         "venue": {
           "id": 495,
@@ -15277,10 +15277,10 @@
           "city": "Birmingham"
         },
         "status": {
-          "long": "Not Started",
-          "short": "NS",
-          "elapsed": null,
-          "extra": null
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
+          "extra": 5
         }
       },
       "league": {
@@ -15298,27 +15298,27 @@
           "id": 66,
           "name": "Aston Villa",
           "logo": "https://media.api-sports.io/football/teams/66.png",
-          "winner": null
+          "winner": false
         },
         "away": {
           "id": 45,
           "name": "Everton",
           "logo": "https://media.api-sports.io/football/teams/45.png",
-          "winner": null
+          "winner": true
         }
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 1
       },
       "score": {
         "halftime": {
-          "home": null,
-          "away": null
+          "home": 0,
+          "away": 0
         },
         "fulltime": {
-          "home": null,
-          "away": null
+          "home": 0,
+          "away": 1
         },
         "extratime": {
           "home": null,
@@ -26602,6 +26602,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-17T19:20:55Z"
+    "lastUpdatedUTC": "2026-01-18T18:34:21Z"
   }
 }

@@ -17,16 +17,16 @@
                 "name": "Arsenal",
                 "logo": "https://media.api-sports.io/football/teams/42.png"
               },
-              "points": 49,
+              "points": 50,
               "goalsDiff": 26,
               "group": "Premier League",
-              "form": "DWWWW",
+              "form": "DDWWW",
               "status": "same",
               "description": "Promotion - Champions League (League phase)",
               "all": {
-                "played": 21,
+                "played": 22,
                 "win": 15,
-                "draw": 4,
+                "draw": 5,
                 "lose": 2,
                 "goals": {
                   "for": 40,
@@ -44,16 +44,16 @@
                 }
               },
               "away": {
-                "played": 10,
+                "played": 11,
                 "win": 6,
-                "draw": 2,
+                "draw": 3,
                 "lose": 2,
                 "goals": {
                   "for": 14,
                   "against": 9
                 }
               },
-              "update": "2026-01-17T00:00:00+00:00"
+              "update": "2026-01-18T00:00:00+00:00"
             },
             {
               "rank": 2,
@@ -98,7 +98,7 @@
                   "against": 13
                 }
               },
-              "update": "2026-01-17T00:00:00+00:00"
+              "update": "2026-01-18T00:00:00+00:00"
             },
             {
               "rank": 3,
@@ -143,7 +143,7 @@
                   "against": 16
                 }
               },
-              "update": "2026-01-17T00:00:00+00:00"
+              "update": "2026-01-18T00:00:00+00:00"
             },
             {
               "rank": 4,
@@ -188,7 +188,7 @@
                   "against": 18
                 }
               },
-              "update": "2026-01-17T00:00:00+00:00"
+              "update": "2026-01-18T00:00:00+00:00"
             },
             {
               "rank": 5,
@@ -233,7 +233,7 @@
                   "against": 19
                 }
               },
-              "update": "2026-01-17T00:00:00+00:00"
+              "update": "2026-01-18T00:00:00+00:00"
             },
             {
               "rank": 6,
@@ -278,7 +278,7 @@
                   "against": 13
                 }
               },
-              "update": "2026-01-17T00:00:00+00:00"
+              "update": "2026-01-18T00:00:00+00:00"
             },
             {
               "rank": 7,
@@ -323,10 +323,55 @@
                   "against": 20
                 }
               },
-              "update": "2026-01-17T00:00:00+00:00"
+              "update": "2026-01-18T00:00:00+00:00"
             },
             {
               "rank": 8,
+              "team": {
+                "id": 34,
+                "name": "Newcastle",
+                "logo": "https://media.api-sports.io/football/teams/34.png"
+              },
+              "points": 33,
+              "goalsDiff": 5,
+              "group": "Premier League",
+              "form": "DWWWL",
+              "status": "same",
+              "description": null,
+              "all": {
+                "played": 22,
+                "win": 9,
+                "draw": 6,
+                "lose": 7,
+                "goals": {
+                  "for": 32,
+                  "against": 27
+                }
+              },
+              "home": {
+                "played": 11,
+                "win": 7,
+                "draw": 2,
+                "lose": 2,
+                "goals": {
+                  "for": 22,
+                  "against": 15
+                }
+              },
+              "away": {
+                "played": 11,
+                "win": 2,
+                "draw": 4,
+                "lose": 5,
+                "goals": {
+                  "for": 10,
+                  "against": 12
+                }
+              },
+              "update": "2026-01-18T00:00:00+00:00"
+            },
+            {
+              "rank": 9,
               "team": {
                 "id": 746,
                 "name": "Sunderland",
@@ -368,52 +413,7 @@
                   "against": 14
                 }
               },
-              "update": "2026-01-17T00:00:00+00:00"
-            },
-            {
-              "rank": 9,
-              "team": {
-                "id": 34,
-                "name": "Newcastle",
-                "logo": "https://media.api-sports.io/football/teams/34.png"
-              },
-              "points": 32,
-              "goalsDiff": 5,
-              "group": "Premier League",
-              "form": "WWWLD",
-              "status": "same",
-              "description": null,
-              "all": {
-                "played": 21,
-                "win": 9,
-                "draw": 5,
-                "lose": 7,
-                "goals": {
-                  "for": 32,
-                  "against": 27
-                }
-              },
-              "home": {
-                "played": 11,
-                "win": 7,
-                "draw": 2,
-                "lose": 2,
-                "goals": {
-                  "for": 22,
-                  "against": 15
-                }
-              },
-              "away": {
-                "played": 10,
-                "win": 2,
-                "draw": 3,
-                "lose": 5,
-                "goals": {
-                  "for": 10,
-                  "against": 12
-                }
-              },
-              "update": "2026-01-17T00:00:00+00:00"
+              "update": "2026-01-18T00:00:00+00:00"
             },
             {
               "rank": 10,
@@ -458,7 +458,7 @@
                   "against": 18
                 }
               },
-              "update": "2026-01-17T00:00:00+00:00"
+              "update": "2026-01-18T00:00:00+00:00"
             },
             {
               "rank": 11,
@@ -503,7 +503,7 @@
                   "against": 17
                 }
               },
-              "update": "2026-01-17T00:00:00+00:00"
+              "update": "2026-01-18T00:00:00+00:00"
             },
             {
               "rank": 12,
@@ -548,7 +548,7 @@
                   "against": 10
                 }
               },
-              "update": "2026-01-17T00:00:00+00:00"
+              "update": "2026-01-18T00:00:00+00:00"
             },
             {
               "rank": 13,
@@ -593,7 +593,7 @@
                   "against": 13
                 }
               },
-              "update": "2026-01-17T00:00:00+00:00"
+              "update": "2026-01-18T00:00:00+00:00"
             },
             {
               "rank": 14,
@@ -638,7 +638,7 @@
                   "against": 15
                 }
               },
-              "update": "2026-01-17T00:00:00+00:00"
+              "update": "2026-01-18T00:00:00+00:00"
             },
             {
               "rank": 15,
@@ -683,7 +683,7 @@
                   "against": 29
                 }
               },
-              "update": "2026-01-17T00:00:00+00:00"
+              "update": "2026-01-18T00:00:00+00:00"
             },
             {
               "rank": 16,
@@ -728,7 +728,7 @@
                   "against": 24
                 }
               },
-              "update": "2026-01-17T00:00:00+00:00"
+              "update": "2026-01-18T00:00:00+00:00"
             },
             {
               "rank": 17,
@@ -737,16 +737,16 @@
                 "name": "Nottingham Forest",
                 "logo": "https://media.api-sports.io/football/teams/65.png"
               },
-              "points": 21,
+              "points": 22,
               "goalsDiff": -13,
               "group": "Premier League",
-              "form": "WLLLL",
+              "form": "DWLLL",
               "status": "same",
               "description": null,
               "all": {
-                "played": 21,
+                "played": 22,
                 "win": 6,
-                "draw": 3,
+                "draw": 4,
                 "lose": 12,
                 "goals": {
                   "for": 21,
@@ -754,9 +754,9 @@
                 }
               },
               "home": {
-                "played": 10,
+                "played": 11,
                 "win": 3,
-                "draw": 1,
+                "draw": 2,
                 "lose": 6,
                 "goals": {
                   "for": 12,
@@ -773,7 +773,7 @@
                   "against": 17
                 }
               },
-              "update": "2026-01-17T00:00:00+00:00"
+              "update": "2026-01-18T00:00:00+00:00"
             },
             {
               "rank": 18,
@@ -818,7 +818,7 @@
                   "against": 19
                 }
               },
-              "update": "2026-01-17T00:00:00+00:00"
+              "update": "2026-01-18T00:00:00+00:00"
             },
             {
               "rank": 19,
@@ -863,7 +863,7 @@
                   "against": 27
                 }
               },
-              "update": "2026-01-17T00:00:00+00:00"
+              "update": "2026-01-18T00:00:00+00:00"
             },
             {
               "rank": 20,
@@ -872,16 +872,16 @@
                 "name": "Wolves",
                 "logo": "https://media.api-sports.io/football/teams/39.png"
               },
-              "points": 7,
+              "points": 8,
               "goalsDiff": -26,
               "group": "Premier League",
-              "form": "DWDLL",
+              "form": "DDWDL",
               "status": "same",
               "description": "Relegation - Championship",
               "all": {
-                "played": 21,
+                "played": 22,
                 "win": 1,
-                "draw": 4,
+                "draw": 5,
                 "lose": 16,
                 "goals": {
                   "for": 15,
@@ -889,9 +889,9 @@
                 }
               },
               "home": {
-                "played": 10,
+                "played": 11,
                 "win": 1,
-                "draw": 1,
+                "draw": 2,
                 "lose": 8,
                 "goals": {
                   "for": 10,
@@ -908,7 +908,7 @@
                   "against": 18
                 }
               },
-              "update": "2026-01-17T00:00:00+00:00"
+              "update": "2026-01-18T00:00:00+00:00"
             }
           ]
         ]
@@ -916,6 +916,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-17T19:20:54Z"
+    "lastUpdatedUTC": "2026-01-18T18:34:20Z"
   }
 }

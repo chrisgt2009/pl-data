@@ -34,12 +34,12 @@
             "season": 2025
           },
           "games": {
-            "appearences": 16,
-            "lineups": 15,
-            "minutes": 1343,
+            "appearences": 17,
+            "lineups": 16,
+            "minutes": 1433,
             "number": 25,
             "position": "Midfielder",
-            "rating": "7.31",
+            "rating": "7.3",
             "captain": false
           },
           "substitutes": {
@@ -58,30 +58,125 @@
             "saves": null
           },
           "passes": {
-            "total": 899,
+            "total": 943,
             "key": 9,
-            "accuracy": 51
+            "accuracy": 50
           },
           "tackles": {
-            "total": 45,
-            "blocks": 9,
-            "interceptions": 37
+            "total": 49,
+            "blocks": 10,
+            "interceptions": 39
           },
           "duels": {
-            "total": 167,
-            "won": 93
+            "total": 175,
+            "won": 99
           },
           "dribbles": {
-            "attempts": 17,
-            "success": 9,
+            "attempts": 18,
+            "success": 10,
             "past": null
           },
           "fouls": {
-            "drawn": 29,
-            "committed": 27
+            "drawn": 30,
+            "committed": 28
           },
           "cards": {
             "yellow": 5,
+            "yellowred": 0,
+            "red": 1
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 0,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 47380,
+        "name": "Marc Cucurella",
+        "firstname": "Marc",
+        "lastname": "Cucurella Saseta",
+        "age": 27,
+        "birth": {
+          "date": "1998-07-22",
+          "place": "Alella",
+          "country": "Spain"
+        },
+        "nationality": "Spain",
+        "height": "174",
+        "weight": "66",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/47380.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 49,
+            "name": "Chelsea",
+            "logo": "https://media.api-sports.io/football/teams/49.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 20,
+            "lineups": 19,
+            "minutes": 1619,
+            "number": 3,
+            "position": "Defender",
+            "rating": "6.73",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 1,
+            "out": 3,
+            "bench": 1
+          },
+          "shots": {
+            "total": 8,
+            "on": 2
+          },
+          "goals": {
+            "total": 0,
+            "conceded": 0,
+            "assists": 2,
+            "saves": null
+          },
+          "passes": {
+            "total": 913,
+            "key": 21,
+            "accuracy": 40
+          },
+          "tackles": {
+            "total": 36,
+            "blocks": 5,
+            "interceptions": 18
+          },
+          "duels": {
+            "total": 137,
+            "won": 75
+          },
+          "dribbles": {
+            "attempts": 2,
+            "success": 1,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 18,
+            "committed": 26
+          },
+          "cards": {
+            "yellow": 4,
             "yellowred": 0,
             "red": 1
           },
@@ -129,12 +224,12 @@
             "season": 2025
           },
           "games": {
-            "appearences": 12,
-            "lineups": 12,
-            "minutes": 1023,
+            "appearences": 13,
+            "lineups": 13,
+            "minutes": 1118,
             "number": 17,
             "position": "Defender",
-            "rating": "6.73",
+            "rating": "6.72",
             "captain": false
           },
           "substitutes": {
@@ -153,27 +248,27 @@
             "saves": null
           },
           "passes": {
-            "total": 398,
-            "key": null,
+            "total": 450,
+            "key": 1,
             "accuracy": null
           },
           "tackles": {
-            "total": 24,
+            "total": 26,
             "blocks": 7,
-            "interceptions": 17
+            "interceptions": 18
           },
           "duels": {
-            "total": 121,
-            "won": 70
+            "total": 131,
+            "won": 76
           },
           "dribbles": {
-            "attempts": 12,
-            "success": 6,
+            "attempts": 15,
+            "success": 7,
             "past": null
           },
           "fouls": {
-            "drawn": 24,
-            "committed": 18
+            "drawn": 25,
+            "committed": 19
           },
           "cards": {
             "yellow": 4,
@@ -224,9 +319,9 @@
             "season": 2025
           },
           "games": {
-            "appearences": 20,
-            "lineups": 20,
-            "minutes": 1742,
+            "appearences": 21,
+            "lineups": 21,
+            "minutes": 1832,
             "number": 23,
             "position": "Defender",
             "rating": "7.01",
@@ -248,18 +343,18 @@
             "saves": null
           },
           "passes": {
-            "total": 1358,
+            "total": 1407,
             "key": 3,
-            "accuracy": 62
+            "accuracy": 61
           },
           "tackles": {
-            "total": 26,
+            "total": 28,
             "blocks": 10,
-            "interceptions": 19
+            "interceptions": 20
           },
           "duels": {
-            "total": 152,
-            "won": 90
+            "total": 160,
+            "won": 95
           },
           "dribbles": {
             "attempts": 8,
@@ -269,101 +364,6 @@
           "fouls": {
             "drawn": 15,
             "committed": 13
-          },
-          "cards": {
-            "yellow": 3,
-            "yellowred": 0,
-            "red": 1
-          },
-          "penalty": {
-            "won": null,
-            "commited": null,
-            "scored": 0,
-            "missed": 0,
-            "saved": null
-          }
-        }
-      ]
-    },
-    {
-      "player": {
-        "id": 47380,
-        "name": "Marc Cucurella",
-        "firstname": "Marc",
-        "lastname": "Cucurella Saseta",
-        "age": 27,
-        "birth": {
-          "date": "1998-07-22",
-          "place": "Alella",
-          "country": "Spain"
-        },
-        "nationality": "Spain",
-        "height": "174",
-        "weight": "66",
-        "injured": false,
-        "photo": "https://media.api-sports.io/football/players/47380.png"
-      },
-      "statistics": [
-        {
-          "team": {
-            "id": 49,
-            "name": "Chelsea",
-            "logo": "https://media.api-sports.io/football/teams/49.png"
-          },
-          "league": {
-            "id": 39,
-            "name": "Premier League",
-            "country": "England",
-            "logo": "https://media.api-sports.io/football/leagues/39.png",
-            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-            "season": 2025
-          },
-          "games": {
-            "appearences": 19,
-            "lineups": 18,
-            "minutes": 1529,
-            "number": 3,
-            "position": "Defender",
-            "rating": "6.72",
-            "captain": false
-          },
-          "substitutes": {
-            "in": 1,
-            "out": 3,
-            "bench": 1
-          },
-          "shots": {
-            "total": 8,
-            "on": 2
-          },
-          "goals": {
-            "total": 0,
-            "conceded": 0,
-            "assists": 2,
-            "saves": null
-          },
-          "passes": {
-            "total": 863,
-            "key": 21,
-            "accuracy": null
-          },
-          "tackles": {
-            "total": 35,
-            "blocks": 5,
-            "interceptions": 18
-          },
-          "duels": {
-            "total": 133,
-            "won": 73
-          },
-          "dribbles": {
-            "attempts": 2,
-            "success": 1,
-            "past": null
-          },
-          "fouls": {
-            "drawn": 17,
-            "committed": 24
           },
           "cards": {
             "yellow": 3,
@@ -414,12 +414,12 @@
             "season": 2025
           },
           "games": {
-            "appearences": 20,
-            "lineups": 20,
-            "minutes": 1715,
+            "appearences": 21,
+            "lineups": 21,
+            "minutes": 1805,
             "number": 1,
             "position": "Goalkeeper",
-            "rating": "6.88",
+            "rating": "6.97",
             "captain": false
           },
           "substitutes": {
@@ -435,10 +435,10 @@
             "total": 0,
             "conceded": 21,
             "assists": 1,
-            "saves": 48
+            "saves": 54
           },
           "passes": {
-            "total": 718,
+            "total": 761,
             "key": 5,
             "accuracy": null
           },
@@ -604,12 +604,12 @@
             "season": 2025
           },
           "games": {
-            "appearences": 15,
-            "lineups": 10,
-            "minutes": 928,
+            "appearences": 16,
+            "lineups": 11,
+            "minutes": 1027,
             "number": 7,
             "position": "Attacker",
-            "rating": "6.75",
+            "rating": "6.74",
             "captain": false
           },
           "substitutes": {
@@ -618,8 +618,8 @@
             "bench": 5
           },
           "shots": {
-            "total": 10,
-            "on": 4
+            "total": 12,
+            "on": 5
           },
           "goals": {
             "total": 1,
@@ -628,27 +628,27 @@
             "saves": null
           },
           "passes": {
-            "total": 392,
-            "key": 10,
+            "total": 439,
+            "key": 13,
             "accuracy": null
           },
           "tackles": {
-            "total": 21,
+            "total": 23,
             "blocks": null,
             "interceptions": 6
           },
           "duels": {
-            "total": 132,
-            "won": 61
+            "total": 145,
+            "won": 68
           },
           "dribbles": {
-            "attempts": 30,
-            "success": 12,
+            "attempts": 35,
+            "success": 13,
             "past": null
           },
           "fouls": {
-            "drawn": 19,
-            "committed": 10
+            "drawn": 22,
+            "committed": 11
           },
           "cards": {
             "yellow": 2,
@@ -747,6 +747,101 @@
           },
           "cards": {
             "yellow": 2,
+            "yellowred": 0,
+            "red": 1
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 0,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 1243,
+        "name": "T. Souček",
+        "firstname": "Tomáš",
+        "lastname": "Souček",
+        "age": 30,
+        "birth": {
+          "date": "1995-02-27",
+          "place": "Havlíčkův Brod",
+          "country": "Czechia"
+        },
+        "nationality": "Czechia",
+        "height": "192",
+        "weight": "86",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/1243.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 48,
+            "name": "West Ham",
+            "logo": "https://media.api-sports.io/football/teams/48.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 19,
+            "lineups": 8,
+            "minutes": 837,
+            "number": 28,
+            "position": "Midfielder",
+            "rating": "6.59",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 11,
+            "out": 4,
+            "bench": 11
+          },
+          "shots": {
+            "total": 10,
+            "on": 8
+          },
+          "goals": {
+            "total": 2,
+            "conceded": 0,
+            "assists": 0,
+            "saves": null
+          },
+          "passes": {
+            "total": 335,
+            "key": 5,
+            "accuracy": null
+          },
+          "tackles": {
+            "total": 17,
+            "blocks": 6,
+            "interceptions": 8
+          },
+          "duels": {
+            "total": 116,
+            "won": 61
+          },
+          "dribbles": {
+            "attempts": 4,
+            "success": 1,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 8,
+            "committed": 17
+          },
+          "cards": {
+            "yellow": 1,
             "yellowred": 0,
             "red": 1
           },
@@ -1142,101 +1237,6 @@
     },
     {
       "player": {
-        "id": 1243,
-        "name": "T. Souček",
-        "firstname": "Tomáš",
-        "lastname": "Souček",
-        "age": 30,
-        "birth": {
-          "date": "1995-02-27",
-          "place": "Havlíčkův Brod",
-          "country": "Czechia"
-        },
-        "nationality": "Czechia",
-        "height": "192",
-        "weight": "86",
-        "injured": false,
-        "photo": "https://media.api-sports.io/football/players/1243.png"
-      },
-      "statistics": [
-        {
-          "team": {
-            "id": 48,
-            "name": "West Ham",
-            "logo": "https://media.api-sports.io/football/teams/48.png"
-          },
-          "league": {
-            "id": 39,
-            "name": "Premier League",
-            "country": "England",
-            "logo": "https://media.api-sports.io/football/leagues/39.png",
-            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-            "season": 2025
-          },
-          "games": {
-            "appearences": 18,
-            "lineups": 7,
-            "minutes": 738,
-            "number": 28,
-            "position": "Midfielder",
-            "rating": "6.58",
-            "captain": false
-          },
-          "substitutes": {
-            "in": 11,
-            "out": 4,
-            "bench": 11
-          },
-          "shots": {
-            "total": 9,
-            "on": 7
-          },
-          "goals": {
-            "total": 2,
-            "conceded": 0,
-            "assists": 0,
-            "saves": null
-          },
-          "passes": {
-            "total": 300,
-            "key": 3,
-            "accuracy": null
-          },
-          "tackles": {
-            "total": 13,
-            "blocks": 5,
-            "interceptions": 5
-          },
-          "duels": {
-            "total": 102,
-            "won": 53
-          },
-          "dribbles": {
-            "attempts": 4,
-            "success": 1,
-            "past": null
-          },
-          "fouls": {
-            "drawn": 7,
-            "committed": 15
-          },
-          "cards": {
-            "yellow": 0,
-            "yellowred": 0,
-            "red": 1
-          },
-          "penalty": {
-            "won": null,
-            "commited": null,
-            "scored": 0,
-            "missed": 0,
-            "saved": null
-          }
-        }
-      ]
-    },
-    {
-      "player": {
         "id": 2990,
         "name": "I. Gueye",
         "firstname": "Idrissa Gana",
@@ -1364,12 +1364,12 @@
             "season": 2025
           },
           "games": {
-            "appearences": 7,
-            "lineups": 6,
-            "minutes": 502,
+            "appearences": 8,
+            "lineups": 7,
+            "minutes": 600,
             "number": 23,
             "position": "Defender",
-            "rating": "6.36",
+            "rating": "6.44",
             "captain": false
           },
           "substitutes": {
@@ -1388,27 +1388,27 @@
             "saves": null
           },
           "passes": {
-            "total": 185,
+            "total": 216,
             "key": 6,
             "accuracy": null
           },
           "tackles": {
             "total": 11,
-            "blocks": 2,
-            "interceptions": 4
+            "blocks": 4,
+            "interceptions": 8
           },
           "duels": {
-            "total": 46,
-            "won": 18
+            "total": 53,
+            "won": 22
           },
           "dribbles": {
-            "attempts": 9,
-            "success": 5,
+            "attempts": 13,
+            "success": 9,
             "past": null
           },
           "fouls": {
             "drawn": 1,
-            "committed": 5
+            "committed": 7
           },
           "cards": {
             "yellow": 0,
@@ -1470,7 +1470,7 @@
           "substitutes": {
             "in": 3,
             "out": 0,
-            "bench": 12
+            "bench": 13
           },
           "shots": {
             "total": null,
@@ -1554,12 +1554,12 @@
             "season": 2025
           },
           "games": {
-            "appearences": 17,
-            "lineups": 16,
-            "minutes": 1459,
+            "appearences": 18,
+            "lineups": 17,
+            "minutes": 1558,
             "number": 17,
             "position": "Defender",
-            "rating": "7.19",
+            "rating": "7.25",
             "captain": false
           },
           "substitutes": {
@@ -1568,28 +1568,28 @@
             "bench": 1
           },
           "shots": {
-            "total": 9,
-            "on": 4
+            "total": 12,
+            "on": 5
           },
           "goals": {
-            "total": 2,
+            "total": 3,
             "conceded": 0,
             "assists": 1,
             "saves": null
           },
           "passes": {
-            "total": 864,
-            "key": 9,
+            "total": 923,
+            "key": 10,
             "accuracy": 44
           },
           "tackles": {
-            "total": 44,
-            "blocks": 11,
-            "interceptions": 23
+            "total": 46,
+            "blocks": 13,
+            "interceptions": 27
           },
           "duels": {
-            "total": 170,
-            "won": 112
+            "total": 186,
+            "won": 123
           },
           "dribbles": {
             "attempts": 8,
@@ -1598,10 +1598,10 @@
           },
           "fouls": {
             "drawn": 11,
-            "committed": 22
+            "committed": 25
           },
           "cards": {
-            "yellow": 8,
+            "yellow": 9,
             "yellowred": 1,
             "red": 0
           },
@@ -1649,22 +1649,22 @@
             "season": 2025
           },
           "games": {
-            "appearences": 19,
-            "lineups": 18,
-            "minutes": 1317,
+            "appearences": 20,
+            "lineups": 19,
+            "minutes": 1398,
             "number": 18,
             "position": "Midfielder",
-            "rating": "6.99",
+            "rating": "7",
             "captain": false
           },
           "substitutes": {
             "in": 1,
-            "out": 12,
+            "out": 13,
             "bench": 1
           },
           "shots": {
-            "total": 18,
-            "on": 6
+            "total": 19,
+            "on": 7
           },
           "goals": {
             "total": 4,
@@ -1673,18 +1673,18 @@
             "saves": null
           },
           "passes": {
-            "total": 796,
+            "total": 826,
             "key": 19,
             "accuracy": null
           },
           "tackles": {
-            "total": 45,
+            "total": 49,
             "blocks": 11,
-            "interceptions": 13
+            "interceptions": 16
           },
           "duels": {
-            "total": 185,
-            "won": 92
+            "total": 196,
+            "won": 98
           },
           "dribbles": {
             "attempts": 5,
@@ -1692,8 +1692,8 @@
             "past": null
           },
           "fouls": {
-            "drawn": 15,
-            "committed": 27
+            "drawn": 17,
+            "committed": 29
           },
           "cards": {
             "yellow": 6,
@@ -1902,6 +1902,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-17T19:20:55Z"
+    "lastUpdatedUTC": "2026-01-18T18:34:21Z"
   }
 }
