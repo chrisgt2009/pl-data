@@ -1,0 +1,425 @@
+{
+  "data": [
+    {
+      "team": {
+        "id": 39,
+        "name": "Wolves",
+        "logo": "https://media.api-sports.io/football/teams/39.png",
+        "colors": {
+          "player": {
+            "primary": "fbbd37",
+            "number": "000000",
+            "border": "fbbd37"
+          },
+          "goalkeeper": {
+            "primary": "01010e",
+            "number": "ffffff",
+            "border": "01010e"
+          }
+        }
+      },
+      "formation": "3-5-2",
+      "startXI": [
+        {
+          "player": {
+            "id": 1590,
+            "name": "José Sá",
+            "number": 1,
+            "pos": "G",
+            "grid": "1:1"
+          }
+        },
+        {
+          "player": {
+            "id": 195717,
+            "name": "Yerson Mosquera",
+            "number": 15,
+            "pos": "D",
+            "grid": "2:3"
+          }
+        },
+        {
+          "player": {
+            "id": 135334,
+            "name": "Santiago Bueno",
+            "number": 4,
+            "pos": "D",
+            "grid": "2:2"
+          }
+        },
+        {
+          "player": {
+            "id": 66407,
+            "name": "Ladislav Krejčí",
+            "number": 37,
+            "pos": "D",
+            "grid": "2:1"
+          }
+        },
+        {
+          "player": {
+            "id": 296560,
+            "name": "Jackson Tchatchoua",
+            "number": 38,
+            "pos": "M",
+            "grid": "3:5"
+          }
+        },
+        {
+          "player": {
+            "id": 265784,
+            "name": "André",
+            "number": 7,
+            "pos": "M",
+            "grid": "3:4"
+          }
+        },
+        {
+          "player": {
+            "id": 195103,
+            "name": "João Gomes",
+            "number": 8,
+            "pos": "M",
+            "grid": "3:3"
+          }
+        },
+        {
+          "player": {
+            "id": 456206,
+            "name": "Mateus Mané",
+            "number": 36,
+            "pos": "M",
+            "grid": "3:2"
+          }
+        },
+        {
+          "player": {
+            "id": 280687,
+            "name": "Hugo Bueno",
+            "number": 3,
+            "pos": "M",
+            "grid": "3:1"
+          }
+        },
+        {
+          "player": {
+            "id": 110153,
+            "name": "Tolu Arokodare",
+            "number": 14,
+            "pos": "F",
+            "grid": "4:2"
+          }
+        },
+        {
+          "player": {
+            "id": 24888,
+            "name": "Hee-Chan Hwang",
+            "number": 11,
+            "pos": "F",
+            "grid": "4:1"
+          }
+        }
+      ],
+      "substitutes": [
+        {
+          "player": {
+            "id": 19143,
+            "name": "Sam Johnstone",
+            "number": 31,
+            "pos": "G",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 18742,
+            "name": "Matt Doherty",
+            "number": 2,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 265782,
+            "name": "David Möller Wolfe",
+            "number": 6,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 135068,
+            "name": "Emmanuel Agbadou",
+            "number": 12,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 449245,
+            "name": "Pedro Lima",
+            "number": 17,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 13708,
+            "name": "Jhon Arias",
+            "number": 10,
+            "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 282770,
+            "name": "Rodrigo Gomes",
+            "number": 21,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 391822,
+            "name": "Fer López",
+            "number": 28,
+            "pos": "F",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 2032,
+            "name": "Jørgen Strand Larsen",
+            "number": 9,
+            "pos": "F",
+            "grid": null
+          }
+        }
+      ],
+      "coach": {
+        "id": 25765,
+        "name": "Rob Edwards",
+        "photo": "https://media.api-sports.io/football/coachs/25765.png"
+      }
+    },
+    {
+      "team": {
+        "id": 34,
+        "name": "Newcastle",
+        "logo": "https://media.api-sports.io/football/teams/34.png",
+        "colors": {
+          "player": {
+            "primary": "ffffff",
+            "number": "ffffff",
+            "border": "000000"
+          },
+          "goalkeeper": {
+            "primary": "fff04b",
+            "number": "f1eaea",
+            "border": "fff04b"
+          }
+        }
+      },
+      "formation": "4-3-3",
+      "startXI": [
+        {
+          "player": {
+            "id": 18911,
+            "name": "Nick Pope",
+            "number": 1,
+            "pos": "G",
+            "grid": "1:1"
+          }
+        },
+        {
+          "player": {
+            "id": 169,
+            "name": "Kieran Trippier",
+            "number": 2,
+            "pos": "D",
+            "grid": "2:4"
+          }
+        },
+        {
+          "player": {
+            "id": 163189,
+            "name": "Malick Thiaw",
+            "number": 12,
+            "pos": "D",
+            "grid": "2:3"
+          }
+        },
+        {
+          "player": {
+            "id": 38734,
+            "name": "Sven Botman",
+            "number": 4,
+            "pos": "D",
+            "grid": "2:2"
+          }
+        },
+        {
+          "player": {
+            "id": 284492,
+            "name": "Lewis Hall",
+            "number": 3,
+            "pos": "D",
+            "grid": "2:1"
+          }
+        },
+        {
+          "player": {
+            "id": 10135,
+            "name": "Bruno Guimarães",
+            "number": 39,
+            "pos": "M",
+            "grid": "3:3"
+          }
+        },
+        {
+          "player": {
+            "id": 31146,
+            "name": "Sandro Tonali",
+            "number": 8,
+            "pos": "M",
+            "grid": "3:2"
+          }
+        },
+        {
+          "player": {
+            "id": 723,
+            "name": "Joelinton",
+            "number": 7,
+            "pos": "M",
+            "grid": "3:1"
+          }
+        },
+        {
+          "player": {
+            "id": 18778,
+            "name": "Harvey Barnes",
+            "number": 11,
+            "pos": "F",
+            "grid": "4:3"
+          }
+        },
+        {
+          "player": {
+            "id": 158054,
+            "name": "Nick Woltemade",
+            "number": 27,
+            "pos": "F",
+            "grid": "4:2"
+          }
+        },
+        {
+          "player": {
+            "id": 138787,
+            "name": "Anthony Gordon",
+            "number": 10,
+            "pos": "F",
+            "grid": "4:1"
+          }
+        }
+      ],
+      "substitutes": [
+        {
+          "player": {
+            "id": 20355,
+            "name": "Aaron Ramsdale",
+            "number": 32,
+            "pos": "G",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 337934,
+            "name": "Leo Shahar",
+            "number": 61,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 318056,
+            "name": "Alex Murphy",
+            "number": 37,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 153430,
+            "name": "Anthony Elanga",
+            "number": 20,
+            "pos": "F",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 1463,
+            "name": "Joe Willock",
+            "number": 28,
+            "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 19192,
+            "name": "Jacob Ramsey",
+            "number": 41,
+            "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 328105,
+            "name": "Lewis Miley",
+            "number": 67,
+            "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 20649,
+            "name": "Yoane Wissa",
+            "number": 9,
+            "pos": "F",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 394165,
+            "name": "Sean Neave",
+            "number": 62,
+            "pos": "F",
+            "grid": null
+          }
+        }
+      ],
+      "coach": {
+        "id": 5,
+        "name": "Eddie Howe",
+        "photo": "https://media.api-sports.io/football/coachs/5.png"
+      }
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-18T14:15:33Z"
+  }
+}
