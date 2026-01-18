@@ -131,9 +131,31 @@
       "type": "subst",
       "detail": "Substitution 2",
       "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 78,
+        "extra": null
+      },
+      "team": {
+        "id": 39,
+        "name": "Wolves",
+        "logo": "https://media.api-sports.io/football/teams/39.png"
+      },
+      "player": {
+        "id": 456206,
+        "name": "M. Mane"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Card",
+      "detail": "Yellow Card",
+      "comments": "Tripping"
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-18T15:30:36Z"
+    "lastUpdatedUTC": "2026-01-18T15:42:43Z"
   }
 }
