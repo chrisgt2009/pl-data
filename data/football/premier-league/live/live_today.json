@@ -17,8 +17,8 @@
           "city": "Wolverhampton"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
+          "long": "Halftime",
+          "short": "HT",
           "elapsed": 45,
           "extra": 1
         }
@@ -73,6 +73,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-18T14:46:28Z"
+    "lastUpdatedUTC": "2026-01-18T14:53:59Z"
   }
 }

@@ -67,18 +67,18 @@
         },
         {
           "player": {
-            "id": 265784,
-            "name": "André",
-            "number": 7,
+            "id": 195103,
+            "name": "João Gomes",
+            "number": 8,
             "pos": "M",
             "grid": "3:4"
           }
         },
         {
           "player": {
-            "id": 195103,
-            "name": "João Gomes",
-            "number": 8,
+            "id": 265784,
+            "name": "André",
+            "number": 7,
             "pos": "M",
             "grid": "3:3"
           }
@@ -420,6 +420,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-18T14:46:29Z"
+    "lastUpdatedUTC": "2026-01-18T14:54:00Z"
   }
 }

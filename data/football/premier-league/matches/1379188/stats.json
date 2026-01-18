@@ -9,7 +9,7 @@
       "statistics": [
         {
           "type": "Shots on Goal",
-          "value": 1
+          "value": 2
         },
         {
           "type": "Shots off Goal",
@@ -17,15 +17,15 @@
         },
         {
           "type": "Total Shots",
-          "value": 1
+          "value": 3
         },
         {
           "type": "Blocked Shots",
-          "value": 0
+          "value": 1
         },
         {
           "type": "Shots insidebox",
-          "value": 1
+          "value": 3
         },
         {
           "type": "Shots outsidebox",
@@ -37,7 +37,7 @@
         },
         {
           "type": "Corner Kicks",
-          "value": 0
+          "value": 1
         },
         {
           "type": "Offsides",
@@ -61,19 +61,19 @@
         },
         {
           "type": "Total passes",
-          "value": 172
+          "value": 177
         },
         {
           "type": "Passes accurate",
-          "value": 149
+          "value": 153
         },
         {
           "type": "Passes %",
-          "value": "87%"
+          "value": "86%"
         },
         {
           "type": "expected_goals",
-          "value": "0.08"
+          "value": "0.11"
         },
         {
           "type": "goals_prevented",
@@ -138,19 +138,19 @@
         },
         {
           "type": "Goalkeeper Saves",
-          "value": 1
+          "value": 2
         },
         {
           "type": "Total passes",
-          "value": 346
+          "value": 354
         },
         {
           "type": "Passes accurate",
-          "value": 328
+          "value": 334
         },
         {
           "type": "Passes %",
-          "value": "95%"
+          "value": "94%"
         },
         {
           "type": "expected_goals",
@@ -164,6 +164,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-18T14:46:29Z"
+    "lastUpdatedUTC": "2026-01-18T14:54:01Z"
   }
 }
