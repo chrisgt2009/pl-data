@@ -33,11 +33,11 @@
         },
         {
           "type": "Fouls",
-          "value": 1
+          "value": 3
         },
         {
           "type": "Corner Kicks",
-          "value": null
+          "value": 0
         },
         {
           "type": "Offsides",
@@ -45,11 +45,11 @@
         },
         {
           "type": "Ball Possession",
-          "value": "69%"
+          "value": "67%"
         },
         {
           "type": "Yellow Cards",
-          "value": null
+          "value": 0
         },
         {
           "type": "Red Cards",
@@ -61,15 +61,15 @@
         },
         {
           "type": "Total passes",
-          "value": 100
+          "value": 152
         },
         {
           "type": "Passes accurate",
-          "value": 89
+          "value": 128
         },
         {
           "type": "Passes %",
-          "value": "89%"
+          "value": "84%"
         },
         {
           "type": "expected_goals",
@@ -98,15 +98,15 @@
         },
         {
           "type": "Total Shots",
-          "value": 1
+          "value": 3
         },
         {
           "type": "Blocked Shots",
-          "value": 0
+          "value": 2
         },
         {
           "type": "Shots insidebox",
-          "value": 1
+          "value": 3
         },
         {
           "type": "Shots outsidebox",
@@ -114,11 +114,11 @@
         },
         {
           "type": "Fouls",
-          "value": 4
+          "value": 6
         },
         {
           "type": "Corner Kicks",
-          "value": null
+          "value": 2
         },
         {
           "type": "Offsides",
@@ -126,11 +126,11 @@
         },
         {
           "type": "Ball Possession",
-          "value": "31%"
+          "value": "33%"
         },
         {
           "type": "Yellow Cards",
-          "value": null
+          "value": 1
         },
         {
           "type": "Red Cards",
@@ -142,19 +142,19 @@
         },
         {
           "type": "Total passes",
-          "value": 42
+          "value": 71
         },
         {
           "type": "Passes accurate",
-          "value": 33
+          "value": 54
         },
         {
           "type": "Passes %",
-          "value": "79%"
+          "value": "76%"
         },
         {
           "type": "expected_goals",
-          "value": "0.13"
+          "value": "0.27"
         },
         {
           "type": "goals_prevented",
@@ -164,6 +164,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-18T16:44:44Z"
+    "lastUpdatedUTC": "2026-01-18T16:55:41Z"
   }
 }

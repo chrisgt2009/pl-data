@@ -19,7 +19,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 15,
+          "elapsed": 25,
           "extra": null
         }
       },
@@ -69,10 +69,55 @@
           "away": null
         }
       },
-      "events": []
+      "events": [
+        {
+          "time": {
+            "elapsed": 18,
+            "extra": null
+          },
+          "team": {
+            "id": 66,
+            "name": "Aston Villa",
+            "logo": "https://media.api-sports.io/football/teams/66.png"
+          },
+          "player": {
+            "id": 19191,
+            "name": "J. McGinn"
+          },
+          "assist": {
+            "id": 137303,
+            "name": "E. Guessand"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 23,
+            "extra": null
+          },
+          "team": {
+            "id": 45,
+            "name": "Everton",
+            "logo": "https://media.api-sports.io/football/teams/45.png"
+          },
+          "player": {
+            "id": 18929,
+            "name": "D. McNeil"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Holding"
+        }
+      ]
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-18T16:44:43Z"
+    "lastUpdatedUTC": "2026-01-18T16:55:40Z"
   }
 }
