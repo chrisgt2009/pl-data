@@ -13,23 +13,23 @@
         },
         {
           "type": "Shots off Goal",
-          "value": 3
+          "value": 4
         },
         {
           "type": "Total Shots",
-          "value": 8
+          "value": 10
         },
         {
           "type": "Blocked Shots",
-          "value": 2
+          "value": 3
         },
         {
           "type": "Shots insidebox",
-          "value": 6
+          "value": 7
         },
         {
           "type": "Shots outsidebox",
-          "value": 2
+          "value": 3
         },
         {
           "type": "Fouls",
@@ -45,7 +45,7 @@
         },
         {
           "type": "Ball Possession",
-          "value": "62%"
+          "value": "61%"
         },
         {
           "type": "Yellow Cards",
@@ -61,19 +61,19 @@
         },
         {
           "type": "Total passes",
-          "value": 338
+          "value": 370
         },
         {
           "type": "Passes accurate",
-          "value": 295
+          "value": 325
         },
         {
           "type": "Passes %",
-          "value": "87%"
+          "value": "88%"
         },
         {
           "type": "expected_goals",
-          "value": "0.95"
+          "value": "0.98"
         },
         {
           "type": "goals_prevented",
@@ -114,7 +114,7 @@
         },
         {
           "type": "Fouls",
-          "value": 10
+          "value": 11
         },
         {
           "type": "Corner Kicks",
@@ -122,11 +122,11 @@
         },
         {
           "type": "Offsides",
-          "value": 1
+          "value": 3
         },
         {
           "type": "Ball Possession",
-          "value": "38%"
+          "value": "39%"
         },
         {
           "type": "Yellow Cards",
@@ -142,11 +142,11 @@
         },
         {
           "type": "Total passes",
-          "value": 203
+          "value": 231
         },
         {
           "type": "Passes accurate",
-          "value": 162
+          "value": 185
         },
         {
           "type": "Passes %",
@@ -164,6 +164,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-18T17:52:10Z"
+    "lastUpdatedUTC": "2026-01-18T17:59:10Z"
   }
 }
