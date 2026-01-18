@@ -65,9 +65,31 @@
       "type": "Var",
       "detail": "Goal Disallowed - offside",
       "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 47,
+        "extra": null
+      },
+      "team": {
+        "id": 45,
+        "name": "Everton",
+        "logo": "https://media.api-sports.io/football/teams/45.png"
+      },
+      "player": {
+        "id": 895,
+        "name": "J. Garner"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Card",
+      "detail": "Yellow Card",
+      "comments": "Tripping"
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-18T17:31:32Z"
+    "lastUpdatedUTC": "2026-01-18T17:44:57Z"
   }
 }

@@ -9,7 +9,7 @@
         "timestamp": 1768753800,
         "periods": {
           "first": 1768753800,
-          "second": null
+          "second": 1768757400
         },
         "venue": {
           "id": 495,
@@ -17,10 +17,10 @@
           "city": "Birmingham"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 4
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 55,
+          "extra": null
         }
       },
       "league": {
@@ -135,11 +135,33 @@
           "type": "Var",
           "detail": "Goal Disallowed - offside",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 47,
+            "extra": null
+          },
+          "team": {
+            "id": 45,
+            "name": "Everton",
+            "logo": "https://media.api-sports.io/football/teams/45.png"
+          },
+          "player": {
+            "id": 895,
+            "name": "J. Garner"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Tripping"
         }
       ]
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-18T17:31:31Z"
+    "lastUpdatedUTC": "2026-01-18T17:44:57Z"
   }
 }

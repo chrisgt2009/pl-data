@@ -123,6 +123,15 @@
       "substitutes": [
         {
           "player": {
+            "id": 137303,
+            "name": "Evann Guessand",
+            "number": 29,
+            "pos": "F",
+            "grid": null
+          }
+        },
+        {
+          "player": {
             "id": 36878,
             "name": "Marco Bizot",
             "number": 40,
@@ -190,15 +199,6 @@
             "name": "Jamaldeen Jimoh",
             "number": 20,
             "pos": "M",
-            "grid": null
-          }
-        },
-        {
-          "player": {
-            "id": 137303,
-            "name": "Evann Guessand",
-            "number": 29,
-            "pos": "F",
             "grid": null
           }
         }
@@ -411,6 +411,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-18T17:31:33Z"
+    "lastUpdatedUTC": "2026-01-18T17:44:58Z"
   }
 }
