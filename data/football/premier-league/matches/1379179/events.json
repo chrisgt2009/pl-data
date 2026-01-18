@@ -87,9 +87,53 @@
       "type": "Card",
       "detail": "Yellow Card",
       "comments": "Tripping"
+    },
+    {
+      "time": {
+        "elapsed": 56,
+        "extra": null
+      },
+      "team": {
+        "id": 66,
+        "name": "Aston Villa",
+        "logo": "https://media.api-sports.io/football/teams/66.png"
+      },
+      "player": {
+        "id": 284457,
+        "name": "L. Bogarde"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Card",
+      "detail": "Yellow Card",
+      "comments": "Tripping"
+    },
+    {
+      "time": {
+        "elapsed": 59,
+        "extra": null
+      },
+      "team": {
+        "id": 45,
+        "name": "Everton",
+        "logo": "https://media.api-sports.io/football/teams/45.png"
+      },
+      "player": {
+        "id": 343684,
+        "name": "T. Barry"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Goal",
+      "detail": "Normal Goal",
+      "comments": null
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-18T17:44:57Z"
+    "lastUpdatedUTC": "2026-01-18T17:52:09Z"
   }
 }
