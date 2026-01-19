@@ -45,7 +45,7 @@
         },
         {
           "type": "Ball Possession",
-          "value": "59%"
+          "value": "60%"
         },
         {
           "type": "Yellow Cards",
@@ -61,11 +61,11 @@
         },
         {
           "type": "Total passes",
-          "value": 173
+          "value": 200
         },
         {
           "type": "Passes accurate",
-          "value": 147
+          "value": 170
         },
         {
           "type": "Passes %",
@@ -73,7 +73,7 @@
         },
         {
           "type": "expected_goals",
-          "value": "0.08"
+          "value": "0.27"
         },
         {
           "type": "goals_prevented",
@@ -94,11 +94,11 @@
         },
         {
           "type": "Shots off Goal",
-          "value": 1
+          "value": 3
         },
         {
           "type": "Total Shots",
-          "value": 5
+          "value": 7
         },
         {
           "type": "Blocked Shots",
@@ -106,7 +106,7 @@
         },
         {
           "type": "Shots insidebox",
-          "value": 3
+          "value": 5
         },
         {
           "type": "Shots outsidebox",
@@ -126,7 +126,7 @@
         },
         {
           "type": "Ball Possession",
-          "value": "41%"
+          "value": "40%"
         },
         {
           "type": "Yellow Cards",
@@ -142,11 +142,11 @@
         },
         {
           "type": "Total passes",
-          "value": 115
+          "value": 125
         },
         {
           "type": "Passes accurate",
-          "value": 95
+          "value": 104
         },
         {
           "type": "Passes %",
@@ -154,7 +154,7 @@
         },
         {
           "type": "expected_goals",
-          "value": "0.97"
+          "value": "1.14"
         },
         {
           "type": "goals_prevented",
@@ -164,6 +164,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-19T20:38:25Z"
+    "lastUpdatedUTC": "2026-01-19T20:42:09Z"
   }
 }
