@@ -45,7 +45,7 @@
         },
         {
           "type": "Ball Possession",
-          "value": "61%"
+          "value": "60%"
         },
         {
           "type": "Yellow Cards",
@@ -61,15 +61,15 @@
         },
         {
           "type": "Total passes",
-          "value": 249
+          "value": 266
         },
         {
           "type": "Passes accurate",
-          "value": 215
+          "value": 226
         },
         {
           "type": "Passes %",
-          "value": "86%"
+          "value": "85%"
         },
         {
           "type": "expected_goals",
@@ -126,7 +126,7 @@
         },
         {
           "type": "Ball Possession",
-          "value": "39%"
+          "value": "40%"
         },
         {
           "type": "Yellow Cards",
@@ -142,15 +142,15 @@
         },
         {
           "type": "Total passes",
-          "value": 151
+          "value": 174
         },
         {
           "type": "Passes accurate",
-          "value": 122
+          "value": 138
         },
         {
           "type": "Passes %",
-          "value": "81%"
+          "value": "79%"
         },
         {
           "type": "expected_goals",
@@ -164,6 +164,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-19T20:54:06Z"
+    "lastUpdatedUTC": "2026-01-19T21:09:41Z"
   }
 }

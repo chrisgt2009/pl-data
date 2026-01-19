@@ -9,7 +9,7 @@
         "timestamp": 1768852800,
         "periods": {
           "first": 1768852800,
-          "second": null
+          "second": 1768856400
         },
         "venue": {
           "id": 508,
@@ -17,10 +17,10 @@
           "city": "Brighton"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 6
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 48,
+          "extra": null
         }
       },
       "league": {
@@ -96,6 +96,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-19T20:54:05Z"
+    "lastUpdatedUTC": "2026-01-19T21:09:40Z"
   }
 }
