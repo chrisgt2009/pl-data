@@ -123,33 +123,6 @@
       "substitutes": [
         {
           "player": {
-            "id": 18960,
-            "name": "Jason Steele",
-            "number": 23,
-            "pos": "G",
-            "grid": null
-          }
-        },
-        {
-          "player": {
-            "id": 22160,
-            "name": "Olivier Boscagli",
-            "number": 21,
-            "pos": "D",
-            "grid": null
-          }
-        },
-        {
-          "player": {
-            "id": 342063,
-            "name": "Diego Coppola",
-            "number": 42,
-            "pos": "D",
-            "grid": null
-          }
-        },
-        {
-          "player": {
             "id": 90590,
             "name": "Georginio Rutter",
             "number": 10,
@@ -172,6 +145,33 @@
             "name": "Carlos Baleba",
             "number": 17,
             "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 18960,
+            "name": "Jason Steele",
+            "number": 23,
+            "pos": "G",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 22160,
+            "name": "Olivier Boscagli",
+            "number": 21,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 342063,
+            "name": "Diego Coppola",
+            "number": 42,
+            "pos": "D",
             "grid": null
           }
         },
@@ -332,6 +332,24 @@
       "substitutes": [
         {
           "player": {
+            "id": 18869,
+            "name": "Adam Smith",
+            "number": 15,
+            "pos": "D",
+            "grid": null
+          }
+        },
+        {
+          "player": {
+            "id": 1125,
+            "name": "Ryan Christie",
+            "number": 10,
+            "pos": "M",
+            "grid": null
+          }
+        },
+        {
+          "player": {
             "id": 18932,
             "name": "Fraser Forster",
             "number": 17,
@@ -350,28 +368,10 @@
         },
         {
           "player": {
-            "id": 18869,
-            "name": "Adam Smith",
-            "number": 15,
-            "pos": "D",
-            "grid": null
-          }
-        },
-        {
-          "player": {
             "id": 22136,
             "name": "Bafodé Diakité",
             "number": 18,
             "pos": "D",
-            "grid": null
-          }
-        },
-        {
-          "player": {
-            "id": 1125,
-            "name": "Ryan Christie",
-            "number": 10,
-            "pos": "M",
             "grid": null
           }
         },
@@ -420,6 +420,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-19T21:44:39Z"
+    "lastUpdatedUTC": "2026-01-19T21:52:41Z"
   }
 }

@@ -241,9 +241,75 @@
       "type": "subst",
       "detail": "Substitution 3",
       "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 83,
+        "extra": null
+      },
+      "team": {
+        "id": 35,
+        "name": "Bournemouth",
+        "logo": "https://media.api-sports.io/football/teams/35.png"
+      },
+      "player": {
+        "id": 18869,
+        "name": "A. Smith"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Card",
+      "detail": "Yellow Card",
+      "comments": "Foul"
+    },
+    {
+      "time": {
+        "elapsed": 85,
+        "extra": null
+      },
+      "team": {
+        "id": 35,
+        "name": "Bournemouth",
+        "logo": "https://media.api-sports.io/football/teams/35.png"
+      },
+      "player": {
+        "id": 118307,
+        "name": "D. Petrovic"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Card",
+      "detail": "Yellow Card",
+      "comments": "Delay of game"
+    },
+    {
+      "time": {
+        "elapsed": 90,
+        "extra": null
+      },
+      "team": {
+        "id": 51,
+        "name": "Brighton",
+        "logo": "https://media.api-sports.io/football/teams/51.png"
+      },
+      "player": {
+        "id": 1361,
+        "name": "F. Kadioglu"
+      },
+      "assist": {
+        "id": 22160,
+        "name": "O. Boscagli"
+      },
+      "type": "subst",
+      "detail": "Substitution 5",
+      "comments": null
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-19T21:44:38Z"
+    "lastUpdatedUTC": "2026-01-19T21:52:41Z"
   }
 }
