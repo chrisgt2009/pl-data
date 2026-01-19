@@ -20,7 +20,7 @@
           "long": "Second Half",
           "short": "2H",
           "elapsed": 90,
-          "extra": 1
+          "extra": 8
         }
       },
       "league": {
@@ -358,7 +358,7 @@
         },
         {
           "time": {
-            "elapsed": 90,
+            "elapsed": 89,
             "extra": null
           },
           "team": {
@@ -393,8 +393,8 @@
             "name": "C. Kostoulas"
           },
           "assist": {
-            "id": null,
-            "name": null
+            "id": 38695,
+            "name": "J. P. van Hecke"
           },
           "type": "Goal",
           "detail": "Normal Goal",
@@ -404,6 +404,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-19T21:52:40Z"
+    "lastUpdatedUTC": "2026-01-19T21:59:47Z"
   }
 }

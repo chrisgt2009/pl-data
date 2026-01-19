@@ -288,7 +288,7 @@
     },
     {
       "time": {
-        "elapsed": 90,
+        "elapsed": 89,
         "extra": null
       },
       "team": {
@@ -307,9 +307,31 @@
       "type": "subst",
       "detail": "Substitution 5",
       "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 90,
+        "extra": 1
+      },
+      "team": {
+        "id": 51,
+        "name": "Brighton",
+        "logo": "https://media.api-sports.io/football/teams/51.png"
+      },
+      "player": {
+        "id": 392482,
+        "name": "C. Kostoulas"
+      },
+      "assist": {
+        "id": 38695,
+        "name": "J. P. van Hecke"
+      },
+      "type": "Goal",
+      "detail": "Normal Goal",
+      "comments": null
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-19T21:52:41Z"
+    "lastUpdatedUTC": "2026-01-19T21:59:47Z"
   }
 }
