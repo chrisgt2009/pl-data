@@ -19,7 +19,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 23,
+          "elapsed": 36,
           "extra": null
         }
       },
@@ -38,23 +38,23 @@
           "id": 51,
           "name": "Brighton",
           "logo": "https://media.api-sports.io/football/teams/51.png",
-          "winner": null
+          "winner": false
         },
         "away": {
           "id": 35,
           "name": "Bournemouth",
           "logo": "https://media.api-sports.io/football/teams/35.png",
-          "winner": null
+          "winner": true
         }
       },
       "goals": {
         "home": 0,
-        "away": 0
+        "away": 1
       },
       "score": {
         "halftime": {
           "home": 0,
-          "away": 0
+          "away": 1
         },
         "fulltime": {
           "home": null,
@@ -69,10 +69,33 @@
           "away": null
         }
       },
-      "events": []
+      "events": [
+        {
+          "time": {
+            "elapsed": 32,
+            "extra": null
+          },
+          "team": {
+            "id": 35,
+            "name": "Bournemouth",
+            "logo": "https://media.api-sports.io/football/teams/35.png"
+          },
+          "player": {
+            "id": 19245,
+            "name": "M. Tavernier"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Goal",
+          "detail": "Penalty",
+          "comments": null
+        }
+      ]
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-19T20:23:21Z"
+    "lastUpdatedUTC": "2026-01-19T20:35:53Z"
   }
 }

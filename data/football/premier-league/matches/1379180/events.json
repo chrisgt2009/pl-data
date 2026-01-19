@@ -1,6 +1,29 @@
 {
-  "events": [],
+  "events": [
+    {
+      "time": {
+        "elapsed": 32,
+        "extra": null
+      },
+      "team": {
+        "id": 35,
+        "name": "Bournemouth",
+        "logo": "https://media.api-sports.io/football/teams/35.png"
+      },
+      "player": {
+        "id": 19245,
+        "name": "M. Tavernier"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Goal",
+      "detail": "Penalty",
+      "comments": null
+    }
+  ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-19T20:23:21Z"
+    "lastUpdatedUTC": "2026-01-19T20:35:54Z"
   }
 }
