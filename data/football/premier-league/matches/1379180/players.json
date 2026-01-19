@@ -5,7 +5,7 @@
         "id": 51,
         "name": "Brighton",
         "logo": "https://media.api-sports.io/football/teams/51.png",
-        "update": "2026-01-19T20:34:10+00:00"
+        "update": "2026-01-19T20:37:13+00:00"
       },
       "players": [
         {
@@ -17,7 +17,7 @@
           "statistics": [
             {
               "games": {
-                "minutes": 34,
+                "minutes": 36,
                 "number": 1,
                 "position": "G",
                 "rating": "6.3",
@@ -81,10 +81,10 @@
           "statistics": [
             {
               "games": {
-                "minutes": 34,
+                "minutes": 36,
                 "number": 34,
                 "position": "D",
-                "rating": "6.2",
+                "rating": "6.5",
                 "captain": false,
                 "substitute": false
               },
@@ -100,18 +100,18 @@
                 "saves": null
               },
               "passes": {
-                "total": 12,
+                "total": 14,
                 "key": null,
-                "accuracy": "9"
+                "accuracy": "11"
               },
               "tackles": {
-                "total": 1,
+                "total": 2,
                 "blocks": null,
                 "interceptions": null
               },
               "duels": {
-                "total": 3,
-                "won": 2
+                "total": 5,
+                "won": 4
               },
               "dribbles": {
                 "attempts": null,
@@ -145,7 +145,7 @@
           "statistics": [
             {
               "games": {
-                "minutes": 34,
+                "minutes": 36,
                 "number": 6,
                 "position": "D",
                 "rating": "6.7",
@@ -209,7 +209,7 @@
           "statistics": [
             {
               "games": {
-                "minutes": 34,
+                "minutes": 36,
                 "number": 5,
                 "position": "D",
                 "rating": "6.7",
@@ -273,7 +273,7 @@
           "statistics": [
             {
               "games": {
-                "minutes": 34,
+                "minutes": 36,
                 "number": 24,
                 "position": "D",
                 "rating": "6.7",
@@ -292,9 +292,9 @@
                 "saves": null
               },
               "passes": {
-                "total": 10,
+                "total": 12,
                 "key": 1,
-                "accuracy": "8"
+                "accuracy": "10"
               },
               "tackles": {
                 "total": 2,
@@ -337,7 +337,7 @@
           "statistics": [
             {
               "games": {
-                "minutes": 34,
+                "minutes": 36,
                 "number": 13,
                 "position": "M",
                 "rating": "6.5",
@@ -346,8 +346,8 @@
               },
               "offsides": null,
               "shots": {
-                "total": null,
-                "on": null
+                "total": 1,
+                "on": 1
               },
               "goals": {
                 "total": null,
@@ -356,9 +356,9 @@
                 "saves": null
               },
               "passes": {
-                "total": 22,
+                "total": 23,
                 "key": null,
-                "accuracy": "19"
+                "accuracy": "20"
               },
               "tackles": {
                 "total": null,
@@ -401,10 +401,10 @@
           "statistics": [
             {
               "games": {
-                "minutes": 34,
+                "minutes": 36,
                 "number": 30,
                 "position": "M",
-                "rating": "6.6",
+                "rating": "6.9",
                 "captain": false,
                 "substitute": false
               },
@@ -420,7 +420,7 @@
                 "saves": null
               },
               "passes": {
-                "total": 24,
+                "total": 25,
                 "key": null,
                 "accuracy": "21"
               },
@@ -465,7 +465,7 @@
           "statistics": [
             {
               "games": {
-                "minutes": 34,
+                "minutes": 36,
                 "number": 8,
                 "position": "M",
                 "rating": "7.5",
@@ -529,10 +529,10 @@
           "statistics": [
             {
               "games": {
-                "minutes": 34,
+                "minutes": 36,
                 "number": 25,
                 "position": "M",
-                "rating": "6.6",
+                "rating": "6.7",
                 "captain": false,
                 "substitute": false
               },
@@ -548,9 +548,9 @@
                 "saves": null
               },
               "passes": {
-                "total": 13,
+                "total": 14,
                 "key": null,
-                "accuracy": "11"
+                "accuracy": "12"
               },
               "tackles": {
                 "total": 3,
@@ -558,7 +558,7 @@
                 "interceptions": null
               },
               "duels": {
-                "total": 7,
+                "total": 8,
                 "won": 4
               },
               "dribbles": {
@@ -568,7 +568,7 @@
               },
               "fouls": {
                 "drawn": null,
-                "committed": null
+                "committed": 1
               },
               "cards": {
                 "yellow": 0,
@@ -593,7 +593,7 @@
           "statistics": [
             {
               "games": {
-                "minutes": 34,
+                "minutes": 36,
                 "number": 22,
                 "position": "M",
                 "rating": "6.2",
@@ -612,9 +612,9 @@
                 "saves": null
               },
               "passes": {
-                "total": 7,
+                "total": 8,
                 "key": null,
-                "accuracy": "6"
+                "accuracy": "7"
               },
               "tackles": {
                 "total": 1,
@@ -657,7 +657,7 @@
           "statistics": [
             {
               "games": {
-                "minutes": 34,
+                "minutes": 36,
                 "number": 18,
                 "position": "F",
                 "rating": "6.5",
@@ -686,7 +686,7 @@
                 "interceptions": null
               },
               "duels": {
-                "total": 2,
+                "total": 3,
                 "won": 1
               },
               "dribbles": {
@@ -1295,7 +1295,7 @@
         "id": 35,
         "name": "Bournemouth",
         "logo": "https://media.api-sports.io/football/teams/35.png",
-        "update": "2026-01-19T20:34:10+00:00"
+        "update": "2026-01-19T20:37:13+00:00"
       },
       "players": [
         {
@@ -1307,7 +1307,7 @@
           "statistics": [
             {
               "games": {
-                "minutes": 34,
+                "minutes": 36,
                 "number": 1,
                 "position": "G",
                 "rating": "7.2",
@@ -1323,7 +1323,7 @@
                 "total": null,
                 "conceded": 0,
                 "assists": null,
-                "saves": 2
+                "saves": 3
               },
               "passes": {
                 "total": 8,
@@ -1371,7 +1371,7 @@
           "statistics": [
             {
               "games": {
-                "minutes": 34,
+                "minutes": 36,
                 "number": 20,
                 "position": "D",
                 "rating": "6.3",
@@ -1390,9 +1390,9 @@
                 "saves": null
               },
               "passes": {
-                "total": 8,
+                "total": 9,
                 "key": 1,
-                "accuracy": "7"
+                "accuracy": "8"
               },
               "tackles": {
                 "total": null,
@@ -1435,7 +1435,7 @@
           "statistics": [
             {
               "games": {
-                "minutes": 34,
+                "minutes": 36,
                 "number": 23,
                 "position": "D",
                 "rating": "6.3",
@@ -1454,9 +1454,9 @@
                 "saves": null
               },
               "passes": {
-                "total": 9,
+                "total": 10,
                 "key": null,
-                "accuracy": "7"
+                "accuracy": "8"
               },
               "tackles": {
                 "total": 1,
@@ -1499,7 +1499,7 @@
           "statistics": [
             {
               "games": {
-                "minutes": 34,
+                "minutes": 36,
                 "number": 5,
                 "position": "D",
                 "rating": "6.7",
@@ -1518,9 +1518,9 @@
                 "saves": null
               },
               "passes": {
-                "total": 9,
+                "total": 11,
                 "key": 1,
-                "accuracy": "6"
+                "accuracy": "7"
               },
               "tackles": {
                 "total": null,
@@ -1563,7 +1563,7 @@
           "statistics": [
             {
               "games": {
-                "minutes": 34,
+                "minutes": 36,
                 "number": 3,
                 "position": "D",
                 "rating": "6.3",
@@ -1582,9 +1582,9 @@
                 "saves": null
               },
               "passes": {
-                "total": 10,
+                "total": 11,
                 "key": null,
-                "accuracy": "9"
+                "accuracy": "10"
               },
               "tackles": {
                 "total": null,
@@ -1627,7 +1627,7 @@
           "statistics": [
             {
               "games": {
-                "minutes": 34,
+                "minutes": 36,
                 "number": 8,
                 "position": "M",
                 "rating": "6.3",
@@ -1691,10 +1691,10 @@
           "statistics": [
             {
               "games": {
-                "minutes": 34,
+                "minutes": 36,
                 "number": 4,
                 "position": "M",
-                "rating": "6.6",
+                "rating": "6.9",
                 "captain": true,
                 "substitute": false
               },
@@ -1710,9 +1710,9 @@
                 "saves": null
               },
               "passes": {
-                "total": 19,
+                "total": 20,
                 "key": null,
-                "accuracy": "19"
+                "accuracy": "20"
               },
               "tackles": {
                 "total": null,
@@ -1755,7 +1755,7 @@
           "statistics": [
             {
               "games": {
-                "minutes": 34,
+                "minutes": 36,
                 "number": 16,
                 "position": "M",
                 "rating": "7.2",
@@ -1819,7 +1819,7 @@
           "statistics": [
             {
               "games": {
-                "minutes": 34,
+                "minutes": 36,
                 "number": 22,
                 "position": "M",
                 "rating": "6.3",
@@ -1838,9 +1838,9 @@
                 "saves": null
               },
               "passes": {
-                "total": 11,
+                "total": 12,
                 "key": 1,
-                "accuracy": "8"
+                "accuracy": "9"
               },
               "tackles": {
                 "total": null,
@@ -1883,7 +1883,7 @@
           "statistics": [
             {
               "games": {
-                "minutes": 34,
+                "minutes": 36,
                 "number": 21,
                 "position": "M",
                 "rating": "6.6",
@@ -1902,18 +1902,18 @@
                 "saves": null
               },
               "passes": {
-                "total": 9,
+                "total": 10,
                 "key": null,
-                "accuracy": "8"
+                "accuracy": "9"
               },
               "tackles": {
-                "total": null,
+                "total": 1,
                 "blocks": null,
                 "interceptions": null
               },
               "duels": {
-                "total": 4,
-                "won": 1
+                "total": 7,
+                "won": 2
               },
               "dribbles": {
                 "attempts": null,
@@ -1947,10 +1947,10 @@
           "statistics": [
             {
               "games": {
-                "minutes": 34,
+                "minutes": 36,
                 "number": 9,
                 "position": "F",
-                "rating": "6.5",
+                "rating": "6.2",
                 "captain": false,
                 "substitute": false
               },
@@ -2582,6 +2582,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-19T20:35:55Z"
+    "lastUpdatedUTC": "2026-01-19T20:38:26Z"
   }
 }
