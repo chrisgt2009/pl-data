@@ -85,18 +85,18 @@
         },
         {
           "player": {
-            "id": 278370,
-            "name": "Diego Gómez",
-            "number": 25,
+            "id": 328225,
+            "name": "Brajan Gruda",
+            "number": 8,
             "pos": "M",
             "grid": "4:3"
           }
         },
         {
           "player": {
-            "id": 328225,
-            "name": "Brajan Gruda",
-            "number": 8,
+            "id": 278370,
+            "name": "Diego Gómez",
+            "number": 25,
             "pos": "M",
             "grid": "4:2"
           }
@@ -276,29 +276,20 @@
         },
         {
           "player": {
-            "id": 18872,
-            "name": "Lewis Cook",
-            "number": 4,
+            "id": 304853,
+            "name": "Alex Scott",
+            "number": 8,
             "pos": "M",
             "grid": "3:2"
           }
         },
         {
           "player": {
-            "id": 304853,
-            "name": "Alex Scott",
-            "number": 8,
+            "id": 18872,
+            "name": "Lewis Cook",
+            "number": 4,
             "pos": "M",
             "grid": "3:1"
-          }
-        },
-        {
-          "player": {
-            "id": 129682,
-            "name": "Amine Adli",
-            "number": 21,
-            "pos": "M",
-            "grid": "4:3"
           }
         },
         {
@@ -307,7 +298,7 @@
             "name": "Marcus Tavernier",
             "number": 16,
             "pos": "M",
-            "grid": "4:2"
+            "grid": "4:3"
           }
         },
         {
@@ -315,6 +306,15 @@
             "id": 368030,
             "name": "Eli Junior Kroupi",
             "number": 22,
+            "pos": "M",
+            "grid": "4:2"
+          }
+        },
+        {
+          "player": {
+            "id": 129682,
+            "name": "Amine Adli",
+            "number": 21,
             "pos": "M",
             "grid": "4:1"
           }
@@ -420,6 +420,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-19T20:14:04Z"
+    "lastUpdatedUTC": "2026-01-19T20:23:22Z"
   }
 }
