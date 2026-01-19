@@ -377,7 +377,7 @@
         },
         {
           "player": {
-            "id": null,
+            "id": 573755,
             "name": "Charlie Stevens",
             "number": 53,
             "pos": "M",
@@ -420,6 +420,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-19T20:42:09Z"
+    "lastUpdatedUTC": "2026-01-19T20:54:06Z"
   }
 }
