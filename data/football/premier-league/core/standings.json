@@ -53,7 +53,7 @@
                   "against": 9
                 }
               },
-              "update": "2026-01-18T00:00:00+00:00"
+              "update": "2026-01-19T00:00:00+00:00"
             },
             {
               "rank": 2,
@@ -98,7 +98,7 @@
                   "against": 13
                 }
               },
-              "update": "2026-01-18T00:00:00+00:00"
+              "update": "2026-01-19T00:00:00+00:00"
             },
             {
               "rank": 3,
@@ -108,29 +108,29 @@
                 "logo": "https://media.api-sports.io/football/teams/66.png"
               },
               "points": 43,
-              "goalsDiff": 9,
+              "goalsDiff": 8,
               "group": "Premier League",
-              "form": "DWLWW",
+              "form": "LDWLW",
               "status": "same",
               "description": "Promotion - Champions League (League phase)",
               "all": {
-                "played": 21,
+                "played": 22,
                 "win": 13,
                 "draw": 4,
-                "lose": 4,
+                "lose": 5,
                 "goals": {
                   "for": 33,
-                  "against": 24
+                  "against": 25
                 }
               },
               "home": {
-                "played": 10,
+                "played": 11,
                 "win": 8,
                 "draw": 1,
-                "lose": 1,
+                "lose": 2,
                 "goals": {
                   "for": 18,
-                  "against": 8
+                  "against": 9
                 }
               },
               "away": {
@@ -143,7 +143,7 @@
                   "against": 16
                 }
               },
-              "update": "2026-01-18T00:00:00+00:00"
+              "update": "2026-01-19T00:00:00+00:00"
             },
             {
               "rank": 4,
@@ -188,7 +188,7 @@
                   "against": 18
                 }
               },
-              "update": "2026-01-18T00:00:00+00:00"
+              "update": "2026-01-19T00:00:00+00:00"
             },
             {
               "rank": 5,
@@ -233,7 +233,7 @@
                   "against": 19
                 }
               },
-              "update": "2026-01-18T00:00:00+00:00"
+              "update": "2026-01-19T00:00:00+00:00"
             },
             {
               "rank": 6,
@@ -278,7 +278,7 @@
                   "against": 13
                 }
               },
-              "update": "2026-01-18T00:00:00+00:00"
+              "update": "2026-01-19T00:00:00+00:00"
             },
             {
               "rank": 7,
@@ -323,7 +323,7 @@
                   "against": 20
                 }
               },
-              "update": "2026-01-18T00:00:00+00:00"
+              "update": "2026-01-19T00:00:00+00:00"
             },
             {
               "rank": 8,
@@ -368,7 +368,7 @@
                   "against": 12
                 }
               },
-              "update": "2026-01-18T00:00:00+00:00"
+              "update": "2026-01-19T00:00:00+00:00"
             },
             {
               "rank": 9,
@@ -413,10 +413,55 @@
                   "against": 14
                 }
               },
-              "update": "2026-01-18T00:00:00+00:00"
+              "update": "2026-01-19T00:00:00+00:00"
             },
             {
               "rank": 10,
+              "team": {
+                "id": 45,
+                "name": "Everton",
+                "logo": "https://media.api-sports.io/football/teams/45.png"
+              },
+              "points": 32,
+              "goalsDiff": -1,
+              "group": "Premier League",
+              "form": "WDLWD",
+              "status": "same",
+              "description": null,
+              "all": {
+                "played": 22,
+                "win": 9,
+                "draw": 5,
+                "lose": 8,
+                "goals": {
+                  "for": 24,
+                  "against": 25
+                }
+              },
+              "home": {
+                "played": 11,
+                "win": 4,
+                "draw": 3,
+                "lose": 4,
+                "goals": {
+                  "for": 14,
+                  "against": 15
+                }
+              },
+              "away": {
+                "played": 11,
+                "win": 5,
+                "draw": 2,
+                "lose": 4,
+                "goals": {
+                  "for": 10,
+                  "against": 10
+                }
+              },
+              "update": "2026-01-19T00:00:00+00:00"
+            },
+            {
+              "rank": 11,
               "team": {
                 "id": 36,
                 "name": "Fulham",
@@ -458,10 +503,10 @@
                   "against": 18
                 }
               },
-              "update": "2026-01-18T00:00:00+00:00"
+              "update": "2026-01-19T00:00:00+00:00"
             },
             {
-              "rank": 11,
+              "rank": 12,
               "team": {
                 "id": 51,
                 "name": "Brighton",
@@ -503,52 +548,7 @@
                   "against": 17
                 }
               },
-              "update": "2026-01-18T00:00:00+00:00"
-            },
-            {
-              "rank": 12,
-              "team": {
-                "id": 45,
-                "name": "Everton",
-                "logo": "https://media.api-sports.io/football/teams/45.png"
-              },
-              "points": 29,
-              "goalsDiff": -2,
-              "group": "Premier League",
-              "form": "DLWDL",
-              "status": "same",
-              "description": null,
-              "all": {
-                "played": 21,
-                "win": 8,
-                "draw": 5,
-                "lose": 8,
-                "goals": {
-                  "for": 23,
-                  "against": 25
-                }
-              },
-              "home": {
-                "played": 11,
-                "win": 4,
-                "draw": 3,
-                "lose": 4,
-                "goals": {
-                  "for": 14,
-                  "against": 15
-                }
-              },
-              "away": {
-                "played": 10,
-                "win": 4,
-                "draw": 2,
-                "lose": 4,
-                "goals": {
-                  "for": 9,
-                  "against": 10
-                }
-              },
-              "update": "2026-01-18T00:00:00+00:00"
+              "update": "2026-01-19T00:00:00+00:00"
             },
             {
               "rank": 13,
@@ -593,7 +593,7 @@
                   "against": 13
                 }
               },
-              "update": "2026-01-18T00:00:00+00:00"
+              "update": "2026-01-19T00:00:00+00:00"
             },
             {
               "rank": 14,
@@ -638,7 +638,7 @@
                   "against": 15
                 }
               },
-              "update": "2026-01-18T00:00:00+00:00"
+              "update": "2026-01-19T00:00:00+00:00"
             },
             {
               "rank": 15,
@@ -683,7 +683,7 @@
                   "against": 29
                 }
               },
-              "update": "2026-01-18T00:00:00+00:00"
+              "update": "2026-01-19T00:00:00+00:00"
             },
             {
               "rank": 16,
@@ -728,7 +728,7 @@
                   "against": 24
                 }
               },
-              "update": "2026-01-18T00:00:00+00:00"
+              "update": "2026-01-19T00:00:00+00:00"
             },
             {
               "rank": 17,
@@ -773,7 +773,7 @@
                   "against": 17
                 }
               },
-              "update": "2026-01-18T00:00:00+00:00"
+              "update": "2026-01-19T00:00:00+00:00"
             },
             {
               "rank": 18,
@@ -818,7 +818,7 @@
                   "against": 19
                 }
               },
-              "update": "2026-01-18T00:00:00+00:00"
+              "update": "2026-01-19T00:00:00+00:00"
             },
             {
               "rank": 19,
@@ -863,7 +863,7 @@
                   "against": 27
                 }
               },
-              "update": "2026-01-18T00:00:00+00:00"
+              "update": "2026-01-19T00:00:00+00:00"
             },
             {
               "rank": 20,
@@ -908,7 +908,7 @@
                   "against": 18
                 }
               },
-              "update": "2026-01-18T00:00:00+00:00"
+              "update": "2026-01-19T00:00:00+00:00"
             }
           ]
         ]
@@ -916,6 +916,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-18T18:34:20Z"
+    "lastUpdatedUTC": "2026-01-19T20:12:43Z"
   }
 }

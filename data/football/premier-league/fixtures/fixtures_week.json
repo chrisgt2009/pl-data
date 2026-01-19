@@ -2,153 +2,13 @@
   "matches": [
     {
       "fixture": {
-        "id": 1379188,
-        "referee": "Samuel Barrott, England",
-        "timezone": "UTC",
-        "date": "2026-01-18T14:00:00+00:00",
-        "timestamp": 1768744800,
-        "periods": {
-          "first": 1768744800,
-          "second": 1768748400
-        },
-        "venue": {
-          "id": 600,
-          "name": "Molineux Stadium",
-          "city": "Wolverhampton"
-        },
-        "status": {
-          "long": "Match Finished",
-          "short": "FT",
-          "elapsed": 90,
-          "extra": null
-        }
-      },
-      "league": {
-        "id": 39,
-        "name": "Premier League",
-        "country": "England",
-        "logo": "https://media.api-sports.io/football/leagues/39.png",
-        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-        "season": 2025,
-        "round": "Regular Season - 22",
-        "standings": true
-      },
-      "teams": {
-        "home": {
-          "id": 39,
-          "name": "Wolves",
-          "logo": "https://media.api-sports.io/football/teams/39.png",
-          "winner": null
-        },
-        "away": {
-          "id": 34,
-          "name": "Newcastle",
-          "logo": "https://media.api-sports.io/football/teams/34.png",
-          "winner": null
-        }
-      },
-      "goals": {
-        "home": 0,
-        "away": 0
-      },
-      "score": {
-        "halftime": {
-          "home": 0,
-          "away": 0
-        },
-        "fulltime": {
-          "home": 0,
-          "away": 0
-        },
-        "extratime": {
-          "home": null,
-          "away": null
-        },
-        "penalty": {
-          "home": null,
-          "away": null
-        }
-      }
-    },
-    {
-      "fixture": {
-        "id": 1379179,
-        "referee": "Tony Harrington, England",
-        "timezone": "UTC",
-        "date": "2026-01-18T16:30:00+00:00",
-        "timestamp": 1768753800,
-        "periods": {
-          "first": 1768753800,
-          "second": 1768757400
-        },
-        "venue": {
-          "id": 495,
-          "name": "Villa Park",
-          "city": "Birmingham"
-        },
-        "status": {
-          "long": "Match Finished",
-          "short": "FT",
-          "elapsed": 90,
-          "extra": 5
-        }
-      },
-      "league": {
-        "id": 39,
-        "name": "Premier League",
-        "country": "England",
-        "logo": "https://media.api-sports.io/football/leagues/39.png",
-        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-        "season": 2025,
-        "round": "Regular Season - 22",
-        "standings": true
-      },
-      "teams": {
-        "home": {
-          "id": 66,
-          "name": "Aston Villa",
-          "logo": "https://media.api-sports.io/football/teams/66.png",
-          "winner": false
-        },
-        "away": {
-          "id": 45,
-          "name": "Everton",
-          "logo": "https://media.api-sports.io/football/teams/45.png",
-          "winner": true
-        }
-      },
-      "goals": {
-        "home": 0,
-        "away": 1
-      },
-      "score": {
-        "halftime": {
-          "home": 0,
-          "away": 0
-        },
-        "fulltime": {
-          "home": 0,
-          "away": 1
-        },
-        "extratime": {
-          "home": null,
-          "away": null
-        },
-        "penalty": {
-          "home": null,
-          "away": null
-        }
-      }
-    },
-    {
-      "fixture": {
         "id": 1379180,
-        "referee": null,
+        "referee": "Paul Tierney, England",
         "timezone": "UTC",
         "date": "2026-01-19T20:00:00+00:00",
         "timestamp": 1768852800,
         "periods": {
-          "first": null,
+          "first": 1768852800,
           "second": null
         },
         "venue": {
@@ -157,9 +17,9 @@
           "city": "Brighton"
         },
         "status": {
-          "long": "Not Started",
-          "short": "NS",
-          "elapsed": null,
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 13,
           "extra": null
         }
       },
@@ -188,13 +48,13 @@
         }
       },
       "goals": {
-        "home": null,
-        "away": null
+        "home": 0,
+        "away": 0
       },
       "score": {
         "halftime": {
-          "home": null,
-          "away": null
+          "home": 0,
+          "away": 0
         },
         "fulltime": {
           "home": null,
@@ -1539,9 +1399,79 @@
           "away": null
         }
       }
+    },
+    {
+      "fixture": {
+        "id": 1379206,
+        "referee": null,
+        "timezone": "UTC",
+        "date": "2026-02-02T20:00:00+00:00",
+        "timestamp": 1770062400,
+        "periods": {
+          "first": null,
+          "second": null
+        },
+        "venue": {
+          "id": 589,
+          "name": "Stadium of Light",
+          "city": "Sunderland"
+        },
+        "status": {
+          "long": "Not Started",
+          "short": "NS",
+          "elapsed": null,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 24",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 746,
+          "name": "Sunderland",
+          "logo": "https://media.api-sports.io/football/teams/746.png",
+          "winner": null
+        },
+        "away": {
+          "id": 44,
+          "name": "Burnley",
+          "logo": "https://media.api-sports.io/football/teams/44.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "score": {
+        "halftime": {
+          "home": null,
+          "away": null
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-18T18:34:20Z"
+    "lastUpdatedUTC": "2026-01-19T20:12:43Z"
   }
 }

@@ -36,7 +36,7 @@
           "games": {
             "appearences": 18,
             "lineups": 17,
-            "minutes": 1558,
+            "minutes": 1549,
             "number": 17,
             "position": "Defender",
             "rating": "7.25",
@@ -58,14 +58,14 @@
             "saves": null
           },
           "passes": {
-            "total": 923,
+            "total": 924,
             "key": 10,
             "accuracy": 44
           },
           "tackles": {
             "total": 46,
             "blocks": 13,
-            "interceptions": 27
+            "interceptions": 26
           },
           "duels": {
             "total": 186,
@@ -226,10 +226,10 @@
           "games": {
             "appearences": 21,
             "lineups": 21,
-            "minutes": 1885,
+            "minutes": 1877,
             "number": 2,
             "position": "Defender",
-            "rating": "6.53",
+            "rating": "6.52",
             "captain": false
           },
           "substitutes": {
@@ -321,7 +321,7 @@
           "games": {
             "appearences": 19,
             "lineups": 19,
-            "minutes": 1689,
+            "minutes": 1683,
             "number": 4,
             "position": "Midfielder",
             "rating": "7.03",
@@ -343,7 +343,7 @@
             "saves": null
           },
           "passes": {
-            "total": 948,
+            "total": 949,
             "key": 10,
             "accuracy": 42
           },
@@ -477,6 +477,101 @@
     },
     {
       "player": {
+        "id": 195717,
+        "name": "Y. Mosquera",
+        "firstname": "Yerson",
+        "lastname": "Mosquera Valdelamar",
+        "age": 24,
+        "birth": {
+          "date": "2001-05-02",
+          "place": "Apartadó",
+          "country": "Colombia"
+        },
+        "nationality": "Colombia",
+        "height": "187",
+        "weight": "76",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/195717.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 39,
+            "name": "Wolves",
+            "logo": "https://media.api-sports.io/football/teams/39.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 13,
+            "lineups": 11,
+            "minutes": 968,
+            "number": 15,
+            "position": "Defender",
+            "rating": "6.67",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 2,
+            "out": 5,
+            "bench": 8
+          },
+          "shots": {
+            "total": 7,
+            "on": 4
+          },
+          "goals": {
+            "total": 0,
+            "conceded": 0,
+            "assists": 0,
+            "saves": null
+          },
+          "passes": {
+            "total": 338,
+            "key": 7,
+            "accuracy": null
+          },
+          "tackles": {
+            "total": 29,
+            "blocks": 6,
+            "interceptions": 13
+          },
+          "duels": {
+            "total": 130,
+            "won": 72
+          },
+          "dribbles": {
+            "attempts": 8,
+            "success": 4,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 23,
+            "committed": 16
+          },
+          "cards": {
+            "yellow": 7,
+            "yellowred": 0,
+            "red": 0
+          },
+          "penalty": {
+            "won": null,
+            "commited": 1,
+            "scored": 0,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
         "id": 747,
         "name": "Casemiro",
         "firstname": "Carlos Henrique",
@@ -533,14 +628,14 @@
             "saves": null
           },
           "passes": {
-            "total": 826,
+            "total": 828,
             "key": 19,
             "accuracy": null
           },
           "tackles": {
             "total": 49,
             "blocks": 11,
-            "interceptions": 16
+            "interceptions": 15
           },
           "duels": {
             "total": 196,
@@ -701,7 +796,7 @@
           "games": {
             "appearences": 22,
             "lineups": 20,
-            "minutes": 1838,
+            "minutes": 1833,
             "number": 32,
             "position": "Defender",
             "rating": "6.76",
@@ -744,6 +839,101 @@
           "fouls": {
             "drawn": 21,
             "committed": 17
+          },
+          "cards": {
+            "yellow": 6,
+            "yellowred": 0,
+            "red": 0
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 0,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 265784,
+        "name": "André",
+        "firstname": "André Trindade",
+        "lastname": "da Costa Neto",
+        "age": 24,
+        "birth": {
+          "date": "2001-07-16",
+          "place": "Ibirataia",
+          "country": "Brazil"
+        },
+        "nationality": "Brazil",
+        "height": "176",
+        "weight": "77",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/265784.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 39,
+            "name": "Wolves",
+            "logo": "https://media.api-sports.io/football/teams/39.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 21,
+            "lineups": 16,
+            "minutes": 1524,
+            "number": 7,
+            "position": "Midfielder",
+            "rating": "6.78",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 5,
+            "out": 4,
+            "bench": 5
+          },
+          "shots": {
+            "total": 1,
+            "on": null
+          },
+          "goals": {
+            "total": 0,
+            "conceded": 0,
+            "assists": 0,
+            "saves": null
+          },
+          "passes": {
+            "total": 735,
+            "key": 10,
+            "accuracy": null
+          },
+          "tackles": {
+            "total": 43,
+            "blocks": 7,
+            "interceptions": 16
+          },
+          "duels": {
+            "total": 160,
+            "won": 80
+          },
+          "dribbles": {
+            "attempts": 19,
+            "success": 9,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 24,
+            "committed": 22
           },
           "cards": {
             "yellow": 6,
@@ -839,6 +1029,101 @@
           "fouls": {
             "drawn": 24,
             "committed": 9
+          },
+          "cards": {
+            "yellow": 6,
+            "yellowred": 0,
+            "red": 0
+          },
+          "penalty": {
+            "won": null,
+            "commited": null,
+            "scored": 0,
+            "missed": 0,
+            "saved": null
+          }
+        }
+      ]
+    },
+    {
+      "player": {
+        "id": 195103,
+        "name": "João Gomes",
+        "firstname": "João Victor",
+        "lastname": "Gomes da Silva",
+        "age": 24,
+        "birth": {
+          "date": "2001-02-12",
+          "place": "Rio de Janeiro",
+          "country": "Brazil"
+        },
+        "nationality": "Brazil",
+        "height": "176",
+        "weight": "74",
+        "injured": false,
+        "photo": "https://media.api-sports.io/football/players/195103.png"
+      },
+      "statistics": [
+        {
+          "team": {
+            "id": 39,
+            "name": "Wolves",
+            "logo": "https://media.api-sports.io/football/teams/39.png"
+          },
+          "league": {
+            "id": 39,
+            "name": "Premier League",
+            "country": "England",
+            "logo": "https://media.api-sports.io/football/leagues/39.png",
+            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+            "season": 2025
+          },
+          "games": {
+            "appearences": 21,
+            "lineups": 19,
+            "minutes": 1667,
+            "number": 8,
+            "position": "Midfielder",
+            "rating": "6.75",
+            "captain": false
+          },
+          "substitutes": {
+            "in": 2,
+            "out": 6,
+            "bench": 2
+          },
+          "shots": {
+            "total": 8,
+            "on": 4
+          },
+          "goals": {
+            "total": 0,
+            "conceded": 0,
+            "assists": 0,
+            "saves": null
+          },
+          "passes": {
+            "total": 881,
+            "key": 10,
+            "accuracy": null
+          },
+          "tackles": {
+            "total": 56,
+            "blocks": 5,
+            "interceptions": 24
+          },
+          "duels": {
+            "total": 252,
+            "won": 124
+          },
+          "dribbles": {
+            "attempts": 35,
+            "success": 23,
+            "past": null
+          },
+          "fouls": {
+            "drawn": 26,
+            "committed": 42
           },
           "cards": {
             "yellow": 6,
@@ -986,7 +1271,7 @@
           "games": {
             "appearences": 21,
             "lineups": 21,
-            "minutes": 1889,
+            "minutes": 1880,
             "number": 37,
             "position": "Defender",
             "rating": "6.8",
@@ -1029,101 +1314,6 @@
           "fouls": {
             "drawn": 11,
             "committed": 16
-          },
-          "cards": {
-            "yellow": 6,
-            "yellowred": 0,
-            "red": 0
-          },
-          "penalty": {
-            "won": null,
-            "commited": null,
-            "scored": 0,
-            "missed": 0,
-            "saved": null
-          }
-        }
-      ]
-    },
-    {
-      "player": {
-        "id": 195103,
-        "name": "João Gomes",
-        "firstname": "João Victor",
-        "lastname": "Gomes da Silva",
-        "age": 24,
-        "birth": {
-          "date": "2001-02-12",
-          "place": "Rio de Janeiro",
-          "country": "Brazil"
-        },
-        "nationality": "Brazil",
-        "height": "176",
-        "weight": "74",
-        "injured": false,
-        "photo": "https://media.api-sports.io/football/players/195103.png"
-      },
-      "statistics": [
-        {
-          "team": {
-            "id": 39,
-            "name": "Wolves",
-            "logo": "https://media.api-sports.io/football/teams/39.png"
-          },
-          "league": {
-            "id": 39,
-            "name": "Premier League",
-            "country": "England",
-            "logo": "https://media.api-sports.io/football/leagues/39.png",
-            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-            "season": 2025
-          },
-          "games": {
-            "appearences": 20,
-            "lineups": 18,
-            "minutes": 1596,
-            "number": 8,
-            "position": "Midfielder",
-            "rating": "6.72",
-            "captain": false
-          },
-          "substitutes": {
-            "in": 2,
-            "out": 5,
-            "bench": 2
-          },
-          "shots": {
-            "total": 8,
-            "on": 4
-          },
-          "goals": {
-            "total": 0,
-            "conceded": 0,
-            "assists": 0,
-            "saves": null
-          },
-          "passes": {
-            "total": 854,
-            "key": 7,
-            "accuracy": null
-          },
-          "tackles": {
-            "total": 52,
-            "blocks": 4,
-            "interceptions": 24
-          },
-          "duels": {
-            "total": 239,
-            "won": 118
-          },
-          "dribbles": {
-            "attempts": 33,
-            "success": 22,
-            "past": null
-          },
-          "fouls": {
-            "drawn": 26,
-            "committed": 41
           },
           "cards": {
             "yellow": 6,
@@ -1522,101 +1712,6 @@
     },
     {
       "player": {
-        "id": 195717,
-        "name": "Y. Mosquera",
-        "firstname": "Yerson",
-        "lastname": "Mosquera Valdelamar",
-        "age": 24,
-        "birth": {
-          "date": "2001-05-02",
-          "place": "Apartadó",
-          "country": "Colombia"
-        },
-        "nationality": "Colombia",
-        "height": "187",
-        "weight": "76",
-        "injured": false,
-        "photo": "https://media.api-sports.io/football/players/195717.png"
-      },
-      "statistics": [
-        {
-          "team": {
-            "id": 39,
-            "name": "Wolves",
-            "logo": "https://media.api-sports.io/football/teams/39.png"
-          },
-          "league": {
-            "id": 39,
-            "name": "Premier League",
-            "country": "England",
-            "logo": "https://media.api-sports.io/football/leagues/39.png",
-            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-            "season": 2025
-          },
-          "games": {
-            "appearences": 12,
-            "lineups": 10,
-            "minutes": 871,
-            "number": 15,
-            "position": "Defender",
-            "rating": "6.61",
-            "captain": false
-          },
-          "substitutes": {
-            "in": 2,
-            "out": 5,
-            "bench": 8
-          },
-          "shots": {
-            "total": 5,
-            "on": 3
-          },
-          "goals": {
-            "total": 0,
-            "conceded": 0,
-            "assists": 0,
-            "saves": null
-          },
-          "passes": {
-            "total": 311,
-            "key": 6,
-            "accuracy": null
-          },
-          "tackles": {
-            "total": 27,
-            "blocks": 6,
-            "interceptions": 11
-          },
-          "duels": {
-            "total": 119,
-            "won": 68
-          },
-          "dribbles": {
-            "attempts": 7,
-            "success": 3,
-            "past": null
-          },
-          "fouls": {
-            "drawn": 22,
-            "committed": 14
-          },
-          "cards": {
-            "yellow": 6,
-            "yellowred": 0,
-            "red": 0
-          },
-          "penalty": {
-            "won": null,
-            "commited": 1,
-            "scored": 0,
-            "missed": 0,
-            "saved": null
-          }
-        }
-      ]
-    },
-    {
-      "player": {
         "id": 116117,
         "name": "M. Caicedo",
         "firstname": "Moisés Isaac",
@@ -1673,18 +1768,18 @@
             "saves": null
           },
           "passes": {
-            "total": 943,
+            "total": 945,
             "key": 9,
             "accuracy": 50
           },
           "tackles": {
-            "total": 49,
+            "total": 50,
             "blocks": 10,
             "interceptions": 39
           },
           "duels": {
-            "total": 175,
-            "won": 99
+            "total": 176,
+            "won": 100
           },
           "dribbles": {
             "attempts": 18,
@@ -1768,7 +1863,7 @@
             "saves": null
           },
           "passes": {
-            "total": 1008,
+            "total": 1009,
             "key": 18,
             "accuracy": 41
           },
@@ -1804,104 +1899,9 @@
           }
         }
       ]
-    },
-    {
-      "player": {
-        "id": 47519,
-        "name": "Pedro Porro",
-        "firstname": "Pedro Antonio",
-        "lastname": "Porro Sauceda",
-        "age": 26,
-        "birth": {
-          "date": "1999-09-13",
-          "place": "Don Benito",
-          "country": "Spain"
-        },
-        "nationality": "Spain",
-        "height": "173",
-        "weight": "69",
-        "injured": false,
-        "photo": "https://media.api-sports.io/football/players/47519.png"
-      },
-      "statistics": [
-        {
-          "team": {
-            "id": 47,
-            "name": "Tottenham",
-            "logo": "https://media.api-sports.io/football/teams/47.png"
-          },
-          "league": {
-            "id": 39,
-            "name": "Premier League",
-            "country": "England",
-            "logo": "https://media.api-sports.io/football/leagues/39.png",
-            "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-            "season": 2025
-          },
-          "games": {
-            "appearences": 22,
-            "lineups": 20,
-            "minutes": 1788,
-            "number": 23,
-            "position": "Defender",
-            "rating": "6.88",
-            "captain": false
-          },
-          "substitutes": {
-            "in": 2,
-            "out": 4,
-            "bench": 2
-          },
-          "shots": {
-            "total": 7,
-            "on": 1
-          },
-          "goals": {
-            "total": 0,
-            "conceded": 0,
-            "assists": 2,
-            "saves": null
-          },
-          "passes": {
-            "total": 924,
-            "key": 34,
-            "accuracy": null
-          },
-          "tackles": {
-            "total": 41,
-            "blocks": 7,
-            "interceptions": 16
-          },
-          "duels": {
-            "total": 162,
-            "won": 85
-          },
-          "dribbles": {
-            "attempts": 24,
-            "success": 11,
-            "past": null
-          },
-          "fouls": {
-            "drawn": 18,
-            "committed": 20
-          },
-          "cards": {
-            "yellow": 5,
-            "yellowred": 0,
-            "red": 0
-          },
-          "penalty": {
-            "won": null,
-            "commited": null,
-            "scored": 0,
-            "missed": 0,
-            "saved": null
-          }
-        }
-      ]
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-18T18:34:21Z"
+    "lastUpdatedUTC": "2026-01-19T20:12:44Z"
   }
 }
