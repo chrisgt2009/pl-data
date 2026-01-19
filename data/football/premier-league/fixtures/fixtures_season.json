@@ -2,76 +2,6 @@
   "matches": [
     {
       "fixture": {
-        "id": 1379180,
-        "referee": "Paul Tierney, England",
-        "timezone": "UTC",
-        "date": "2026-01-19T20:00:00+00:00",
-        "timestamp": 1768852800,
-        "periods": {
-          "first": 1768852800,
-          "second": null
-        },
-        "venue": {
-          "id": 508,
-          "name": "Amex Stadium",
-          "city": "Brighton"
-        },
-        "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 6
-        }
-      },
-      "league": {
-        "id": 39,
-        "name": "Premier League",
-        "country": "England",
-        "logo": "https://media.api-sports.io/football/leagues/39.png",
-        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-        "season": 2025,
-        "round": "Regular Season - 22",
-        "standings": true
-      },
-      "teams": {
-        "home": {
-          "id": 51,
-          "name": "Brighton",
-          "logo": "https://media.api-sports.io/football/teams/51.png",
-          "winner": false
-        },
-        "away": {
-          "id": 35,
-          "name": "Bournemouth",
-          "logo": "https://media.api-sports.io/football/teams/35.png",
-          "winner": true
-        }
-      },
-      "goals": {
-        "home": 0,
-        "away": 1
-      },
-      "score": {
-        "halftime": {
-          "home": 0,
-          "away": 1
-        },
-        "fulltime": {
-          "home": null,
-          "away": null
-        },
-        "extratime": {
-          "home": null,
-          "away": null
-        },
-        "penalty": {
-          "home": null,
-          "away": null
-        }
-      }
-    },
-    {
-      "fixture": {
         "id": 1378969,
         "referee": "Anthony Taylor, England",
         "timezone": "UTC",
@@ -15402,6 +15332,76 @@
     },
     {
       "fixture": {
+        "id": 1379180,
+        "referee": "Paul Tierney, England",
+        "timezone": "UTC",
+        "date": "2026-01-19T20:00:00+00:00",
+        "timestamp": 1768852800,
+        "periods": {
+          "first": 1768852800,
+          "second": 1768856400
+        },
+        "venue": {
+          "id": 508,
+          "name": "Amex Stadium",
+          "city": "Brighton"
+        },
+        "status": {
+          "long": "Match Finished",
+          "short": "FT",
+          "elapsed": 90,
+          "extra": 10
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 22",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 51,
+          "name": "Brighton",
+          "logo": "https://media.api-sports.io/football/teams/51.png",
+          "winner": null
+        },
+        "away": {
+          "id": 35,
+          "name": "Bournemouth",
+          "logo": "https://media.api-sports.io/football/teams/35.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": 1,
+        "away": 1
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 1
+        },
+        "fulltime": {
+          "home": 1,
+          "away": 1
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      }
+    },
+    {
+      "fixture": {
         "id": 1379198,
         "referee": null,
         "timezone": "UTC",
@@ -26602,6 +26602,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-19T20:55:33Z"
+    "lastUpdatedUTC": "2026-01-19T22:29:40Z"
   }
 }
