@@ -1,0 +1,152 @@
+{
+  "fixture": {
+    "id": 1378978
+  },
+  "predictions": {
+    "winner": {
+      "id": 45,
+      "name": "Everton",
+      "comment": "Win or draw"
+    },
+    "win_or_draw": true,
+    "under_over": null,
+    "goals": {
+      "home": "-2.5",
+      "away": "-2.5"
+    },
+    "advice": "Double chance : Everton or draw",
+    "percent": {
+      "home": "45%",
+      "draw": "45%",
+      "away": "10%"
+    }
+  },
+  "teams": {
+    "home": {
+      "id": 45,
+      "name": "Everton",
+      "last_5": {
+        "played": 5,
+        "form": "53%",
+        "att": "86%",
+        "def": "29%",
+        "goals": {
+          "for": {
+            "total": 6,
+            "average": "1.2"
+          },
+          "against": {
+            "total": 5,
+            "average": "1.0"
+          }
+        }
+      }
+    },
+    "away": {
+      "id": 63,
+      "name": "Leeds",
+      "last_5": {
+        "played": 5,
+        "form": "40%",
+        "att": "86%",
+        "def": "14%",
+        "goals": {
+          "for": {
+            "total": 6,
+            "average": "1.2"
+          },
+          "against": {
+            "total": 6,
+            "average": "1.2"
+          }
+        }
+      }
+    }
+  },
+  "comparison": {
+    "form": {
+      "home": "57%",
+      "away": "43%"
+    },
+    "att": {
+      "home": "50%",
+      "away": "50%"
+    },
+    "def": {
+      "home": "55%",
+      "away": "45%"
+    },
+    "poisson_distribution": {
+      "home": "61%",
+      "away": "39%"
+    },
+    "h2h": {
+      "home": "62%",
+      "away": "38%"
+    },
+    "goals": {
+      "home": "64%",
+      "away": "36%"
+    },
+    "total": {
+      "home": "58.2%",
+      "away": "41.8%"
+    }
+  },
+  "h2h_last3": [
+    {
+      "fixture_id": 1378978,
+      "date": "2025-08-18T19:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 63,
+        "name": "Leeds",
+        "goals": 1,
+        "winner": true
+      },
+      "away": {
+        "id": 45,
+        "name": "Everton",
+        "goals": 0,
+        "winner": false
+      }
+    },
+    {
+      "fixture_id": 868180,
+      "date": "2023-02-18T15:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 45,
+        "name": "Everton",
+        "goals": 1,
+        "winner": true
+      },
+      "away": {
+        "id": 63,
+        "name": "Leeds",
+        "goals": 0,
+        "winner": false
+      }
+    },
+    {
+      "fixture_id": 867989,
+      "date": "2022-08-30T19:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 63,
+        "name": "Leeds",
+        "goals": 1,
+        "winner": null
+      },
+      "away": {
+        "id": 45,
+        "name": "Everton",
+        "goals": 1,
+        "winner": null
+      }
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-20T02:30:09Z"
+  }
+}
