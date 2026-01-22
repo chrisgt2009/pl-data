@@ -32,8 +32,14 @@ jobs:
     env:
       # Your repo vars/secrets
       URL_LIVE: ${{ vars.URL_LIVE }} # e.g. https://v3.football.api-sports.io/fixtures?live=all
+
+      # RapidAPI (legacy / optional)
       RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
       RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
+
+      # Direct API-Sports (preferred if present)
+      APISPORTS_KEY: ${{ secrets.APISPORTS_KEY }}
+
       LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}  # 39
       SEASON: ${{ vars.SEASON_PL }}        # 2025
 
@@ -98,16 +104,8 @@ jobs:
           fi
 
           jq -n --arg date "$LONDON_DATE" --argjson count "$COUNT" '{date:$date, count:$count}' > "$STATE"
-
           echo "count=$COUNT" >> "$GITHUB_OUTPUT"
 
-      # -----------------------------
-      # Preflight: cheap checks
-      # - If force_fetch => run
-      # - Else: if yesterday/today live file shows live => run
-      # - Else: do a single live list call anyway (we're already on 5 min cadence, but
-      #   we keep the "skip" to avoid work if URL_LIVE not set or over cap)
-      # -----------------------------
       - id: cap
         name: Quota guard (soft cap)
         shell: bash
@@ -151,14 +149,19 @@ jobs:
             perl -e "select(undef, undef, undef, ${ms}/1000.0);"
           }
 
-          # return codes:
-          #   0 = wrote/updated (changed)
-          #   1 = no change
-          #   10 = skipped (only_missing and file exists)
-          #   98 = soft cap reached
-          #   99 = daily hard cap reached
-          #   2 = http error
-          #   3 = payload error
+          # Build auth headers dynamically:
+          # - Prefer direct API-Sports if APISPORTS_KEY is set
+          # - Else use RapidAPI headers (existing behaviour)
+          AUTH_HEADERS=()
+          if [[ -n "${APISPORTS_KEY:-}" ]]; then
+            echo "Auth mode: API-Sports (x-apisports-key)"
+            AUTH_HEADERS+=("-H" "x-apisports-key: ${APISPORTS_KEY}")
+          else
+            echo "Auth mode: RapidAPI (x-rapidapi-key/host)"
+            AUTH_HEADERS+=("-H" "x-rapidapi-key: ${RAPIDAPI_KEY}")
+            AUTH_HEADERS+=("-H" "x-rapidapi-host: ${RAPIDAPI_HOST}")
+          fi
+
           api_get_wrap() {
             local url="$1"
             local out="$2"
@@ -179,8 +182,7 @@ jobs:
             local code=""
 
             code=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$tmpbody" \
-              -H "x-rapidapi-key: ${RAPIDAPI_KEY}" \
-              -H "x-rapidapi-host: ${RAPIDAPI_HOST}" \
+              "${AUTH_HEADERS[@]}" \
               "$url" || true)
 
             CALLS_USED=$((CALLS_USED + 1))
@@ -262,7 +264,6 @@ jobs:
           call_and_handle "$FINAL_LIVE_URL" "$LIVE_OUT" "live" "live_today"
           rc=$?
           if [[ "$rc" == "98" || "$rc" == "99" ]]; then
-            # Update count and exit
             NEW_COUNT=$((COUNT + CALLS_USED))
             jq --argjson c "$NEW_COUNT" '.count = $c' "$STATE" > "$STATE.tmp" && mv "$STATE.tmp" "$STATE"
             echo "calls_used=$CALLS_USED" >> "$GITHUB_OUTPUT"
@@ -279,9 +280,6 @@ jobs:
             exit 0
           fi
 
-          # Collect target fixture IDs:
-          #  - live statuses
-          #  - plus finished statuses if post-window is active (<= POST_WINDOW_SECONDS)
           mapfile -t LIVE_FIXTURE_IDS < <(jq -r '
             .matches[]?
             | select((.fixture.status.short // "" | ascii_upcase) as $s
@@ -291,7 +289,6 @@ jobs:
 
           echo "Live fixtures detected: ${#LIVE_FIXTURE_IDS[@]}"
 
-          # Fetch details for each live fixture into matches/<id>/
           for fid in "${LIVE_FIXTURE_IDS[@]}"; do
             [[ -z "$fid" ]] && continue
             DIR="data/football/premier-league/matches/${fid}"
@@ -315,7 +312,6 @@ jobs:
             call_and_handle "${PLAYERS_BASE_URL}${fid}" "$PLY" "data" "players($fid)" || true
           done
 
-          # Post-window: if a post_window.json exists and is fresh, refresh finished fixture details too
           if [[ -f "$POST" ]]; then
             NOW=$(date -u +%s)
             TS=$(jq -r '.ts // 0' "$POST")
@@ -350,7 +346,6 @@ jobs:
             fi
           fi
 
-          # Update quota state
           NEW_COUNT=$((COUNT + CALLS_USED))
           jq --argjson c "$NEW_COUNT" '.count = $c' "$STATE" > "$STATE.tmp" && mv "$STATE.tmp" "$STATE"
 
@@ -360,9 +355,6 @@ jobs:
           echo "calls_used=$CALLS_USED" >> "$GITHUB_OUTPUT"
           echo "changed=$ANY_CHANGED" >> "$GITHUB_OUTPUT"
 
-      # -----------------------------
-      # Update post-window trigger when fixtures finish
-      # -----------------------------
       - id: post
         name: Update post-window trigger (extend after FT)
         if: steps.fetch.outcome == 'success'
@@ -404,9 +396,6 @@ jobs:
             echo "No post-window update needed."
           fi
 
-      # -----------------------------
-      # Commit & push
-      # -----------------------------
       - name: Commit & push
         shell: bash
         run: |
