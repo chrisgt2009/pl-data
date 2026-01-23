@@ -1,33 +1,9 @@
 {
   "get": "drivers",
-  "parameters": {
-    "ids": [
-      2,
-      4,
-      5,
-      6,
-      10,
-      14,
-      19,
-      20,
-      24,
-      25,
-      28,
-      31,
-      34,
-      36,
-      49,
-      50,
-      51,
-      61,
-      80,
-      82,
-      83,
-      88
-    ],
-    "season_source": "2022"
+  "parameters": {},
+  "errors": {
+    "ids": "No ids found from rankings/drivers"
   },
-  "errors": {},
   "results": 0,
   "response": []
 }
