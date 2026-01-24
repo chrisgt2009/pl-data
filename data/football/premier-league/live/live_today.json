@@ -1,6 +1,78 @@
 {
-  "matches": [],
+  "matches": [
+    {
+      "fixture": {
+        "id": 1379198,
+        "referee": "Thomas Bramall, England",
+        "timezone": "UTC",
+        "date": "2026-01-24T12:30:00+00:00",
+        "timestamp": 1769257800,
+        "periods": {
+          "first": 1769257800,
+          "second": null
+        },
+        "venue": {
+          "id": 598,
+          "name": "London Stadium",
+          "city": "London"
+        },
+        "status": {
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 11,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 23",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 48,
+          "name": "West Ham",
+          "logo": "https://media.api-sports.io/football/teams/48.png",
+          "winner": null
+        },
+        "away": {
+          "id": 746,
+          "name": "Sunderland",
+          "logo": "https://media.api-sports.io/football/teams/746.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": 0,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      },
+      "events": []
+    }
+  ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-24T12:02:51Z"
+    "lastUpdatedUTC": "2026-01-24T12:41:57Z"
   }
 }
