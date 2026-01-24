@@ -19,7 +19,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 31,
+          "elapsed": 44,
           "extra": null
         }
       },
@@ -38,23 +38,23 @@
           "id": 44,
           "name": "Burnley",
           "logo": "https://media.api-sports.io/football/teams/44.png",
-          "winner": null
+          "winner": false
         },
         "away": {
           "id": 47,
           "name": "Tottenham",
           "logo": "https://media.api-sports.io/football/teams/47.png",
-          "winner": null
+          "winner": true
         }
       },
       "goals": {
         "home": 0,
-        "away": 0
+        "away": 1
       },
       "score": {
         "halftime": {
           "home": 0,
-          "away": 0
+          "away": 1
         },
         "fulltime": {
           "home": null,
@@ -69,7 +69,30 @@
           "away": null
         }
       },
-      "events": []
+      "events": [
+        {
+          "time": {
+            "elapsed": 38,
+            "extra": null
+          },
+          "team": {
+            "id": 47,
+            "name": "Tottenham",
+            "logo": "https://media.api-sports.io/football/teams/47.png"
+          },
+          "player": {
+            "id": 152849,
+            "name": "M. van de Ven"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        }
+      ]
     },
     {
       "fixture": {
@@ -90,7 +113,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 32,
+          "elapsed": 44,
           "extra": null
         }
       },
@@ -184,7 +207,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 32,
+          "elapsed": 44,
           "extra": null
         }
       },
@@ -261,6 +284,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-24T15:33:00Z"
+    "lastUpdatedUTC": "2026-01-24T15:44:55Z"
   }
 }
