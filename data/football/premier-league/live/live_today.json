@@ -3,7 +3,7 @@
     {
       "fixture": {
         "id": 1379190,
-        "referee": null,
+        "referee": "Michael Salisbury, England",
         "timezone": "UTC",
         "date": "2026-01-24T17:30:00+00:00",
         "timestamp": 1769275800,
@@ -19,7 +19,7 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 23,
+          "elapsed": 44,
           "extra": null
         }
       },
@@ -38,22 +38,22 @@
           "id": 35,
           "name": "Bournemouth",
           "logo": "https://media.api-sports.io/football/teams/35.png",
-          "winner": null
+          "winner": true
         },
         "away": {
           "id": 40,
           "name": "Liverpool",
           "logo": "https://media.api-sports.io/football/teams/40.png",
-          "winner": null
+          "winner": false
         }
       },
       "goals": {
-        "home": 0,
+        "home": 2,
         "away": 0
       },
       "score": {
         "halftime": {
-          "home": 0,
+          "home": 2,
           "away": 0
         },
         "fulltime": {
@@ -69,10 +69,77 @@
           "away": null
         }
       },
-      "events": []
+      "events": [
+        {
+          "time": {
+            "elapsed": 26,
+            "extra": null
+          },
+          "team": {
+            "id": 35,
+            "name": "Bournemouth",
+            "logo": "https://media.api-sports.io/football/teams/35.png"
+          },
+          "player": {
+            "id": 152856,
+            "name": "Evanilson"
+          },
+          "assist": {
+            "id": 304853,
+            "name": "A. Scott"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 33,
+            "extra": null
+          },
+          "team": {
+            "id": 35,
+            "name": "Bournemouth",
+            "logo": "https://media.api-sports.io/football/teams/35.png"
+          },
+          "player": {
+            "id": 330437,
+            "name": "A. Jimenez"
+          },
+          "assist": {
+            "id": 20093,
+            "name": "J. Hill"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 35,
+            "extra": null
+          },
+          "team": {
+            "id": 40,
+            "name": "Liverpool",
+            "logo": "https://media.api-sports.io/football/teams/40.png"
+          },
+          "player": {
+            "id": 284,
+            "name": "J. Gomez"
+          },
+          "assist": {
+            "id": 8500,
+            "name": "W. Endo"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        }
+      ]
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-24T17:53:57Z"
+    "lastUpdatedUTC": "2026-01-24T18:14:48Z"
   }
 }
