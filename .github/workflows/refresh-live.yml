@@ -2,8 +2,11 @@ name: Refresh Live (Premier League) - LIST ONLY
 
 on:
   schedule:
-    # GitHub cron is UTC
-    - cron: "*/5 * * * *"
+    # UTC schedules (note: UK = UTC in winter, UTC+1 in summer)
+    # Slower overnight:
+    - cron: "*/15 0-8 * * *"
+    # Faster during typical match/football hours:
+    - cron: "*/5 9-23 * * *"
   workflow_dispatch:
     inputs:
       only_missing:
@@ -39,6 +42,9 @@ jobs:
       DAILY_CAP: "7500"
       SOFT_CAP: "7200"
 
+      # Heartbeat cadence (minutes) — prevents commit spam
+      HEARTBEAT_EVERY_MIN: "30"
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -52,13 +58,6 @@ jobs:
         run: |
           mkdir -p data/football/premier-league/live
           mkdir -p data/ops
-
-      - name: Write heartbeat
-        shell: bash
-        run: |
-          set -euo pipefail
-          TS=$(date -u +%FT%TZ)
-          echo "{\"meta\":{\"lastRunUTC\":\"${TS}\"}}" > data/football/premier-league/live/heartbeat.json
 
       # -----------------------------
       # Quota state (daily reset)
@@ -114,6 +113,7 @@ jobs:
 
           STATE="data/ops/live_usage.json"
           LIVE_OUT="data/football/premier-league/live/live_today.json"
+          HEARTBEAT="data/football/premier-league/live/heartbeat.json"
 
           COUNT=$(jq -r '.count // 0' "$STATE")
           DAILY=${DAILY_CAP}
@@ -121,8 +121,9 @@ jobs:
 
           CALLS_USED=0
           ANY_CHANGED="false"
+          HEARTBEAT_CHANGED="false"
 
-          # Build auth headers dynamically:
+          # Build auth headers dynamically
           AUTH_HEADERS=()
           if [[ -n "${APISPORTS_KEY:-}" ]]; then
             echo "Auth mode: API-Sports (x-apisports-key)"
@@ -139,6 +140,7 @@ jobs:
             echo "URL_LIVE not set; nothing to do."
             echo "calls_used=0" >> "$GITHUB_OUTPUT"
             echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "hb_changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
@@ -146,12 +148,14 @@ jobs:
             echo "Daily cap reached; skipping."
             echo "calls_used=0" >> "$GITHUB_OUTPUT"
             echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "hb_changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           if (( COUNT + CALLS_USED >= SOFT )); then
             echo "Soft cap reached; skipping."
             echo "calls_used=0" >> "$GITHUB_OUTPUT"
             echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "hb_changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
@@ -162,6 +166,7 @@ jobs:
             echo "only_missing=true and live_today.json exists; skipping write."
             echo "calls_used=0" >> "$GITHUB_OUTPUT"
             echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "hb_changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
@@ -172,13 +177,16 @@ jobs:
 
           CALLS_USED=$((CALLS_USED + 1))
 
+          # Always update quota count even on failure (because it was a call)
+          NEW_COUNT=$((COUNT + CALLS_USED))
+          jq --argjson c "$NEW_COUNT" '.count = $c' "$STATE" > "$STATE.tmp" && mv "$STATE.tmp" "$STATE"
+
           if [[ "$code" != "200" ]]; then
             echo "WARN: live list HTTP error code=$code"
             rm -f "$tmpbody"
-            NEW_COUNT=$((COUNT + CALLS_USED))
-            jq --argjson c "$NEW_COUNT" '.count = $c' "$STATE" > "$STATE.tmp" && mv "$STATE.tmp" "$STATE"
             echo "calls_used=$CALLS_USED" >> "$GITHUB_OUTPUT"
             echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "hb_changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
@@ -186,10 +194,9 @@ jobs:
           if [[ "$ok" != "true" ]]; then
             echo "WARN: live list payload missing .response array"
             rm -f "$tmpbody"
-            NEW_COUNT=$((COUNT + CALLS_USED))
-            jq --argjson c "$NEW_COUNT" '.count = $c' "$STATE" > "$STATE.tmp" && mv "$STATE.tmp" "$STATE"
             echo "calls_used=$CALLS_USED" >> "$GITHUB_OUTPUT"
             echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "hb_changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
@@ -206,17 +213,26 @@ jobs:
             rm -f "$norm"
           fi
 
-          NEW_COUNT=$((COUNT + CALLS_USED))
-          jq --argjson c "$NEW_COUNT" '.count = $c' "$STATE" > "$STATE.tmp" && mv "$STATE.tmp" "$STATE"
+          # Lightweight console heartbeat (no commit)
+          LIVE_COUNT=$(jq -r '.matches | length' "$LIVE_OUT" 2>/dev/null || echo "0")
+          echo "LIVE_COUNT=$LIVE_COUNT lastUpdatedUTC=$ts quota=$NEW_COUNT"
 
-          echo "calls_used=$CALLS_USED"
-          echo "New quota count=$NEW_COUNT"
+          # Commit heartbeat only occasionally OR when live_today changes
+          MINUTE=$(date -u +%M)
+          MOD=$((10#$MINUTE % HEARTBEAT_EVERY_MIN))
+
+          if [[ "$ANY_CHANGED" == "true" || "$MOD" -eq 0 ]]; then
+            echo "{\"meta\":{\"lastRunUTC\":\"${ts}\"}}" > "$HEARTBEAT"
+            HEARTBEAT_CHANGED="true"
+          fi
 
           echo "calls_used=$CALLS_USED" >> "$GITHUB_OUTPUT"
           echo "changed=$ANY_CHANGED" >> "$GITHUB_OUTPUT"
+          echo "hb_changed=$HEARTBEAT_CHANGED" >> "$GITHUB_OUTPUT"
 
       # -----------------------------
-      # Commit & push only if live_today changed OR heartbeat/quota changed
+      # Commit & push only if something actually changed
+      # (live_today changed OR quota file changed OR heartbeat throttled update)
       # -----------------------------
       - name: Commit & push if changed
         shell: bash
@@ -225,11 +241,10 @@ jobs:
           git config user.name "pl-bot"
           git config user.email "pl-bot@users.noreply.github.com"
 
-          git add data/football/premier-league/live/heartbeat.json || true
           git add data/football/premier-league/live/live_today.json || true
           git add data/ops/live_usage.json || true
+          git add data/football/premier-league/live/heartbeat.json || true
 
-          # Commit only if there are actual changes
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
@@ -245,21 +260,16 @@ jobs:
 
 
 
-# name: Refresh Live (Premier League)
+# name: Refresh Live (Premier League) - LIST ONLY
 
 # on:
 #   schedule:
-#     # GitHub cron is UTC. Run every 5 mins all day and let preflight decide.
+#     # GitHub cron is UTC
 #     - cron: "*/5 * * * *"
 #   workflow_dispatch:
 #     inputs:
-#       force_fetch:
-#         description: "Force run even if preflight would skip (manual only)"
-#         type: boolean
-#         default: false
-#         required: false
 #       only_missing:
-#         description: "Only fetch files that are missing (not recommended for live)"
+#         description: "Only write files if missing"
 #         type: boolean
 #         default: false
 #         required: false
@@ -274,37 +284,22 @@ jobs:
 # jobs:
 #   live:
 #     runs-on: ubuntu-latest
-#     timeout-minutes: 15
+#     timeout-minutes: 10
 
 #     env:
-#       # Your repo vars/secrets
+#       # Vars
 #       URL_LIVE: ${{ vars.URL_LIVE }} # e.g. https://v3.football.api-sports.io/fixtures?live=all
-
-#       # RapidAPI (legacy / optional)
-#       RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
-#       RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
-
-#       # Direct API-Sports (preferred if present)
-#       APISPORTS_KEY: ${{ secrets.APISPORTS_KEY }}
-
 #       LEAGUE_ID: ${{ vars.LEAGUE_ID_PL }}  # 39
 #       SEASON: ${{ vars.SEASON_PL }}        # 2025
 
-#       # Per-fixture endpoints (exact, no guessing)
-#       EVENTS_BASE_URL: "https://v3.football.api-sports.io/fixtures/events?fixture="
-#       LINEUPS_BASE_URL: "https://v3.football.api-sports.io/fixtures/lineups?fixture="
-#       STATS_BASE_URL: "https://v3.football.api-sports.io/fixtures/statistics?fixture="
-#       PLAYERS_BASE_URL: "https://v3.football.api-sports.io/fixtures/players?fixture="
+#       # Prefer direct API-Sports if present, else RapidAPI (keeps backwards compatibility)
+#       APISPORTS_KEY: ${{ secrets.APISPORTS_KEY }}
+#       RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+#       RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
 
 #       # Quota
 #       DAILY_CAP: "7500"
 #       SOFT_CAP: "7200"
-
-#       # Live pacing (milliseconds)
-#       PER_REQUEST_SLEEP_MS: "150"
-
-#       # Extend details fetch after FT (seconds)
-#       POST_WINDOW_SECONDS: "5400"
 
 #     steps:
 #       - name: Checkout repository
@@ -318,7 +313,6 @@ jobs:
 #       - name: Ensure folders
 #         run: |
 #           mkdir -p data/football/premier-league/live
-#           mkdir -p data/football/premier-league/matches
 #           mkdir -p data/ops
 
 #       - name: Write heartbeat
@@ -368,10 +362,10 @@ jobs:
 #           fi
 
 #       # -----------------------------
-#       # Fetch live list + per-fixture details
+#       # Fetch LIVE LIST ONLY
 #       # -----------------------------
 #       - id: fetch
-#         name: Fetch live fixtures + match details (events/lineups/stats/players)
+#         name: Fetch live list (live_today.json only)
 #         if: steps.cap.outputs.over != 'true'
 #         shell: bash
 #         run: |
@@ -382,7 +376,6 @@ jobs:
 
 #           STATE="data/ops/live_usage.json"
 #           LIVE_OUT="data/football/premier-league/live/live_today.json"
-#           POST="data/ops/post_window.json"
 
 #           COUNT=$(jq -r '.count // 0' "$STATE")
 #           DAILY=${DAILY_CAP}
@@ -391,111 +384,18 @@ jobs:
 #           CALLS_USED=0
 #           ANY_CHANGED="false"
 
-#           ms_sleep() {
-#             local ms="$1"
-#             perl -e "select(undef, undef, undef, ${ms}/1000.0);"
-#           }
-
 #           # Build auth headers dynamically:
-#           # - Prefer direct API-Sports if APISPORTS_KEY is set
-#           # - Else use RapidAPI headers (existing behaviour)
 #           AUTH_HEADERS=()
 #           if [[ -n "${APISPORTS_KEY:-}" ]]; then
 #             echo "Auth mode: API-Sports (x-apisports-key)"
 #             AUTH_HEADERS+=("-H" "x-apisports-key: ${APISPORTS_KEY}")
+#             AUTH_HEADERS+=("-H" "accept: application/json")
 #           else
 #             echo "Auth mode: RapidAPI (x-rapidapi-key/host)"
 #             AUTH_HEADERS+=("-H" "x-rapidapi-key: ${RAPIDAPI_KEY}")
 #             AUTH_HEADERS+=("-H" "x-rapidapi-host: ${RAPIDAPI_HOST}")
+#             AUTH_HEADERS+=("-H" "accept: application/json")
 #           fi
-
-#           api_get_wrap() {
-#             local url="$1"
-#             local out="$2"
-#             local wrapper="$3"  # live|data|events
-
-#             if [[ "$ONLY_MISSING" == "true" && -f "$out" ]]; then
-#               return 10
-#             fi
-
-#             if (( COUNT + CALLS_USED >= DAILY )); then
-#               return 99
-#             fi
-#             if (( COUNT + CALLS_USED >= SOFT )); then
-#               return 98
-#             fi
-
-#             local tmpbody; tmpbody="$(mktemp)"
-#             local code=""
-
-#             code=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$tmpbody" \
-#               "${AUTH_HEADERS[@]}" \
-#               "$url" || true)
-
-#             CALLS_USED=$((CALLS_USED + 1))
-
-#             if [[ "$code" != "200" ]]; then
-#               rm -f "$tmpbody"
-#               return 2
-#             fi
-
-#             local ok
-#             ok=$(jq -r '(.response | type) == "array"' "$tmpbody" 2>/dev/null || echo "false")
-#             if [[ "$ok" != "true" ]]; then
-#               rm -f "$tmpbody"
-#               return 3
-#             fi
-
-#             local ts norm
-#             ts=$(date -u +%FT%TZ)
-#             norm="$(mktemp)"
-
-#             case "$wrapper" in
-#               live)
-#                 jq --arg ts "$ts" '{matches: .response, meta: { lastUpdatedUTC: $ts }}' "$tmpbody" > "$norm"
-#                 ;;
-#               events)
-#                 jq --arg ts "$ts" '{events: .response, meta: { lastUpdatedUTC: $ts }}' "$tmpbody" > "$norm"
-#                 ;;
-#               data)
-#                 jq --arg ts "$ts" '{data: .response, meta: { lastUpdatedUTC: $ts }}' "$tmpbody" > "$norm"
-#                 ;;
-#               *)
-#                 jq --arg ts "$ts" '{data: .response, meta: { lastUpdatedUTC: $ts }}' "$tmpbody" > "$norm"
-#                 ;;
-#             esac
-
-#             mkdir -p "$(dirname "$out")"
-#             if [[ ! -f "$out" ]] || ! cmp -s "$norm" "$out"; then
-#               mv "$norm" "$out"
-#               return 0
-#             else
-#               rm -f "$norm"
-#               return 1
-#             fi
-#           }
-
-#           call_and_handle() {
-#             local url="$1"
-#             local out="$2"
-#             local wrapper="$3"
-#             local label="$4"
-
-#             local rc=0
-#             api_get_wrap "$url" "$out" "$wrapper" || rc=$?
-
-#             case "$rc" in
-#               0) ANY_CHANGED="true" ;;
-#               1) : ;;
-#               10) : ;;
-#               98) echo "Soft cap reached while fetching $label"; return 98 ;;
-#               99) echo "Daily cap reached while fetching $label"; return 99 ;;
-#               2) echo "WARN: $label HTTP error (skipping)";;
-#               3) echo "WARN: $label payload error (skipping)";;
-#               *) echo "WARN: $label unexpected rc=$rc";;
-#             esac
-#             return 0
-#           }
 
 #           if [[ -z "${URL_LIVE:-}" ]]; then
 #             echo "URL_LIVE not set; nothing to do."
@@ -504,93 +404,68 @@ jobs:
 #             exit 0
 #           fi
 
+#           if (( COUNT + CALLS_USED >= DAILY )); then
+#             echo "Daily cap reached; skipping."
+#             echo "calls_used=0" >> "$GITHUB_OUTPUT"
+#             echo "changed=false" >> "$GITHUB_OUTPUT"
+#             exit 0
+#           fi
+#           if (( COUNT + CALLS_USED >= SOFT )); then
+#             echo "Soft cap reached; skipping."
+#             echo "calls_used=0" >> "$GITHUB_OUTPUT"
+#             echo "changed=false" >> "$GITHUB_OUTPUT"
+#             exit 0
+#           fi
+
 #           FINAL_LIVE_URL="${URL_LIVE}&league=${LEAGUE_ID}&season=${SEASON}"
 #           echo "Fetching LIVE list: $FINAL_LIVE_URL"
 
-#           ms_sleep "${PER_REQUEST_SLEEP_MS}"
-#           call_and_handle "$FINAL_LIVE_URL" "$LIVE_OUT" "live" "live_today"
-#           rc=$?
-#           if [[ "$rc" == "98" || "$rc" == "99" ]]; then
-#             NEW_COUNT=$((COUNT + CALLS_USED))
-#             jq --argjson c "$NEW_COUNT" '.count = $c' "$STATE" > "$STATE.tmp" && mv "$STATE.tmp" "$STATE"
-#             echo "calls_used=$CALLS_USED" >> "$GITHUB_OUTPUT"
-#             echo "changed=$ANY_CHANGED" >> "$GITHUB_OUTPUT"
+#           if [[ "$ONLY_MISSING" == "true" && -f "$LIVE_OUT" ]]; then
+#             echo "only_missing=true and live_today.json exists; skipping write."
+#             echo "calls_used=0" >> "$GITHUB_OUTPUT"
+#             echo "changed=false" >> "$GITHUB_OUTPUT"
 #             exit 0
 #           fi
 
-#           if [[ ! -f "$LIVE_OUT" ]]; then
-#             echo "No live_today.json created. Exiting."
+#           tmpbody="$(mktemp)"
+#           code=$(curl -sS --connect-timeout 5 --max-time 25 -w "%{http_code}" -o "$tmpbody" \
+#             "${AUTH_HEADERS[@]}" \
+#             "$FINAL_LIVE_URL" || true)
+
+#           CALLS_USED=$((CALLS_USED + 1))
+
+#           if [[ "$code" != "200" ]]; then
+#             echo "WARN: live list HTTP error code=$code"
+#             rm -f "$tmpbody"
 #             NEW_COUNT=$((COUNT + CALLS_USED))
 #             jq --argjson c "$NEW_COUNT" '.count = $c' "$STATE" > "$STATE.tmp" && mv "$STATE.tmp" "$STATE"
 #             echo "calls_used=$CALLS_USED" >> "$GITHUB_OUTPUT"
-#             echo "changed=$ANY_CHANGED" >> "$GITHUB_OUTPUT"
+#             echo "changed=false" >> "$GITHUB_OUTPUT"
 #             exit 0
 #           fi
 
-#           mapfile -t LIVE_FIXTURE_IDS < <(jq -r '
-#             .matches[]?
-#             | select((.fixture.status.short // "" | ascii_upcase) as $s
-#               | ($s=="1H" or $s=="HT" or $s=="2H" or $s=="ET" or $s=="P" or $s=="LIVE"))
-#             | .fixture.id
-#           ' "$LIVE_OUT" | sort -u)
+#           ok=$(jq -r '(.response | type) == "array"' "$tmpbody" 2>/dev/null || echo "false")
+#           if [[ "$ok" != "true" ]]; then
+#             echo "WARN: live list payload missing .response array"
+#             rm -f "$tmpbody"
+#             NEW_COUNT=$((COUNT + CALLS_USED))
+#             jq --argjson c "$NEW_COUNT" '.count = $c' "$STATE" > "$STATE.tmp" && mv "$STATE.tmp" "$STATE"
+#             echo "calls_used=$CALLS_USED" >> "$GITHUB_OUTPUT"
+#             echo "changed=false" >> "$GITHUB_OUTPUT"
+#             exit 0
+#           fi
 
-#           echo "Live fixtures detected: ${#LIVE_FIXTURE_IDS[@]}"
+#           ts=$(date -u +%FT%TZ)
+#           norm="$(mktemp)"
+#           jq --arg ts "$ts" '{matches: .response, meta: { lastUpdatedUTC: $ts }}' "$tmpbody" > "$norm"
+#           rm -f "$tmpbody"
 
-#           for fid in "${LIVE_FIXTURE_IDS[@]}"; do
-#             [[ -z "$fid" ]] && continue
-#             DIR="data/football/premier-league/matches/${fid}"
-#             EVT="${DIR}/events.json"
-#             LUP="${DIR}/lineups.json"
-#             STA="${DIR}/stats.json"
-#             PLY="${DIR}/players.json"
-
-#             echo "Refreshing live details for fixture=$fid"
-
-#             ms_sleep "${PER_REQUEST_SLEEP_MS}"
-#             call_and_handle "${EVENTS_BASE_URL}${fid}" "$EVT" "events" "events($fid)" || true
-
-#             ms_sleep "${PER_REQUEST_SLEEP_MS}"
-#             call_and_handle "${LINEUPS_BASE_URL}${fid}" "$LUP" "data" "lineups($fid)" || true
-
-#             ms_sleep "${PER_REQUEST_SLEEP_MS}"
-#             call_and_handle "${STATS_BASE_URL}${fid}" "$STA" "data" "stats($fid)" || true
-
-#             ms_sleep "${PER_REQUEST_SLEEP_MS}"
-#             call_and_handle "${PLAYERS_BASE_URL}${fid}" "$PLY" "data" "players($fid)" || true
-#           done
-
-#           if [[ -f "$POST" ]]; then
-#             NOW=$(date -u +%s)
-#             TS=$(jq -r '.ts // 0' "$POST")
-#             AGE=$((NOW - TS))
-#             if (( AGE >= 0 && AGE <= ${POST_WINDOW_SECONDS} )); then
-#               mapfile -t POST_FIXTURE_IDS < <(jq -r '.fixtures[]? // empty' "$POST" | sort -u)
-#               if (( ${#POST_FIXTURE_IDS[@]} > 0 )); then
-#                 echo "Post-window active: ${#POST_FIXTURE_IDS[@]} fixtures"
-#                 for fid in "${POST_FIXTURE_IDS[@]}"; do
-#                   [[ -z "$fid" ]] && continue
-#                   DIR="data/football/premier-league/matches/${fid}"
-#                   EVT="${DIR}/events.json"
-#                   LUP="${DIR}/lineups.json"
-#                   STA="${DIR}/stats.json"
-#                   PLY="${DIR}/players.json"
-
-#                   echo "Refreshing post-window details for fixture=$fid"
-
-#                   ms_sleep "${PER_REQUEST_SLEEP_MS}"
-#                   call_and_handle "${EVENTS_BASE_URL}${fid}" "$EVT" "events" "events_post($fid)" || true
-
-#                   ms_sleep "${PER_REQUEST_SLEEP_MS}"
-#                   call_and_handle "${LINEUPS_BASE_URL}${fid}" "$LUP" "data" "lineups_post($fid)" || true
-
-#                   ms_sleep "${PER_REQUEST_SLEEP_MS}"
-#                   call_and_handle "${STATS_BASE_URL}${fid}" "$STA" "data" "stats_post($fid)" || true
-
-#                   ms_sleep "${PER_REQUEST_SLEEP_MS}"
-#                   call_and_handle "${PLAYERS_BASE_URL}${fid}" "$PLY" "data" "players_post($fid)" || true
-#                 done
-#               fi
-#             fi
+#           mkdir -p "$(dirname "$LIVE_OUT")"
+#           if [[ ! -f "$LIVE_OUT" ]] || ! cmp -s "$norm" "$LIVE_OUT"; then
+#             mv "$norm" "$LIVE_OUT"
+#             ANY_CHANGED="true"
+#           else
+#             rm -f "$norm"
 #           fi
 
 #           NEW_COUNT=$((COUNT + CALLS_USED))
@@ -602,48 +477,10 @@ jobs:
 #           echo "calls_used=$CALLS_USED" >> "$GITHUB_OUTPUT"
 #           echo "changed=$ANY_CHANGED" >> "$GITHUB_OUTPUT"
 
-#       - id: post
-#         name: Update post-window trigger (extend after FT)
-#         if: steps.fetch.outcome == 'success'
-#         shell: bash
-#         run: |
-#           set -euo pipefail
-#           OUT="data/football/premier-league/live/live_today.json"
-#           POST="data/ops/post_window.json"
-
-#           [[ ! -f "$OUT" ]] && exit 0
-
-#           LIVE=$(jq -r '
-#             [.matches[]? | .fixture.status.short // "" | ascii_upcase]
-#             | any(.=="1H" or .=="HT" or .=="2H" or .=="ET" or .=="P" or .=="LIVE")
-#           ' "$OUT")
-
-#           HAS_FT=$(jq -r '
-#             [.matches[]? | .fixture.status.short // "" | ascii_upcase]
-#             | any(.=="FT" or .=="AET" or .=="PEN")
-#           ' "$OUT")
-
-#           if [[ "$LIVE" == "false" && "$HAS_FT" == "true" ]]; then
-#             NOW_TS=$(date -u +%s)
-
-#             jq -n --argjson ts "$NOW_TS" --argfile live "$OUT" '
-#               {
-#                 ts: $ts,
-#                 fixtures: (
-#                   $live.matches
-#                   | map(select((.fixture.status.short // "" | ascii_upcase) as $s | ($s=="FT" or $s=="AET" or $s=="PEN")))
-#                   | map(.fixture.id)
-#                   | unique
-#                 )
-#               }
-#             ' > "$POST"
-
-#             echo "Post-window set."
-#           else
-#             echo "No post-window update needed."
-#           fi
-
-#       - name: Commit & push
+#       # -----------------------------
+#       # Commit & push only if live_today changed OR heartbeat/quota changed
+#       # -----------------------------
+#       - name: Commit & push if changed
 #         shell: bash
 #         run: |
 #           set -euo pipefail
@@ -652,9 +489,15 @@ jobs:
 
 #           git add data/football/premier-league/live/heartbeat.json || true
 #           git add data/football/premier-league/live/live_today.json || true
-#           git add data/football/premier-league/matches/** || true
 #           git add data/ops/live_usage.json || true
-#           git add data/ops/post_window.json || true
 
-#           git commit -m "Live PL refresh (list + events/lineups/stats/players)" || true
+#           # Commit only if there are actual changes
+#           if git diff --cached --quiet; then
+#             echo "No changes to commit."
+#             exit 0
+#           fi
+
+#           git commit -m "Live PL refresh (list only)" || true
 #           git push || true
+
+
