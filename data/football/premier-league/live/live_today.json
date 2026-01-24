@@ -9,7 +9,7 @@
         "timestamp": 1769275800,
         "periods": {
           "first": 1769275800,
-          "second": null
+          "second": 1769279400
         },
         "venue": {
           "id": 504,
@@ -17,9 +17,9 @@
           "city": "Bournemouth"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 44,
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 58,
           "extra": null
         }
       },
@@ -49,12 +49,12 @@
       },
       "goals": {
         "home": 2,
-        "away": 0
+        "away": 1
       },
       "score": {
         "halftime": {
           "home": 2,
-          "away": 0
+          "away": 1
         },
         "fulltime": {
           "home": null,
@@ -135,11 +135,77 @@
           "type": "subst",
           "detail": "Substitution 1",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 45,
+            "extra": null
+          },
+          "team": {
+            "id": 40,
+            "name": "Liverpool",
+            "logo": "https://media.api-sports.io/football/teams/40.png"
+          },
+          "player": {
+            "id": 290,
+            "name": "V. van Dijk"
+          },
+          "assist": {
+            "id": 1096,
+            "name": "D. Szoboszlai"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 45,
+            "extra": 3
+          },
+          "team": {
+            "id": 35,
+            "name": "Bournemouth",
+            "logo": "https://media.api-sports.io/football/teams/35.png"
+          },
+          "player": {
+            "id": 368030,
+            "name": "E. J. Kroupi"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Delay of game"
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 40,
+            "name": "Liverpool",
+            "logo": "https://media.api-sports.io/football/teams/40.png"
+          },
+          "player": {
+            "id": 206254,
+            "name": "M. Kerkez"
+          },
+          "assist": {
+            "id": 289,
+            "name": "A. Robertson"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
         }
       ]
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-24T18:14:48Z"
+    "lastUpdatedUTC": "2026-01-24T18:46:48Z"
   }
 }
