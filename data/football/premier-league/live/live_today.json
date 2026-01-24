@@ -9,7 +9,7 @@
         "timestamp": 1769257800,
         "periods": {
           "first": 1769257800,
-          "second": null
+          "second": 1769261400
         },
         "venue": {
           "id": 598,
@@ -17,10 +17,10 @@
           "city": "London"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 45,
-          "extra": 3
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 53,
+          "extra": null
         }
       },
       "league": {
@@ -138,7 +138,7 @@
         },
         {
           "time": {
-            "elapsed": 36,
+            "elapsed": 35,
             "extra": null
           },
           "team": {
@@ -179,11 +179,77 @@
           "type": "Goal",
           "detail": "Normal Goal",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 746,
+            "name": "Sunderland",
+            "logo": "https://media.api-sports.io/football/teams/746.png"
+          },
+          "player": {
+            "id": 284414,
+            "name": "R. Mundle"
+          },
+          "assist": {
+            "id": 336659,
+            "name": "C. Talbi"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 746,
+            "name": "Sunderland",
+            "logo": "https://media.api-sports.io/football/teams/746.png"
+          },
+          "player": {
+            "id": 22225,
+            "name": "R. Mandava"
+          },
+          "assist": {
+            "id": 162076,
+            "name": "D. Cirkin"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 746,
+            "name": "Sunderland",
+            "logo": "https://media.api-sports.io/football/teams/746.png"
+          },
+          "player": {
+            "id": 119121,
+            "name": "T. Hume"
+          },
+          "assist": {
+            "id": 327631,
+            "name": "H. Diarra"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
         }
       ]
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-24T13:19:29Z"
+    "lastUpdatedUTC": "2026-01-24T13:44:33Z"
   }
 }
