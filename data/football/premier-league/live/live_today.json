@@ -19,7 +19,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 59,
+          "elapsed": 66,
           "extra": null
         }
       },
@@ -223,11 +223,33 @@
           "type": "subst",
           "detail": "Substitution 4",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 64,
+            "extra": null
+          },
+          "team": {
+            "id": 42,
+            "name": "Arsenal",
+            "logo": "https://media.api-sports.io/football/teams/42.png"
+          },
+          "player": {
+            "id": 2937,
+            "name": "D. Rice"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Roughing"
         }
       ]
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-25T17:46:22Z"
+    "lastUpdatedUTC": "2026-01-25T17:53:56Z"
   }
 }
