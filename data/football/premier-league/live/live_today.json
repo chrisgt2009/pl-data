@@ -19,7 +19,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 82,
+          "elapsed": 90,
           "extra": null
         }
       },
@@ -226,7 +226,7 @@
         },
         {
           "time": {
-            "elapsed": 80,
+            "elapsed": 79,
             "extra": null
           },
           "team": {
@@ -289,6 +289,28 @@
           "type": "subst",
           "detail": "Substitution 5",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 87,
+            "extra": null
+          },
+          "team": {
+            "id": 65,
+            "name": "Nottingham Forest",
+            "logo": "https://media.api-sports.io/football/teams/65.png"
+          },
+          "player": {
+            "id": 2298,
+            "name": "C. Hudson-Odoi"
+          },
+          "assist": {
+            "id": 67943,
+            "name": "Morato"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
         }
       ]
     },
@@ -311,8 +333,8 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 89,
-          "extra": null
+          "elapsed": 90,
+          "extra": 7
         }
       },
       "league": {
@@ -593,28 +615,6 @@
             "logo": "https://media.api-sports.io/football/teams/49.png"
           },
           "player": {
-            "id": 116117,
-            "name": "M. Caicedo"
-          },
-          "assist": {
-            "id": 22094,
-            "name": "W. Fofana"
-          },
-          "type": "subst",
-          "detail": "Substitution 1",
-          "comments": null
-        },
-        {
-          "time": {
-            "elapsed": 74,
-            "extra": null
-          },
-          "team": {
-            "id": 49,
-            "name": "Chelsea",
-            "logo": "https://media.api-sports.io/football/teams/49.png"
-          },
-          "player": {
             "id": 425733,
             "name": "Estevao"
           },
@@ -623,7 +623,7 @@
             "name": "J. Gittens"
           },
           "type": "subst",
-          "detail": "Substitution 2",
+          "detail": "Substitution 1",
           "comments": null
         },
         {
@@ -645,26 +645,26 @@
             "name": "M. Gusto"
           },
           "type": "subst",
-          "detail": "Substitution 3",
+          "detail": "Substitution 2",
           "comments": null
         },
         {
           "time": {
-            "elapsed": 76,
+            "elapsed": 74,
             "extra": null
           },
           "team": {
-            "id": 52,
-            "name": "Crystal Palace",
-            "logo": "https://media.api-sports.io/football/teams/52.png"
+            "id": 49,
+            "name": "Chelsea",
+            "logo": "https://media.api-sports.io/football/teams/49.png"
           },
           "player": {
-            "id": 13736,
-            "name": "D. Munoz"
+            "id": 116117,
+            "name": "M. Caicedo"
           },
           "assist": {
-            "id": 278898,
-            "name": "C. Riad"
+            "id": 22094,
+            "name": "W. Fofana"
           },
           "type": "subst",
           "detail": "Substitution 3",
@@ -687,6 +687,28 @@
           "assist": {
             "id": 18806,
             "name": "W. Hughes"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 76,
+            "extra": null
+          },
+          "team": {
+            "id": 52,
+            "name": "Crystal Palace",
+            "logo": "https://media.api-sports.io/football/teams/52.png"
+          },
+          "player": {
+            "id": 13736,
+            "name": "D. Munoz"
+          },
+          "assist": {
+            "id": 278898,
+            "name": "C. Riad"
           },
           "type": "subst",
           "detail": "Substitution 4",
@@ -773,12 +795,56 @@
             "name": "C. Richards"
           },
           "assist": {
-            "id": null,
-            "name": null
+            "id": 278898,
+            "name": "C. Riad"
           },
           "type": "Goal",
           "detail": "Normal Goal",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 90,
+            "extra": null
+          },
+          "team": {
+            "id": 49,
+            "name": "Chelsea",
+            "logo": "https://media.api-sports.io/football/teams/49.png"
+          },
+          "player": {
+            "id": 305834,
+            "name": "Andrey Santos"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Unsportsmanlike conduct"
+        },
+        {
+          "time": {
+            "elapsed": 90,
+            "extra": null
+          },
+          "team": {
+            "id": 52,
+            "name": "Crystal Palace",
+            "logo": "https://media.api-sports.io/football/teams/52.png"
+          },
+          "player": {
+            "id": 2490,
+            "name": "J. Lerma"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Unsportsmanlike conduct"
         }
       ]
     },
@@ -801,8 +867,8 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 86,
-          "extra": null
+          "elapsed": 90,
+          "extra": 4
         }
       },
       "league": {
@@ -831,7 +897,7 @@
       },
       "goals": {
         "home": 0,
-        "away": 1
+        "away": 2
       },
       "score": {
         "halftime": {
@@ -1093,11 +1159,77 @@
           "type": "subst",
           "detail": "Substitution 4",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 88,
+            "extra": null
+          },
+          "team": {
+            "id": 66,
+            "name": "Aston Villa",
+            "logo": "https://media.api-sports.io/football/teams/66.png"
+          },
+          "player": {
+            "id": 19366,
+            "name": "O. Watkins"
+          },
+          "assist": {
+            "id": 2724,
+            "name": "L. Digne"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 89,
+            "extra": null
+          },
+          "team": {
+            "id": 66,
+            "name": "Aston Villa",
+            "logo": "https://media.api-sports.io/football/teams/66.png"
+          },
+          "player": {
+            "id": 162714,
+            "name": "A. Onana"
+          },
+          "assist": {
+            "id": 889,
+            "name": "V. Lindelof"
+          },
+          "type": "subst",
+          "detail": "Substitution 5",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 90,
+            "extra": 2
+          },
+          "team": {
+            "id": 66,
+            "name": "Aston Villa",
+            "logo": "https://media.api-sports.io/football/teams/66.png"
+          },
+          "player": {
+            "id": 138816,
+            "name": "I. Maatsen"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Foul"
         }
       ]
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-25T15:47:13Z"
+    "lastUpdatedUTC": "2026-01-25T15:55:08Z"
   }
 }
