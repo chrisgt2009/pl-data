@@ -19,8 +19,8 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 36,
-          "extra": null
+          "elapsed": 45,
+          "extra": 3
         }
       },
       "league": {
@@ -91,121 +91,49 @@
           "type": "Goal",
           "detail": "Normal Goal",
           "comments": null
-        }
-      ]
-    },
-    {
-      "fixture": {
-        "id": 1379193,
-        "referee": "Darren England, England",
-        "timezone": "UTC",
-        "date": "2026-01-25T14:00:00+00:00",
-        "timestamp": 1769349600,
-        "periods": {
-          "first": 1769349600,
-          "second": null
-        },
-        "venue": {
-          "id": 525,
-          "name": "Selhurst Park",
-          "city": "London"
-        },
-        "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 37,
-          "extra": null
-        }
-      },
-      "league": {
-        "id": 39,
-        "name": "Premier League",
-        "country": "England",
-        "logo": "https://media.api-sports.io/football/leagues/39.png",
-        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-        "season": 2025,
-        "round": "Regular Season - 23",
-        "standings": true
-      },
-      "teams": {
-        "home": {
-          "id": 52,
-          "name": "Crystal Palace",
-          "logo": "https://media.api-sports.io/football/teams/52.png",
-          "winner": false
-        },
-        "away": {
-          "id": 49,
-          "name": "Chelsea",
-          "logo": "https://media.api-sports.io/football/teams/49.png",
-          "winner": true
-        }
-      },
-      "goals": {
-        "home": 0,
-        "away": 1
-      },
-      "score": {
-        "halftime": {
-          "home": 0,
-          "away": 1
-        },
-        "fulltime": {
-          "home": null,
-          "away": null
-        },
-        "extratime": {
-          "home": null,
-          "away": null
-        },
-        "penalty": {
-          "home": null,
-          "away": null
-        }
-      },
-      "events": [
-        {
-          "time": {
-            "elapsed": 20,
-            "extra": null
-          },
-          "team": {
-            "id": 49,
-            "name": "Chelsea",
-            "logo": "https://media.api-sports.io/football/teams/49.png"
-          },
-          "player": {
-            "id": 116117,
-            "name": "M. Caicedo"
-          },
-          "assist": {
-            "id": null,
-            "name": null
-          },
-          "type": "Card",
-          "detail": "Yellow Card",
-          "comments": "Foul"
         },
         {
           "time": {
-            "elapsed": 34,
+            "elapsed": 37,
             "extra": null
           },
           "team": {
-            "id": 49,
-            "name": "Chelsea",
-            "logo": "https://media.api-sports.io/football/teams/49.png"
+            "id": 55,
+            "name": "Brentford",
+            "logo": "https://media.api-sports.io/football/teams/55.png"
           },
           "player": {
-            "id": 425733,
-            "name": "Estevao"
+            "id": 1119,
+            "name": "K. Ajer"
           },
           "assist": {
-            "id": null,
-            "name": null
+            "id": 36922,
+            "name": "S. van den Berg"
           },
-          "type": "Goal",
-          "detail": "Normal Goal",
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 37,
+            "extra": null
+          },
+          "team": {
+            "id": 55,
+            "name": "Brentford",
+            "logo": "https://media.api-sports.io/football/teams/55.png"
+          },
+          "player": {
+            "id": 15908,
+            "name": "M. Damsgaard"
+          },
+          "assist": {
+            "id": 284797,
+            "name": "D. Ouattara"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
           "comments": null
         }
       ]
@@ -229,8 +157,8 @@
         "status": {
           "long": "First Half",
           "short": "1H",
-          "elapsed": 36,
-          "extra": null
+          "elapsed": 45,
+          "extra": 3
         }
       },
       "league": {
@@ -325,9 +253,125 @@
           "comments": "Foul"
         }
       ]
+    },
+    {
+      "fixture": {
+        "id": 1379193,
+        "referee": "Darren England, England",
+        "timezone": "UTC",
+        "date": "2026-01-25T14:00:00+00:00",
+        "timestamp": 1769349600,
+        "periods": {
+          "first": 1769349600,
+          "second": null
+        },
+        "venue": {
+          "id": 525,
+          "name": "Selhurst Park",
+          "city": "London"
+        },
+        "status": {
+          "long": "Halftime",
+          "short": "HT",
+          "elapsed": 45,
+          "extra": 2
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 23",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 52,
+          "name": "Crystal Palace",
+          "logo": "https://media.api-sports.io/football/teams/52.png",
+          "winner": false
+        },
+        "away": {
+          "id": 49,
+          "name": "Chelsea",
+          "logo": "https://media.api-sports.io/football/teams/49.png",
+          "winner": true
+        }
+      },
+      "goals": {
+        "home": 0,
+        "away": 1
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 1
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      },
+      "events": [
+        {
+          "time": {
+            "elapsed": 20,
+            "extra": null
+          },
+          "team": {
+            "id": 49,
+            "name": "Chelsea",
+            "logo": "https://media.api-sports.io/football/teams/49.png"
+          },
+          "player": {
+            "id": 116117,
+            "name": "M. Caicedo"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Foul"
+        },
+        {
+          "time": {
+            "elapsed": 34,
+            "extra": null
+          },
+          "team": {
+            "id": 49,
+            "name": "Chelsea",
+            "logo": "https://media.api-sports.io/football/teams/49.png"
+          },
+          "player": {
+            "id": 425733,
+            "name": "Estevao"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        }
+      ]
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-25T14:37:31Z"
+    "lastUpdatedUTC": "2026-01-25T14:49:28Z"
   }
 }
