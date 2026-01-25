@@ -1,6 +1,78 @@
 {
-  "matches": [],
+  "matches": [
+    {
+      "fixture": {
+        "id": 1379189,
+        "referee": "Craig Pawson, England",
+        "timezone": "UTC",
+        "date": "2026-01-25T16:30:00+00:00",
+        "timestamp": 1769358600,
+        "periods": {
+          "first": 1769358600,
+          "second": null
+        },
+        "venue": {
+          "id": 494,
+          "name": "Emirates Stadium",
+          "city": "London"
+        },
+        "status": {
+          "long": "First Half",
+          "short": "1H",
+          "elapsed": 13,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 23",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 42,
+          "name": "Arsenal",
+          "logo": "https://media.api-sports.io/football/teams/42.png",
+          "winner": null
+        },
+        "away": {
+          "id": 33,
+          "name": "Manchester United",
+          "logo": "https://media.api-sports.io/football/teams/33.png",
+          "winner": null
+        }
+      },
+      "goals": {
+        "home": 0,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      },
+      "events": []
+    }
+  ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-25T16:15:43Z"
+    "lastUpdatedUTC": "2026-01-25T16:43:28Z"
   }
 }
