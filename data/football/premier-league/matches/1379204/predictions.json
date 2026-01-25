@@ -1,0 +1,152 @@
+{
+  "fixture": {
+    "id": 1378985
+  },
+  "predictions": {
+    "winner": {
+      "id": 33,
+      "name": "Manchester United",
+      "comment": "Win or draw"
+    },
+    "win_or_draw": true,
+    "under_over": null,
+    "goals": {
+      "home": "-2.5",
+      "away": "-2.5"
+    },
+    "advice": "Double chance : Manchester United or draw",
+    "percent": {
+      "home": "45%",
+      "draw": "45%",
+      "away": "10%"
+    }
+  },
+  "teams": {
+    "home": {
+      "id": 33,
+      "name": "Manchester United",
+      "last_5": {
+        "played": 5,
+        "form": "60%",
+        "att": "39%",
+        "def": "78%",
+        "goals": {
+          "for": {
+            "total": 7,
+            "average": "1.4"
+          },
+          "against": {
+            "total": 4,
+            "average": "0.8"
+          }
+        }
+      }
+    },
+    "away": {
+      "id": 36,
+      "name": "Fulham",
+      "last_5": {
+        "played": 5,
+        "form": "53%",
+        "att": "39%",
+        "def": "67%",
+        "goals": {
+          "for": {
+            "total": 7,
+            "average": "1.4"
+          },
+          "against": {
+            "total": 6,
+            "average": "1.2"
+          }
+        }
+      }
+    }
+  },
+  "comparison": {
+    "form": {
+      "home": "53%",
+      "away": "47%"
+    },
+    "att": {
+      "home": "50%",
+      "away": "50%"
+    },
+    "def": {
+      "home": "60%",
+      "away": "40%"
+    },
+    "poisson_distribution": {
+      "home": "66%",
+      "away": "34%"
+    },
+    "h2h": {
+      "home": "62%",
+      "away": "38%"
+    },
+    "goals": {
+      "home": "56%",
+      "away": "44%"
+    },
+    "total": {
+      "home": "57.8%",
+      "away": "42.2%"
+    }
+  },
+  "h2h_last3": [
+    {
+      "fixture_id": 1378985,
+      "date": "2025-08-24T15:30:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 36,
+        "name": "Fulham",
+        "goals": 1,
+        "winner": null
+      },
+      "away": {
+        "id": 33,
+        "name": "Manchester United",
+        "goals": 1,
+        "winner": null
+      }
+    },
+    {
+      "fixture_id": 1349955,
+      "date": "2025-03-02T16:30:00+00:00",
+      "status": "PEN",
+      "home": {
+        "id": 33,
+        "name": "Manchester United",
+        "goals": 1,
+        "winner": false
+      },
+      "away": {
+        "id": 36,
+        "name": "Fulham",
+        "goals": 1,
+        "winner": true
+      }
+    },
+    {
+      "fixture_id": 1208247,
+      "date": "2025-01-26T19:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 36,
+        "name": "Fulham",
+        "goals": 0,
+        "winner": false
+      },
+      "away": {
+        "id": 33,
+        "name": "Manchester United",
+        "goals": 1,
+        "winner": true
+      }
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-25T18:46:40Z"
+  }
+}

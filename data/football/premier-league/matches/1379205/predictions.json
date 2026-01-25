@@ -1,0 +1,152 @@
+{
+  "fixture": {
+    "id": 1378983
+  },
+  "predictions": {
+    "winner": {
+      "id": 65,
+      "name": "Nottingham Forest",
+      "comment": "Win or draw"
+    },
+    "win_or_draw": true,
+    "under_over": null,
+    "goals": {
+      "home": "-1.5",
+      "away": "-1.5"
+    },
+    "advice": "Double chance : Nottingham Forest or draw",
+    "percent": {
+      "home": "45%",
+      "draw": "45%",
+      "away": "10%"
+    }
+  },
+  "teams": {
+    "home": {
+      "id": 65,
+      "name": "Nottingham Forest",
+      "last_5": {
+        "played": 5,
+        "form": "27%",
+        "att": "22%",
+        "def": "56%",
+        "goals": {
+          "for": {
+            "total": 4,
+            "average": "0.8"
+          },
+          "against": {
+            "total": 8,
+            "average": "1.6"
+          }
+        }
+      }
+    },
+    "away": {
+      "id": 52,
+      "name": "Crystal Palace",
+      "last_5": {
+        "played": 5,
+        "form": "13%",
+        "att": "11%",
+        "def": "67%",
+        "goals": {
+          "for": {
+            "total": 2,
+            "average": "0.4"
+          },
+          "against": {
+            "total": 6,
+            "average": "1.2"
+          }
+        }
+      }
+    }
+  },
+  "comparison": {
+    "form": {
+      "home": "67%",
+      "away": "33%"
+    },
+    "att": {
+      "home": "67%",
+      "away": "33%"
+    },
+    "def": {
+      "home": "43%",
+      "away": "57%"
+    },
+    "poisson_distribution": {
+      "home": "35%",
+      "away": "65%"
+    },
+    "h2h": {
+      "home": "64%",
+      "away": "36%"
+    },
+    "goals": {
+      "home": "57%",
+      "away": "43%"
+    },
+    "total": {
+      "home": "55.5%",
+      "away": "44.5%"
+    }
+  },
+  "h2h_last3": [
+    {
+      "fixture_id": 1378983,
+      "date": "2025-08-24T13:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 52,
+        "name": "Crystal Palace",
+        "goals": 1,
+        "winner": null
+      },
+      "away": {
+        "id": 65,
+        "name": "Nottingham Forest",
+        "goals": 1,
+        "winner": null
+      }
+    },
+    {
+      "fixture_id": 1208368,
+      "date": "2025-05-05T19:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 52,
+        "name": "Crystal Palace",
+        "goals": 1,
+        "winner": null
+      },
+      "away": {
+        "id": 65,
+        "name": "Nottingham Forest",
+        "goals": 1,
+        "winner": null
+      }
+    },
+    {
+      "fixture_id": 1208097,
+      "date": "2024-10-21T19:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 65,
+        "name": "Nottingham Forest",
+        "goals": 1,
+        "winner": true
+      },
+      "away": {
+        "id": 52,
+        "name": "Crystal Palace",
+        "goals": 0,
+        "winner": false
+      }
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-25T18:46:41Z"
+  }
+}

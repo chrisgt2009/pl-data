@@ -1,0 +1,152 @@
+{
+  "fixture": {
+    "id": 1457270
+  },
+  "predictions": {
+    "winner": {
+      "id": 55,
+      "name": "Brentford",
+      "comment": "Win or draw"
+    },
+    "win_or_draw": true,
+    "under_over": null,
+    "goals": {
+      "home": "-2.5",
+      "away": "-2.5"
+    },
+    "advice": "Double chance : draw or Brentford",
+    "percent": {
+      "home": "10%",
+      "draw": "45%",
+      "away": "45%"
+    }
+  },
+  "teams": {
+    "home": {
+      "id": 66,
+      "name": "Aston Villa",
+      "last_5": {
+        "played": 5,
+        "form": "47%",
+        "att": "33%",
+        "def": "61%",
+        "goals": {
+          "for": {
+            "total": 6,
+            "average": "1.2"
+          },
+          "against": {
+            "total": 7,
+            "average": "1.4"
+          }
+        }
+      }
+    },
+    "away": {
+      "id": 55,
+      "name": "Brentford",
+      "last_5": {
+        "played": 5,
+        "form": "67%",
+        "att": "61%",
+        "def": "72%",
+        "goals": {
+          "for": {
+            "total": 11,
+            "average": "2.2"
+          },
+          "against": {
+            "total": 5,
+            "average": "1.0"
+          }
+        }
+      }
+    }
+  },
+  "comparison": {
+    "form": {
+      "home": "41%",
+      "away": "59%"
+    },
+    "att": {
+      "home": "35%",
+      "away": "65%"
+    },
+    "def": {
+      "home": "42%",
+      "away": "58%"
+    },
+    "poisson_distribution": {
+      "home": "72%",
+      "away": "28%"
+    },
+    "h2h": {
+      "home": "50%",
+      "away": "50%"
+    },
+    "goals": {
+      "home": "53%",
+      "away": "47%"
+    },
+    "total": {
+      "home": "48.8%",
+      "away": "51.2%"
+    }
+  },
+  "h2h_last3": [
+    {
+      "fixture_id": 1457270,
+      "date": "2025-09-16T19:00:00+00:00",
+      "status": "PEN",
+      "home": {
+        "id": 55,
+        "name": "Brentford",
+        "goals": 1,
+        "winner": true
+      },
+      "away": {
+        "id": 66,
+        "name": "Aston Villa",
+        "goals": 1,
+        "winner": false
+      }
+    },
+    {
+      "fixture_id": 1378981,
+      "date": "2025-08-23T14:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 55,
+        "name": "Brentford",
+        "goals": 1,
+        "winner": true
+      },
+      "away": {
+        "id": 66,
+        "name": "Aston Villa",
+        "goals": 0,
+        "winner": false
+      }
+    },
+    {
+      "fixture_id": 1208293,
+      "date": "2025-03-08T17:30:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 55,
+        "name": "Brentford",
+        "goals": 0,
+        "winner": false
+      },
+      "away": {
+        "id": 66,
+        "name": "Aston Villa",
+        "goals": 1,
+        "winner": true
+      }
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-25T18:46:41Z"
+  }
+}
