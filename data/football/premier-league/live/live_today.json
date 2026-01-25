@@ -9,7 +9,7 @@
         "timestamp": 1769358600,
         "periods": {
           "first": 1769358600,
-          "second": null
+          "second": 1769362200
         },
         "venue": {
           "id": 494,
@@ -17,9 +17,9 @@
           "city": "London"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 44,
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 46,
           "extra": null
         }
       },
@@ -118,6 +118,6 @@
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-25T17:14:20Z"
+    "lastUpdatedUTC": "2026-01-25T17:33:35Z"
   }
 }
