@@ -19,7 +19,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 66,
+          "elapsed": 87,
           "extra": null
         }
       },
@@ -48,8 +48,8 @@
         }
       },
       "goals": {
-        "home": 1,
-        "away": 2
+        "home": 2,
+        "away": 3
       },
       "score": {
         "halftime": {
@@ -245,11 +245,121 @@
           "type": "Card",
           "detail": "Yellow Card",
           "comments": "Roughing"
+        },
+        {
+          "time": {
+            "elapsed": 69,
+            "extra": null
+          },
+          "team": {
+            "id": 33,
+            "name": "Manchester United",
+            "logo": "https://media.api-sports.io/football/teams/33.png"
+          },
+          "player": {
+            "id": 20589,
+            "name": "B. Mbeumo"
+          },
+          "assist": {
+            "id": 1165,
+            "name": "M. Cunha"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 75,
+            "extra": null
+          },
+          "team": {
+            "id": 42,
+            "name": "Arsenal",
+            "logo": "https://media.api-sports.io/football/teams/42.png"
+          },
+          "player": {
+            "id": 1946,
+            "name": "L. Trossard"
+          },
+          "assist": {
+            "id": 136723,
+            "name": "N. Madueke"
+          },
+          "type": "subst",
+          "detail": "Substitution 5",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 81,
+            "extra": null
+          },
+          "team": {
+            "id": 33,
+            "name": "Manchester United",
+            "logo": "https://media.api-sports.io/football/teams/33.png"
+          },
+          "player": {
+            "id": 382452,
+            "name": "P. Dorgu"
+          },
+          "assist": {
+            "id": 115589,
+            "name": "B. Sesko"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 84,
+            "extra": null
+          },
+          "team": {
+            "id": 42,
+            "name": "Arsenal",
+            "logo": "https://media.api-sports.io/football/teams/42.png"
+          },
+          "player": {
+            "id": 47311,
+            "name": "M. Merino"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 87,
+            "extra": null
+          },
+          "team": {
+            "id": 33,
+            "name": "Manchester United",
+            "logo": "https://media.api-sports.io/football/teams/33.png"
+          },
+          "player": {
+            "id": 1165,
+            "name": "M. Cunha"
+          },
+          "assist": {
+            "id": 284322,
+            "name": "K. Mainoo"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
         }
       ]
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-25T17:53:56Z"
+    "lastUpdatedUTC": "2026-01-25T18:14:56Z"
   }
 }
