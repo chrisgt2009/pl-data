@@ -1,0 +1,152 @@
+{
+  "fixture": {
+    "id": 1378984
+  },
+  "predictions": {
+    "winner": {
+      "id": 45,
+      "name": "Everton",
+      "comment": "Win or draw"
+    },
+    "win_or_draw": true,
+    "under_over": null,
+    "goals": {
+      "home": "-2.5",
+      "away": "-2.5"
+    },
+    "advice": "Double chance : draw or Everton",
+    "percent": {
+      "home": "10%",
+      "draw": "45%",
+      "away": "45%"
+    }
+  },
+  "teams": {
+    "home": {
+      "id": 51,
+      "name": "Brighton",
+      "last_5": {
+        "played": 5,
+        "form": "40%",
+        "att": "100%",
+        "def": "0%",
+        "goals": {
+          "for": {
+            "total": 7,
+            "average": "1.4"
+          },
+          "against": {
+            "total": 6,
+            "average": "1.2"
+          }
+        }
+      }
+    },
+    "away": {
+      "id": 45,
+      "name": "Everton",
+      "last_5": {
+        "played": 5,
+        "form": "53%",
+        "att": "100%",
+        "def": "17%",
+        "goals": {
+          "for": {
+            "total": 6,
+            "average": "1.2"
+          },
+          "against": {
+            "total": 5,
+            "average": "1.0"
+          }
+        }
+      }
+    }
+  },
+  "comparison": {
+    "form": {
+      "home": "43%",
+      "away": "57%"
+    },
+    "att": {
+      "home": "54%",
+      "away": "46%"
+    },
+    "def": {
+      "home": "45%",
+      "away": "55%"
+    },
+    "poisson_distribution": {
+      "home": "55%",
+      "away": "45%"
+    },
+    "h2h": {
+      "home": "38%",
+      "away": "62%"
+    },
+    "goals": {
+      "home": "50%",
+      "away": "50%"
+    },
+    "total": {
+      "home": "47.5%",
+      "away": "52.5%"
+    }
+  },
+  "h2h_last3": [
+    {
+      "fixture_id": 1378984,
+      "date": "2025-08-24T13:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 45,
+        "name": "Everton",
+        "goals": 2,
+        "winner": true
+      },
+      "away": {
+        "id": 51,
+        "name": "Brighton",
+        "goals": 0,
+        "winner": false
+      }
+    },
+    {
+      "fixture_id": 1208245,
+      "date": "2025-01-25T15:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 51,
+        "name": "Brighton",
+        "goals": 0,
+        "winner": false
+      },
+      "away": {
+        "id": 45,
+        "name": "Everton",
+        "goals": 1,
+        "winner": true
+      }
+    },
+    {
+      "fixture_id": 1208024,
+      "date": "2024-08-17T14:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 45,
+        "name": "Everton",
+        "goals": 0,
+        "winner": false
+      },
+      "away": {
+        "id": 51,
+        "name": "Brighton",
+        "goals": 3,
+        "winner": true
+      }
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-25T02:42:22Z"
+  }
+}

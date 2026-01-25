@@ -1,0 +1,152 @@
+{
+  "fixture": {
+    "id": 1378980
+  },
+  "predictions": {
+    "winner": {
+      "id": 35,
+      "name": "Bournemouth",
+      "comment": "Win or draw"
+    },
+    "win_or_draw": true,
+    "under_over": null,
+    "goals": {
+      "home": "-2.5",
+      "away": "-3.5"
+    },
+    "advice": "Double chance : draw or Bournemouth",
+    "percent": {
+      "home": "10%",
+      "draw": "45%",
+      "away": "45%"
+    }
+  },
+  "teams": {
+    "home": {
+      "id": 39,
+      "name": "Wolves",
+      "last_5": {
+        "played": 5,
+        "form": "40%",
+        "att": "28%",
+        "def": "78%",
+        "goals": {
+          "for": {
+            "total": 5,
+            "average": "1.0"
+          },
+          "against": {
+            "total": 4,
+            "average": "0.8"
+          }
+        }
+      }
+    },
+    "away": {
+      "id": 35,
+      "name": "Bournemouth",
+      "last_5": {
+        "played": 5,
+        "form": "53%",
+        "att": "61%",
+        "def": "44%",
+        "goals": {
+          "for": {
+            "total": 11,
+            "average": "2.2"
+          },
+          "against": {
+            "total": 10,
+            "average": "2.0"
+          }
+        }
+      }
+    }
+  },
+  "comparison": {
+    "form": {
+      "home": "43%",
+      "away": "57%"
+    },
+    "att": {
+      "home": "31%",
+      "away": "69%"
+    },
+    "def": {
+      "home": "71%",
+      "away": "29%"
+    },
+    "poisson_distribution": {
+      "home": "34%",
+      "away": "66%"
+    },
+    "h2h": {
+      "home": "29%",
+      "away": "71%"
+    },
+    "goals": {
+      "home": "36%",
+      "away": "64%"
+    },
+    "total": {
+      "home": "40.7%",
+      "away": "59.3%"
+    }
+  },
+  "h2h_last3": [
+    {
+      "fixture_id": 1378980,
+      "date": "2025-08-23T14:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 35,
+        "name": "Bournemouth",
+        "goals": 1,
+        "winner": true
+      },
+      "away": {
+        "id": 39,
+        "name": "Wolves",
+        "goals": 0,
+        "winner": false
+      }
+    },
+    {
+      "fixture_id": 1349957,
+      "date": "2025-03-01T15:00:00+00:00",
+      "status": "PEN",
+      "home": {
+        "id": 35,
+        "name": "Bournemouth",
+        "goals": 1,
+        "winner": true
+      },
+      "away": {
+        "id": 39,
+        "name": "Wolves",
+        "goals": 1,
+        "winner": false
+      }
+    },
+    {
+      "fixture_id": 1208273,
+      "date": "2025-02-22T15:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 35,
+        "name": "Bournemouth",
+        "goals": 0,
+        "winner": false
+      },
+      "away": {
+        "id": 39,
+        "name": "Wolves",
+        "goals": 1,
+        "winner": true
+      }
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-25T02:42:21Z"
+  }
+}

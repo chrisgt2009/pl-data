@@ -1,0 +1,152 @@
+{
+  "fixture": {
+    "id": 1378987
+  },
+  "predictions": {
+    "winner": {
+      "id": 40,
+      "name": "Liverpool",
+      "comment": "Win or draw"
+    },
+    "win_or_draw": true,
+    "under_over": null,
+    "goals": {
+      "home": "-2.5",
+      "away": "-2.5"
+    },
+    "advice": "Double chance : Liverpool or draw",
+    "percent": {
+      "home": "35%",
+      "draw": "35%",
+      "away": "30%"
+    }
+  },
+  "teams": {
+    "home": {
+      "id": 40,
+      "name": "Liverpool",
+      "last_5": {
+        "played": 5,
+        "form": "27%",
+        "att": "28%",
+        "def": "67%",
+        "goals": {
+          "for": {
+            "total": 5,
+            "average": "1.0"
+          },
+          "against": {
+            "total": 6,
+            "average": "1.2"
+          }
+        }
+      }
+    },
+    "away": {
+      "id": 34,
+      "name": "Newcastle",
+      "last_5": {
+        "played": 5,
+        "form": "67%",
+        "att": "50%",
+        "def": "72%",
+        "goals": {
+          "for": {
+            "total": 9,
+            "average": "1.8"
+          },
+          "against": {
+            "total": 5,
+            "average": "1.0"
+          }
+        }
+      }
+    }
+  },
+  "comparison": {
+    "form": {
+      "home": "29%",
+      "away": "71%"
+    },
+    "att": {
+      "home": "36%",
+      "away": "64%"
+    },
+    "def": {
+      "home": "45%",
+      "away": "55%"
+    },
+    "poisson_distribution": {
+      "home": "57%",
+      "away": "43%"
+    },
+    "h2h": {
+      "home": "71%",
+      "away": "29%"
+    },
+    "goals": {
+      "home": "59%",
+      "away": "41%"
+    },
+    "total": {
+      "home": "49.5%",
+      "away": "50.5%"
+    }
+  },
+  "h2h_last3": [
+    {
+      "fixture_id": 1378987,
+      "date": "2025-08-25T19:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 34,
+        "name": "Newcastle",
+        "goals": 2,
+        "winner": false
+      },
+      "away": {
+        "id": 40,
+        "name": "Liverpool",
+        "goals": 3,
+        "winner": true
+      }
+    },
+    {
+      "fixture_id": 1351039,
+      "date": "2025-03-16T16:30:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 40,
+        "name": "Liverpool",
+        "goals": 1,
+        "winner": false
+      },
+      "away": {
+        "id": 34,
+        "name": "Newcastle",
+        "goals": 2,
+        "winner": true
+      }
+    },
+    {
+      "fixture_id": 1208291,
+      "date": "2025-02-26T20:15:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 40,
+        "name": "Liverpool",
+        "goals": 2,
+        "winner": true
+      },
+      "away": {
+        "id": 34,
+        "name": "Newcastle",
+        "goals": 0,
+        "winner": false
+      }
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-25T02:42:23Z"
+  }
+}

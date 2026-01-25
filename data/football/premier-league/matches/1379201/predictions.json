@@ -1,0 +1,152 @@
+{
+  "fixture": {
+    "id": 1378988
+  },
+  "predictions": {
+    "winner": {
+      "id": 49,
+      "name": "Chelsea",
+      "comment": "Win or draw"
+    },
+    "win_or_draw": true,
+    "under_over": null,
+    "goals": {
+      "home": "-2.5",
+      "away": "-2.5"
+    },
+    "advice": "Double chance : Chelsea or draw",
+    "percent": {
+      "home": "45%",
+      "draw": "45%",
+      "away": "10%"
+    }
+  },
+  "teams": {
+    "home": {
+      "id": 49,
+      "name": "Chelsea",
+      "last_5": {
+        "played": 5,
+        "form": "33%",
+        "att": "39%",
+        "def": "61%",
+        "goals": {
+          "for": {
+            "total": 7,
+            "average": "1.4"
+          },
+          "against": {
+            "total": 7,
+            "average": "1.4"
+          }
+        }
+      }
+    },
+    "away": {
+      "id": 48,
+      "name": "West Ham",
+      "last_5": {
+        "played": 5,
+        "form": "47%",
+        "att": "44%",
+        "def": "50%",
+        "goals": {
+          "for": {
+            "total": 8,
+            "average": "1.6"
+          },
+          "against": {
+            "total": 9,
+            "average": "1.8"
+          }
+        }
+      }
+    }
+  },
+  "comparison": {
+    "form": {
+      "home": "42%",
+      "away": "58%"
+    },
+    "att": {
+      "home": "47%",
+      "away": "53%"
+    },
+    "def": {
+      "home": "56%",
+      "away": "44%"
+    },
+    "poisson_distribution": {
+      "home": "67%",
+      "away": "33%"
+    },
+    "h2h": {
+      "home": "80%",
+      "away": "20%"
+    },
+    "goals": {
+      "home": "76%",
+      "away": "24%"
+    },
+    "total": {
+      "home": "61.3%",
+      "away": "38.7%"
+    }
+  },
+  "h2h_last3": [
+    {
+      "fixture_id": 1378988,
+      "date": "2025-08-22T19:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 48,
+        "name": "West Ham",
+        "goals": 1,
+        "winner": false
+      },
+      "away": {
+        "id": 49,
+        "name": "Chelsea",
+        "goals": 5,
+        "winner": true
+      }
+    },
+    {
+      "fixture_id": 1208256,
+      "date": "2025-02-03T20:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 49,
+        "name": "Chelsea",
+        "goals": 2,
+        "winner": true
+      },
+      "away": {
+        "id": 48,
+        "name": "West Ham",
+        "goals": 1,
+        "winner": false
+      }
+    },
+    {
+      "fixture_id": 1208070,
+      "date": "2024-09-21T11:30:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 48,
+        "name": "West Ham",
+        "goals": 0,
+        "winner": false
+      },
+      "away": {
+        "id": 49,
+        "name": "Chelsea",
+        "goals": 3,
+        "winner": true
+      }
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-25T02:42:23Z"
+  }
+}
