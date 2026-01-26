@@ -19,7 +19,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 68,
+          "elapsed": 89,
           "extra": null
         }
       },
@@ -38,17 +38,17 @@
           "id": 45,
           "name": "Everton",
           "logo": "https://media.api-sports.io/football/teams/45.png",
-          "winner": false
+          "winner": null
         },
         "away": {
           "id": 63,
           "name": "Leeds",
           "logo": "https://media.api-sports.io/football/teams/63.png",
-          "winner": true
+          "winner": null
         }
       },
       "goals": {
-        "home": 0,
+        "home": 1,
         "away": 1
       },
       "score": {
@@ -201,11 +201,121 @@
           "type": "subst",
           "detail": "Substitution 1",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 71,
+            "extra": null
+          },
+          "team": {
+            "id": 45,
+            "name": "Everton",
+            "logo": "https://media.api-sports.io/football/teams/45.png"
+          },
+          "player": {
+            "id": 138417,
+            "name": "N. Patterson"
+          },
+          "assist": {
+            "id": 304317,
+            "name": "T. Dibling"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 76,
+            "extra": null
+          },
+          "team": {
+            "id": 45,
+            "name": "Everton",
+            "logo": "https://media.api-sports.io/football/teams/45.png"
+          },
+          "player": {
+            "id": 343684,
+            "name": "T. Barry"
+          },
+          "assist": {
+            "id": 2990,
+            "name": "I. Gueye"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 85,
+            "extra": null
+          },
+          "team": {
+            "id": 63,
+            "name": "Leeds",
+            "logo": "https://media.api-sports.io/football/teams/63.png"
+          },
+          "player": {
+            "id": 177665,
+            "name": "A. Stach"
+          },
+          "assist": {
+            "id": 18901,
+            "name": "S. Longstaff"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 85,
+            "extra": null
+          },
+          "team": {
+            "id": 63,
+            "name": "Leeds",
+            "logo": "https://media.api-sports.io/football/teams/63.png"
+          },
+          "player": {
+            "id": 50739,
+            "name": "B. Aaronson"
+          },
+          "assist": {
+            "id": 48389,
+            "name": "N. Okafor"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 85,
+            "extra": null
+          },
+          "team": {
+            "id": 63,
+            "name": "Leeds",
+            "logo": "https://media.api-sports.io/football/teams/63.png"
+          },
+          "player": {
+            "id": 1408,
+            "name": "S. Bornauw"
+          },
+          "assist": {
+            "id": 311334,
+            "name": "F. Buonanotte"
+          },
+          "type": "subst",
+          "detail": "Substitution 4",
+          "comments": null
         }
       ]
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-26T21:27:31Z"
+    "lastUpdatedUTC": "2026-01-26T21:49:08Z"
   }
 }
