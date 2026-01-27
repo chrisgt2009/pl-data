@@ -1,0 +1,152 @@
+{
+  "fixture": {
+    "id": 1378982
+  },
+  "predictions": {
+    "winner": {
+      "id": 44,
+      "name": "Burnley",
+      "comment": "Win or draw"
+    },
+    "win_or_draw": true,
+    "under_over": null,
+    "goals": {
+      "home": "-2.5",
+      "away": "-1.5"
+    },
+    "advice": "Double chance : draw or Burnley",
+    "percent": {
+      "home": "10%",
+      "draw": "45%",
+      "away": "45%"
+    }
+  },
+  "teams": {
+    "home": {
+      "id": 746,
+      "name": "Sunderland",
+      "last_5": {
+        "played": 5,
+        "form": "33%",
+        "att": "22%",
+        "def": "56%",
+        "goals": {
+          "for": {
+            "total": 4,
+            "average": "0.8"
+          },
+          "against": {
+            "total": 8,
+            "average": "1.6"
+          }
+        }
+      }
+    },
+    "away": {
+      "id": 44,
+      "name": "Burnley",
+      "last_5": {
+        "played": 5,
+        "form": "20%",
+        "att": "33%",
+        "def": "44%",
+        "goals": {
+          "for": {
+            "total": 6,
+            "average": "1.2"
+          },
+          "against": {
+            "total": 10,
+            "average": "2.0"
+          }
+        }
+      }
+    }
+  },
+  "comparison": {
+    "form": {
+      "home": "63%",
+      "away": "38%"
+    },
+    "att": {
+      "home": "40%",
+      "away": "60%"
+    },
+    "def": {
+      "home": "56%",
+      "away": "44%"
+    },
+    "poisson_distribution": {
+      "home": "76%",
+      "away": "24%"
+    },
+    "h2h": {
+      "home": "38%",
+      "away": "62%"
+    },
+    "goals": {
+      "home": "33%",
+      "away": "67%"
+    },
+    "total": {
+      "home": "51.0%",
+      "away": "49.2%"
+    }
+  },
+  "h2h_last3": [
+    {
+      "fixture_id": 1378982,
+      "date": "2025-08-23T14:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 44,
+        "name": "Burnley",
+        "goals": 2,
+        "winner": true
+      },
+      "away": {
+        "id": 746,
+        "name": "Sunderland",
+        "goals": 0,
+        "winner": false
+      }
+    },
+    {
+      "fixture_id": 1216155,
+      "date": "2025-01-17T20:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 44,
+        "name": "Burnley",
+        "goals": 0,
+        "winner": null
+      },
+      "away": {
+        "id": 746,
+        "name": "Sunderland",
+        "goals": 0,
+        "winner": null
+      }
+    },
+    {
+      "fixture_id": 1215876,
+      "date": "2024-08-24T14:00:00+00:00",
+      "status": "FT",
+      "home": {
+        "id": 746,
+        "name": "Sunderland",
+        "goals": 1,
+        "winner": true
+      },
+      "away": {
+        "id": 44,
+        "name": "Burnley",
+        "goals": 0,
+        "winner": false
+      }
+    }
+  ],
+  "meta": {
+    "lastUpdatedUTC": "2026-01-27T02:36:07Z"
+  }
+}
