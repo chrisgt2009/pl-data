@@ -2,122 +2,6 @@
   "matches": [
     {
       "fixture": {
-        "id": 1379208,
-        "referee": "Michael Oliver, England",
-        "timezone": "UTC",
-        "date": "2026-01-31T15:00:00+00:00",
-        "timestamp": 1769871600,
-        "periods": {
-          "first": 1769871600,
-          "second": null
-        },
-        "venue": {
-          "id": 600,
-          "name": "Molineux Stadium",
-          "city": "Wolverhampton"
-        },
-        "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 1
-        }
-      },
-      "league": {
-        "id": 39,
-        "name": "Premier League",
-        "country": "England",
-        "logo": "https://media.api-sports.io/football/leagues/39.png",
-        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
-        "season": 2025,
-        "round": "Regular Season - 24",
-        "standings": true
-      },
-      "teams": {
-        "home": {
-          "id": 39,
-          "name": "Wolves",
-          "logo": "https://media.api-sports.io/football/teams/39.png",
-          "winner": false
-        },
-        "away": {
-          "id": 35,
-          "name": "Bournemouth",
-          "logo": "https://media.api-sports.io/football/teams/35.png",
-          "winner": true
-        }
-      },
-      "goals": {
-        "home": 0,
-        "away": 1
-      },
-      "score": {
-        "halftime": {
-          "home": 0,
-          "away": 1
-        },
-        "fulltime": {
-          "home": null,
-          "away": null
-        },
-        "extratime": {
-          "home": null,
-          "away": null
-        },
-        "penalty": {
-          "home": null,
-          "away": null
-        }
-      },
-      "events": [
-        {
-          "time": {
-            "elapsed": 33,
-            "extra": null
-          },
-          "team": {
-            "id": 35,
-            "name": "Bournemouth",
-            "logo": "https://media.api-sports.io/football/teams/35.png"
-          },
-          "player": {
-            "id": 368030,
-            "name": "E. J. Kroupi"
-          },
-          "assist": {
-            "id": 129682,
-            "name": "A. Adli"
-          },
-          "type": "Goal",
-          "detail": "Normal Goal",
-          "comments": null
-        },
-        {
-          "time": {
-            "elapsed": 45,
-            "extra": 1
-          },
-          "team": {
-            "id": 39,
-            "name": "Wolves",
-            "logo": "https://media.api-sports.io/football/teams/39.png"
-          },
-          "player": {
-            "id": 265784,
-            "name": "Andre"
-          },
-          "assist": {
-            "id": null,
-            "name": null
-          },
-          "type": "Card",
-          "detail": "Yellow Card",
-          "comments": "Foul"
-        }
-      ]
-    },
-    {
-      "fixture": {
         "id": 1379200,
         "referee": "Chris Kavanagh, England",
         "timezone": "UTC",
@@ -125,7 +9,7 @@
         "timestamp": 1769871600,
         "periods": {
           "first": 1769871600,
-          "second": null
+          "second": 1769875200
         },
         "venue": {
           "id": 508,
@@ -133,10 +17,10 @@
           "city": "Brighton"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 2
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 57,
+          "extra": null
         }
       },
       "league": {
@@ -185,7 +69,30 @@
           "away": null
         }
       },
-      "events": []
+      "events": [
+        {
+          "time": {
+            "elapsed": 53,
+            "extra": null
+          },
+          "team": {
+            "id": 51,
+            "name": "Brighton",
+            "logo": "https://media.api-sports.io/football/teams/51.png"
+          },
+          "player": {
+            "id": 18970,
+            "name": "P. Gross"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Tripping"
+        }
+      ]
     },
     {
       "fixture": {
@@ -196,7 +103,7 @@
         "timestamp": 1769871600,
         "periods": {
           "first": 1769871600,
-          "second": null
+          "second": 1769875200
         },
         "venue": {
           "id": 546,
@@ -204,10 +111,10 @@
           "city": "Leeds"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 3
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 56,
+          "extra": null
         }
       },
       "league": {
@@ -322,11 +229,193 @@
           "type": "Goal",
           "detail": "Own Goal",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 63,
+            "name": "Leeds",
+            "logo": "https://media.api-sports.io/football/teams/63.png"
+          },
+          "player": {
+            "id": 19760,
+            "name": "J. Justin"
+          },
+          "assist": {
+            "id": 18901,
+            "name": "S. Longstaff"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 63,
+            "name": "Leeds",
+            "logo": "https://media.api-sports.io/football/teams/63.png"
+          },
+          "player": {
+            "id": 129142,
+            "name": "I. Gruev"
+          },
+          "assist": {
+            "id": 48389,
+            "name": "N. Okafor"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        }
+      ]
+    },
+    {
+      "fixture": {
+        "id": 1379208,
+        "referee": "Michael Oliver, England",
+        "timezone": "UTC",
+        "date": "2026-01-31T15:00:00+00:00",
+        "timestamp": 1769871600,
+        "periods": {
+          "first": 1769871600,
+          "second": 1769875200
+        },
+        "venue": {
+          "id": 600,
+          "name": "Molineux Stadium",
+          "city": "Wolverhampton"
+        },
+        "status": {
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 59,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 39,
+        "name": "Premier League",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/39.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
+        "season": 2025,
+        "round": "Regular Season - 24",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 39,
+          "name": "Wolves",
+          "logo": "https://media.api-sports.io/football/teams/39.png",
+          "winner": false
+        },
+        "away": {
+          "id": 35,
+          "name": "Bournemouth",
+          "logo": "https://media.api-sports.io/football/teams/35.png",
+          "winner": true
+        }
+      },
+      "goals": {
+        "home": 0,
+        "away": 1
+      },
+      "score": {
+        "halftime": {
+          "home": 0,
+          "away": 1
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      },
+      "events": [
+        {
+          "time": {
+            "elapsed": 33,
+            "extra": null
+          },
+          "team": {
+            "id": 35,
+            "name": "Bournemouth",
+            "logo": "https://media.api-sports.io/football/teams/35.png"
+          },
+          "player": {
+            "id": 368030,
+            "name": "E. J. Kroupi"
+          },
+          "assist": {
+            "id": 129682,
+            "name": "A. Adli"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 45,
+            "extra": 1
+          },
+          "team": {
+            "id": 39,
+            "name": "Wolves",
+            "logo": "https://media.api-sports.io/football/teams/39.png"
+          },
+          "player": {
+            "id": 265784,
+            "name": "Andre"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Foul"
+        },
+        {
+          "time": {
+            "elapsed": 59,
+            "extra": null
+          },
+          "team": {
+            "id": 35,
+            "name": "Bournemouth",
+            "logo": "https://media.api-sports.io/football/teams/35.png"
+          },
+          "player": {
+            "id": 330437,
+            "name": "A. Jimenez"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": null
         }
       ]
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-31T15:50:23Z"
+    "lastUpdatedUTC": "2026-01-31T16:15:39Z"
   }
 }
