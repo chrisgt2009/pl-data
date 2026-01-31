@@ -9,7 +9,7 @@
         "timestamp": 1769889600,
         "periods": {
           "first": 1769889600,
-          "second": null
+          "second": 1769893200
         },
         "venue": {
           "id": 550,
@@ -17,10 +17,10 @@
           "city": "Liverpool"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 6
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 67,
+          "extra": null
         }
       },
       "league": {
@@ -48,7 +48,7 @@
         }
       },
       "goals": {
-        "home": 2,
+        "home": 3,
         "away": 1
       },
       "score": {
@@ -179,11 +179,55 @@
           "type": "Card",
           "detail": "Yellow Card",
           "comments": "Tripping"
+        },
+        {
+          "time": {
+            "elapsed": 59,
+            "extra": null
+          },
+          "team": {
+            "id": 40,
+            "name": "Liverpool",
+            "logo": "https://media.api-sports.io/football/teams/40.png"
+          },
+          "player": {
+            "id": 6716,
+            "name": "A. Mac Allister"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Tripping"
+        },
+        {
+          "time": {
+            "elapsed": 67,
+            "extra": null
+          },
+          "team": {
+            "id": 40,
+            "name": "Liverpool",
+            "logo": "https://media.api-sports.io/football/teams/40.png"
+          },
+          "player": {
+            "id": 203224,
+            "name": "F. Wirtz"
+          },
+          "assist": {
+            "id": 306,
+            "name": "M. Salah"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
         }
       ]
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-31T20:56:24Z"
+    "lastUpdatedUTC": "2026-01-31T21:28:29Z"
   }
 }
