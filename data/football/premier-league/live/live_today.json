@@ -9,7 +9,7 @@
         "timestamp": 1769880600,
         "periods": {
           "first": 1769880600,
-          "second": null
+          "second": 1769884200
         },
         "venue": {
           "id": 519,
@@ -17,9 +17,9 @@
           "city": "London"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 28,
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 56,
           "extra": null
         }
       },
@@ -49,12 +49,12 @@
       },
       "goals": {
         "home": 0,
-        "away": 1
+        "away": 2
       },
       "score": {
         "halftime": {
           "home": 0,
-          "away": 1
+          "away": 2
         },
         "fulltime": {
           "home": null,
@@ -113,11 +113,99 @@
           "type": "subst",
           "detail": "Substitution 1",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 36,
+            "extra": null
+          },
+          "team": {
+            "id": 48,
+            "name": "West Ham",
+            "logo": "https://media.api-sports.io/football/teams/48.png"
+          },
+          "player": {
+            "id": 37724,
+            "name": "C. Summerville"
+          },
+          "assist": {
+            "id": 18846,
+            "name": "A. Wan-Bissaka"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 49,
+            "name": "Chelsea",
+            "logo": "https://media.api-sports.io/football/teams/49.png"
+          },
+          "player": {
+            "id": 341642,
+            "name": "J. Hato"
+          },
+          "assist": {
+            "id": 47380,
+            "name": "M. Cucurella"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 49,
+            "name": "Chelsea",
+            "logo": "https://media.api-sports.io/football/teams/49.png"
+          },
+          "player": {
+            "id": 284324,
+            "name": "A. Garnacho"
+          },
+          "assist": {
+            "id": 10329,
+            "name": "Joao Pedro"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 49,
+            "name": "Chelsea",
+            "logo": "https://media.api-sports.io/football/teams/49.png"
+          },
+          "player": {
+            "id": 95,
+            "name": "B. Badiashile"
+          },
+          "assist": {
+            "id": 22094,
+            "name": "W. Fofana"
+          },
+          "type": "subst",
+          "detail": "Substitution 4",
+          "comments": null
         }
       ]
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-01-31T17:59:11Z"
+    "lastUpdatedUTC": "2026-01-31T18:47:48Z"
   }
 }
