@@ -19,7 +19,7 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 71,
+          "elapsed": 90,
           "extra": null
         }
       },
@@ -245,6 +245,72 @@
           "type": "subst",
           "detail": "Substitution 2",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 76,
+            "extra": null
+          },
+          "team": {
+            "id": 55,
+            "name": "Brentford",
+            "logo": "https://media.api-sports.io/football/teams/55.png"
+          },
+          "player": {
+            "id": 47438,
+            "name": "M. Jensen"
+          },
+          "assist": {
+            "id": 106725,
+            "name": "K. Lewis-Potter"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 77,
+            "extra": null
+          },
+          "team": {
+            "id": 66,
+            "name": "Aston Villa",
+            "logo": "https://media.api-sports.io/football/teams/66.png"
+          },
+          "player": {
+            "id": 18,
+            "name": "J. Sancho"
+          },
+          "assist": {
+            "id": 19035,
+            "name": "H. Elliott"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 84,
+            "extra": null
+          },
+          "team": {
+            "id": 55,
+            "name": "Brentford",
+            "logo": "https://media.api-sports.io/football/teams/55.png"
+          },
+          "player": {
+            "id": 19346,
+            "name": "R. Henry"
+          },
+          "assist": {
+            "id": 44871,
+            "name": "A. Hickey"
+          },
+          "type": "subst",
+          "detail": "Substitution 4",
+          "comments": null
         }
       ]
     },
@@ -267,8 +333,8 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 75,
-          "extra": null
+          "elapsed": 90,
+          "extra": 4
         }
       },
       "league": {
@@ -296,8 +362,8 @@
         }
       },
       "goals": {
-        "home": 2,
-        "away": 0
+        "home": 3,
+        "away": 2
       },
       "score": {
         "halftime": {
@@ -515,6 +581,182 @@
           "type": "subst",
           "detail": "Substitution 1",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 75,
+            "extra": null
+          },
+          "team": {
+            "id": 33,
+            "name": "Manchester United",
+            "logo": "https://media.api-sports.io/football/teams/33.png"
+          },
+          "player": {
+            "id": 747,
+            "name": "Casemiro"
+          },
+          "assist": {
+            "id": 51494,
+            "name": "M. Ugarte"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 79,
+            "extra": null
+          },
+          "team": {
+            "id": 36,
+            "name": "Fulham",
+            "logo": "https://media.api-sports.io/football/teams/36.png"
+          },
+          "player": {
+            "id": 1696,
+            "name": "S. Chukwueze"
+          },
+          "assist": {
+            "id": 19025,
+            "name": "T. Cairney"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 83,
+            "extra": null
+          },
+          "team": {
+            "id": 33,
+            "name": "Manchester United",
+            "logo": "https://media.api-sports.io/football/teams/33.png"
+          },
+          "player": {
+            "id": 2935,
+            "name": "H. Maguire"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Tripping"
+        },
+        {
+          "time": {
+            "elapsed": 85,
+            "extra": null
+          },
+          "team": {
+            "id": 36,
+            "name": "Fulham",
+            "logo": "https://media.api-sports.io/football/teams/36.png"
+          },
+          "player": {
+            "id": 2887,
+            "name": "R. Jimenez"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Goal",
+          "detail": "Penalty",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 86,
+            "extra": null
+          },
+          "team": {
+            "id": 36,
+            "name": "Fulham",
+            "logo": "https://media.api-sports.io/football/teams/36.png"
+          },
+          "player": {
+            "id": 131,
+            "name": "J. Cuenca"
+          },
+          "assist": {
+            "id": 152967,
+            "name": "C. Bassey"
+          },
+          "type": "subst",
+          "detail": "Substitution 4",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 86,
+            "extra": null
+          },
+          "team": {
+            "id": 33,
+            "name": "Manchester United",
+            "logo": "https://media.api-sports.io/football/teams/33.png"
+          },
+          "player": {
+            "id": 886,
+            "name": "D. Dalot"
+          },
+          "assist": {
+            "id": 545,
+            "name": "N. Mazraoui"
+          },
+          "type": "subst",
+          "detail": "Substitution 3",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 90,
+            "extra": 1
+          },
+          "team": {
+            "id": 36,
+            "name": "Fulham",
+            "logo": "https://media.api-sports.io/football/teams/36.png"
+          },
+          "player": {
+            "id": 237819,
+            "name": "Kevin"
+          },
+          "assist": {
+            "id": 19032,
+            "name": "R. Sessegnon"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 90,
+            "extra": 4
+          },
+          "team": {
+            "id": 33,
+            "name": "Manchester United",
+            "logo": "https://media.api-sports.io/football/teams/33.png"
+          },
+          "player": {
+            "id": null,
+            "name": null
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
         }
       ]
     },
@@ -537,8 +779,8 @@
         "status": {
           "long": "Second Half",
           "short": "2H",
-          "elapsed": 71,
-          "extra": null
+          "elapsed": 90,
+          "extra": 1
         }
       },
       "league": {
@@ -657,7 +899,7 @@
         {
           "time": {
             "elapsed": 45,
-            "extra": null
+            "extra": 3
           },
           "team": {
             "id": 65,
@@ -665,16 +907,16 @@
             "logo": "https://media.api-sports.io/football/teams/65.png"
           },
           "player": {
-            "id": 138780,
-            "name": "N. Williams"
+            "id": 6056,
+            "name": "N. Dominguez"
           },
           "assist": {
-            "id": null,
-            "name": null
+            "id": 67943,
+            "name": "Morato"
           },
-          "type": "Card",
-          "detail": "Red Card",
-          "comments": "Handling"
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
         },
         {
           "time": {
@@ -701,7 +943,7 @@
         {
           "time": {
             "elapsed": 45,
-            "extra": 3
+            "extra": null
           },
           "team": {
             "id": 65,
@@ -709,15 +951,37 @@
             "logo": "https://media.api-sports.io/football/teams/65.png"
           },
           "player": {
-            "id": 6056,
-            "name": "N. Dominguez"
+            "id": 138780,
+            "name": "N. Williams"
           },
           "assist": {
-            "id": 67943,
-            "name": "Morato"
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Red Card",
+          "comments": "Handling"
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 65,
+            "name": "Nottingham Forest",
+            "logo": "https://media.api-sports.io/football/teams/65.png"
+          },
+          "player": {
+            "id": 2298,
+            "name": "C. Hudson-Odoi"
+          },
+          "assist": {
+            "id": 19305,
+            "name": "R. Yates"
           },
           "type": "subst",
-          "detail": "Substitution 1",
+          "detail": "Substitution 2",
           "comments": null
         },
         {
@@ -737,28 +1001,6 @@
           "assist": {
             "id": 18933,
             "name": "A. Gunn"
-          },
-          "type": "subst",
-          "detail": "Substitution 2",
-          "comments": null
-        },
-        {
-          "time": {
-            "elapsed": 46,
-            "extra": null
-          },
-          "team": {
-            "id": 65,
-            "name": "Nottingham Forest",
-            "logo": "https://media.api-sports.io/football/teams/65.png"
-          },
-          "player": {
-            "id": 2298,
-            "name": "C. Hudson-Odoi"
-          },
-          "assist": {
-            "id": 19305,
-            "name": "R. Yates"
           },
           "type": "subst",
           "detail": "Substitution 3",
@@ -829,11 +1071,33 @@
           "type": "subst",
           "detail": "Substitution 4",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 75,
+            "extra": null
+          },
+          "team": {
+            "id": 65,
+            "name": "Nottingham Forest",
+            "logo": "https://media.api-sports.io/football/teams/65.png"
+          },
+          "player": {
+            "id": 2817,
+            "name": "N. Milenkovic"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Delay of game"
         }
       ]
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-02-01T15:34:26Z"
+    "lastUpdatedUTC": "2026-02-01T15:54:07Z"
   }
 }
