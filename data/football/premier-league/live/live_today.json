@@ -9,7 +9,7 @@
         "timestamp": 1769963400,
         "periods": {
           "first": 1769963400,
-          "second": null
+          "second": 1769967000
         },
         "venue": {
           "id": 593,
@@ -17,10 +17,10 @@
           "city": "London"
         },
         "status": {
-          "long": "Halftime",
-          "short": "HT",
-          "elapsed": 45,
-          "extra": 5
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 65,
+          "extra": null
         }
       },
       "league": {
@@ -48,7 +48,7 @@
         }
       },
       "goals": {
-        "home": 0,
+        "home": 1,
         "away": 2
       },
       "score": {
@@ -201,11 +201,99 @@
           "type": "Card",
           "detail": "Yellow Card",
           "comments": "Holding"
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 47,
+            "name": "Tottenham",
+            "logo": "https://media.api-sports.io/football/teams/47.png"
+          },
+          "player": {
+            "id": 30776,
+            "name": "C. Romero"
+          },
+          "assist": {
+            "id": 237129,
+            "name": "P. M. Sarr"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 48,
+            "extra": null
+          },
+          "team": {
+            "id": 47,
+            "name": "Tottenham",
+            "logo": "https://media.api-sports.io/football/teams/47.png"
+          },
+          "player": {
+            "id": 18883,
+            "name": "D. Solanke"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Roughing"
+        },
+        {
+          "time": {
+            "elapsed": 53,
+            "extra": null
+          },
+          "team": {
+            "id": 47,
+            "name": "Tottenham",
+            "logo": "https://media.api-sports.io/football/teams/47.png"
+          },
+          "player": {
+            "id": 67971,
+            "name": "M. Guehi"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Goal",
+          "detail": "Own Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 58,
+            "extra": null
+          },
+          "team": {
+            "id": 50,
+            "name": "Manchester City",
+            "logo": "https://media.api-sports.io/football/teams/50.png"
+          },
+          "player": {
+            "id": 407914,
+            "name": "P. Guardiola"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": null
         }
       ]
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-02-01T17:33:50Z"
+    "lastUpdatedUTC": "2026-02-01T17:54:53Z"
   }
 }
