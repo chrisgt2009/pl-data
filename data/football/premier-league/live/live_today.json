@@ -17,10 +17,10 @@
           "city": "Birmingham"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 35,
-          "extra": null
+          "long": "Halftime",
+          "short": "HT",
+          "elapsed": 45,
+          "extra": 6
         }
       },
       "league": {
@@ -38,23 +38,23 @@
           "id": 66,
           "name": "Aston Villa",
           "logo": "https://media.api-sports.io/football/teams/66.png",
-          "winner": null
+          "winner": false
         },
         "away": {
           "id": 55,
           "name": "Brentford",
           "logo": "https://media.api-sports.io/football/teams/55.png",
-          "winner": null
+          "winner": true
         }
       },
       "goals": {
         "home": 0,
-        "away": 0
+        "away": 1
       },
       "score": {
         "halftime": {
           "home": 0,
-          "away": 0
+          "away": 1
         },
         "fulltime": {
           "home": null,
@@ -69,7 +69,96 @@
           "away": null
         }
       },
-      "events": []
+      "events": [
+        {
+          "time": {
+            "elapsed": 35,
+            "extra": null
+          },
+          "team": {
+            "id": 55,
+            "name": "Brentford",
+            "logo": "https://media.api-sports.io/football/teams/55.png"
+          },
+          "player": {
+            "id": 1119,
+            "name": "K. Ajer"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Tripping"
+        },
+        {
+          "time": {
+            "elapsed": 42,
+            "extra": null
+          },
+          "team": {
+            "id": 55,
+            "name": "Brentford",
+            "logo": "https://media.api-sports.io/football/teams/55.png"
+          },
+          "player": {
+            "id": 178077,
+            "name": "K. Schade"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Red Card",
+          "comments": "Unsportsmanlike conduct"
+        },
+        {
+          "time": {
+            "elapsed": 45,
+            "extra": 1
+          },
+          "team": {
+            "id": 55,
+            "name": "Brentford",
+            "logo": "https://media.api-sports.io/football/teams/55.png"
+          },
+          "player": {
+            "id": 284797,
+            "name": "D. Ouattara"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 45,
+            "extra": 5
+          },
+          "team": {
+            "id": 55,
+            "name": "Brentford",
+            "logo": "https://media.api-sports.io/football/teams/55.png"
+          },
+          "player": {
+            "id": 342022,
+            "name": "M. Kayode"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Unsportsmanlike conduct"
+        }
+      ]
     },
     {
       "fixture": {
@@ -88,10 +177,10 @@
           "city": "Manchester"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 36,
-          "extra": null
+          "long": "Halftime",
+          "short": "HT",
+          "elapsed": 45,
+          "extra": 4
         }
       },
       "league": {
@@ -165,7 +254,7 @@
         },
         {
           "time": {
-            "elapsed": 21,
+            "elapsed": 20,
             "extra": null
           },
           "team": {
@@ -184,6 +273,28 @@
           "type": "Card",
           "detail": "Yellow Card",
           "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 42,
+            "extra": null
+          },
+          "team": {
+            "id": 36,
+            "name": "Fulham",
+            "logo": "https://media.api-sports.io/football/teams/36.png"
+          },
+          "player": {
+            "id": 2729,
+            "name": "J. Andersen"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": "Holding"
         }
       ]
     },
@@ -204,10 +315,10 @@
           "city": "Nottingham"
         },
         "status": {
-          "long": "First Half",
-          "short": "1H",
-          "elapsed": 36,
-          "extra": null
+          "long": "Halftime",
+          "short": "HT",
+          "elapsed": 45,
+          "extra": 7
         }
       },
       "league": {
@@ -225,23 +336,23 @@
           "id": 65,
           "name": "Nottingham Forest",
           "logo": "https://media.api-sports.io/football/teams/65.png",
-          "winner": true
+          "winner": null
         },
         "away": {
           "id": 52,
           "name": "Crystal Palace",
           "logo": "https://media.api-sports.io/football/teams/52.png",
-          "winner": false
+          "winner": null
         }
       },
       "goals": {
         "home": 1,
-        "away": 0
+        "away": 1
       },
       "score": {
         "halftime": {
           "home": 1,
-          "away": 0
+          "away": 1
         },
         "fulltime": {
           "home": null,
@@ -322,11 +433,77 @@
           "type": "Card",
           "detail": "Yellow Card",
           "comments": "Foul"
+        },
+        {
+          "time": {
+            "elapsed": 45,
+            "extra": null
+          },
+          "team": {
+            "id": 65,
+            "name": "Nottingham Forest",
+            "logo": "https://media.api-sports.io/football/teams/65.png"
+          },
+          "player": {
+            "id": 138780,
+            "name": "N. Williams"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Red Card",
+          "comments": "Handling"
+        },
+        {
+          "time": {
+            "elapsed": 45,
+            "extra": 2
+          },
+          "team": {
+            "id": 52,
+            "name": "Crystal Palace",
+            "logo": "https://media.api-sports.io/football/teams/52.png"
+          },
+          "player": {
+            "id": 2218,
+            "name": "I. Sarr"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Goal",
+          "detail": "Penalty",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 45,
+            "extra": 3
+          },
+          "team": {
+            "id": 65,
+            "name": "Nottingham Forest",
+            "logo": "https://media.api-sports.io/football/teams/65.png"
+          },
+          "player": {
+            "id": 6056,
+            "name": "N. Dominguez"
+          },
+          "assist": {
+            "id": 67943,
+            "name": "Morato"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
         }
       ]
     }
   ],
   "meta": {
-    "lastUpdatedUTC": "2026-02-01T14:36:30Z"
+    "lastUpdatedUTC": "2026-02-01T14:57:51Z"
   }
 }
