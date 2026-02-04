@@ -3,13 +3,118 @@
   "parameters": {
     "season": "2014"
   },
-  "errors": {
-    "plan": "Free plans do not have access to this season, try from 2022 to 2024."
-  },
-  "results": 0,
-  "paging": {
-    "current": 1,
-    "total": 1
-  },
-  "response": []
+  "errors": [],
+  "results": 11,
+  "response": [
+    {
+      "position": 1,
+      "team": {
+        "id": 5,
+        "name": "Mercedes-AMG Petronas",
+        "logo": "https://media.api-sports.io/formula-1/teams/5.png"
+      },
+      "points": 701,
+      "season": 2014
+    },
+    {
+      "position": 2,
+      "team": {
+        "id": 1,
+        "name": "Red Bull Racing",
+        "logo": "https://media.api-sports.io/formula-1/teams/1.png"
+      },
+      "points": 405,
+      "season": 2014
+    },
+    {
+      "position": 3,
+      "team": {
+        "id": 12,
+        "name": "Williams F1 Team",
+        "logo": "https://media.api-sports.io/formula-1/teams/12.png"
+      },
+      "points": 320,
+      "season": 2014
+    },
+    {
+      "position": 4,
+      "team": {
+        "id": 3,
+        "name": "Scuderia Ferrari",
+        "logo": "https://media.api-sports.io/formula-1/teams/3.png"
+      },
+      "points": 216,
+      "season": 2014
+    },
+    {
+      "position": 5,
+      "team": {
+        "id": 2,
+        "name": "McLaren Racing",
+        "logo": "https://media.api-sports.io/formula-1/teams/2.png"
+      },
+      "points": 181,
+      "season": 2014
+    },
+    {
+      "position": 6,
+      "team": {
+        "id": 4,
+        "name": "Force India",
+        "logo": "https://media.api-sports.io/formula-1/teams/4.png"
+      },
+      "points": 155,
+      "season": 2014
+    },
+    {
+      "position": 7,
+      "team": {
+        "id": 7,
+        "name": "Racing Bulls",
+        "logo": "https://media.api-sports.io/formula-1/teams/7.png"
+      },
+      "points": 30,
+      "season": 2014
+    },
+    {
+      "position": 8,
+      "team": {
+        "id": 6,
+        "name": "Lotus F1 Team",
+        "logo": "https://media.api-sports.io/formula-1/teams/6.png"
+      },
+      "points": 10,
+      "season": 2014
+    },
+    {
+      "position": 9,
+      "team": {
+        "id": 9,
+        "name": "Manor Marussia F1 Team",
+        "logo": "https://media.api-sports.io/formula-1/teams/9.png"
+      },
+      "points": 2,
+      "season": 2014
+    },
+    {
+      "position": 10,
+      "team": {
+        "id": 8,
+        "name": "Sauber F1 Team",
+        "logo": "https://media.api-sports.io/formula-1/teams/8.png"
+      },
+      "points": 0,
+      "season": 2014
+    },
+    {
+      "position": 11,
+      "team": {
+        "id": 10,
+        "name": "Caterham F1 Team",
+        "logo": "https://media.api-sports.io/formula-1/teams/10.png"
+      },
+      "points": 0,
+      "season": 2014
+    }
+  ]
 }

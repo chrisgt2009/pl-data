@@ -3,13 +3,445 @@
   "parameters": {
     "season": "2020"
   },
-  "errors": {
-    "plan": "Free plans do not have access to this season, try from 2022 to 2024."
-  },
-  "results": 0,
-  "paging": {
-    "current": 1,
-    "total": 1
-  },
-  "response": []
+  "errors": [],
+  "results": 23,
+  "response": [
+    {
+      "position": 1,
+      "driver": {
+        "id": 20,
+        "name": "Lewis Hamilton",
+        "abbr": "HAM",
+        "number": 44,
+        "image": "https://media.api-sports.io/formula-1/drivers/20.png"
+      },
+      "team": {
+        "id": 5,
+        "name": "Mercedes-AMG Petronas",
+        "logo": "https://media.api-sports.io/formula-1/teams/5.png"
+      },
+      "points": 347,
+      "wins": 11,
+      "behind": null,
+      "season": 2020
+    },
+    {
+      "position": 2,
+      "driver": {
+        "id": 5,
+        "name": "Valtteri Bottas",
+        "abbr": "BOT",
+        "number": 77,
+        "image": "https://media.api-sports.io/formula-1/drivers/5.png"
+      },
+      "team": {
+        "id": 5,
+        "name": "Mercedes-AMG Petronas",
+        "logo": "https://media.api-sports.io/formula-1/teams/5.png"
+      },
+      "points": 223,
+      "wins": 2,
+      "behind": 124,
+      "season": 2020
+    },
+    {
+      "position": 3,
+      "driver": {
+        "id": 25,
+        "name": "Max Verstappen",
+        "abbr": "VER",
+        "number": 1,
+        "image": "https://media.api-sports.io/formula-1/drivers/25.png"
+      },
+      "team": {
+        "id": 1,
+        "name": "Red Bull Racing",
+        "logo": "https://media.api-sports.io/formula-1/teams/1.png"
+      },
+      "points": 214,
+      "wins": 2,
+      "behind": 133,
+      "season": 2020
+    },
+    {
+      "position": 4,
+      "driver": {
+        "id": 10,
+        "name": "Sergio Perez",
+        "abbr": "PER",
+        "number": 11,
+        "image": "https://media.api-sports.io/formula-1/drivers/10.png"
+      },
+      "team": {
+        "id": 17,
+        "name": "Aston Martin F1 Team",
+        "logo": "https://media.api-sports.io/formula-1/teams/17.png"
+      },
+      "points": 125,
+      "wins": 1,
+      "behind": 222,
+      "season": 2020
+    },
+    {
+      "position": 5,
+      "driver": {
+        "id": 14,
+        "name": "Daniel Ricciardo",
+        "abbr": "RIC",
+        "number": 3,
+        "image": "https://media.api-sports.io/formula-1/drivers/14.png"
+      },
+      "team": {
+        "id": 13,
+        "name": "Alpine F1 Team",
+        "logo": "https://media.api-sports.io/formula-1/teams/13.png"
+      },
+      "points": 118,
+      "wins": 0,
+      "behind": 229,
+      "season": 2020
+    },
+    {
+      "position": 6,
+      "driver": {
+        "id": 24,
+        "name": "Carlos Sainz Jr",
+        "abbr": "SAI",
+        "number": 55,
+        "image": "https://media.api-sports.io/formula-1/drivers/24.png"
+      },
+      "team": {
+        "id": 2,
+        "name": "McLaren Racing",
+        "logo": "https://media.api-sports.io/formula-1/teams/2.png"
+      },
+      "points": 105,
+      "wins": 0,
+      "behind": 242,
+      "season": 2020
+    },
+    {
+      "position": 7,
+      "driver": {
+        "id": 50,
+        "name": "Alexander Albon",
+        "abbr": "ALB",
+        "number": 23,
+        "image": "https://media.api-sports.io/formula-1/drivers/50.png"
+      },
+      "team": {
+        "id": 1,
+        "name": "Red Bull Racing",
+        "logo": "https://media.api-sports.io/formula-1/teams/1.png"
+      },
+      "points": 105,
+      "wins": 0,
+      "behind": 242,
+      "season": 2020
+    },
+    {
+      "position": 8,
+      "driver": {
+        "id": 34,
+        "name": "Charles Leclerc",
+        "abbr": "LEC",
+        "number": 16,
+        "image": "https://media.api-sports.io/formula-1/drivers/34.png"
+      },
+      "team": {
+        "id": 3,
+        "name": "Scuderia Ferrari",
+        "logo": "https://media.api-sports.io/formula-1/teams/3.png"
+      },
+      "points": 98,
+      "wins": 0,
+      "behind": 249,
+      "season": 2020
+    },
+    {
+      "position": 9,
+      "driver": {
+        "id": 49,
+        "name": "Lando Norris",
+        "abbr": "NOR",
+        "number": 4,
+        "image": "https://media.api-sports.io/formula-1/drivers/49.png"
+      },
+      "team": {
+        "id": 2,
+        "name": "McLaren Racing",
+        "logo": "https://media.api-sports.io/formula-1/teams/2.png"
+      },
+      "points": 97,
+      "wins": 0,
+      "behind": 250,
+      "season": 2020
+    },
+    {
+      "position": 10,
+      "driver": {
+        "id": 36,
+        "name": "Pierre Gasly",
+        "abbr": "GAS",
+        "number": 10,
+        "image": "https://media.api-sports.io/formula-1/drivers/36.png"
+      },
+      "team": {
+        "id": 7,
+        "name": "Racing Bulls",
+        "logo": "https://media.api-sports.io/formula-1/teams/7.png"
+      },
+      "points": 75,
+      "wins": 1,
+      "behind": 272,
+      "season": 2020
+    },
+    {
+      "position": 11,
+      "driver": {
+        "id": 31,
+        "name": "Lance Stroll",
+        "abbr": "STR",
+        "number": 18,
+        "image": "https://media.api-sports.io/formula-1/drivers/31.png"
+      },
+      "team": {
+        "id": 17,
+        "name": "Aston Martin F1 Team",
+        "logo": "https://media.api-sports.io/formula-1/teams/17.png"
+      },
+      "points": 75,
+      "wins": 0,
+      "behind": 272,
+      "season": 2020
+    },
+    {
+      "position": 12,
+      "driver": {
+        "id": 28,
+        "name": "Esteban Ocon",
+        "abbr": "OCO",
+        "number": 31,
+        "image": "https://media.api-sports.io/formula-1/drivers/28.png"
+      },
+      "team": {
+        "id": 13,
+        "name": "Alpine F1 Team",
+        "logo": "https://media.api-sports.io/formula-1/teams/13.png"
+      },
+      "points": 62,
+      "wins": 0,
+      "behind": 285,
+      "season": 2020
+    },
+    {
+      "position": 13,
+      "driver": {
+        "id": 19,
+        "name": "Sebastian Vettel",
+        "abbr": "VET",
+        "number": 5,
+        "image": "https://media.api-sports.io/formula-1/drivers/19.png"
+      },
+      "team": {
+        "id": 3,
+        "name": "Scuderia Ferrari",
+        "logo": "https://media.api-sports.io/formula-1/teams/3.png"
+      },
+      "points": 33,
+      "wins": 0,
+      "behind": 314,
+      "season": 2020
+    },
+    {
+      "position": 14,
+      "driver": {
+        "id": 9,
+        "name": "Daniil Kvyat",
+        "abbr": "KVY",
+        "number": 26,
+        "image": "https://media.api-sports.io/formula-1/drivers/9.png"
+      },
+      "team": {
+        "id": 7,
+        "name": "Racing Bulls",
+        "logo": "https://media.api-sports.io/formula-1/teams/7.png"
+      },
+      "points": 32,
+      "wins": 0,
+      "behind": 315,
+      "season": 2020
+    },
+    {
+      "position": 15,
+      "driver": {
+        "id": 6,
+        "name": "Nico Hulkenberg",
+        "abbr": "HUL",
+        "number": 27,
+        "image": "https://media.api-sports.io/formula-1/drivers/6.png"
+      },
+      "team": {
+        "id": 17,
+        "name": "Aston Martin F1 Team",
+        "logo": "https://media.api-sports.io/formula-1/teams/17.png"
+      },
+      "points": 10,
+      "wins": 0,
+      "behind": 337,
+      "season": 2020
+    },
+    {
+      "position": 16,
+      "driver": {
+        "id": 7,
+        "name": "Kimi Raikkonen",
+        "abbr": "RAI",
+        "number": 7,
+        "image": "https://media.api-sports.io/formula-1/drivers/7.png"
+      },
+      "team": {
+        "id": 18,
+        "name": "Stake F1 Team Kick Sauber",
+        "logo": "https://media.api-sports.io/formula-1/teams/18.png"
+      },
+      "points": 4,
+      "wins": 0,
+      "behind": 343,
+      "season": 2020
+    },
+    {
+      "position": 17,
+      "driver": {
+        "id": 29,
+        "name": "Antonio Giovinazzi",
+        "abbr": "GIO",
+        "number": 99,
+        "image": "https://media.api-sports.io/formula-1/drivers/29.png"
+      },
+      "team": {
+        "id": 18,
+        "name": "Stake F1 Team Kick Sauber",
+        "logo": "https://media.api-sports.io/formula-1/teams/18.png"
+      },
+      "points": 4,
+      "wins": 0,
+      "behind": 343,
+      "season": 2020
+    },
+    {
+      "position": 18,
+      "driver": {
+        "id": 51,
+        "name": "George Russell",
+        "abbr": "RUS",
+        "number": 63,
+        "image": "https://media.api-sports.io/formula-1/drivers/51.png"
+      },
+      "team": {
+        "id": 12,
+        "name": "Williams F1 Team",
+        "logo": "https://media.api-sports.io/formula-1/teams/12.png"
+      },
+      "points": 3,
+      "wins": 0,
+      "behind": 344,
+      "season": 2020
+    },
+    {
+      "position": 19,
+      "driver": {
+        "id": 16,
+        "name": "Romain Grosjean",
+        "abbr": "GRO",
+        "number": 28,
+        "image": "https://media.api-sports.io/formula-1/drivers/16.png"
+      },
+      "team": {
+        "id": 14,
+        "name": "Haas F1 Team",
+        "logo": "https://media.api-sports.io/formula-1/teams/14.png"
+      },
+      "points": 2,
+      "wins": 0,
+      "behind": 345,
+      "season": 2020
+    },
+    {
+      "position": 20,
+      "driver": {
+        "id": 2,
+        "name": "Kevin Magnussen",
+        "abbr": "MAG",
+        "number": 20,
+        "image": "https://media.api-sports.io/formula-1/drivers/2.png"
+      },
+      "team": {
+        "id": 14,
+        "name": "Haas F1 Team",
+        "logo": "https://media.api-sports.io/formula-1/teams/14.png"
+      },
+      "points": 1,
+      "wins": 0,
+      "behind": 346,
+      "season": 2020
+    },
+    {
+      "position": 21,
+      "driver": {
+        "id": 61,
+        "name": "Nicholas Latifi",
+        "abbr": "LAT",
+        "number": 6,
+        "image": "https://media.api-sports.io/formula-1/drivers/61.png"
+      },
+      "team": {
+        "id": 12,
+        "name": "Williams F1 Team",
+        "logo": "https://media.api-sports.io/formula-1/teams/12.png"
+      },
+      "points": null,
+      "wins": 0,
+      "behind": 347,
+      "season": 2020
+    },
+    {
+      "position": 22,
+      "driver": {
+        "id": 85,
+        "name": "Jack Aitken",
+        "abbr": "AIT",
+        "number": 40,
+        "image": "https://media.api-sports.io/formula-1/drivers/85.png"
+      },
+      "team": {
+        "id": 12,
+        "name": "Williams F1 Team",
+        "logo": "https://media.api-sports.io/formula-1/teams/12.png"
+      },
+      "points": null,
+      "wins": 0,
+      "behind": 347,
+      "season": 2020
+    },
+    {
+      "position": 23,
+      "driver": {
+        "id": 86,
+        "name": "Pietro Fittipaldi",
+        "abbr": "FIT",
+        "number": 21,
+        "image": "https://media.api-sports.io/formula-1/drivers/86.png"
+      },
+      "team": {
+        "id": 14,
+        "name": "Haas F1 Team",
+        "logo": "https://media.api-sports.io/formula-1/teams/14.png"
+      },
+      "points": null,
+      "wins": 0,
+      "behind": 347,
+      "season": 2020
+    }
+  ]
 }

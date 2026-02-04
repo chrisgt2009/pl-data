@@ -4,12 +4,8 @@
     "season": "2017"
   },
   "errors": {
-    "plan": "Free plans do not have access to this season, try from 2022 to 2024."
+    "season": "The Season field do not exist."
   },
   "results": 0,
-  "paging": {
-    "current": 1,
-    "total": 1
-  },
   "response": []
 }
