@@ -28,7 +28,7 @@
     "season_source": "2023"
   },
   "errors": {},
-  "results": 18,
+  "results": 22,
   "response": [
     {
       "id": 2,
@@ -1988,6 +1988,202 @@
             "id": 18,
             "name": "Stake F1 Team Kick Sauber",
             "logo": "https://media.api-sports.io/formula-1/teams/18.png"
+          }
+        }
+      ]
+    },
+    {
+      "id": 88,
+      "name": "Nyck De Vries",
+      "abbr": null,
+      "image": "https://media.api-sports.io/formula-1/drivers/88.png",
+      "nationality": "Dutch",
+      "country": {
+        "name": "Netherlands",
+        "code": "NL"
+      },
+      "birthdate": "1995-02-06",
+      "birthplace": "Sneek, Netherlands",
+      "number": 17,
+      "grands_prix_entered": 11,
+      "world_championships": 0,
+      "podiums": 0,
+      "highest_race_finish": {
+        "position": 9,
+        "number": 1
+      },
+      "highest_grid_position": 8,
+      "career_points": "2",
+      "teams": [
+        {
+          "season": 2023,
+          "team": {
+            "id": 7,
+            "name": "Racing Bulls",
+            "logo": "https://media.api-sports.io/formula-1/teams/7.png"
+          }
+        },
+        {
+          "season": 2022,
+          "team": {
+            "id": 12,
+            "name": "Williams F1 Team",
+            "logo": "https://media.api-sports.io/formula-1/teams/12.png"
+          }
+        }
+      ]
+    },
+    {
+      "id": 89,
+      "name": "Liam Lawson",
+      "abbr": "LAW",
+      "image": "https://media.api-sports.io/formula-1/drivers/89.png",
+      "nationality": "New-Zealander",
+      "country": {
+        "name": "New Zealand",
+        "code": "NZ"
+      },
+      "birthdate": "2002-02-11",
+      "birthplace": "Hastings, New Zealand",
+      "number": 30,
+      "grands_prix_entered": 34,
+      "world_championships": 0,
+      "podiums": 0,
+      "highest_race_finish": {
+        "position": 5,
+        "number": 1
+      },
+      "highest_grid_position": 3,
+      "career_points": "44",
+      "teams": [
+        {
+          "season": 2026,
+          "team": {
+            "id": 7,
+            "name": "Racing Bulls",
+            "logo": "https://media.api-sports.io/formula-1/teams/7.png"
+          }
+        },
+        {
+          "season": 2025,
+          "team": {
+            "id": 7,
+            "name": "Racing Bulls",
+            "logo": "https://media.api-sports.io/formula-1/teams/7.png"
+          }
+        },
+        {
+          "season": 2024,
+          "team": {
+            "id": null,
+            "name": null,
+            "logo": null
+          }
+        },
+        {
+          "season": 2023,
+          "team": {
+            "id": 7,
+            "name": "Racing Bulls",
+            "logo": "https://media.api-sports.io/formula-1/teams/7.png"
+          }
+        }
+      ]
+    },
+    {
+      "id": 92,
+      "name": "Logan Sargeant",
+      "abbr": null,
+      "image": "https://media.api-sports.io/formula-1/drivers/92.png",
+      "nationality": "American",
+      "country": {
+        "name": "United States",
+        "code": "US"
+      },
+      "birthdate": "2000-12-31",
+      "birthplace": "Fort Lauderdale, Florida",
+      "number": 2,
+      "grands_prix_entered": 32,
+      "world_championships": 0,
+      "podiums": 0,
+      "highest_race_finish": {
+        "position": 10,
+        "number": 1
+      },
+      "highest_grid_position": 6,
+      "career_points": "1",
+      "teams": [
+        {
+          "season": 2024,
+          "team": {
+            "id": 12,
+            "name": "Williams F1 Team",
+            "logo": "https://media.api-sports.io/formula-1/teams/12.png"
+          }
+        },
+        {
+          "season": 2023,
+          "team": {
+            "id": 12,
+            "name": "Williams F1 Team",
+            "logo": "https://media.api-sports.io/formula-1/teams/12.png"
+          }
+        }
+      ]
+    },
+    {
+      "id": 97,
+      "name": "Oscar Piastri",
+      "abbr": "PIA",
+      "image": "https://media.api-sports.io/formula-1/drivers/97.png",
+      "nationality": "Australian",
+      "country": {
+        "name": "Australia",
+        "code": "AU"
+      },
+      "birthdate": "2001-04-06",
+      "birthplace": "Melbourne, Victoria",
+      "number": 81,
+      "grands_prix_entered": 69,
+      "world_championships": 0,
+      "podiums": 25,
+      "highest_race_finish": {
+        "position": 1,
+        "number": 9
+      },
+      "highest_grid_position": 1,
+      "career_points": "781",
+      "teams": [
+        {
+          "season": 2026,
+          "team": {
+            "id": 2,
+            "name": "McLaren Racing",
+            "logo": "https://media.api-sports.io/formula-1/teams/2.png"
+          }
+        },
+        {
+          "season": 2025,
+          "team": {
+            "id": 2,
+            "name": "McLaren Racing",
+            "logo": "https://media.api-sports.io/formula-1/teams/2.png"
+          }
+        },
+        {
+          "season": 2024,
+          "team": {
+            "id": 2,
+            "name": "McLaren Racing",
+            "logo": "https://media.api-sports.io/formula-1/teams/2.png"
+          }
+        },
+        {
+          "season": 2023,
+          "team": {
+            "id": 2,
+            "name": "McLaren Racing",
+            "logo": "https://media.api-sports.io/formula-1/teams/2.png"
           }
         }
       ]
