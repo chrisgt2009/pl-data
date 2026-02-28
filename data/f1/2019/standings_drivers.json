@@ -50,7 +50,7 @@
         "id": 25,
         "name": "Max Verstappen",
         "abbr": "VER",
-        "number": 1,
+        "number": 3,
         "image": "https://media.api-sports.io/formula-1/drivers/25.png"
       },
       "team": {
@@ -202,7 +202,7 @@
         "id": 49,
         "name": "Lando Norris",
         "abbr": "NOR",
-        "number": 4,
+        "number": 1,
         "image": "https://media.api-sports.io/formula-1/drivers/49.png"
       },
       "team": {
