@@ -140,7 +140,7 @@
       "birthdate": "1981-07-29",
       "birthplace": "Oviedo, Spain",
       "number": 14,
-      "grands_prix_entered": 430,
+      "grands_prix_entered": 456,
       "world_championships": 2,
       "podiums": 106,
       "highest_race_finish": {
@@ -277,9 +277,9 @@
       "birthdate": "1989-08-28",
       "birthplace": "Nastola, Finland",
       "number": 77,
-      "grands_prix_entered": 249,
+      "grands_prix_entered": 270,
       "world_championships": 0,
-      "podiums": 67,
+      "podiums": 70,
       "highest_race_finish": {
         "position": 1,
         "number": 10
@@ -406,7 +406,7 @@
       "birthdate": "1987-08-19",
       "birthplace": "Emmerich am Rhein, Germany",
       "number": 27,
-      "grands_prix_entered": 254,
+      "grands_prix_entered": 272,
       "world_championships": 0,
       "podiums": 1,
       "highest_race_finish": {
@@ -946,15 +946,15 @@
       "birthdate": "1985-01-07",
       "birthplace": "Stevenage, England",
       "number": 44,
-      "grands_prix_entered": 383,
+      "grands_prix_entered": 410,
       "world_championships": 7,
-      "podiums": 203,
+      "podiums": 210,
       "highest_race_finish": {
         "position": 1,
         "number": 105
       },
       "highest_grid_position": 1,
-      "career_points": "5059.5",
+      "career_points": "5069.5",
       "teams": [
         {
           "season": 2026,
@@ -1113,7 +1113,7 @@
           "season": 2026,
           "team": {
             "id": 12,
-            "name": "Williams F1 Team",
+            "name": "Williams",
             "logo": "https://media.api-sports.io/formula-1/teams/12.png"
           }
         },
@@ -1121,7 +1121,7 @@
           "season": 2025,
           "team": {
             "id": 12,
-            "name": "Williams F1 Team",
+            "name": "Williams",
             "logo": "https://media.api-sports.io/formula-1/teams/12.png"
           }
         },
@@ -1177,7 +1177,7 @@
           "season": 2018,
           "team": {
             "id": 13,
-            "name": "Alpine F1 Team",
+            "name": "Alpine",
             "logo": "https://media.api-sports.io/formula-1/teams/13.png"
           }
         },
@@ -1220,15 +1220,15 @@
       "birthdate": "1997-09-30",
       "birthplace": "Hasselt, Belgium",
       "number": 3,
-      "grands_prix_entered": 236,
+      "grands_prix_entered": 263,
       "world_championships": 4,
-      "podiums": 127,
+      "podiums": 145,
       "highest_race_finish": {
         "position": 1,
         "number": 71
       },
       "highest_grid_position": 1,
-      "career_points": "3456.5",
+      "career_points": "3470.5",
       "teams": [
         {
           "season": 2026,
@@ -1341,7 +1341,7 @@
       "birthdate": "1996-09-17",
       "birthplace": "Évreux, Normandy",
       "number": 31,
-      "grands_prix_entered": 183,
+      "grands_prix_entered": 210,
       "world_championships": 0,
       "podiums": 4,
       "highest_race_finish": {
@@ -1753,15 +1753,15 @@
       "birthdate": "1999-11-13",
       "birthplace": "Bristol, England",
       "number": 1,
-      "grands_prix_entered": 155,
+      "grands_prix_entered": 181,
       "world_championships": 1,
-      "podiums": 44,
+      "podiums": 56,
       "highest_race_finish": {
         "position": 1,
         "number": 11
       },
       "highest_grid_position": 1,
-      "career_points": "1455",
+      "career_points": "1481",
       "teams": [
         {
           "season": 2026,
@@ -1842,7 +1842,7 @@
       "birthdate": "1996-03-23",
       "birthplace": "London, England",
       "number": 23,
-      "grands_prix_entered": 131,
+      "grands_prix_entered": 154,
       "world_championships": 0,
       "podiums": 2,
       "highest_race_finish": {
@@ -1850,7 +1850,7 @@
         "number": 2
       },
       "highest_grid_position": 4,
-      "career_points": "313",
+      "career_points": "314",
       "teams": [
         {
           "season": 2026,
@@ -1923,15 +1923,15 @@
       "birthdate": "1998-02-15",
       "birthplace": "King's Lynn, England",
       "number": 63,
-      "grands_prix_entered": 155,
+      "grands_prix_entered": 182,
       "world_championships": 0,
-      "podiums": 26,
+      "podiums": 32,
       "highest_race_finish": {
         "position": 1,
         "number": 6
       },
       "highest_grid_position": 1,
-      "career_points": "1096",
+      "career_points": "1113",
       "teams": [
         {
           "season": 2026,
