@@ -28,7 +28,7 @@
     "season_source": "2023"
   },
   "errors": {},
-  "results": 22,
+  "results": 21,
   "response": [
     {
       "id": 2,
@@ -2127,63 +2127,6 @@
             "id": 12,
             "name": "Williams F1 Team",
             "logo": "https://media.api-sports.io/formula-1/teams/12.png"
-          }
-        }
-      ]
-    },
-    {
-      "id": 97,
-      "name": "Oscar Piastri",
-      "abbr": "PIA",
-      "image": "https://media.api-sports.io/formula-1/drivers/97.png",
-      "nationality": "Australian",
-      "country": {
-        "name": "Australia",
-        "code": "AU"
-      },
-      "birthdate": "2001-04-06",
-      "birthplace": "Melbourne, Victoria",
-      "number": 81,
-      "grands_prix_entered": 74,
-      "world_championships": 0,
-      "podiums": 28,
-      "highest_race_finish": {
-        "position": 1,
-        "number": 9
-      },
-      "highest_grid_position": 1,
-      "career_points": "859",
-      "teams": [
-        {
-          "season": 2026,
-          "team": {
-            "id": 2,
-            "name": "McLaren Racing",
-            "logo": "https://media.api-sports.io/formula-1/teams/2.png"
-          }
-        },
-        {
-          "season": 2025,
-          "team": {
-            "id": 2,
-            "name": "McLaren Racing",
-            "logo": "https://media.api-sports.io/formula-1/teams/2.png"
-          }
-        },
-        {
-          "season": 2024,
-          "team": {
-            "id": 2,
-            "name": "McLaren Racing",
-            "logo": "https://media.api-sports.io/formula-1/teams/2.png"
-          }
-        },
-        {
-          "season": 2023,
-          "team": {
-            "id": 2,
-            "name": "McLaren Racing",
-            "logo": "https://media.api-sports.io/formula-1/teams/2.png"
           }
         }
       ]
