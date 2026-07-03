@@ -1287,15 +1287,15 @@
       "birthdate": "1985-01-07",
       "birthplace": "Stevenage, England",
       "number": 44,
-      "grands_prix_entered": 386,
+      "grands_prix_entered": null,
       "world_championships": 7,
-      "podiums": 205,
+      "podiums": 206,
       "highest_race_finish": {
         "position": 1,
-        "number": 105
+        "number": 106
       },
       "highest_grid_position": 1,
-      "career_points": "5108.5",
+      "career_points": "5143.5",
       "teams": [
         {
           "season": 2026,

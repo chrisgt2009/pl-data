@@ -825,15 +825,15 @@
       "birthdate": "1985-01-07",
       "birthplace": "Stevenage, England",
       "number": 44,
-      "grands_prix_entered": 386,
+      "grands_prix_entered": null,
       "world_championships": 7,
-      "podiums": 205,
+      "podiums": 206,
       "highest_race_finish": {
         "position": 1,
-        "number": 105
+        "number": 106
       },
       "highest_grid_position": 1,
-      "career_points": "5108.5",
+      "career_points": "5143.5",
       "teams": [
         {
           "season": 2026,
@@ -2046,15 +2046,15 @@
       "birthdate": "2002-02-11",
       "birthplace": "Hastings, New Zealand",
       "number": 30,
-      "grands_prix_entered": 41,
+      "grands_prix_entered": null,
       "world_championships": 0,
       "podiums": 0,
       "highest_race_finish": {
         "position": 5,
-        "number": 2
+        "number": 1
       },
       "highest_grid_position": 3,
-      "career_points": "70",
+      "career_points": "74",
       "teams": [
         {
           "season": 2026,
@@ -2144,7 +2144,7 @@
       "birthdate": "2001-04-06",
       "birthplace": "Melbourne, Victoria",
       "number": 81,
-      "grands_prix_entered": 74,
+      "grands_prix_entered": null,
       "world_championships": 0,
       "podiums": 28,
       "highest_race_finish": {
@@ -2152,7 +2152,7 @@
         "number": 9
       },
       "highest_grid_position": 1,
-      "career_points": "859",
+      "career_points": "879",
       "teams": [
         {
           "season": 2026,
