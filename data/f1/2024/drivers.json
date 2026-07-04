@@ -30,7 +30,7 @@
     "season_source": "2024"
   },
   "errors": {},
-  "results": 23,
+  "results": 24,
   "response": [
     {
       "id": 2,
@@ -142,7 +142,7 @@
       "birthdate": "1981-07-29",
       "birthplace": "Oviedo, Spain",
       "number": 14,
-      "grands_prix_entered": 433,
+      "grands_prix_entered": 435,
       "world_championships": 2,
       "podiums": 106,
       "highest_race_finish": {
@@ -279,7 +279,7 @@
       "birthdate": "1989-08-28",
       "birthplace": "Nastola, Finland",
       "number": 77,
-      "grands_prix_entered": 252,
+      "grands_prix_entered": 254,
       "world_championships": 0,
       "podiums": 67,
       "highest_race_finish": {
@@ -408,7 +408,7 @@
       "birthdate": "1987-08-19",
       "birthplace": "Emmerich am Rhein, Germany",
       "number": 27,
-      "grands_prix_entered": 255,
+      "grands_prix_entered": 257,
       "world_championships": 0,
       "podiums": 1,
       "highest_race_finish": {
@@ -545,7 +545,7 @@
       "birthdate": "1990-01-26",
       "birthplace": "Guadalajara, Mexico",
       "number": 11,
-      "grands_prix_entered": 287,
+      "grands_prix_entered": 289,
       "world_championships": 0,
       "podiums": 39,
       "highest_race_finish": {
@@ -827,7 +827,7 @@
       "birthdate": "1985-01-07",
       "birthplace": "Stevenage, England",
       "number": 44,
-      "grands_prix_entered": null,
+      "grands_prix_entered": 388,
       "world_championships": 7,
       "podiums": 206,
       "highest_race_finish": {
@@ -980,7 +980,7 @@
       "birthdate": "1994-09-01",
       "birthplace": "Madrid, Spain",
       "number": 55,
-      "grands_prix_entered": 235,
+      "grands_prix_entered": 237,
       "world_championships": 0,
       "podiums": 29,
       "highest_race_finish": {
@@ -1101,15 +1101,15 @@
       "birthdate": "1997-09-30",
       "birthplace": "Hasselt, Belgium",
       "number": 3,
-      "grands_prix_entered": 239,
+      "grands_prix_entered": 241,
       "world_championships": 4,
-      "podiums": 128,
+      "podiums": 129,
       "highest_race_finish": {
         "position": 1,
         "number": 71
       },
       "highest_grid_position": 1,
-      "career_points": "3487.5",
+      "career_points": "3517.5",
       "teams": [
         {
           "season": 2026,
@@ -1222,7 +1222,7 @@
       "birthdate": "1996-09-17",
       "birthplace": "Évreux, Normandy",
       "number": 31,
-      "grands_prix_entered": 186,
+      "grands_prix_entered": 188,
       "world_championships": 0,
       "podiums": 4,
       "highest_race_finish": {
@@ -1327,7 +1327,7 @@
       "birthdate": "1998-10-29",
       "birthplace": "Montreal, Canada",
       "number": 18,
-      "grands_prix_entered": 195,
+      "grands_prix_entered": 197,
       "world_championships": 0,
       "podiums": 3,
       "highest_race_finish": {
@@ -1432,7 +1432,7 @@
       "birthdate": "1997-10-16",
       "birthplace": "Monte Carlo, Monaco",
       "number": 16,
-      "grands_prix_entered": 177,
+      "grands_prix_entered": 179,
       "world_championships": 0,
       "podiums": 52,
       "highest_race_finish": {
@@ -1440,7 +1440,7 @@
         "number": 8
       },
       "highest_grid_position": 1,
-      "career_points": "1747",
+      "career_points": "1751",
       "teams": [
         {
           "season": 2026,
@@ -1529,15 +1529,15 @@
       "birthdate": "1996-02-07",
       "birthplace": "Rouen, France",
       "number": 10,
-      "grands_prix_entered": 183,
+      "grands_prix_entered": 185,
       "world_championships": 0,
-      "podiums": 5,
+      "podiums": 6,
       "highest_race_finish": {
         "position": 1,
         "number": 1
       },
       "highest_grid_position": 2,
-      "career_points": "484",
+      "career_points": "499",
       "teams": [
         {
           "season": 2026,
@@ -1634,15 +1634,15 @@
       "birthdate": "1999-11-13",
       "birthplace": "Bristol, England",
       "number": 1,
-      "grands_prix_entered": 157,
+      "grands_prix_entered": 159,
       "world_championships": 1,
-      "podiums": 45,
+      "podiums": 46,
       "highest_race_finish": {
         "position": 1,
         "number": 11
       },
       "highest_grid_position": 1,
-      "career_points": "1488",
+      "career_points": "1509",
       "teams": [
         {
           "season": 2026,
@@ -1723,7 +1723,7 @@
       "birthdate": "1996-03-23",
       "birthplace": "London, England",
       "number": 23,
-      "grands_prix_entered": 133,
+      "grands_prix_entered": 135,
       "world_championships": 0,
       "podiums": 2,
       "highest_race_finish": {
@@ -1804,15 +1804,15 @@
       "birthdate": "1998-02-15",
       "birthplace": "King's Lynn, England",
       "number": 63,
-      "grands_prix_entered": 158,
+      "grands_prix_entered": 160,
       "world_championships": 0,
-      "podiums": 26,
+      "podiums": 28,
       "highest_race_finish": {
         "position": 1,
-        "number": 6
+        "number": 7
       },
       "highest_grid_position": 1,
-      "career_points": "1121",
+      "career_points": "1164",
       "teams": [
         {
           "season": 2026,
@@ -2007,7 +2007,7 @@
       "birthdate": "2002-02-11",
       "birthplace": "Hastings, New Zealand",
       "number": 30,
-      "grands_prix_entered": null,
+      "grands_prix_entered": 43,
       "world_championships": 0,
       "podiums": 0,
       "highest_race_finish": {
@@ -2146,7 +2146,7 @@
       "birthdate": "2001-04-06",
       "birthplace": "Melbourne, Victoria",
       "number": 81,
-      "grands_prix_entered": null,
+      "grands_prix_entered": 76,
       "world_championships": 0,
       "podiums": 28,
       "highest_race_finish": {
@@ -2203,7 +2203,7 @@
       "birthdate": "2005-05-08",
       "birthplace": "Chelmsford, England",
       "number": 87,
-      "grands_prix_entered": 33,
+      "grands_prix_entered": 35,
       "world_championships": 0,
       "podiums": 0,
       "highest_race_finish": {
@@ -2235,6 +2235,55 @@
             "id": 14,
             "name": "Haas F1 Team",
             "logo": "https://media.api-sports.io/formula-1/teams/14.png"
+          }
+        }
+      ]
+    },
+    {
+      "id": 105,
+      "name": "Franco Colapinto",
+      "abbr": null,
+      "image": "https://media.api-sports.io/formula-1/drivers/105.png",
+      "nationality": "Argentinian",
+      "country": {
+        "name": "Argentina",
+        "code": "AR"
+      },
+      "birthdate": "2003-05-27",
+      "birthplace": "Buenos Aires, Argentina",
+      "number": 43,
+      "grands_prix_entered": 34,
+      "world_championships": 0,
+      "podiums": 0,
+      "highest_race_finish": {
+        "position": 6,
+        "number": 1
+      },
+      "highest_grid_position": 8,
+      "career_points": "21",
+      "teams": [
+        {
+          "season": 2026,
+          "team": {
+            "id": 13,
+            "name": "Alpine F1 Team",
+            "logo": "https://media.api-sports.io/formula-1/teams/13.png"
+          }
+        },
+        {
+          "season": 2025,
+          "team": {
+            "id": 13,
+            "name": "Alpine F1 Team",
+            "logo": "https://media.api-sports.io/formula-1/teams/13.png"
+          }
+        },
+        {
+          "season": 2024,
+          "team": {
+            "id": 12,
+            "name": "Williams F1 Team",
+            "logo": "https://media.api-sports.io/formula-1/teams/12.png"
           }
         }
       ]
