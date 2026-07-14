@@ -1719,7 +1719,7 @@
       "id": 20,
       "name": "Lewis Hamilton",
       "abbr": "HAM",
-      "image": "https://media.api-sports.io/formula-1/drivers/20.png",
+      "image": "https://media-1.api-sports.io/formula-1/drivers/20.png",
       "nationality": "British",
       "country": {
         "name": "United Kingdom",
@@ -1743,7 +1743,7 @@
           "team": {
             "id": 3,
             "name": "Scuderia Ferrari",
-            "logo": "https://media.api-sports.io/formula-1/teams/3.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/3.png"
           }
         },
         {
@@ -1751,7 +1751,7 @@
           "team": {
             "id": 3,
             "name": "Scuderia Ferrari",
-            "logo": "https://media.api-sports.io/formula-1/teams/3.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/3.png"
           }
         },
         {
@@ -1759,7 +1759,7 @@
           "team": {
             "id": 5,
             "name": "Mercedes-AMG Petronas",
-            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/5.png"
           }
         },
         {
@@ -1767,7 +1767,7 @@
           "team": {
             "id": 5,
             "name": "Mercedes-AMG Petronas",
-            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/5.png"
           }
         },
         {
@@ -1775,7 +1775,7 @@
           "team": {
             "id": 5,
             "name": "Mercedes-AMG Petronas",
-            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/5.png"
           }
         },
         {
@@ -1783,7 +1783,7 @@
           "team": {
             "id": 5,
             "name": "Mercedes-AMG Petronas",
-            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/5.png"
           }
         },
         {
@@ -1791,7 +1791,7 @@
           "team": {
             "id": 5,
             "name": "Mercedes-AMG Petronas",
-            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/5.png"
           }
         },
         {
@@ -1799,7 +1799,7 @@
           "team": {
             "id": 5,
             "name": "Mercedes-AMG Petronas",
-            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/5.png"
           }
         },
         {
@@ -1807,7 +1807,7 @@
           "team": {
             "id": 5,
             "name": "Mercedes-AMG Petronas",
-            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/5.png"
           }
         },
         {
@@ -1815,7 +1815,7 @@
           "team": {
             "id": 5,
             "name": "Mercedes-AMG Petronas",
-            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/5.png"
           }
         },
         {
@@ -1823,7 +1823,7 @@
           "team": {
             "id": 5,
             "name": "Mercedes-AMG Petronas",
-            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/5.png"
           }
         },
         {
@@ -1831,7 +1831,7 @@
           "team": {
             "id": 5,
             "name": "Mercedes-AMG Petronas",
-            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/5.png"
           }
         },
         {
@@ -1839,7 +1839,7 @@
           "team": {
             "id": 5,
             "name": "Mercedes-AMG Petronas",
-            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/5.png"
           }
         },
         {
@@ -1847,7 +1847,7 @@
           "team": {
             "id": 5,
             "name": "Mercedes-AMG Petronas",
-            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/5.png"
           }
         },
         {
@@ -1855,7 +1855,7 @@
           "team": {
             "id": 2,
             "name": "McLaren Racing",
-            "logo": "https://media.api-sports.io/formula-1/teams/2.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/2.png"
           }
         },
         {
@@ -1863,7 +1863,7 @@
           "team": {
             "id": 2,
             "name": "McLaren Racing",
-            "logo": "https://media.api-sports.io/formula-1/teams/2.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/2.png"
           }
         }
       ]
