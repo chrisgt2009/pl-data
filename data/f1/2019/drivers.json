@@ -32,7 +32,7 @@
       "id": 2,
       "name": "Kevin Magnussen",
       "abbr": "MAG",
-      "image": "https://media.api-sports.io/formula-1/drivers/2.png",
+      "image": "https://media-1.api-sports.io/formula-1/drivers/2.png",
       "nationality": "Danish",
       "country": {
         "name": "Denmark",
@@ -56,7 +56,7 @@
           "team": {
             "id": 14,
             "name": "Haas F1 Team",
-            "logo": "https://media.api-sports.io/formula-1/teams/14.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/14.png"
           }
         },
         {
@@ -64,7 +64,7 @@
           "team": {
             "id": 14,
             "name": "Haas F1 Team",
-            "logo": "https://media.api-sports.io/formula-1/teams/14.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/14.png"
           }
         },
         {
@@ -72,7 +72,7 @@
           "team": {
             "id": 14,
             "name": "Haas F1 Team",
-            "logo": "https://media.api-sports.io/formula-1/teams/14.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/14.png"
           }
         },
         {
@@ -80,7 +80,7 @@
           "team": {
             "id": 14,
             "name": "Haas F1 Team",
-            "logo": "https://media.api-sports.io/formula-1/teams/14.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/14.png"
           }
         },
         {
@@ -88,7 +88,7 @@
           "team": {
             "id": 14,
             "name": "Haas F1 Team",
-            "logo": "https://media.api-sports.io/formula-1/teams/14.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/14.png"
           }
         },
         {
@@ -96,7 +96,7 @@
           "team": {
             "id": 14,
             "name": "Haas F1 Team",
-            "logo": "https://media.api-sports.io/formula-1/teams/14.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/14.png"
           }
         },
         {
@@ -104,7 +104,7 @@
           "team": {
             "id": 14,
             "name": "Haas F1 Team",
-            "logo": "https://media.api-sports.io/formula-1/teams/14.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/14.png"
           }
         },
         {
@@ -112,7 +112,7 @@
           "team": {
             "id": 13,
             "name": "Alpine F1 Team",
-            "logo": "https://media.api-sports.io/formula-1/teams/13.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/13.png"
           }
         },
         {
@@ -120,7 +120,7 @@
           "team": {
             "id": 2,
             "name": "McLaren Racing",
-            "logo": "https://media.api-sports.io/formula-1/teams/2.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/2.png"
           }
         }
       ]
@@ -718,7 +718,7 @@
       "id": 14,
       "name": "Daniel Ricciardo",
       "abbr": "RIC",
-      "image": "https://media.api-sports.io/formula-1/drivers/14.png",
+      "image": "https://media-1.api-sports.io/formula-1/drivers/14.png",
       "nationality": "Australian",
       "country": {
         "name": "Australia",
@@ -742,7 +742,7 @@
           "team": {
             "id": 7,
             "name": "Racing Bulls",
-            "logo": "https://media.api-sports.io/formula-1/teams/7.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/7.png"
           }
         },
         {
@@ -750,7 +750,7 @@
           "team": {
             "id": 7,
             "name": "Racing Bulls",
-            "logo": "https://media.api-sports.io/formula-1/teams/7.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/7.png"
           }
         },
         {
@@ -758,7 +758,7 @@
           "team": {
             "id": 2,
             "name": "McLaren Racing",
-            "logo": "https://media.api-sports.io/formula-1/teams/2.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/2.png"
           }
         },
         {
@@ -766,7 +766,7 @@
           "team": {
             "id": 2,
             "name": "McLaren Racing",
-            "logo": "https://media.api-sports.io/formula-1/teams/2.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/2.png"
           }
         },
         {
@@ -774,7 +774,7 @@
           "team": {
             "id": 13,
             "name": "Alpine F1 Team",
-            "logo": "https://media.api-sports.io/formula-1/teams/13.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/13.png"
           }
         },
         {
@@ -782,7 +782,7 @@
           "team": {
             "id": 13,
             "name": "Alpine F1 Team",
-            "logo": "https://media.api-sports.io/formula-1/teams/13.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/13.png"
           }
         },
         {
@@ -790,7 +790,7 @@
           "team": {
             "id": 1,
             "name": "Red Bull Racing",
-            "logo": "https://media.api-sports.io/formula-1/teams/1.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/1.png"
           }
         },
         {
@@ -798,7 +798,7 @@
           "team": {
             "id": 1,
             "name": "Red Bull Racing",
-            "logo": "https://media.api-sports.io/formula-1/teams/1.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/1.png"
           }
         },
         {
@@ -806,7 +806,7 @@
           "team": {
             "id": 1,
             "name": "Red Bull Racing",
-            "logo": "https://media.api-sports.io/formula-1/teams/1.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/1.png"
           }
         },
         {
@@ -814,7 +814,7 @@
           "team": {
             "id": 1,
             "name": "Red Bull Racing",
-            "logo": "https://media.api-sports.io/formula-1/teams/1.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/1.png"
           }
         },
         {
@@ -822,7 +822,7 @@
           "team": {
             "id": 1,
             "name": "Red Bull Racing",
-            "logo": "https://media.api-sports.io/formula-1/teams/1.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/1.png"
           }
         },
         {
@@ -830,7 +830,7 @@
           "team": {
             "id": 7,
             "name": "Racing Bulls",
-            "logo": "https://media.api-sports.io/formula-1/teams/7.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/7.png"
           }
         },
         {
@@ -838,7 +838,7 @@
           "team": {
             "id": 7,
             "name": "Racing Bulls",
-            "logo": "https://media.api-sports.io/formula-1/teams/7.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/7.png"
           }
         },
         {
@@ -846,7 +846,7 @@
           "team": {
             "id": 11,
             "name": "HRT Formula One Team",
-            "logo": "https://media.api-sports.io/formula-1/teams/11.png"
+            "logo": "https://media-1.api-sports.io/formula-1/teams/11.png"
           }
         }
       ]
@@ -1073,7 +1073,7 @@
       "id": 20,
       "name": "Lewis Hamilton",
       "abbr": "HAM",
-      "image": "https://media-1.api-sports.io/formula-1/drivers/20.png",
+      "image": "https://media.api-sports.io/formula-1/drivers/20.png",
       "nationality": "British",
       "country": {
         "name": "United Kingdom",
@@ -1097,7 +1097,7 @@
           "team": {
             "id": 3,
             "name": "Scuderia Ferrari",
-            "logo": "https://media-1.api-sports.io/formula-1/teams/3.png"
+            "logo": "https://media.api-sports.io/formula-1/teams/3.png"
           }
         },
         {
@@ -1105,7 +1105,7 @@
           "team": {
             "id": 3,
             "name": "Scuderia Ferrari",
-            "logo": "https://media-1.api-sports.io/formula-1/teams/3.png"
+            "logo": "https://media.api-sports.io/formula-1/teams/3.png"
           }
         },
         {
@@ -1113,7 +1113,7 @@
           "team": {
             "id": 5,
             "name": "Mercedes-AMG Petronas",
-            "logo": "https://media-1.api-sports.io/formula-1/teams/5.png"
+            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
           }
         },
         {
@@ -1121,7 +1121,7 @@
           "team": {
             "id": 5,
             "name": "Mercedes-AMG Petronas",
-            "logo": "https://media-1.api-sports.io/formula-1/teams/5.png"
+            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
           }
         },
         {
@@ -1129,7 +1129,7 @@
           "team": {
             "id": 5,
             "name": "Mercedes-AMG Petronas",
-            "logo": "https://media-1.api-sports.io/formula-1/teams/5.png"
+            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
           }
         },
         {
@@ -1137,7 +1137,7 @@
           "team": {
             "id": 5,
             "name": "Mercedes-AMG Petronas",
-            "logo": "https://media-1.api-sports.io/formula-1/teams/5.png"
+            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
           }
         },
         {
@@ -1145,7 +1145,7 @@
           "team": {
             "id": 5,
             "name": "Mercedes-AMG Petronas",
-            "logo": "https://media-1.api-sports.io/formula-1/teams/5.png"
+            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
           }
         },
         {
@@ -1153,7 +1153,7 @@
           "team": {
             "id": 5,
             "name": "Mercedes-AMG Petronas",
-            "logo": "https://media-1.api-sports.io/formula-1/teams/5.png"
+            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
           }
         },
         {
@@ -1161,7 +1161,7 @@
           "team": {
             "id": 5,
             "name": "Mercedes-AMG Petronas",
-            "logo": "https://media-1.api-sports.io/formula-1/teams/5.png"
+            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
           }
         },
         {
@@ -1169,7 +1169,7 @@
           "team": {
             "id": 5,
             "name": "Mercedes-AMG Petronas",
-            "logo": "https://media-1.api-sports.io/formula-1/teams/5.png"
+            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
           }
         },
         {
@@ -1177,7 +1177,7 @@
           "team": {
             "id": 5,
             "name": "Mercedes-AMG Petronas",
-            "logo": "https://media-1.api-sports.io/formula-1/teams/5.png"
+            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
           }
         },
         {
@@ -1185,7 +1185,7 @@
           "team": {
             "id": 5,
             "name": "Mercedes-AMG Petronas",
-            "logo": "https://media-1.api-sports.io/formula-1/teams/5.png"
+            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
           }
         },
         {
@@ -1193,7 +1193,7 @@
           "team": {
             "id": 5,
             "name": "Mercedes-AMG Petronas",
-            "logo": "https://media-1.api-sports.io/formula-1/teams/5.png"
+            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
           }
         },
         {
@@ -1201,7 +1201,7 @@
           "team": {
             "id": 5,
             "name": "Mercedes-AMG Petronas",
-            "logo": "https://media-1.api-sports.io/formula-1/teams/5.png"
+            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
           }
         },
         {
@@ -1209,7 +1209,7 @@
           "team": {
             "id": 2,
             "name": "McLaren Racing",
-            "logo": "https://media-1.api-sports.io/formula-1/teams/2.png"
+            "logo": "https://media.api-sports.io/formula-1/teams/2.png"
           }
         },
         {
@@ -1217,7 +1217,7 @@
           "team": {
             "id": 2,
             "name": "McLaren Racing",
-            "logo": "https://media-1.api-sports.io/formula-1/teams/2.png"
+            "logo": "https://media.api-sports.io/formula-1/teams/2.png"
           }
         }
       ]
