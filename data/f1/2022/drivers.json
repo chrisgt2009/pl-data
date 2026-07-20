@@ -28,7 +28,7 @@
     "season_source": "2022"
   },
   "errors": {},
-  "results": 22,
+  "results": 19,
   "response": [
     {
       "id": 2,
@@ -1539,103 +1539,6 @@
       ]
     },
     {
-      "id": 34,
-      "name": "Charles Leclerc",
-      "abbr": "LEC",
-      "image": "https://media.api-sports.io/formula-1/drivers/34.png",
-      "nationality": "Monégasque",
-      "country": {
-        "name": "Monaco",
-        "code": "MC"
-      },
-      "birthdate": "1997-10-16",
-      "birthplace": "Monte Carlo, Monaco",
-      "number": 16,
-      "grands_prix_entered": 179,
-      "world_championships": 0,
-      "podiums": 52,
-      "highest_race_finish": {
-        "position": 1,
-        "number": 8
-      },
-      "highest_grid_position": 1,
-      "career_points": "1751",
-      "teams": [
-        {
-          "season": 2026,
-          "team": {
-            "id": 3,
-            "name": "Scuderia Ferrari",
-            "logo": "https://media.api-sports.io/formula-1/teams/3.png"
-          }
-        },
-        {
-          "season": 2025,
-          "team": {
-            "id": 3,
-            "name": "Scuderia Ferrari",
-            "logo": "https://media.api-sports.io/formula-1/teams/3.png"
-          }
-        },
-        {
-          "season": 2024,
-          "team": {
-            "id": 3,
-            "name": "Scuderia Ferrari",
-            "logo": "https://media.api-sports.io/formula-1/teams/3.png"
-          }
-        },
-        {
-          "season": 2023,
-          "team": {
-            "id": 3,
-            "name": "Scuderia Ferrari",
-            "logo": "https://media.api-sports.io/formula-1/teams/3.png"
-          }
-        },
-        {
-          "season": 2022,
-          "team": {
-            "id": 3,
-            "name": "Scuderia Ferrari",
-            "logo": "https://media.api-sports.io/formula-1/teams/3.png"
-          }
-        },
-        {
-          "season": 2021,
-          "team": {
-            "id": 3,
-            "name": "Scuderia Ferrari",
-            "logo": "https://media.api-sports.io/formula-1/teams/3.png"
-          }
-        },
-        {
-          "season": 2020,
-          "team": {
-            "id": 3,
-            "name": "Scuderia Ferrari",
-            "logo": "https://media.api-sports.io/formula-1/teams/3.png"
-          }
-        },
-        {
-          "season": 2019,
-          "team": {
-            "id": 3,
-            "name": "Scuderia Ferrari",
-            "logo": "https://media.api-sports.io/formula-1/teams/3.png"
-          }
-        },
-        {
-          "season": 2018,
-          "team": {
-            "id": 8,
-            "name": "Sauber F1 Team",
-            "logo": "https://media.api-sports.io/formula-1/teams/8.png"
-          }
-        }
-      ]
-    },
-    {
       "id": 36,
       "name": "Pierre Gasly",
       "abbr": "GAS",
@@ -1830,87 +1733,6 @@
       ]
     },
     {
-      "id": 50,
-      "name": "Alexander Albon",
-      "abbr": "ALB",
-      "image": "https://media.api-sports.io/formula-1/drivers/50.png",
-      "nationality": "Thai",
-      "country": {
-        "name": "Thailand",
-        "code": "TH"
-      },
-      "birthdate": "1996-03-23",
-      "birthplace": "London, England",
-      "number": 23,
-      "grands_prix_entered": 135,
-      "world_championships": 0,
-      "podiums": 2,
-      "highest_race_finish": {
-        "position": 3,
-        "number": 2
-      },
-      "highest_grid_position": 4,
-      "career_points": "318",
-      "teams": [
-        {
-          "season": 2026,
-          "team": {
-            "id": 12,
-            "name": "Williams F1 Team",
-            "logo": "https://media.api-sports.io/formula-1/teams/12.png"
-          }
-        },
-        {
-          "season": 2025,
-          "team": {
-            "id": 12,
-            "name": "Williams F1 Team",
-            "logo": "https://media.api-sports.io/formula-1/teams/12.png"
-          }
-        },
-        {
-          "season": 2024,
-          "team": {
-            "id": 12,
-            "name": "Williams F1 Team",
-            "logo": "https://media.api-sports.io/formula-1/teams/12.png"
-          }
-        },
-        {
-          "season": 2023,
-          "team": {
-            "id": 12,
-            "name": "Williams F1 Team",
-            "logo": "https://media.api-sports.io/formula-1/teams/12.png"
-          }
-        },
-        {
-          "season": 2022,
-          "team": {
-            "id": 12,
-            "name": "Williams F1 Team",
-            "logo": "https://media.api-sports.io/formula-1/teams/12.png"
-          }
-        },
-        {
-          "season": 2020,
-          "team": {
-            "id": 1,
-            "name": "Red Bull Racing",
-            "logo": "https://media.api-sports.io/formula-1/teams/1.png"
-          }
-        },
-        {
-          "season": 2019,
-          "team": {
-            "id": 7,
-            "name": "Racing Bulls",
-            "logo": "https://media.api-sports.io/formula-1/teams/7.png"
-          }
-        }
-      ]
-    },
-    {
       "id": 51,
       "name": "George Russell",
       "abbr": "RUS",
@@ -2085,71 +1907,6 @@
             "id": 14,
             "name": "Haas F1 Team",
             "logo": "https://media.api-sports.io/formula-1/teams/14.png"
-          }
-        }
-      ]
-    },
-    {
-      "id": 82,
-      "name": "Yuki Tsunoda",
-      "abbr": "TSU",
-      "image": "https://media.api-sports.io/formula-1/drivers/82.png",
-      "nationality": "Japanese",
-      "country": {
-        "name": "Japan",
-        "code": "JP"
-      },
-      "birthdate": "2000-05-11",
-      "birthplace": "Sagamihara, Japan",
-      "number": 22,
-      "grands_prix_entered": 110,
-      "world_championships": 0,
-      "podiums": 0,
-      "highest_race_finish": {
-        "position": 4,
-        "number": 1
-      },
-      "highest_grid_position": 3,
-      "career_points": "124",
-      "teams": [
-        {
-          "season": 2025,
-          "team": {
-            "id": 1,
-            "name": "Red Bull Racing",
-            "logo": "https://media.api-sports.io/formula-1/teams/1.png"
-          }
-        },
-        {
-          "season": 2024,
-          "team": {
-            "id": 7,
-            "name": "Racing Bulls",
-            "logo": "https://media.api-sports.io/formula-1/teams/7.png"
-          }
-        },
-        {
-          "season": 2023,
-          "team": {
-            "id": 7,
-            "name": "Racing Bulls",
-            "logo": "https://media.api-sports.io/formula-1/teams/7.png"
-          }
-        },
-        {
-          "season": 2022,
-          "team": {
-            "id": 7,
-            "name": "Racing Bulls",
-            "logo": "https://media.api-sports.io/formula-1/teams/7.png"
-          }
-        },
-        {
-          "season": 2021,
-          "team": {
-            "id": 7,
-            "name": "Racing Bulls",
-            "logo": "https://media.api-sports.io/formula-1/teams/7.png"
           }
         }
       ]

@@ -30,7 +30,7 @@
     "season_source": "2014"
   },
   "errors": {},
-  "results": 24,
+  "results": 23,
   "response": [
     {
       "id": 1,
@@ -1322,47 +1322,6 @@
             "id": 11,
             "name": "HRT Formula One Team",
             "logo": "https://media.api-sports.io/formula-1/teams/11.png"
-          }
-        }
-      ]
-    },
-    {
-      "id": 15,
-      "name": "Jules Bianchi",
-      "abbr": "BIA",
-      "image": "https://media.api-sports.io/formula-1/drivers/15.png",
-      "nationality": "French",
-      "country": {
-        "name": "France",
-        "code": "FR"
-      },
-      "birthdate": "1989-08-03",
-      "birthplace": null,
-      "number": 17,
-      "grands_prix_entered": null,
-      "world_championships": 0,
-      "podiums": 0,
-      "highest_race_finish": {
-        "position": null,
-        "number": null
-      },
-      "highest_grid_position": null,
-      "career_points": "2",
-      "teams": [
-        {
-          "season": 2014,
-          "team": {
-            "id": 9,
-            "name": "Manor Marussia F1 Team",
-            "logo": "https://media.api-sports.io/formula-1/teams/9.png"
-          }
-        },
-        {
-          "season": 2013,
-          "team": {
-            "id": 9,
-            "name": "Manor Marussia F1 Team",
-            "logo": "https://media.api-sports.io/formula-1/teams/9.png"
           }
         }
       ]
