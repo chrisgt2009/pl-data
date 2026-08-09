@@ -30,7 +30,7 @@
     "season_source": "2016"
   },
   "errors": {},
-  "results": 23,
+  "results": 24,
   "response": [
     {
       "id": 1,
@@ -993,6 +993,55 @@
         },
         {
           "season": 2011,
+          "team": {
+            "id": 8,
+            "name": "Sauber F1 Team",
+            "logo": "https://media.api-sports.io/formula-1/teams/8.png"
+          }
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "Esteban Gutierrez",
+      "abbr": "GUT",
+      "image": "https://media.api-sports.io/formula-1/drivers/12.png",
+      "nationality": "Mexican",
+      "country": {
+        "name": "Mexico",
+        "code": "MX"
+      },
+      "birthdate": "1991-08-05",
+      "birthplace": null,
+      "number": 21,
+      "grands_prix_entered": null,
+      "world_championships": 0,
+      "podiums": 0,
+      "highest_race_finish": {
+        "position": null,
+        "number": null
+      },
+      "highest_grid_position": null,
+      "career_points": "6",
+      "teams": [
+        {
+          "season": 2016,
+          "team": {
+            "id": 14,
+            "name": "Haas F1 Team",
+            "logo": "https://media.api-sports.io/formula-1/teams/14.png"
+          }
+        },
+        {
+          "season": 2014,
+          "team": {
+            "id": 8,
+            "name": "Sauber F1 Team",
+            "logo": "https://media.api-sports.io/formula-1/teams/8.png"
+          }
+        },
+        {
+          "season": 2013,
           "team": {
             "id": 8,
             "name": "Sauber F1 Team",
