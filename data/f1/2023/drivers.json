@@ -1902,6 +1902,14 @@
       "career_points": "124",
       "teams": [
         {
+          "season": 2026,
+          "team": {
+            "id": 7,
+            "name": "Racing Bulls",
+            "logo": "https://media.api-sports.io/formula-1/teams/7.png"
+          }
+        },
+        {
           "season": 2025,
           "team": {
             "id": 1,
@@ -2059,9 +2067,9 @@
         {
           "season": 2026,
           "team": {
-            "id": 7,
-            "name": "Racing Bulls",
-            "logo": "https://media.api-sports.io/formula-1/teams/7.png"
+            "id": 1,
+            "name": "Red Bull Racing",
+            "logo": "https://media.api-sports.io/formula-1/teams/1.png"
           }
         },
         {
