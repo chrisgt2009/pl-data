@@ -29,7 +29,7 @@
     "season_source": "2020"
   },
   "errors": {},
-  "results": 22,
+  "results": 23,
   "response": [
     {
       "id": 2,
@@ -1568,6 +1568,63 @@
             "id": 13,
             "name": "Alpine F1 Team",
             "logo": "https://media.api-sports.io/formula-1/teams/13.png"
+          }
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "name": "Antonio Giovinazzi",
+      "abbr": "GIO",
+      "image": "https://media.api-sports.io/formula-1/drivers/29.png",
+      "nationality": "Italian",
+      "country": {
+        "name": "Italy",
+        "code": "IT"
+      },
+      "birthdate": "1993-12-14",
+      "birthplace": "Martina Franca, Italy",
+      "number": 99,
+      "grands_prix_entered": null,
+      "world_championships": 0,
+      "podiums": 0,
+      "highest_race_finish": {
+        "position": null,
+        "number": null
+      },
+      "highest_grid_position": null,
+      "career_points": "14",
+      "teams": [
+        {
+          "season": 2021,
+          "team": {
+            "id": 18,
+            "name": "Stake F1 Team Kick Sauber",
+            "logo": "https://media.api-sports.io/formula-1/teams/18.png"
+          }
+        },
+        {
+          "season": 2020,
+          "team": {
+            "id": 18,
+            "name": "Stake F1 Team Kick Sauber",
+            "logo": "https://media.api-sports.io/formula-1/teams/18.png"
+          }
+        },
+        {
+          "season": 2019,
+          "team": {
+            "id": 18,
+            "name": "Stake F1 Team Kick Sauber",
+            "logo": "https://media.api-sports.io/formula-1/teams/18.png"
+          }
+        },
+        {
+          "season": 2017,
+          "team": {
+            "id": 8,
+            "name": "Sauber F1 Team",
+            "logo": "https://media.api-sports.io/formula-1/teams/8.png"
           }
         }
       ]
