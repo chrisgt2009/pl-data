@@ -29,7 +29,7 @@
     "season_source": "2020"
   },
   "errors": {},
-  "results": 23,
+  "results": 22,
   "response": [
     {
       "id": 2,
@@ -947,127 +947,6 @@
             "id": 6,
             "name": "Lotus F1 Team",
             "logo": "https://media.api-sports.io/formula-1/teams/6.png"
-          }
-        }
-      ]
-    },
-    {
-      "id": 19,
-      "name": "Sebastian Vettel",
-      "abbr": "VET",
-      "image": "https://media.api-sports.io/formula-1/drivers/19.png",
-      "nationality": "German",
-      "country": {
-        "name": "Germany",
-        "code": "DE"
-      },
-      "birthdate": "1987-07-03",
-      "birthplace": "Heppenheim, Germany",
-      "number": 5,
-      "grands_prix_entered": 299,
-      "world_championships": 4,
-      "podiums": 122,
-      "highest_race_finish": {
-        "position": 1,
-        "number": 53
-      },
-      "highest_grid_position": 1,
-      "career_points": "3097",
-      "teams": [
-        {
-          "season": 2022,
-          "team": {
-            "id": 17,
-            "name": "Aston Martin F1 Team",
-            "logo": "https://media.api-sports.io/formula-1/teams/17.png"
-          }
-        },
-        {
-          "season": 2021,
-          "team": {
-            "id": 17,
-            "name": "Aston Martin F1 Team",
-            "logo": "https://media.api-sports.io/formula-1/teams/17.png"
-          }
-        },
-        {
-          "season": 2020,
-          "team": {
-            "id": 3,
-            "name": "Scuderia Ferrari",
-            "logo": "https://media.api-sports.io/formula-1/teams/3.png"
-          }
-        },
-        {
-          "season": 2019,
-          "team": {
-            "id": 3,
-            "name": "Scuderia Ferrari",
-            "logo": "https://media.api-sports.io/formula-1/teams/3.png"
-          }
-        },
-        {
-          "season": 2018,
-          "team": {
-            "id": 3,
-            "name": "Scuderia Ferrari",
-            "logo": "https://media.api-sports.io/formula-1/teams/3.png"
-          }
-        },
-        {
-          "season": 2017,
-          "team": {
-            "id": 3,
-            "name": "Scuderia Ferrari",
-            "logo": "https://media.api-sports.io/formula-1/teams/3.png"
-          }
-        },
-        {
-          "season": 2016,
-          "team": {
-            "id": 3,
-            "name": "Scuderia Ferrari",
-            "logo": "https://media.api-sports.io/formula-1/teams/3.png"
-          }
-        },
-        {
-          "season": 2015,
-          "team": {
-            "id": 3,
-            "name": "Scuderia Ferrari",
-            "logo": "https://media.api-sports.io/formula-1/teams/3.png"
-          }
-        },
-        {
-          "season": 2014,
-          "team": {
-            "id": 1,
-            "name": "Red Bull Racing",
-            "logo": "https://media.api-sports.io/formula-1/teams/1.png"
-          }
-        },
-        {
-          "season": 2013,
-          "team": {
-            "id": 1,
-            "name": "Red Bull Racing",
-            "logo": "https://media.api-sports.io/formula-1/teams/1.png"
-          }
-        },
-        {
-          "season": 2012,
-          "team": {
-            "id": 1,
-            "name": "Red Bull Racing",
-            "logo": "https://media.api-sports.io/formula-1/teams/1.png"
-          }
-        },
-        {
-          "season": 2011,
-          "team": {
-            "id": 1,
-            "name": "Red Bull Racing",
-            "logo": "https://media.api-sports.io/formula-1/teams/1.png"
           }
         }
       ]
