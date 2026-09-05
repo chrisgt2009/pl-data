@@ -1,11 +1,13 @@
 {
-  "get": "circuits",
-  "parameters": {
-    "season": "2017"
-  },
+  "get": "",
+  "parameters": [],
   "errors": {
-    "season": "The Season field do not exist."
+    "rateLimit": "Too many requests. You have exceeded the limit of requests per minute of your subscription."
   },
   "results": 0,
+  "paging": {
+    "current": 1,
+    "total": 1
+  },
   "response": []
 }
