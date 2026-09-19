@@ -27,81 +27,8 @@
     "season_source": "2015"
   },
   "errors": {},
-  "results": 21,
+  "results": 20,
   "response": [
-    {
-      "id": 1,
-      "name": "Nico Rosberg",
-      "abbr": "ROS",
-      "image": "https://media.api-sports.io/formula-1/drivers/1.png",
-      "nationality": "German",
-      "country": {
-        "name": "Germany",
-        "code": "DE"
-      },
-      "birthdate": "1985-07-27",
-      "birthplace": null,
-      "number": 6,
-      "grands_prix_entered": null,
-      "world_championships": null,
-      "podiums": 57,
-      "highest_race_finish": {
-        "position": null,
-        "number": null
-      },
-      "highest_grid_position": null,
-      "career_points": "1594",
-      "teams": [
-        {
-          "season": 2016,
-          "team": {
-            "id": 5,
-            "name": "Mercedes-AMG Petronas",
-            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
-          }
-        },
-        {
-          "season": 2015,
-          "team": {
-            "id": 5,
-            "name": "Mercedes-AMG Petronas",
-            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
-          }
-        },
-        {
-          "season": 2014,
-          "team": {
-            "id": 5,
-            "name": "Mercedes-AMG Petronas",
-            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
-          }
-        },
-        {
-          "season": 2013,
-          "team": {
-            "id": 5,
-            "name": "Mercedes-AMG Petronas",
-            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
-          }
-        },
-        {
-          "season": 2012,
-          "team": {
-            "id": 5,
-            "name": "Mercedes-AMG Petronas",
-            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
-          }
-        },
-        {
-          "season": 2011,
-          "team": {
-            "id": 5,
-            "name": "Mercedes-AMG Petronas",
-            "logo": "https://media.api-sports.io/formula-1/teams/5.png"
-          }
-        }
-      ]
-    },
     {
       "id": 3,
       "name": "Jenson Button",
