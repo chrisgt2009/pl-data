@@ -1083,7 +1083,7 @@
         "code": "GB"
       },
       "birthdate": "1985-01-07",
-      "birthplace": "Stevenage, England",
+      "birthplace": "Stevenage, United Kingdom",
       "number": 44,
       "grands_prix_entered": 391,
       "world_championships": 7,
@@ -1358,7 +1358,7 @@
       },
       "birthdate": "1997-09-30",
       "birthplace": "Hasselt, Belgium",
-      "number": 3,
+      "number": 1,
       "grands_prix_entered": 244,
       "world_championships": 4,
       "podiums": 131,
@@ -1478,7 +1478,7 @@
         "code": "FR"
       },
       "birthdate": "1996-09-17",
-      "birthplace": "Évreux, Normandy",
+      "birthplace": "Évreux, France",
       "number": 31,
       "grands_prix_entered": 191,
       "world_championships": 0,
@@ -1947,8 +1947,8 @@
         "code": "GB"
       },
       "birthdate": "1999-11-13",
-      "birthplace": "Bristol, England",
-      "number": 1,
+      "birthplace": "Glastonbury, United Kingdom",
+      "number": 4,
       "grands_prix_entered": 162,
       "world_championships": 1,
       "podiums": 47,
@@ -2036,7 +2036,7 @@
         "code": "TH"
       },
       "birthdate": "1996-03-23",
-      "birthplace": "London, England",
+      "birthplace": "London, United Kingdom",
       "number": 23,
       "grands_prix_entered": 138,
       "world_championships": 0,
@@ -2117,7 +2117,7 @@
         "code": "GB"
       },
       "birthdate": "1998-02-15",
-      "birthplace": "King's Lynn, England",
+      "birthplace": "King’s Lynn, United Kingdom",
       "number": 63,
       "grands_prix_entered": 163,
       "world_championships": 0,
